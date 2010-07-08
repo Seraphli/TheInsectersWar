@@ -1,6 +1,11 @@
 
 var aliveTime=5.0;
 
+function Start()
+{
+	collisionLayer.addCollider(gameObject);
+}
+
 function Update () 
 {
 	aliveTime-= Time.deltaTime;

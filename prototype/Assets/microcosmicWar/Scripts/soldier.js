@@ -41,15 +41,18 @@ class ActionCommand
 
 function Start()
 {
-	var	a=1;var b=2;
+	mZZSprite = GetComponentInChildren(ZZSprite);
+	characterController = GetComponentInChildren(CharacterController);
+	emitter = GetComponentInChildren(Emitter);
+	
+	characterController .detectCollisions=false;
+	
+	collisionLayer.addCollider(gameObject);
+
 	Xscale=transform.localScale.x;
 	
 	turnObjectTransform= transform.Find("turn").transform;
 	reverseObjectTransform= transform.Find("reverse").transform;
-	
-	mZZSprite = GetComponentInChildren(ZZSprite);
-	characterController = GetComponentInChildren(CharacterController);
-	emitter = GetComponentInChildren(Emitter);
 	
 	actionImpDuringAnimation.ImpFunction=EmitBullet;
 	mZZSprite.setListener("fire",actionImpDuringAnimation);
