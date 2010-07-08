@@ -1,0 +1,206 @@
+fileFormatVersion: 1
+guid: 5dd5e5bd3f8c7bc4282eff14dfe47fe6
+ModelImporter:
+  importerVersion: 4
+  meshes:
+    scaleFactor: 0.01
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    generation: 0
+    calculateNormals: 0
+    smoothingAngle: 60
+    splitTangents: 0
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      walk:
+        firstFrame: 1
+        lastFrame: 40
+        loop: 1
+        wrapMode: 2
+  nodeInfo:
+    Bone24:
+    - 100000
+    - 400000
+    leftFootBone:
+    - 100002
+    - 400002
+    leftLegDownBone:
+    - 100004
+    - 400004
+    leftLegUpBone:
+    - 100006
+    - 400006
+    Bone20:
+    - 100008
+    - 400008
+    rightLegUp:
+    - 100010
+    - 400010
+    - 3300000
+    - 2300000
+    rightLegDown:
+    - 100012
+    - 400012
+    - 3300002
+    - 2300002
+    rightFoot:
+    - 100014
+    - 400014
+    - 3300004
+    - 2300004
+    Bone19:
+    - 100016
+    - 400016
+    rightFootBone:
+    - 100018
+    - 400018
+    rightLegUpBone:
+    - 100020
+    - 400020
+    Bone15:
+    - 100022
+    - 400022
+    leftHandUp:
+    - 100024
+    - 400024
+    - 3300006
+    - 2300006
+    leftHandDown:
+    - 100026
+    - 400026
+    - 3300008
+    - 2300008
+    leftHand:
+    - 100028
+    - 400028
+    - 3300010
+    - 2300010
+    Bone14:
+    - 100030
+    - 400030
+    leftHandBone:
+    - 100032
+    - 400032
+    leftHandUpBone:
+    - 100034
+    - 400034
+    Bone10:
+    - 100036
+    - 400036
+    rightHandUp:
+    - 100038
+    - 400038
+    - 3300012
+    - 2300012
+    rightHandDown:
+    - 100040
+    - 400040
+    - 3300014
+    - 2300014
+    rightHand:
+    - 100042
+    - 400042
+    - 3300016
+    - 2300016
+    Bone09:
+    - 100044
+    - 400044
+    rightHandBone:
+    - 100046
+    - 400046
+    rightHandUpBone:
+    - 100048
+    - 400048
+    Bone05:
+    - 100050
+    - 400050
+    head:
+    - 100052
+    - 400052
+    - 3300018
+    - 2300018
+    headBone:
+    - 100054
+    - 400054
+    Bone03:
+    - 100056
+    - 400056
+    bodyBone:
+    - 100058
+    - 400058
+    RootBone:
+    - 100060
+    - 400060
+    //RootNode:
+    - 100062
+    - 400062
+    - 11100000
+    IK Chain04:
+    - 100064
+    - 400064
+    IK Chain03:
+    - 100066
+    - 400066
+    IK Chain02:
+    - 100068
+    - 400068
+    IK Chain01:
+    - 100070
+    - 400070
+    body:
+    - 100072
+    - 400072
+    - 3300020
+    - 2300020
+    leftLegUp:
+    - 100074
+    - 400074
+    - 3300022
+    - 2300022
+    leftLegDown:
+    - 100076
+    - 400076
+    - 3300024
+    - 2300024
+    leftFoot:
+    - 100078
+    - 400078
+    - 3300026
+    - 2300026
+    rightLegDownBone:
+    - 100080
+    - 400080
+    leftHandDownBone:
+    - 100082
+    - 400082
+    rightHandDownBone:
+    - 100084
+    - 400084
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: head
+    4300002: rightHand
+    4300004: rightHandDown
+    4300006: rightHandUp
+    4300008: leftHand
+    4300010: leftHandDown
+    4300012: leftHandUp
+    4300014: rightFoot
+    4300016: rightLegDown
+    4300018: rightLegUp
+    4300020: leftFoot
+    4300022: leftLegDown
+    4300024: leftLegUp
+    4300026: body
+    7400000: Take 001 //// termite2
+    7400002: walk //// termite2
