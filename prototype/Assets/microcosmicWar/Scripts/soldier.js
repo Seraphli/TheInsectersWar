@@ -4,12 +4,13 @@ var userControl=false;
 var gravity = 10.0;
 var jumpSpeed = 8.0;
 
-var actionCommand:ActionCommand;
+var actionCommand:UnitActionCommand;
 
 var clearCommandEveryFrame=true;
 
 var emitter:Emitter;
 
+//在播放射击动画时,会执行的动作
 var actionImpDuringAnimation=AnimationImpInTime();
 
 protected var turnObjectTransform:Transform;
@@ -22,11 +23,16 @@ protected var characterController:CharacterController;
 private var moveV = Vector3.zero;
 private var grounded : boolean = false;
 
-class ActionCommand
+//角色的朝向
+protected var face = -1;
+
+class UnitActionCommand
 {
 	//None,
-	var MoveLeft=false;
-	var MoveRight=false;
+	
+	var FaceLeft=false;
+	var FaceRight=false;
+	var GoForward=false;
 	var Fire=false;
 	var Jump=false;
 	
@@ -36,6 +42,9 @@ class ActionCommand
 		MoveRight=false;
 		Fire=false;
 		Jump=false;
+		FaceLeft=false;
+		FaceRight=false;
+		GoForward=false;
 	}
 }
 
@@ -56,6 +65,15 @@ function Start()
 	
 	actionImpDuringAnimation.ImpFunction=EmitBullet;
 	mZZSprite.setListener("fire",actionImpDuringAnimation);
+	
+	emitter.setBulletLayer( getBulletLayer() );
+	UpdateFaceShow();
+}
+
+function getBulletLayer()
+{
+	//子弹所在层名字为:种族名字+Bullet
+	return LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" );
 }
 
 function EmitBullet()
@@ -65,12 +83,34 @@ function EmitBullet()
 
 function GetActionCommandFromInput()
 {
-	var lActionCommand=ActionCommand();
-	lActionCommand.MoveLeft=Input.GetButton ("left");
-	lActionCommand.MoveRight=Input.GetButton ("right");
+	var lActionCommand=UnitActionCommand();
+	//lActionCommand.MoveLeft=Input.GetButton ("left");
+	if(Input.GetButton ("left"))
+	{
+		lActionCommand.FaceLeft=true;
+		lActionCommand.GoForward=true;
+	}
+	//lActionCommand.MoveRight=Input.GetButton ("right");
+	if(Input.GetButton ("right"))
+	{
+		lActionCommand.FaceRight=true;
+		lActionCommand.GoForward=true;
+	}
 	lActionCommand.Fire=Input.GetButton ("fire");
 	lActionCommand.Jump=Input.GetButton ("jump");
 	return lActionCommand;
+}
+
+function UpdateFaceShow()
+{
+	
+	//Xscale=|reverseObjectTransform.localScale.x|,省去判断正负
+	reverseObjectTransform.localScale.x=face*Xscale;
+	//moveV.x=lMove;
+	if(face==1)
+		turnObjectTransform.rotation=Quaternion(0,0,0,1);
+	else
+		turnObjectTransform.rotation=Quaternion(0,1,0,0);
 }
 
 function FixedUpdate() 
@@ -80,38 +120,46 @@ function FixedUpdate()
 	if(userControl)
 		actionCommand=GetActionCommandFromInput();
 
+
+		//设置角色朝向
+	//{
+		var lMove = 0;
+		if(actionCommand.FaceLeft)
+		{
+			lMove+=-1;
+		}
+		if(actionCommand.FaceRight)
+		{
+			lMove+=1;
+		}
+		
+		if(lMove!=0 && lMove!=face )
+		{
+			face=lMove;
+			UpdateFaceShow();
+		}
+		
+	//}
+	
+		//设置动画 动作
 	if(actionCommand.Fire)
 	{
 		mZZSprite.playAnimation("fire");
 	}
 	else
 	{
-		var lMove = 0;
-		if(actionCommand.MoveLeft)
-		{
-			lMove+=-1;
-		}
-		if(actionCommand.MoveRight)
-		{
-			lMove+=1;
-		}
-		
-		if(lMove!=0)
+		if(actionCommand.GoForward)
 		{
 			mZZSprite.playAnimation("run");
-			reverseObjectTransform.localScale.x=lMove*Xscale;
-			moveV.x=lMove;
-			if(lMove==1)
-				turnObjectTransform.rotation=Quaternion(0,0,0,1);
-			else
-				turnObjectTransform.rotation=Quaternion(0,1,0,0);
-			//characterController.Move(Vector3(lMove,0,0)*runSpeed * Time.deltaTime);
+			moveV.x=face;
 		}
 		else
 		{
 			mZZSprite.playAnimation("stand");
 		}
+		
 	}
+	
 	if (characterController.isGrounded && actionCommand.Jump)
 	{
 		moveV.y = jumpSpeed;
@@ -124,4 +172,9 @@ function FixedUpdate()
 	grounded = (flags & CollisionFlags.CollidedBelow) != 0;
 	if(userControl || clearCommandEveryFrame)
 		actionCommand.clear();
+}
+
+function setCommand(pActionCommand:UnitActionCommand)
+{
+	actionCommand=pActionCommand;
 }
