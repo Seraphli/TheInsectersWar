@@ -26,6 +26,11 @@ private var grounded : boolean = false;
 //½ÇÉ«µÄ³¯Ïò
 protected var face = -1;
 
+function getFaceDirection()
+{
+	return face;
+}
+
 class UnitActionCommand
 {
 	//None,

@@ -1,6 +1,6 @@
 
 var bulletPrefab:GameObject;
-var bulletSpeed=3;
+var bulletSpeed=3.0;
 
 var bulletLayer=0;
 
