@@ -126,4 +126,8 @@ function Awake () {
 	initialize();
 	IgnoreCollisionBetween(layers.pismire,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.bee,layers.beeBullet);
+	
+	
+	IgnoreCollisionBetween(layers.bee,layers.bee);
+	IgnoreCollisionBetween(layers.pismire,layers.pismire);
 }

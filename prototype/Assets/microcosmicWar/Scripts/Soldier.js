@@ -165,7 +165,8 @@ function FixedUpdate()
 		
 	}
 	
-	if (characterController.isGrounded && actionCommand.Jump)
+	//if (characterController.isGrounded && actionCommand.Jump)
+	if (grounded && actionCommand.Jump)
 	{
 		moveV.y = jumpSpeed;
 		//controller.animation
