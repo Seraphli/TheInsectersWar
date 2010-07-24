@@ -21,7 +21,7 @@ function injure(value:float)
 	bloodValue-=value;
 	
 	if(bloodValue<=0)
-		Destroy (gameObject);
+		zzCreatorUtility.Destroy (gameObject);
 		
 	bloodValueChangeCallback();
 }

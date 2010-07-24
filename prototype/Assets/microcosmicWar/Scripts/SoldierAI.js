@@ -99,14 +99,17 @@ function calculate()
 
 function Update ()
 {
-	timePos+=Time.deltaTime;
-	//var lActionCommand=UnitActionCommand();
-	if(timePos>timeToWait)
+	if(zzCreatorUtility.isHost())
 	{
-		//lActionCommand=moveToFinalAim();
-		calculate();
-		timePos=0.0;
+		timePos+=Time.deltaTime;
+		//var lActionCommand=UnitActionCommand();
+		if(timePos>timeToWait)
+		{
+			//lActionCommand=moveToFinalAim();
+			calculate();
+			timePos=0.0;
+		}
+		//soldier.setCommand(lActionCommand);
+		soldier.setCommand(getCommand());
 	}
-	//soldier.setCommand(lActionCommand);
-	soldier.setCommand(getCommand());
 }

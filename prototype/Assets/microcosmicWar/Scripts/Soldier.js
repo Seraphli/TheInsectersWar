@@ -55,6 +55,10 @@ class UnitActionCommand
 
 function Start()
 {
+	//¿ØÖÆÈ¨
+	//userControl=userControl&&zzCreatorUtility.isMine(networkView);
+	userControl=userControl&&zzCreatorUtility.isHost();
+
 	mZZSprite = GetComponentInChildren(ZZSprite);
 	characterController = GetComponentInChildren(CharacterController);
 	emitter = GetComponentInChildren(Emitter);
@@ -176,11 +180,16 @@ function FixedUpdate()
 	// Move the controller
 	var flags = characterController.Move(Vector3(moveV.x * runSpeed,moveV.y,0)* Time.deltaTime);
 	grounded = (flags & CollisionFlags.CollidedBelow) != 0;
-	if(userControl || clearCommandEveryFrame)
-		actionCommand.clear();
+	//if(userControl || clearCommandEveryFrame)
+	//	actionCommand.clear();
 }
 
 function setCommand(pActionCommand:UnitActionCommand)
 {
 	actionCommand=pActionCommand;
+}
+
+function getCommand()
+{
+	return actionCommand;
 }

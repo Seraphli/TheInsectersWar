@@ -20,13 +20,17 @@ function Start()
 }
 
 function Update () {
-	timePos+=Time.deltaTime;
-	if(timePos>produceInterval)
+	if(zzCreatorUtility.isHost())
 	{
-		var lClone = Network.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
-		timePos=0.0;
-		lClone.GetComponent(SoldierAI).SetFinalAim(finalAim);
-		//lClone.GetComponent(SoldierAI).SetSoldier(lClone.GetComponent(Soldier));
-		lClone.GetComponent(SoldierAI).SetAdversaryLayerValue(adversaryLayerValue);
+		timePos+=Time.deltaTime;
+		if(timePos>produceInterval)
+		{
+			//var lClone = Network.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
+			var lClone = zzCreatorUtility.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
+			timePos=0.0;
+			lClone.GetComponent(SoldierAI).SetFinalAim(finalAim);
+			//lClone.GetComponent(SoldierAI).SetSoldier(lClone.GetComponent(Soldier));
+			lClone.GetComponent(SoldierAI).SetAdversaryLayerValue(adversaryLayerValue);
+		}
 	}
 }

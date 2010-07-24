@@ -10,11 +10,14 @@ function Update ()
 
 function EmitBullet()
 {
-	var clone : GameObject;
-	clone = Instantiate(bulletPrefab, transform.position, transform.rotation);
-	clone.layer=bulletLayer;
-	clone.GetComponentInChildren(Rigidbody).velocity=transform.right*bulletSpeed;
-	//clone.velocity=transform.forward;
+	if(zzCreatorUtility.isHost())
+	{
+		var clone : GameObject;
+		clone = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, transform.rotation,0);
+		clone.layer=bulletLayer;
+		clone.GetComponentInChildren(Rigidbody).velocity=transform.right*bulletSpeed;
+		//clone.velocity=transform.forward;
+	}
 }
 
 function setBulletLayer(pBulletLayer:int)

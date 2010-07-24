@@ -5,13 +5,18 @@ var harmVale=1.0;
 function Start()
 {
 	collisionLayer.addCollider(gameObject);
+	if(!zzCreatorUtility.isHost())
+		Destroy(this);
 }
 
 function Update()
 {
-	aliveTime-= Time.deltaTime;
-	if(aliveTime<0)
-		Destroy (gameObject);
+	//if(zzCreatorUtility.isHost())
+	//{
+		aliveTime-= Time.deltaTime;
+		if(aliveTime<0)
+			zzCreatorUtility.Destroy (gameObject);
+	//}
 }
 
 function OnCollisionEnter(collision : Collision)
@@ -23,5 +28,7 @@ function OnCollisionEnter(collision : Collision)
 	var lLife=lOwner.gameObject.GetComponentInChildren(Life);
 	if(lLife)
 		lLife.injure(harmVale);
-	Destroy(gameObject);
+		
+	//if(zzCreatorUtility.isHost())
+		zzCreatorUtility.Destroy(gameObject);
 }
