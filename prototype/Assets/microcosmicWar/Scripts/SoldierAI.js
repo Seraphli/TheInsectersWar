@@ -19,6 +19,12 @@ protected var adversaryLayerValue=-1;
 
 function Start()
 {
+	//if(!zzCreatorUtility.isHost())
+	//{
+	//	Destroy(this);
+	//	timeToWait=100.0;
+	//	return;
+	//}
 	timeToWait=1.0/frequencyOfImplement;
 	timePos=timeToWait+0.1;
 	if(finalAim)
@@ -99,8 +105,8 @@ function calculate()
 
 function Update ()
 {
-	if(zzCreatorUtility.isHost())
-	{
+	//if(zzCreatorUtility.isHost())
+	//{
 		timePos+=Time.deltaTime;
 		//var lActionCommand=UnitActionCommand();
 		if(timePos>timeToWait)
@@ -111,5 +117,5 @@ function Update ()
 		}
 		//soldier.setCommand(lActionCommand);
 		soldier.setCommand(getCommand());
-	}
+	//}
 }

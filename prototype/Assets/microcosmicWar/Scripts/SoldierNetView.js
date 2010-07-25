@@ -2,13 +2,18 @@
 var soldier:Soldier;
 //var transform;
 
-function Start()
+function Awake()
 {
 	//soldier=gameObject.GetComponent(soldier);
 	if(!soldier)
 		soldier=gameObject.GetComponentInChildren(Soldier);
-	if(!soldier)
-		Debug.LogError(gameObject.name);
+	
+	if(!zzCreatorUtility.isHost())
+	{
+		Destroy(soldier.GetComponentInChildren(SoldierAI));
+	}
+	//if(!soldier)
+	//	Debug.LogError(gameObject.name);
 }
 
 function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
@@ -40,8 +45,11 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	{
 		transform.position=pos;
 		transform.rotation=rot;
-	if(!soldier)
-		Debug.LogError(gameObject.name);
+	//if(!soldier)
+	//{
+	//	Debug.LogError(gameObject.name);
+		//print(isStar);
+	//	}
 		soldier.setCommand(lActionCommand);
 		
 		
