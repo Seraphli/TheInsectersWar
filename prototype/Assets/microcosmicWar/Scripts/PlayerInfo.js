@@ -7,6 +7,17 @@ enum Race
 	eNone,
 };
 
+static function eRaceToString(race:Race)
+{
+	switch(race)
+	{
+		case Race.ePismire: return "pismire";
+		case Race.eBee: return "bee";
+		//case Race.ePismire: return "pismire";
+	}
+	return ;
+}
+
 var	race:Race = Race.eNone;
 
 var 	playerName="player";
@@ -31,6 +42,12 @@ function getRace():Race
 	//return 1;
 }
 
+function getRaceName()
+{
+	return race;
+	//return 1;
+}
+
 function setPlayerName(pName:String)
 {
 	playerName=pName;
@@ -38,7 +55,7 @@ function setPlayerName(pName:String)
 
 function getPlayerName()
 {
-	return playerName;
+	return eRaceToString(getRaceName());
 }
 
 //function Update () {

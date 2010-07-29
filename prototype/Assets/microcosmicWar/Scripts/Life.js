@@ -12,6 +12,11 @@ function Start()
 		lBloodBar.setLife(this);
 }
 
+function setDieCallback( call )
+{
+	dieCallback=call;
+}
+
 function setBloodValueChangeCallback(call)
 {
 	bloodValueChangeCallback=call;

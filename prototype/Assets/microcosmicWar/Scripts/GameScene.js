@@ -1,3 +1,6 @@
+//单实例类,一个场景只许有一个
+
+static protected var singletonInstance:GameScene;
 
 var lastSceneInfoName="_info";
 //var sceneDataName = "_sceneData";
@@ -13,10 +16,12 @@ var playerSpawn:Transform;
 var playerPrefab:GameObject;
 var adversaryLayerValue:int;
 
+static var sSceneData:GameObject;
 //#pragma strict
 
 // Use this for initialization
 function Awake () {
+	singletonInstance = this;
 	//print("Awake");
 	//if(Network.peerType==NetworkPeerType.Disconnected || Network.peerType==NetworkPeerType.Connecting )
 	//	Network.InitializeServer(32, 25000);
@@ -31,6 +36,13 @@ function Awake () {
 	
 	Network.isMessageQueueRunning = true;
 	zzCreatorUtility.resetCreator();
+	
+	sSceneData=sceneData;
+}
+
+static function getSingleton()
+{
+	return singletonInstance;
 }
 
 function CreatePlayer()
@@ -72,4 +84,57 @@ function Start()
 	//adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
 	
 	CreatePlayer();
+}
+
+protected var needOnGUI=false;
+protected var buttonInfo="";
+
+function OnGUI ()
+{
+	if(needOnGUI)
+	{
+		
+		GUILayout.BeginArea(Rect(Screen.width/2,Screen.height/2,200,Screen.height/2));
+		if(GUILayout.Button(buttonInfo))
+		{
+			Time.timeScale=1;
+			Application.LoadLevel("LoaderMenu");
+		}
+		GUILayout.EndArea();
+	}
+}
+
+function  endGameScene(pInfo:String)
+{
+	//假如已经停止了,则不往下执行
+	if(needOnGUI)
+		return;
+	Time.timeScale=0;
+	needOnGUI=true;
+	buttonInfo=pInfo;
+}
+
+function OnDisconnectedFromServer(info : NetworkDisconnection) 
+{
+	endGameScene( "Network Player Disconnection" );
+}
+
+function gameResult(pWinerRaceName:String)
+{
+	ImpGameResult(pWinerRaceName);
+	networkView.RPC( "ImpGameResult", RPCMode.Others, pWinerRaceName);
+}
+
+@script RequireComponent(NetworkView)
+
+
+@RPC
+function ImpGameResult(pWinerRaceName:String)
+{
+	var playerInfo:PlayerInfo = sSceneData.GetComponent(PlayerInfo);
+	
+	if(pWinerRaceName==playerInfo.getPlayerName())
+		endGameScene( "you win" );
+	else
+		endGameScene(  "you lose" ) ;
 }

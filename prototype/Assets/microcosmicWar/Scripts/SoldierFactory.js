@@ -19,6 +19,9 @@ function Start()
 	
 	adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
 	
+	var lLife:Life=gameObject.GetComponent(Life);
+	lLife.setDieCallback(dieCall);
+	
 	if(!zzCreatorUtility.isHost())
 		Destroy(this);
 }
@@ -39,4 +42,9 @@ function Update () {
 			//lClone.GetComponent(SoldierAI).SetAdversaryLayerValue(adversaryLayerValue);
 		}
 	//}
+}
+
+function dieCall()
+{
+	GameScene.getSingleton().gameResult(adversaryName);
 }
