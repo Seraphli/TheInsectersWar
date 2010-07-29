@@ -55,7 +55,7 @@ class AnimationListener
 class AnimationImpInTime extends AnimationListener
 {
 	
-	var  ImpFunction;
+	var  ImpFunction=zzUtilities.nullFunction;
 	
 	var ImpTime=0.0;
 	
@@ -162,6 +162,7 @@ protected function CreateDataFromInfo(info:AnimationInfo)
 	return lOut;
 }
 
+//初始化,并指定默认动画
 protected function InitShow()
 {
 	
@@ -235,14 +236,15 @@ protected function updateShow()
 //	mesh.uv = UVs;
 //}
 
-protected function Start()
+function Start()
 {
+	//初始化,并使用默认动画
 	InitShow();
 	
 	//updateShow();
 }
 
-protected function Update ()  
+function Update ()  
 {
 	playTime += Time.deltaTime;
 	if(playTime>nowAnimationData.animationLength)
@@ -262,6 +264,7 @@ protected function Update ()
 
 function playAnimation(animationName:String)
 {
+	//print(animationName);
 	if(nowAnimationData.animationName==animationName)
 		return;
 	nowListener.endTheAnimationCallback();

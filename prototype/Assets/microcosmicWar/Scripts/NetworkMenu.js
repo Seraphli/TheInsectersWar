@@ -1,4 +1,11 @@
 
+//玩家信息
+var raceSelect=0;
+
+var savedDataName="_info";
+
+//网络联接
+
 var remoteIP = "127.0.0.1";
 var remotePort = 25000;
 //var listenPort = 25000;
@@ -9,50 +16,102 @@ var networkConnectionError :NetworkConnectionError ;
 var gameTypeName ="CZLUniqueGameType";
 var gameName ="czl game";
 
+var hostListRefreshTimeout = 10.0;
+var refreshTimePos=0.0;
+
 //var serverPort = 25002;
 //private var doneTesting = false;
 //private var probingPublicIP = false;
 //private var testMessage = "Undetermined NAT capabilities";
 function Start()
 {
-	//MasterServer.ClearHostList();
-	//MasterServer.RequestHostList(gameTypeName);
-//Network.useNat = true;
+	DontDestroyOnLoad( GameObject.Find(savedDataName) );
+	
+	MasterServer.ClearHostList();
+	MasterServer.RequestHostList(gameTypeName);
+	//Network.useNat = true;
+	Network.useNat = false;
 }
 function Update () 
 {
+	refreshTimePos+=Time.deltaTime;
+	if(refreshTimePos>hostListRefreshTimeout)
+	{
+		//MasterServer.ClearHostList();
+		MasterServer.RequestHostList(gameTypeName);
+		refreshTimePos=0;
+	}
+}
+
+
+protected function raceSelectToEnum(ID:int)
+{
+	if(ID==0)
+		return Race.ePismire;
+	if(ID==1)
+		return Race.eBee;
 }
 
 function OnFailedToConnect(error: NetworkConnectionError)
 {
 //Debug.Log("Could not connect to server: "+ error);
 	networkConnectionError = error;
+	Network.useNat = false;
 }
 
 function OnPlayerConnected (player : NetworkPlayer)
 {
 	print("OnPlayerConnected");
-	networkView.RPC( "LoadMyLevel", RPCMode.AllBuffered, "", 0);
+	var lServerRace:Race = raceSelectToEnum(raceSelect);
+	//networkView.RPC( "LoadMyLevel", RPCMode.AllBuffered, "", 0);
+	
+	var lIntRace:int = Race.ePismire;
+	//让联接的客户端选择相反的种族
+	if(lServerRace==Race.ePismire)
+	{
+		lIntRace = Race.eBee;
+	}
+	else
+	{
+		lIntRace = Race.ePismire;
+	}
+	networkView.RPC( "LoadMyLevel", RPCMode.Others, lIntRace);
+	LoadMyLevel(lServerRace);
 }
 
 @script RequireComponent(NetworkView)
 
+//@RPC
+//function setRace
+
 @RPC
-function LoadMyLevel (level : String, levelPrefix : int)
+function LoadMyLevel (race:int)
 {
+	//print("LoadMyLevel");
 	Network.isMessageQueueRunning = false;
+	
+	var playerInfo:PlayerInfo = GameObject.Find(savedDataName).GetComponentInChildren(PlayerInfo);
+	playerInfo.setRace(race);
+	
 	Application.LoadLevel("testScene");
 }
 
 function OnGUI ()
 {
 	GUILayout.Space(10);
+	GUILayout.Label("choose team");
+	GUILayout.Space(5);
+	raceSelect = GUILayout.SelectionGrid (raceSelect,["pismire","bee"],2);
 
+	GUILayout.Space(10);
 	GUILayout.BeginHorizontal();
 	GUILayout.Space(10);
+	
 	if (Network.peerType == NetworkPeerType.Disconnected)
 	{
 		GUILayout.BeginVertical();
+		
+		GUILayout.BeginHorizontal();
 		if (GUILayout.Button ("Connect"))
 		{
 
@@ -64,6 +123,12 @@ function OnGUI ()
 			networkConnectionError = Network.Connect(remoteIP, remotePort);
 			//print(networkConnectionError);
 		}
+		remoteIP = GUILayout.TextField(remoteIP, GUILayout.MinWidth(100));
+		GUILayout.EndHorizontal();
+		
+		GUILayout.Space(10);
+		
+		GUILayout.BeginHorizontal();
 		if (GUILayout.Button ("Start Server"))
 		{
 			//Network.useNat = useNAT;
@@ -72,18 +137,20 @@ function OnGUI ()
 			//Network.useNat = false;
 			Network.InitializeServer(32, remotePort);
 			
-			//MasterServer.RegisterHost(gameTypeName,
-			//	gameName, ""); 
+			MasterServer.RegisterHost(gameTypeName,
+				gameName, ""); 
 			
 			// Notify our objects that the level and the network is ready
 			//for (var go in FindObjectsOfType(GameObject))
 			//	go.SendMessage("OnNetworkLoadedLevel", SendMessageOptions.DontRequireReceiver);		
 		}
+		remotePort = parseInt(GUILayout.TextField(remotePort.ToString()));
+		GUILayout.EndHorizontal();
 		// Refresh hosts
 		GUILayout.Label(networkConnectionError.ToString());
 		GUILayout.Label(Network.peerType.ToString());
-		/*
-		if (GUILayout.Button ("Refresh available Servers") )
+		
+		if (GUILayout.Button ("Refresh available Servers manually") )
 		{
 			MasterServer.RequestHostList (gameTypeName);
 		}
@@ -100,12 +167,21 @@ function OnGUI ()
 			//print(element.ip);
 			//print(element.ip[0]);
 			GUILayout.Label(element.port.ToString());
+			
+				if (GUILayout.Button("Connect"))
+				{
+					// Enable NAT functionality based on what the hosts if configured to do
+					Network.useNat = element.useNat;
+					//if (Network.useNat)
+					//	print("Using Nat punchthrough to connect");
+					//else
+					//	print("Connecting directly to host");
+					Network.Connect(element.ip, element.port);			
+				}
 			GUILayout.Space(2);
 		}
-		*/
+		
 		GUILayout.EndVertical();
-		remoteIP = GUILayout.TextField(remoteIP, GUILayout.MinWidth(100));
-		remotePort = parseInt(GUILayout.TextField(remotePort.ToString()));
 	}
 	else
 	{

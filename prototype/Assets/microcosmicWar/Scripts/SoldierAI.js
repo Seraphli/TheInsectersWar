@@ -19,6 +19,7 @@ protected var adversaryLayerValue=-1;
 
 function Start()
 {
+	//客户端的AI 在 SoldierNetView 中去除
 	//if(!zzCreatorUtility.isHost())
 	//{
 	//	Destroy(this);
@@ -105,6 +106,7 @@ function calculate()
 
 function Update ()
 {
+	//print("AI Update");
 	//if(zzCreatorUtility.isHost())
 	//{
 		timePos+=Time.deltaTime;

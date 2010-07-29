@@ -1,3 +1,4 @@
+//#pragma strict
 
 var adversaryName="";
 
@@ -17,20 +18,25 @@ function Start()
 	collisionLayer.addCollider(gameObject);
 	
 	adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
+	
+	if(!zzCreatorUtility.isHost())
+		Destroy(this);
 }
 
 function Update () {
-	if(zzCreatorUtility.isHost())
-	{
+	//if(zzCreatorUtility.isHost())
+	//{
 		timePos+=Time.deltaTime;
 		if(timePos>produceInterval)
 		{
 			//var lClone = Network.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
 			var lClone = zzCreatorUtility.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
 			timePos=0.0;
-			lClone.GetComponent(SoldierAI).SetFinalAim(finalAim);
+			var soldierAI:SoldierAI = lClone.GetComponent(SoldierAI);
+			soldierAI.SetFinalAim(finalAim);
+			soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
 			//lClone.GetComponent(SoldierAI).SetSoldier(lClone.GetComponent(Soldier));
-			lClone.GetComponent(SoldierAI).SetAdversaryLayerValue(adversaryLayerValue);
+			//lClone.GetComponent(SoldierAI).SetAdversaryLayerValue(adversaryLayerValue);
 		}
-	}
+	//}
 }

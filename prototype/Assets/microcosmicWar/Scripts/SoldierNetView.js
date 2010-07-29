@@ -7,8 +7,12 @@ function Awake()
 	//soldier=gameObject.GetComponent(soldier);
 	if(!soldier)
 		soldier=gameObject.GetComponentInChildren(Soldier);
-	
-	if(!zzCreatorUtility.isHost())
+	/*
+	if( !zzCreatorUtility.isHost() )
+	{
+		Destroy(soldier.GetComponentInChildren(SoldierAI));
+	}*/
+	if( !zzCreatorUtility.isMine(gameObject.networkView ) )
 	{
 		Destroy(soldier.GetComponentInChildren(SoldierAI));
 	}
@@ -20,6 +24,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 {
 	var pos=Vector3();
 	var rot=Quaternion();
+	var lVelocity=Vector3();
 	var lActionCommand= UnitActionCommand();
 	
 	//---------------------------------------------------
@@ -27,6 +32,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	{
 		pos=transform.position;
 		rot=transform.rotation;
+		lVelocity = soldier.getVelocity();
 		lActionCommand= soldier.getCommand();
 		//var cc;
 	}
@@ -34,6 +40,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	//---------------------------------------------------
 	stream.Serialize(pos);
 	stream.Serialize(rot);
+	stream.Serialize(lVelocity);
 	stream.Serialize(lActionCommand.FaceLeft);
 	stream.Serialize(lActionCommand.FaceRight);
 	stream.Serialize(lActionCommand.GoForward);
@@ -50,6 +57,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	//	Debug.LogError(gameObject.name);
 		//print(isStar);
 	//	}
+		soldier.setVelocity(lVelocity);
 		soldier.setCommand(lActionCommand);
 		
 		

@@ -1,6 +1,7 @@
 
 var runSpeed=2.0;
 var userControl=false;
+//var controlByOther=false;
 var gravity = 10.0;
 var jumpSpeed = 8.0;
 
@@ -26,6 +27,16 @@ private var grounded : boolean = false;
 //角色的朝向
 protected var face = -1;
 
+function getVelocity()
+{
+	return moveV;
+}
+
+function setVelocity(pVelocity:Vector3)
+{
+	moveV=pVelocity;
+}
+
 function getFaceDirection()
 {
 	return face;
@@ -35,11 +46,11 @@ class UnitActionCommand
 {
 	//None,
 	
-	var FaceLeft=false;
-	var FaceRight=false;
-	var GoForward=false;
-	var Fire=false;
-	var Jump=false;
+	var FaceLeft=false;//朝向左
+	var FaceRight=false;//朝向右
+	var GoForward=false;//前进
+	var Fire=false;//开火
+	var Jump=false;//跳跃
 	
 	function clear()
 	{
@@ -57,7 +68,7 @@ function Start()
 {
 	//控制权
 	//userControl=userControl&&zzCreatorUtility.isMine(networkView);
-	userControl=userControl&&zzCreatorUtility.isHost();
+	//userControl=userControl&&zzCreatorUtility.isHost();
 
 	mZZSprite = GetComponentInChildren(ZZSprite);
 	characterController = GetComponentInChildren(CharacterController);
@@ -73,7 +84,15 @@ function Start()
 	reverseObjectTransform= transform.Find("reverse").transform;
 	
 	actionImpDuringAnimation.ImpFunction=EmitBullet;
-	mZZSprite.setListener("fire",actionImpDuringAnimation);
+	
+	//当为host 时,允许发射子弹
+	//emitter.EmitBullet 也有判断,可去除一处
+	if( zzCreatorUtility.isHost())
+	{
+		//print("userControl || zzCreatorUtility.isHost()");
+		actionImpDuringAnimation.ImpFunction=EmitBullet;
+		mZZSprite.setListener("fire",actionImpDuringAnimation);
+	}
 	
 	emitter.setBulletLayer( getBulletLayer() );
 	UpdateFaceShow();
@@ -87,6 +106,7 @@ function getBulletLayer()
 
 function EmitBullet()
 {
+	//print("EmitBullet");
 	emitter.EmitBullet();
 }
 
@@ -122,7 +142,8 @@ function UpdateFaceShow()
 		turnObjectTransform.rotation=Quaternion(0,1,0,0);
 }
 
-function FixedUpdate() 
+//更新动画
+function Update() 
 {	
 	moveV.x=0;
 	moveV.z=0;
@@ -168,6 +189,11 @@ function FixedUpdate()
 		}
 		
 	}
+}
+
+//更新characterController
+function FixedUpdate()
+{
 	
 	//if (characterController.isGrounded && actionCommand.Jump)
 	if (grounded && actionCommand.Jump)

@@ -127,6 +127,13 @@ function Awake () {
 	IgnoreCollisionBetween(layers.pismire,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.bee,layers.beeBullet);
 	
+	if(!zzCreatorUtility.isHost())
+	{
+		//客户端子弹都可穿透  :判断都放在服务器端 , 客户端就不用管子弹层了
+		IgnoreCollisionBetween(layers.pismire,layers.beeBullet);
+		IgnoreCollisionBetween(layers.bee,layers.pismireBullet);
+	}
+	
 	
 	IgnoreCollisionBetween(layers.bee,layers.bee);
 	IgnoreCollisionBetween(layers.pismire,layers.pismire);

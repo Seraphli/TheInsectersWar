@@ -96,7 +96,7 @@ static function isHost()
 
 static function isMine(networkView:NetworkView)
 {
-	zzGenericCreator.isMine(networkView);
+	return zzGenericCreator.isMine(networkView);
 }
 
 //function Update () {

@@ -3,6 +3,7 @@ var bloodValue = 5.0;
 var fullBloodValue = 5.0;
 
 var bloodValueChangeCallback=zzUtilities.nullFunction;
+var dieCallback=zzUtilities.nullFunction;
 
 function Start()
 {
@@ -21,7 +22,10 @@ function injure(value:float)
 	bloodValue-=value;
 	
 	if(bloodValue<=0)
+	{
+		dieCallback();
 		zzCreatorUtility.Destroy (gameObject);
+	}
 		
 	bloodValueChangeCallback();
 }
