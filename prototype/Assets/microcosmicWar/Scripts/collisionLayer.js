@@ -32,7 +32,7 @@ static function initialize()
 }
 
 //检测某层中的物体是否可用,否则消除
-static function checkAndClear(objectList:Array)
+protected static function checkAndClear(objectList:Array)
 {
 	//print("checkAndClear before"+objectList.length);
 	for( var a: int = objectList.length - 1; a >= 0; a-=1 )
@@ -50,7 +50,7 @@ static function checkAndClear(objectList:Array)
 	//print("checkAndClear end"+objectList.length);
 }
 
-static function checkAndClearStep(objectList:Array)
+protected static function checkAndClearStep(objectList:Array)
 {
 	//	print("checkAndClearStep");
 	nextStepToClear-=1;
@@ -65,6 +65,11 @@ static function checkAndClearStep(objectList:Array)
 static function IgnoreCollisionBetween(layer1Num:int, layer2Num:int)
 {
 	//mIgnoreList[1 << layer1Num & 1 << layer2Num] = true;
+	if(layer1Num==layer2Num)
+	{
+		mLayersIgnoreList[layer1Num].Add(layer1Num);
+		return;
+	}
 	mLayersIgnoreList[layer1Num].Add(layer2Num);
 	mLayersIgnoreList[layer2Num].Add(layer1Num);
 }
@@ -73,6 +78,7 @@ static function addCollider( gameObject:GameObject)
 {
 	if(gameObject.collider && gameObject.layer>7 )
 	{
+		//print("addCollider :"+gameObject.name);
 		var ignoreList:Array = mLayersIgnoreList[gameObject.layer];
 		for(var i:int in ignoreList )
 		{
@@ -97,7 +103,6 @@ static function addCollider( gameObject:GameObject)
 				}
 			}
 		}
-		//print("addCollider :"+gameObject.name);
 		//print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
 		checkAndClearStep(mLayersObjectList[gameObject.layer]);
 		//print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
@@ -126,6 +131,9 @@ function Awake () {
 	initialize();
 	IgnoreCollisionBetween(layers.pismire,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.bee,layers.beeBullet);
+	
+	IgnoreCollisionBetween(layers.pismireBullet,layers.pismireBullet);
+	IgnoreCollisionBetween(layers.beeBullet,layers.beeBullet);
 	
 	if(!zzCreatorUtility.isHost())
 	{

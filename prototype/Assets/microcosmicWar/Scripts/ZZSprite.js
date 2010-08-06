@@ -45,35 +45,21 @@ class AnimationData
 
 class AnimationListener
 {
-	virtual  function updateCallback(timePos:float){}
-	
-	virtual  function overEndCallback(){}
-	
-	virtual  function endTheAnimationCallback(){}
-}
-
-class AnimationImpInTime extends AnimationListener
-{
-	
-	var  ImpFunction=zzUtilities.nullFunction;
-	
-	var ImpTime=0.0;
-	
-	//此次循环中是否执行过
-	protected var IsImpInThisLoop=false;
-	
-	virtual  function updateCallback(time:float)
+	virtual  function updateCallback(timePos:float)
 	{
-		if(!IsImpInThisLoop && time>ImpTime)
-		{
-			ImpFunction();
-			IsImpInThisLoop=true;
-		}
+		//Debug.Log("AnimationListener");
 	}
 	
-	virtual  function overEndCallback(){IsImpInThisLoop=false;}
+	virtual function beginTheAnimationCallback(){}
 	
-	virtual  function endTheAnimationCallback(){IsImpInThisLoop=false;}
+	//动画过尾,在updateCallback前执行
+	virtual  function overEndBeforeUpdateCallback(){}
+	
+	//动画过尾,在在updateCallback后执行
+	virtual  function overEndAfterUpdateCallback(){}
+	
+	//动画结束(比如专为其他动画时)
+	virtual  function endTheAnimationCallback(){}
 }
 
 var defaultAnimation="";
@@ -247,8 +233,10 @@ function Start()
 function Update ()  
 {
 	playTime += Time.deltaTime;
-	if(playTime>nowAnimationData.animationLength)
-		nowListener.overEndCallback();
+	var lOverEnd = playTime>nowAnimationData.animationLength;
+	if(lOverEnd)
+		nowListener.overEndBeforeUpdateCallback();
+		
 	playTime = playTime % nowAnimationData.animationLength;
 	//var lPicNum:int = Mathf.FloorToInt(playTime/nowAnimationData.timeInOnePic);
 	var lPicNum:int = Mathf.FloorToInt(playTime/( nowAnimationData.animationLength / nowAnimationData.numOfPic ) );
@@ -259,6 +247,9 @@ function Update ()
 		updateShow();
 	}
 	nowListener.updateCallback(playTime);
+	
+	if(lOverEnd)
+		nowListener.overEndAfterUpdateCallback();
 	//var lTimePos = 
 }
 
@@ -272,6 +263,7 @@ function playAnimation(animationName:String)
 	nowListener= animationListeners[animationName];
 	if(!nowListener)
 		nowListener=AnimationListener();
+	nowListener.beginTheAnimationCallback();
 	meshRenderer.material=nowAnimationData.material;
 	playTime=0;
 	updateShow();

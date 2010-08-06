@@ -12,7 +12,7 @@ var clearCommandEveryFrame=true;
 var emitter:Emitter;
 
 //在播放射击动画时,会执行的动作
-var actionImpDuringAnimation=AnimationImpInTime();
+var actionImpDuringAnimation=AnimationImpInTimeList();
 
 protected var turnObjectTransform:Transform;
 protected var reverseObjectTransform:Transform;
@@ -83,14 +83,20 @@ function Start()
 	turnObjectTransform= transform.Find("turn").transform;
 	reverseObjectTransform= transform.Find("reverse").transform;
 	
-	actionImpDuringAnimation.ImpFunction=EmitBullet;
+	//actionImpDuringAnimation.ImpFunction=EmitBullet;
 	
 	//当为host 时,允许发射子弹
 	//emitter.EmitBullet 也有判断,可去除一处
 	if( zzCreatorUtility.isHost())
 	{
 		//print("userControl || zzCreatorUtility.isHost()");
-		actionImpDuringAnimation.ImpFunction=EmitBullet;
+		print(actionImpDuringAnimation.getImpInfoList().length);
+		for(var e:AnimationImpTimeListInfo in actionImpDuringAnimation.getImpInfoList())
+		{
+			e.ImpFunction=EmitBullet;
+			print(e);
+		}
+		//actionImpDuringAnimation.ImpFunction=EmitBullet;
 		mZZSprite.setListener("fire",actionImpDuringAnimation);
 	}
 	

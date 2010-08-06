@@ -8,7 +8,7 @@ function Update ()
 {
 }
 
-function EmitBullet()
+virtual function EmitBullet()
 {
 	if(zzCreatorUtility.isHost())
 	{
@@ -20,7 +20,8 @@ function EmitBullet()
 	}
 }
 
-function setBulletLayer(pBulletLayer:int)
+virtual function setBulletLayer(pBulletLayer:int)
 {
+	//print("Emit.setBulletLayer");
 	bulletLayer= pBulletLayer;
 }

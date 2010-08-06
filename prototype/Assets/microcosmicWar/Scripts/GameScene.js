@@ -16,6 +16,8 @@ var playerSpawn:Transform;
 var playerPrefab:GameObject;
 var adversaryLayerValue:int;
 
+var needCreatePlayer=true;
+
 static var sSceneData:GameObject;
 //#pragma strict
 
@@ -82,8 +84,8 @@ function Start()
 	}
 	
 	//adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
-	
-	CreatePlayer();
+	if(needCreatePlayer)
+		CreatePlayer();
 }
 
 protected var needOnGUI=false;
@@ -122,7 +124,10 @@ function OnDisconnectedFromServer(info : NetworkDisconnection)
 function gameResult(pWinerRaceName:String)
 {
 	ImpGameResult(pWinerRaceName);
-	networkView.RPC( "ImpGameResult", RPCMode.Others, pWinerRaceName);
+	if(Network.peerType ==NetworkPeerType.Disconnected)
+		ImpGameResult(pWinerRaceName);
+	else
+		networkView.RPC( "ImpGameResult", RPCMode.Others, pWinerRaceName);
 }
 
 @script RequireComponent(NetworkView)
