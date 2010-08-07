@@ -11,8 +11,12 @@ var clearCommandEveryFrame=true;
 
 var emitter:Emitter;
 
+var fireTimeList:float[];
+
+var fireSound:AudioSource;
+
 //在播放射击动画时,会执行的动作
-var actionImpDuringAnimation=AnimationImpInTimeList();
+protected var actionImpDuringAnimation=AnimationImpInTimeList();
 
 protected var turnObjectTransform:Transform;
 protected var reverseObjectTransform:Transform;
@@ -90,12 +94,25 @@ function Start()
 	if( zzCreatorUtility.isHost())
 	{
 		//print("userControl || zzCreatorUtility.isHost()");
-		print(actionImpDuringAnimation.getImpInfoList().length);
-		for(var e:AnimationImpTimeListInfo in actionImpDuringAnimation.getImpInfoList())
+		//for(var e:AnimationImpTimeListInfo in actionImpDuringAnimation.getImpInfoList())
+		//{
+		//	e.ImpFunction=EmitBullet;
+		//}
+		var infos=Array();
+		for(var iTime:float in fireTimeList)
 		{
-			e.ImpFunction=EmitBullet;
-			print(e);
+			var lEmitBulletImp=AnimationImpTimeListInfo();
+			lEmitBulletImp.ImpTime=iTime;
+			lEmitBulletImp.ImpFunction=EmitBullet;
+			infos.Add(lEmitBulletImp);
+			
+			var lEmitBulletSoundImp=AnimationImpTimeListInfo();
+			lEmitBulletSoundImp.ImpTime=iTime;
+			lEmitBulletSoundImp.ImpFunction=EmitBulletSound;
+			infos.Add(lEmitBulletSoundImp);
 		}
+		var lTemp:AnimationImpTimeListInfo[] = infos.ToBuiltin( AnimationImpTimeListInfo );
+		actionImpDuringAnimation.setImpInfoList(lTemp);
 		//actionImpDuringAnimation.ImpFunction=EmitBullet;
 		mZZSprite.setListener("fire",actionImpDuringAnimation);
 	}
@@ -114,6 +131,12 @@ function EmitBullet()
 {
 	//print("EmitBullet");
 	emitter.EmitBullet();
+}
+
+function EmitBulletSound()
+{
+	//print("EmitBullet");
+	fireSound.Play();
 }
 
 function GetActionCommandFromInput()

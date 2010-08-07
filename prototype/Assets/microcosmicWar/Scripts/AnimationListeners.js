@@ -38,7 +38,7 @@ class AnimationImpInTimeList extends AnimationListener
 	//时间要从小到大排列
 	var animationImpTimeListInfo:AnimationImpTimeListInfo[];
 	
-	var playNum=0;
+	protected var playNum=0;
 	
 	virtual function beginTheAnimationCallback()
 	{
@@ -70,5 +70,10 @@ class AnimationImpInTimeList extends AnimationListener
 	function getImpInfoList()
 	{
 		return animationImpTimeListInfo;
+	}
+	
+	function setImpInfoList(pInfo:AnimationImpTimeListInfo[])
+	{
+		animationImpTimeListInfo=pInfo;
 	}
 }
