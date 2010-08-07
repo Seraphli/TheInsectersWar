@@ -1,4 +1,4 @@
-
+/*
 class AnimationImpInTime extends AnimationListener
 {
 	
@@ -23,11 +23,24 @@ class AnimationImpInTime extends AnimationListener
 	
 	virtual  function endTheAnimationCallback(){IsImpInThisLoop=false;}
 }
-
+*/
 //-----------------------------------------------------------------------------------------------
 
 class AnimationImpTimeListInfo
 {
+	function AnimationImpTimeListInfo(pTime:float,func)
+	{
+		ImpFunction=func;
+		ImpTime=pTime;
+	}
+	
+	function AnimationImpTimeListInfo()
+	{
+		ImpFunction=zzUtilities.nullFunction;
+	
+		ImpTime=0.0;
+	}
+	
 	var  ImpFunction=zzUtilities.nullFunction;
 	
 	var ImpTime=0.0;
@@ -37,6 +50,8 @@ class AnimationImpInTimeList extends AnimationListener
 {
 	//时间要从小到大排列
 	var animationImpTimeListInfo:AnimationImpTimeListInfo[];
+	
+	protected var infoArray=Array();
 	
 	protected var playNum=0;
 	
@@ -55,17 +70,39 @@ class AnimationImpInTimeList extends AnimationListener
 		}
 	}
 	
-	//virtual  function overEndCallback(){IsImpInThisLoop=false;}
-	
-	virtual  function endTheAnimationCallback()
-	{
-		playNum=animationImpTimeListInfo.length;
-	}
-	
-	virtual  function overEndAfterUpdateCallback()
+	virtual function overBeginCall()
 	{
 		playNum=0;
 	}
+	
+	function addImp(pTime:float,func)
+	{
+		var imp=AnimationImpTimeListInfo();
+		imp.ImpTime=pTime;
+		imp.ImpFunction=func;
+		infoArray.Add(imp);
+	}
+	
+	function endAddImp()
+	{
+		var lTemp:AnimationImpTimeListInfo[] = infoArray.ToBuiltin( AnimationImpTimeListInfo );
+		setImpInfoList(lTemp);
+		infoArray=Array();
+	}
+	
+	
+	//virtual  function overEndCallback(){IsImpInThisLoop=false;}
+	
+	//考虑到执行在非循环动画中,超出动画范围处,所有将下面删除
+	//virtual  function endTheAnimationCallback()
+	//{
+	//	playNum=animationImpTimeListInfo.length;
+	//}
+	
+	//virtual  function overEndAfterUpdateCallback()
+	//{
+	//	playNum=0;
+	//}
 	
 	function getImpInfoList()
 	{

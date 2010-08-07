@@ -12,6 +12,8 @@ class AnimationInfo
 	//动画中单幅图的像素信息
 	var pixelVerticalNum:int;
 	var pixelHorizonNum:int;
+	
+	var loop=true;
 }
 
 class AnimationData
@@ -41,6 +43,7 @@ class AnimationData
 	//动画中单幅图的像素信息
 	var pixelVerticalNum:int;
 	var pixelHorizonNum:int;
+	var loop=true;
 }
 
 class AnimationListener
@@ -53,13 +56,18 @@ class AnimationListener
 	virtual function beginTheAnimationCallback(){}
 	
 	//动画过尾,在updateCallback前执行
-	virtual  function overEndBeforeUpdateCallback(){}
+	//virtual  function overEndBeforeUpdateCallback(){}
 	
 	//动画过尾,在在updateCallback后执行
-	virtual  function overEndAfterUpdateCallback(){}
+	//virtual  function overEndAfterUpdateCallback(){}
 	
 	//动画结束(比如专为其他动画时)
-	virtual  function endTheAnimationCallback(){}
+	//virtual  function endTheAnimationCallback(){}
+	
+	//动画越过开头,用于循环动画
+	virtual function overBeginCall()
+	{
+	}
 }
 
 var defaultAnimation="";
@@ -68,6 +76,7 @@ var defaultAnimation="";
 var defaultPixelVerticalNum:int=256;
 var defaultPixelHorizonNum:int=256;
 
+//精灵在场景中的大小
 var spriteWidth=1.0;
 var spriteHeight=1.0;
 
@@ -133,6 +142,8 @@ protected function CreateDataFromInfo(info:AnimationInfo)
 	//开始的帧数,结束的帧数,数从0开始.将会播放从beginPicNum到endPicNum,共endPicNum-beginPicNum+1幅图
 	lOut.beginPicNum=info.beginPicNum;
 	lOut.endPicNum=info.endPicNum;
+	
+	lOut.loop=info.loop;
 	
 	/////////////////////////////////////////////////////////
 	
@@ -233,14 +244,23 @@ function Start()
 function Update ()  
 {
 	playTime += Time.deltaTime;
-	var lOverEnd = playTime>nowAnimationData.animationLength;
-	if(lOverEnd)
-		nowListener.overEndBeforeUpdateCallback();
+	//var lOverEnd = playTime>nowAnimationData.animationLength;
+	//if(lOverEnd)
+	//	nowListener.overEndBeforeUpdateCallback();
 		
-	playTime = playTime % nowAnimationData.animationLength;
+	if(nowAnimationData.loop && playTime>nowAnimationData.animationLength)
+	{
+		nowListener.overBeginCall();
+		playTime = playTime % nowAnimationData.animationLength;
+	}
 	//var lPicNum:int = Mathf.FloorToInt(playTime/nowAnimationData.timeInOnePic);
 	var lPicNum:int = Mathf.FloorToInt(playTime/( nowAnimationData.animationLength / nowAnimationData.numOfPic ) );
 	lPicNum+=nowAnimationData.beginPicNum;
+	
+	//使动画帧不会超出范围
+	if(lPicNum>=nowAnimationData.endPicNum)
+		lPicNum=nowAnimationData.endPicNum;
+		
 	if( lPicNum != nowPicNum)
 	{
 		nowPicNum = lPicNum;
@@ -248,8 +268,8 @@ function Update ()
 	}
 	nowListener.updateCallback(playTime);
 	
-	if(lOverEnd)
-		nowListener.overEndAfterUpdateCallback();
+	//if(lOverEnd)
+	//	nowListener.overEndAfterUpdateCallback();
 	//var lTimePos = 
 }
 
@@ -258,7 +278,7 @@ function playAnimation(animationName:String)
 	//print(animationName);
 	if(nowAnimationData.animationName==animationName)
 		return;
-	nowListener.endTheAnimationCallback();
+	//nowListener.endTheAnimationCallback();
 	nowAnimationData = animationDatas[animationName];
 	nowListener= animationListeners[animationName];
 	if(!nowListener)

@@ -37,15 +37,19 @@ function OnCollisionEnter(collision : Collision)
 function lifeEnd()
 {
 	particleEmitterDetach();
-	zzCreatorUtility.Destroy (gameObject);
+	zzCreatorUtility.Destroy(gameObject);
 }
 
 function particleEmitterDetach()
 {
-	print("particleEmitterDetach");
+	//print("particleEmitterDetach");
 	var lTransform:Transform = transform.Find("particleEmitter");
-	var particleEmitter:ParticleEmitter=lTransform.gameObject.GetComponent(ParticleEmitter);
-	particleEmitter.emit=false;
-	lTransform.parent =null;
+	if(particleEmitter)
+	{
+		//防止同柿吮执行Update 和 OnCollisionEnter的情况
+		var particleEmitter:ParticleEmitter=lTransform.gameObject.GetComponent(ParticleEmitter);
+		particleEmitter.emit=false;
+		lTransform.parent =null;
+	}
 	//脱离所有子物体 临时
 }

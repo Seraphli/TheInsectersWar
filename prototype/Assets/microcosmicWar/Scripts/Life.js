@@ -24,15 +24,18 @@ function setBloodValueChangeCallback(call)
 
 function injure(value:float)
 {
-	bloodValue-=value;
-	
-	if(bloodValue<=0)
+	if(bloodValue>0)
 	{
-		dieCallback();
-		zzCreatorUtility.Destroy (gameObject);
-	}
+		bloodValue-=value;
 		
-	bloodValueChangeCallback();
+		if(bloodValue<=0)
+		{
+			dieCallback();
+			//zzCreatorUtility.Destroy (gameObject);
+		}
+			
+		bloodValueChangeCallback();
+	}
 }
 
 function setBloodValue(lValue:float)
@@ -55,6 +58,17 @@ function getFullBloodValue()
 {
 	return fullBloodValue;
 }
+
+function isAlive()
+{
+	return bloodValue>=0;
+}
+
+function isDead()
+{
+	return bloodValue<=0;
+}
+
 
 
 //function Update ()

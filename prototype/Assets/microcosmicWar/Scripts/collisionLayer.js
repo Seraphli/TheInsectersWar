@@ -9,6 +9,8 @@ class layers
 	public static var pismireBulletValue = 1 << pismireBullet;
 	public static var beeBullet = LayerMask.NameToLayer("beeBullet");
 	public static var beeBulletValue = 1 << beeBullet;
+	
+	public static var deadObject = LayerMask.NameToLayer("deadObject");
 }
 
 //static var mIgnoreList = new Hashtable();
@@ -74,12 +76,20 @@ static function IgnoreCollisionBetween(layer1Num:int, layer2Num:int)
 	mLayersIgnoreList[layer2Num].Add(layer1Num);
 }
 
+//目前只可用于deadObject
+static function updateCollider( gameObject:GameObject)
+{
+	//print("@@@@@@@@@@@@@@@@  updateCollider");
+	addCollider(gameObject);
+}
+
 static function addCollider( gameObject:GameObject)
 {
 	if(gameObject.collider && gameObject.layer>7 )
 	{
 		//print("addCollider :"+gameObject.name);
 		var ignoreList:Array = mLayersIgnoreList[gameObject.layer];
+		//print(ignoreList);
 		for(var i:int in ignoreList )
 		{
 			//遍历忽略的层
@@ -89,7 +99,8 @@ static function addCollider( gameObject:GameObject)
 			{
 				//遍历此层物体
 				//print("( var a: int = objectList.length - 1; a >= 0; a-=1 )");
-				if ( objectList[a] && objectList[a].active )
+				var aGameObject:GameObject=objectList[a];
+				if ( aGameObject && aGameObject.active && aGameObject!=gameObject)
 				{
 					//print("Physics.IgnoreCollision "+gameObject.name+" "+objectList[a].name);
 					Physics.IgnoreCollision(gameObject.collider, objectList[a].collider);
@@ -146,4 +157,9 @@ function Awake () {
 	
 	IgnoreCollisionBetween(layers.bee,layers.bee);
 	IgnoreCollisionBetween(layers.pismire,layers.pismire);
+	
+	for(var i=8; i<32; i+=1)
+	{
+		IgnoreCollisionBetween(layers.deadObject,i);
+	}
 }

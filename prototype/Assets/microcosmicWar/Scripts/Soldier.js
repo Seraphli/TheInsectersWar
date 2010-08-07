@@ -11,12 +11,18 @@ var clearCommandEveryFrame=true;
 
 var emitter:Emitter;
 
+//射击在动画的动画,要按从小到大排
 var fireTimeList:float[];
+
+//被打死后小时的时间
+var deadDisappearTimePos=4.0;
 
 var fireSound:AudioSource;
 
 //在播放射击动画时,会执行的动作
-protected var actionImpDuringAnimation=AnimationImpInTimeList();
+protected var actionImpDuringFireAnimation=AnimationImpInTimeList();
+//在播放死亡动画时,会执行的动作
+protected var actionImpDuringDeadAnimation=AnimationImpInTimeList();
 
 protected var turnObjectTransform:Transform;
 protected var reverseObjectTransform:Transform;
@@ -27,6 +33,8 @@ protected var characterController:CharacterController;
 
 private var moveV = Vector3.zero;
 private var grounded : boolean = false;
+
+private var life:Life;
 
 //角色的朝向
 protected var face = -1;
@@ -77,6 +85,8 @@ function Start()
 	mZZSprite = GetComponentInChildren(ZZSprite);
 	characterController = GetComponentInChildren(CharacterController);
 	emitter = GetComponentInChildren(Emitter);
+	life= GetComponentInChildren(Life);
+	life.setDieCallback(deadAction);
 	
 	characterController .detectCollisions=false;
 	
@@ -87,36 +97,52 @@ function Start()
 	turnObjectTransform= transform.Find("turn").transform;
 	reverseObjectTransform= transform.Find("reverse").transform;
 	
-	//actionImpDuringAnimation.ImpFunction=EmitBullet;
+	//actionImpDuringFireAnimation.ImpFunction=EmitBullet;
+	
 	
 	//当为host 时,允许发射子弹
 	//emitter.EmitBullet 也有判断,可去除一处
-	if( zzCreatorUtility.isHost())
-	{
+	//if( zzCreatorUtility.isHost())
+	//{//为了客户端有声效,所以都允许发射
 		//print("userControl || zzCreatorUtility.isHost()");
-		//for(var e:AnimationImpTimeListInfo in actionImpDuringAnimation.getImpInfoList())
+		//for(var e:AnimationImpTimeListInfo in actionImpDuringFireAnimation.getImpInfoList())
 		//{
 		//	e.ImpFunction=EmitBullet;
 		//}
-		var infos=Array();
+		//var infos=Array();
 		for(var iTime:float in fireTimeList)
 		{
-			var lEmitBulletImp=AnimationImpTimeListInfo();
-			lEmitBulletImp.ImpTime=iTime;
-			lEmitBulletImp.ImpFunction=EmitBullet;
-			infos.Add(lEmitBulletImp);
+			//var lEmitBulletImp=AnimationImpTimeListInfo();
+			//lEmitBulletImp.ImpTime=iTime;
+			//lEmitBulletImp.ImpFunction=EmitBullet;
+			//infos.Add(lEmitBulletImp);
+			actionImpDuringFireAnimation.addImp(iTime,EmitBullet);
 			
-			var lEmitBulletSoundImp=AnimationImpTimeListInfo();
-			lEmitBulletSoundImp.ImpTime=iTime;
-			lEmitBulletSoundImp.ImpFunction=EmitBulletSound;
-			infos.Add(lEmitBulletSoundImp);
+			//var lEmitBulletSoundImp=AnimationImpTimeListInfo();
+			//lEmitBulletSoundImp.ImpTime=iTime;
+			//lEmitBulletSoundImp.ImpFunction=EmitBulletSound;
+			//infos.Add(lEmitBulletSoundImp);
+			actionImpDuringFireAnimation.addImp(iTime,EmitBulletSound);
 		}
-		var lTemp:AnimationImpTimeListInfo[] = infos.ToBuiltin( AnimationImpTimeListInfo );
-		actionImpDuringAnimation.setImpInfoList(lTemp);
-		//actionImpDuringAnimation.ImpFunction=EmitBullet;
-		mZZSprite.setListener("fire",actionImpDuringAnimation);
-	}
-	
+		//var lTemp:AnimationImpTimeListInfo[] = infos.ToBuiltin( AnimationImpTimeListInfo );
+		//actionImpDuringFireAnimation.setImpInfoList(lTemp);
+		//actionImpDuringFireAnimation.ImpFunction=EmitBullet;
+		actionImpDuringFireAnimation.endAddImp();
+		mZZSprite.setListener("fire",actionImpDuringFireAnimation);
+	//}
+	//死亡的后的动作
+	//{
+		//var lDeadInfos=Array();
+		//var lDeadImp=AnimationImpTimeListInfo();
+		//lDeadImp.ImpTime=deadDisappearTimePos;
+		//lDeadImp.ImpFunction=disappear;
+		//lDeadInfos.Add(lDeadImp);
+		actionImpDuringDeadAnimation.setImpInfoList(
+				[AnimationImpTimeListInfo(deadDisappearTimePos,disappear)]
+			);
+		mZZSprite.setListener("dead",actionImpDuringDeadAnimation);
+	//}
+			
 	emitter.setBulletLayer( getBulletLayer() );
 	UpdateFaceShow();
 }
@@ -137,6 +163,21 @@ function EmitBulletSound()
 {
 	//print("EmitBullet");
 	fireSound.Play();
+}
+
+/////已设在Update中
+function deadAction()
+{
+	//mZZSprite.playAnimation("dead");
+	gameObject.layer=layers.deadObject;
+	transform.Find("CubeReact").gameObject.layer=layers.deadObject;
+	
+	collisionLayer.updateCollider(gameObject);
+}
+
+function disappear()
+{
+	zzCreatorUtility.Destroy(gameObject);
 }
 
 function GetActionCommandFromInput()
@@ -176,6 +217,11 @@ function Update()
 {	
 	moveV.x=0;
 	moveV.z=0;
+	if( life.isDead() )
+	{
+		mZZSprite.playAnimation("dead");
+		return;
+	}
 	if(userControl)
 		actionCommand=GetActionCommandFromInput();
 
@@ -225,7 +271,7 @@ function FixedUpdate()
 {
 	
 	//if (characterController.isGrounded && actionCommand.Jump)
-	if (grounded && actionCommand.Jump)
+	if ( life.isAlive() && grounded && actionCommand.Jump)
 	{
 		moveV.y = jumpSpeed;
 		//controller.animation
