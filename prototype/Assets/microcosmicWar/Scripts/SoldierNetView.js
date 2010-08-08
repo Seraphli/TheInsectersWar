@@ -1,5 +1,6 @@
 
 var soldier:Soldier;
+var life:Life;
 //var transform;
 
 function Awake()
@@ -7,6 +8,8 @@ function Awake()
 	//soldier=gameObject.GetComponent(soldier);
 	if(!soldier)
 		soldier=gameObject.GetComponentInChildren(Soldier);
+	if(!life)
+		life=gameObject.GetComponentInChildren(Life);
 	/*
 	if( !zzCreatorUtility.isHost() )
 	{
@@ -26,6 +29,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	var rot=Quaternion();
 	var lVelocity=Vector3();
 	var lActionCommand= UnitActionCommand();
+	var lBloodValue:float;
 	
 	//---------------------------------------------------
 	if (stream.isWriting)
@@ -34,6 +38,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 		rot=transform.rotation;
 		lVelocity = soldier.getVelocity();
 		lActionCommand= soldier.getCommand();
+		lBloodValue=life.getBloodValue();
 		//var cc;
 	}
 	
@@ -41,6 +46,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	stream.Serialize(pos);
 	stream.Serialize(rot);
 	stream.Serialize(lVelocity);
+	stream.Serialize(lBloodValue);
 	stream.Serialize(lActionCommand.FaceLeft);
 	stream.Serialize(lActionCommand.FaceRight);
 	stream.Serialize(lActionCommand.GoForward);
@@ -59,7 +65,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	//	}
 		soldier.setVelocity(lVelocity);
 		soldier.setCommand(lActionCommand);
-		
+		life.setBloodValue(lBloodValue);
 		
 	}
 	/*

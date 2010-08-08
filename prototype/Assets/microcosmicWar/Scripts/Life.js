@@ -24,23 +24,24 @@ function setBloodValueChangeCallback(call)
 
 function injure(value:float)
 {
-	if(bloodValue>0)
+	if( bloodValue>0)
 	{
-		bloodValue-=value;
+		setBloodValue(bloodValue-value);
 		
+	}
+}
+function setBloodValue(pValue:float)
+{
+	if( bloodValue!=pValue )
+	{
+		bloodValue = pValue;
+		bloodValueChangeCallback();
 		if(bloodValue<=0)
 		{
 			dieCallback();
 			//zzCreatorUtility.Destroy (gameObject);
 		}
-			
-		bloodValueChangeCallback();
 	}
-}
-
-function setBloodValue(lValue:float)
-{
-	bloodValue=lValue;
 }
 
 function setFullBloodValue(lValue:float)

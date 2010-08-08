@@ -121,6 +121,11 @@ function OnDisconnectedFromServer(info : NetworkDisconnection)
 	endGameScene( "Network Player Disconnection" );
 }
 
+function OnPlayerDisconnected (player : NetworkPlayer)
+{
+	endGameScene( "Network Player Disconnection" );
+}
+
 function gameResult(pWinerRaceName:String)
 {
 	ImpGameResult(pWinerRaceName);

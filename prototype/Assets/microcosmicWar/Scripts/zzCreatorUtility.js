@@ -16,6 +16,14 @@ class IzzGenericCreator
 		return true;
 	}
 	
+	virtual function sendMessage(gameObject:GameObject,methodName : String )
+	{
+	}
+	
+	virtual function sendMessage(gameObject:GameObject,methodName : String, value : Object)
+	{
+	}
+	
 }
 
 class ZzNetCreator extends IzzGenericCreator
@@ -32,6 +40,18 @@ class ZzNetCreator extends IzzGenericCreator
 	virtual function isMine(networkView:NetworkView)
 	{
 		return networkView.isMine;
+	}
+	
+	virtual function sendMessage(gameObject:GameObject,methodName : String)
+	{
+		gameObject.networkView.RPC(methodName,RPCMode.All); 
+	}
+	
+	virtual function sendMessage(gameObject:GameObject,methodName : String, value : Object)
+	{
+		gameObject.networkView.RPC(methodName,
+			RPCMode.AllBuffered,
+			value); 
 	}
 }
 
@@ -50,6 +70,16 @@ class ZzSingleCreator extends IzzGenericCreator
 	virtual function isMine(networkView:NetworkView)
 	{
 		return true;
+	}
+	
+	virtual function sendMessage(gameObject:GameObject,methodName : String)
+	{
+		gameObject.SendMessage(methodName);
+	}
+	
+	virtual function sendMessage(gameObject:GameObject,methodName : String, value : Object)
+	{
+		gameObject.SendMessage(methodName,value);
 	}
 }
 
@@ -97,6 +127,17 @@ static function isHost()
 static function isMine(networkView:NetworkView)
 {
 	return zzGenericCreator.isMine(networkView);
+}
+
+//在单机中避免RPC
+static function sendMessage(gameObject:GameObject,methodName : String, value : Object)
+{
+	zzGenericCreator.sendMessage(gameObject,methodName,value);
+}
+
+static function sendMessage(gameObject:GameObject,methodName : String)
+{
+	zzGenericCreator.sendMessage(gameObject,methodName);
 }
 
 //function Update () {

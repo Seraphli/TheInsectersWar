@@ -165,10 +165,10 @@ function EmitBulletSound()
 	fireSound.Play();
 }
 
-/////已设在Update中
+//在死亡的回调中使用
 function deadAction()
 {
-	//mZZSprite.playAnimation("dead");
+	mZZSprite.playAnimation("dead");
 	gameObject.layer=layers.deadObject;
 	transform.Find("CubeReact").gameObject.layer=layers.deadObject;
 	
@@ -177,7 +177,8 @@ function deadAction()
 
 function disappear()
 {
-	zzCreatorUtility.Destroy(gameObject);
+	//zzCreatorUtility.Destroy(gameObject);
+	Destroy(gameObject);
 }
 
 function GetActionCommandFromInput()
@@ -219,7 +220,7 @@ function Update()
 	moveV.z=0;
 	if( life.isDead() )
 	{
-		mZZSprite.playAnimation("dead");
+		//mZZSprite.playAnimation("dead");
 		return;
 	}
 	if(userControl)

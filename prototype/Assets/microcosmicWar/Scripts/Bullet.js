@@ -5,19 +5,19 @@ var harmVale=1.0;
 function Start()
 {
 	collisionLayer.addCollider(gameObject);
-	if(!zzCreatorUtility.isHost())
-		Destroy(this);
+	//if(!zzCreatorUtility.isHost())
+	//	Destroy(this);
 }
 
 function Update()
 {
-	//if(zzCreatorUtility.isHost())
-	//{
+	if(zzCreatorUtility.isHost())
+	{
 		aliveTime-= Time.deltaTime;
 		if(aliveTime<0)
 			//zzCreatorUtility.Destroy (gameObject);
 			lifeEnd();
-	//}
+	}
 }
 
 function OnCollisionEnter(collision : Collision)
@@ -36,19 +36,26 @@ function OnCollisionEnter(collision : Collision)
 
 function lifeEnd()
 {
-	particleEmitterDetach();
-	zzCreatorUtility.Destroy(gameObject);
+	zzCreatorUtility.sendMessage(gameObject,"lifeEndImp");
 }
 
+@RPC
+function lifeEndImp()
+{
+	particleEmitterDetach();
+	//zzCreatorUtility.sendMessage(gameObject,"particleEmitterDetach");
+	Destroy(gameObject);
+}
+
+////@RPC
 function particleEmitterDetach()
 {
-	//print("particleEmitterDetach");
 	var lTransform:Transform = transform.Find("particleEmitter");
-	if(particleEmitter)
+	if(lTransform)
 	{
-		//防止同柿吮执行Update 和 OnCollisionEnter的情况
-		var particleEmitter:ParticleEmitter=lTransform.gameObject.GetComponent(ParticleEmitter);
-		particleEmitter.emit=false;
+		//防止同时执行Update 和 OnCollisionEnter的情况
+		var lParticleEmitter:ParticleEmitter=lTransform.gameObject.GetComponent(ParticleEmitter);
+		lParticleEmitter.emit=false;
 		lTransform.parent =null;
 	}
 	//脱离所有子物体 临时

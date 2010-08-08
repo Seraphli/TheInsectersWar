@@ -11,6 +11,7 @@ protected var timePos=0.0;
 var soldier:Soldier;
 var finalAim:Transform;
 //var enemyLayer:int;
+var enable=true;
 
 protected var finalAimPos:Vector3;
 protected var actionCommand=UnitActionCommand();
@@ -106,6 +107,8 @@ function calculate()
 
 function Update ()
 {
+	if(enable)
+	{
 	//print("AI Update");
 	//if(zzCreatorUtility.isHost())
 	//{
@@ -120,4 +123,5 @@ function Update ()
 		//soldier.setCommand(lActionCommand);
 		soldier.setCommand(getCommand());
 	//}
+	}
 }
