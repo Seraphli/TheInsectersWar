@@ -17,7 +17,7 @@ var fireTimeList:float[];
 //被打死后小时的时间
 var deadDisappearTimePos=4.0;
 
-var fireSound:AudioSource;
+//var fireSound:AudioSource;
 
 //在播放射击动画时,会执行的动作
 protected var actionImpDuringFireAnimation=AnimationImpInTimeList();
@@ -122,7 +122,7 @@ function Start()
 			//lEmitBulletSoundImp.ImpTime=iTime;
 			//lEmitBulletSoundImp.ImpFunction=EmitBulletSound;
 			//infos.Add(lEmitBulletSoundImp);
-			actionImpDuringFireAnimation.addImp(iTime,EmitBulletSound);
+			//actionImpDuringFireAnimation.addImp(iTime,EmitBulletSound);
 		}
 		//var lTemp:AnimationImpTimeListInfo[] = infos.ToBuiltin( AnimationImpTimeListInfo );
 		//actionImpDuringFireAnimation.setImpInfoList(lTemp);
@@ -159,11 +159,11 @@ function EmitBullet()
 	emitter.EmitBullet();
 }
 
-function EmitBulletSound()
-{
+//function EmitBulletSound()
+//{
 	//print("EmitBullet");
-	fireSound.Play();
-}
+//	fireSound.Play();
+//}
 
 //在死亡的回调中使用
 function deadAction()

@@ -2,11 +2,12 @@
 var adversaryName:String;
 
 //执行频率/每秒执行的次数
-var frequencyOfImplement=3.0;
+//var frequencyOfImplement=3.0;
+var fequencyTimer=zzFrequencyTimer();
 
-protected var timeToWait:float;//=1.0/frequencyOfImplement
+//protected var timeToWait:float;//=1.0/frequencyOfImplement
 
-protected var timePos=0.0;
+//protected var timePos=0.0;
 
 var soldier:Soldier;
 var finalAim:Transform;
@@ -27,8 +28,8 @@ function Start()
 	//	timeToWait=100.0;
 	//	return;
 	//}
-	timeToWait=1.0/frequencyOfImplement;
-	timePos=timeToWait+0.1;
+	//timeToWait=1.0/frequencyOfImplement;
+	//timePos=timeToWait+0.1;
 	if(finalAim)
 		finalAimPos=finalAim.position;
 	if(adversaryLayerValue==-1)
@@ -37,6 +38,11 @@ function Start()
 	//print(adversaryLayerValue);
 	if(!soldier)
 		soldier=gameObject.GetComponentInChildren(Soldier);
+	fequencyTimer.setImpFunction(AiUpdate);
+	
+	//产生第一个命令
+	if(enable)
+		AiUpdate();
 }
 
 function SetFinalAim(pFinalAim:Transform)
@@ -112,7 +118,7 @@ function Update ()
 	//print("AI Update");
 	//if(zzCreatorUtility.isHost())
 	//{
-		timePos+=Time.deltaTime;
+		/*timePos+=Time.deltaTime;
 		//var lActionCommand=UnitActionCommand();
 		if(timePos>timeToWait)
 		{
@@ -121,7 +127,14 @@ function Update ()
 			timePos=0.0;
 		}
 		//soldier.setCommand(lActionCommand);
-		soldier.setCommand(getCommand());
+		soldier.setCommand(getCommand());*/
 	//}
+		fequencyTimer.Update();
 	}
+}
+
+function AiUpdate()
+{
+	calculate();
+	soldier.setCommand(getCommand());
 }

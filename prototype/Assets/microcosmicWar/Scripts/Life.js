@@ -62,7 +62,7 @@ function getFullBloodValue()
 
 function isAlive()
 {
-	return bloodValue>=0;
+	return bloodValue>0;
 }
 
 function isDead()

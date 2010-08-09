@@ -10,8 +10,8 @@ class AnimationInfo
 	var endPicNum=0;
 
 	//动画中单幅图的像素信息
-	var pixelVerticalNum:int;
-	var pixelHorizonNum:int;
+	//var pixelVerticalNum:int;
+	//var pixelHorizonNum:int;
 	
 	var loop=true;
 }
@@ -129,14 +129,14 @@ protected function CreateDataFromInfo(info:AnimationInfo)
 	lOut.animationLength=info.animationLength;
 
 	//动画中单幅图的像素信息
-	if(info.pixelVerticalNum)
-		lOut.pixelVerticalNum=info.pixelVerticalNum;
-	else//use default
+	//if(info.pixelVerticalNum)
+	//	lOut.pixelVerticalNum=info.pixelVerticalNum;
+	//else//use default
 		lOut.pixelVerticalNum=defaultPixelVerticalNum;
 		
-	if(info.pixelHorizonNum)
-		lOut.pixelHorizonNum=info.pixelHorizonNum;
-	else
+	//if(info.pixelHorizonNum)
+	//	lOut.pixelHorizonNum=info.pixelHorizonNum;
+	//else
 		lOut.pixelHorizonNum=defaultPixelHorizonNum;
 
 	//开始的帧数,结束的帧数,数从0开始.将会播放从beginPicNum到endPicNum,共endPicNum-beginPicNum+1幅图
@@ -163,7 +163,7 @@ protected function CreateDataFromInfo(info:AnimationInfo)
 protected function InitShow()
 {
 	
-	vertices=[Vector3(0,0,0),Vector3(spriteWidth,0,0),Vector3(spriteWidth,spriteHeight,0),Vector3(0,spriteHeight,0)];
+	vertices=[Vector3(-spriteWidth/2,-spriteWidth/2,0),Vector3(spriteWidth/2,-spriteWidth/2,0),Vector3(spriteWidth/2,spriteWidth/2,0),Vector3(-spriteWidth/2,spriteWidth/2,0)];
 	// iterate through the array
 	for (var value in animationInfos)
 	{

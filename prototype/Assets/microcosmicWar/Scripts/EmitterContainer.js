@@ -1,4 +1,8 @@
 
+
+///var fireSound:AudioSource;
+
+
 class EmitterContainer  extends Emitter
 {
 	var emitList:Emitter[];
@@ -12,6 +16,10 @@ class EmitterContainer  extends Emitter
 		for( var iEmit:Emitter in emitList )
 		{
 			iEmit.EmitBullet();
+		}
+		if(fireSound)
+		{
+			fireSound.Play();
 		}
 	}
 

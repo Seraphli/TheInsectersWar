@@ -83,7 +83,9 @@ class ZzSingleCreator extends IzzGenericCreator
 	}
 }
 
-static var zzGenericCreator=IzzGenericCreator();
+//默认为单机,省去初始化操作
+static var zzGenericCreator:IzzGenericCreator=ZzSingleCreator();
+
 static var host=true;
 
 static function resetCreator()
@@ -110,7 +112,8 @@ static function resetCreator()
 
 static function Instantiate(prefab : Object, position : Vector3, rotation : Quaternion, group : int) 
 {
-	//print("Instantiate");
+	//Debug.Log("Instantiate");
+	//Debug.Log(zzGenericCreator);
 	return zzGenericCreator.Instantiate(prefab, position, rotation, group);
 }
 static function Destroy (gameObject : GameObject)
