@@ -19,6 +19,21 @@ protected var actionCommand=UnitActionCommand();
 
 protected var adversaryLayerValue=-1;
 
+var fireTarget:Transform;
+
+//射击的检测距离将在介于与以下值
+//protected
+var fireDistanceMin:float;
+//protected
+var fireDistanceMax:float;
+
+//为了使每个兵的行为不同,射击的范围也取随机值
+var fireDistanceMinRandMin=4.0;
+var fireDistanceMinRandMax=8.0;
+
+var fireDistanceMaxRandMin=8.0;
+var fireDistanceMaxRandMax=12.0;
+
 function Start()
 {
 	//客户端的AI 在 SoldierNetView 中去除
@@ -39,6 +54,9 @@ function Start()
 	if(!soldier)
 		soldier=gameObject.GetComponentInChildren(Soldier);
 	fequencyTimer.setImpFunction(AiUpdate);
+	
+	fireDistanceMin=Random.Range(fireDistanceMinRandMin,fireDistanceMinRandMax);
+	fireDistanceMax=Random.Range(fireDistanceMaxRandMin,fireDistanceMaxRandMax);
 	
 	//产生第一个命令
 	if(enable)
@@ -87,9 +105,10 @@ function needFire()
 	//print(transform.position);
 	//print(soldier);
 	//print(adversaryLayerValue);
-	if (Physics.Raycast (transform.position, Vector3(soldier.getFaceDirection(),0,0) , lHit, Random.Range (4.0,8.0),adversaryLayerValue)) 
+	if (Physics.Raycast (transform.position, Vector3(soldier.getFaceDirection(),0,0) , lHit, Random.Range (fireDistanceMin,fireDistanceMax),adversaryLayerValue)) 
 	//if (Physics.Raycast (transform.position, lFwd , lHit, 4.0,adversaryLayerValue)) 
 	{
+		fireTarget=lHit.transform;
 		return true;
 	}
 	return false;

@@ -11,6 +11,8 @@ class layers
 	public static var beeBulletValue = 1 << beeBullet;
 	
 	public static var deadObject = LayerMask.NameToLayer("deadObject");
+	
+	public static var characterShape = LayerMask.NameToLayer("characterShape");
 }
 
 //static var mIgnoreList = new Hashtable();
@@ -146,6 +148,10 @@ function Awake () {
 	IgnoreCollisionBetween(layers.pismireBullet,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.beeBullet,layers.beeBullet);
 	IgnoreCollisionBetween(layers.pismireBullet,layers.beeBullet);
+	
+	//防止可在子弹上跳跃
+	IgnoreCollisionBetween(layers.characterShape,layers.beeBullet);
+	IgnoreCollisionBetween(layers.characterShape,layers.pismireBullet);
 	
 	if(!zzCreatorUtility.isHost())
 	{

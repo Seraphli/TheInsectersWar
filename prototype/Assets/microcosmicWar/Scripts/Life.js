@@ -4,7 +4,7 @@ var fullBloodValue = 5.0;
 
 var bloodValueChangeCallback=zzUtilities.nullFunction;
 var dieCallback=zzUtilities.nullFunction;
-
+//搜索有无bloodBar 以便显示血量
 function Start()
 {
 	var lBloodBar = GetComponentInChildren(BloodBar);

@@ -88,6 +88,7 @@ function Start()
 	life= GetComponentInChildren(Life);
 	life.setDieCallback(deadAction);
 	
+	//?
 	characterController .detectCollisions=false;
 	
 	collisionLayer.addCollider(gameObject);
@@ -150,7 +151,8 @@ function Start()
 function getBulletLayer()
 {
 	//子弹所在层名字为:种族名字+Bullet
-	return LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" );
+	//return LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" );
+	return LayerMask.NameToLayer( LayerMask.LayerToName(transform.Find("CubeReact").gameObject.layer)+"Bullet" );
 }
 
 function EmitBullet()

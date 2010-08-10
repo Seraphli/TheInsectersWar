@@ -25,6 +25,53 @@ var fire=false;
 
 var fireTime:float;
 
+class _2dInvertDoubleFaceSprite
+{
+	var face=1;
+	
+	var leftFaceValue=1;
+	
+	var invertObject:Transform;
+	
+	var turnObject:Transform;
+
+	var faceLeftSprite:ZZSprite;
+
+	var faceRightSprite:ZZSprite;
+	
+	protected var invertObjectXscale:float;
+	
+	function setFace(pFace:int)
+	{
+		//invertObjectXscale=invertObject.localScale.x;
+		face=pFace;
+		UpdateFaceShow();
+	}
+	
+	function UpdateFaceShow()
+	{
+		//invertObject.localScale.x=face*invertObjectXscale;
+		
+		if(face==1)
+			turnObject.rotation=Quaternion(0,0,0,1);
+		else
+			turnObject.rotation=Quaternion(0,1,0,0);
+			
+		if(face==leftFaceValue)
+			return faceLeftSprite;
+		else
+			return faceRightSprite;
+	}
+}
+
+//物体朝向
+//var face = 1;
+
+//protected var gunPivot:Transform;
+//protected var Xscale:float;
+
+var invert=_2dInvertDoubleFaceSprite();
+
 //在播放射击动画时,会执行的动作
 protected var actionImpDuringFireAnimation=AnimationImpInTimeList();
 
@@ -33,22 +80,39 @@ function setFire(pNeedFire:boolean)
 	fire=pNeedFire;
 }
 
+protected var life:Life;
+
 function Start()
 {
+	life= GetComponentInChildren(Life);
+	life.setDieCallback(deadAction);
+	
+	gunPivot = transform.Find("turn/gunPivot");
+	//Xscale=transform.localScale.x;
+	
 	//actionImpDuringFireAnimation.addImp(fireTime,EmitBullet);
 	for(var i:Transform in transform.Find("shape"))
 	{
 		i.gameObject.layer=gameObject.layer;
 	}
-	transform.Find("enemyDetector").gameObject.layer=gameObject.layer;
+	collisionLayer.addCollider(gameObject);
+	//transform.Find("turn/enemyDetector").gameObject.layer=gameObject.layer;
 	
 	actionImpDuringFireAnimation.setImpInfoList(
 			[AnimationImpTimeListInfo(fireTime,EmitBullet)]
 		);
+	gunSprite=invert.UpdateFaceShow();
 	gunSprite.setListener("fire",actionImpDuringFireAnimation);
 	emitter.setBulletLayer( getBulletLayer() );
 	
 	maxDownAngle=-maxDownAngle;
+	
+	//UpdateFaceShow();
+}
+
+function deadAction()
+{
+	zzCreatorUtility.Destroy(gameObject);
 }
 
 function getBulletLayer()
@@ -159,9 +223,12 @@ function setFace()
 {
 }
 
-function getFace()
+
+function getFaceDirection()
 {
+	//return face;
 }
+
 
 //角度向上转为正
 function getAngle()
