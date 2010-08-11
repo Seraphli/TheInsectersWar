@@ -59,25 +59,11 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	{
 		transform.position=pos;
 		transform.rotation=rot;
-	//if(!soldier)
-	//{
-	//	Debug.LogError(gameObject.name);
-		//print(isStar);
-	//	}
+		
 		soldier.setVelocity(lVelocity);
 		soldier.setCommand(lActionCommand);
-		//life.setBloodValue(lBloodValue);
 		
 	}
-	/*
-		print(pos);
-		print(rot);
-		print(lActionCommand.FaceLeft);
-		print(lActionCommand.FaceRight);
-		print(lActionCommand.GoForward);
-		print(lActionCommand.Fire);
-		print(lActionCommand.Jump);
-		*/
 }
 
 //function Update () {

@@ -51,9 +51,12 @@ protected function searchFireTargetInList()
 		fireTarget=null;
 		for(var i:System.Collections.DictionaryEntry in enemyList)
 		{
-			print(i);
-			fireTarget=i.Key;
-			break;
+			if(i.Key)
+			{
+				fireTarget=i.Key;
+				break;
+			}
+			enemyList.Remove(i);
 		}
 	}
 	return fireTarget;

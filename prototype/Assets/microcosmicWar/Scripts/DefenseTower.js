@@ -5,6 +5,7 @@ var maxDownAngle=50.0;
 
 var angularVelocity=20.0;
 
+//会在update中同步到物体
 var nowAngular=0.0;
 
 //剩余要移动的角度,用于平滑的移动
@@ -29,11 +30,11 @@ class _2dInvertDoubleFaceSprite
 {
 	var face=1;
 	
-	var preFace=1;
+	//var preFace=1;
 	
 	var leftFaceValue=1;
 	
-	var invertObject:Transform;
+	//var invertObject:Transform;
 	
 	var turnObject:Transform;
 
@@ -41,9 +42,18 @@ class _2dInvertDoubleFaceSprite
 
 	var faceRightSprite:ZZSprite;
 	
+	var nowSprite:ZZSprite;
+	
 	function _2dInvertDoubleFaceSprite()
 	{
-		preFace=face;
+		//preFace=face;
+		//_UpdateFaceShow();
+	}
+	
+	function init(pFace:int)
+	{
+		face=pFace;
+		_UpdateFaceShow();
 	}
 	
 	protected var invertObjectXscale:float;
@@ -51,23 +61,55 @@ class _2dInvertDoubleFaceSprite
 	function setFace(pFace:int)
 	{
 		//invertObjectXscale=invertObject.localScale.x;
+		UpdateFaceShow(pFace);
 		face=pFace;
-		UpdateFaceShow();
+		return nowSprite;
 	}
 	
-	function UpdateFaceShow()
+	function getFace()
 	{
-		//invertObject.localScale.x=face*invertObjectXscale;
-		
+		return face;
+	}
+	
+	function getNowSprite()
+	{
+		return nowSprite;
+	}
+	
+	//以左为正
+	function setFaceDirection(pFace:int)
+	{
+		setFace(pFace*leftFaceValue);
+	}
+	
+	function setAnimationListener(pAnimationName:String,pListener:AnimationListener)
+	{
+		faceLeftSprite.setListener(pAnimationName,pListener);
+		faceRightSprite.setListener(pAnimationName,pListener);
+	}
+	
+	function UpdateFaceShow(pFace:int)
+	{
+		if(face!=pFace)
+		{
+			face=pFace;
+			_UpdateFaceShow();
+		}
+			
+		return nowSprite;
+	}
+	
+	protected function _UpdateFaceShow()
+	{
 		if(face==1)
 			turnObject.rotation=Quaternion(0,0,0,1);
 		else
 			turnObject.rotation=Quaternion(0,1,0,0);
 			
 		if(face==leftFaceValue)
-			return faceLeftSprite;
+			nowSprite = faceLeftSprite;
 		else
-			return faceRightSprite;
+			nowSprite = faceRightSprite;
 	}
 }
 
@@ -100,26 +142,44 @@ function Start()
 	life.setDieCallback(deadAction);
 	
 	gunPivot = transform.Find("turn/gunPivot");
-	//Xscale=transform.localScale.x;
-	
-	//actionImpDuringFireAnimation.addImp(fireTime,EmitBullet);
-	for(var i:Transform in transform.Find("shape"))
-	{
-		i.gameObject.layer=gameObject.layer;
-	}
-	collisionLayer.addCollider(gameObject);
-	//transform.Find("turn/enemyDetector").gameObject.layer=gameObject.layer;
-	
-	actionImpDuringFireAnimation.setImpInfoList(
-			[AnimationImpTimeListInfo(fireTime,EmitBullet)]
-		);
-	gunSprite=invert.UpdateFaceShow();
-	gunSprite.setListener("fire",actionImpDuringFireAnimation);
-	emitter.setBulletLayer( getBulletLayer() );
 	
 	maxDownAngle=-maxDownAngle;
 	
 	//UpdateFaceShow();
+	//gunSprite=invert.UpdateFaceShow();
+	invert.setAnimationListener("fire",actionImpDuringFireAnimation);
+	
+	actionImpDuringFireAnimation.setImpInfoList(
+			[AnimationImpTimeListInfo(fireTime,EmitBullet)]
+		);
+		
+	
+	if(zzCreatorUtility.isHost())
+	{
+		zzCreatorUtility.sendMessage(gameObject,"initLayer",gameObject.layer);
+		zzCreatorUtility.sendMessage(gameObject,"initFace",invert.getFace());
+	}
+}
+
+@RPC
+function initFace(pFace:int)
+{
+	invert.init(pFace);
+	gunSprite=invert.getNowSprite();
+}
+
+@RPC
+function initLayer(pLayer:int)
+{
+	//探测器 扳机 的设置在UI脚本中
+	
+	gameObject.layer=pLayer;
+	for(var i:Transform in transform.Find("shape"))
+	{
+		i.gameObject.layer=pLayer;
+	}
+	collisionLayer.addCollider(gameObject);
+	emitter.setBulletLayer( getBulletLayer() );
 }
 
 function deadAction()
@@ -129,12 +189,14 @@ function deadAction()
 
 function getBulletLayer()
 {
+	//print( LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" ));
 	//子弹所在层名字为:种族名字+Bullet
 	return LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" );
 }
 
 function Update () 
 {
+	//print(gunSprite);
 	if(fire)
 		gunSprite.playAnimation("fire");
 	else
@@ -241,18 +303,21 @@ function setAngle(pAngle:float)
 	gunPivot.localEulerAngles=Vector3(0, 0, pAngle);
 }
 
-function getAngle(pAngle:float)
-{
-	return gunPivot.localEulerAngles.z;
-}
+//function getAngle()
+//{
+//	return gunPivot.localEulerAngles.z;
+//}
 
-function setFace()
+function setFaceDirection(pFace:int)
 {
+	//print(gunSprite);
+	gunSprite=invert.setFace(pFace);
 }
 
 
 function getFaceDirection()
 {
+	return invert.getFace();
 	//return face;
 }
 
