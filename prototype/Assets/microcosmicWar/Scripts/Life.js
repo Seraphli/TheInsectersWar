@@ -71,6 +71,23 @@ function isDead()
 }
 
 
+function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
+{
+	var lBloodValue:float;
+	
+	//---------------------------------------------------
+	if (stream.isWriting)
+	{
+		lBloodValue=getBloodValue();
+	}
+	
+	stream.Serialize(lBloodValue);
+	
+	if(stream.isReading)
+	{
+		setBloodValue(lBloodValue);
+	}
+}
 
 //function Update ()
 //{

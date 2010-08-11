@@ -1,6 +1,4 @@
 
-function Update () {
-}
 
 @MenuItem ("2D/Move Onto 2D Plane ^2")
 static function MoveOnto2DPlane () {

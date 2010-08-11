@@ -150,8 +150,12 @@ function Awake () {
 	IgnoreCollisionBetween(layers.pismireBullet,layers.beeBullet);
 	
 	//防止可在子弹上跳跃
+	
+	IgnoreCollisionBetween(layers.characterShape,layers.characterShape);
 	IgnoreCollisionBetween(layers.characterShape,layers.beeBullet);
+	IgnoreCollisionBetween(layers.characterShape,layers.bee);
 	IgnoreCollisionBetween(layers.characterShape,layers.pismireBullet);
+	IgnoreCollisionBetween(layers.characterShape,layers.pismire);
 	
 	if(!zzCreatorUtility.isHost())
 	{

@@ -29,6 +29,8 @@ class _2dInvertDoubleFaceSprite
 {
 	var face=1;
 	
+	var preFace=1;
+	
 	var leftFaceValue=1;
 	
 	var invertObject:Transform;
@@ -38,6 +40,11 @@ class _2dInvertDoubleFaceSprite
 	var faceLeftSprite:ZZSprite;
 
 	var faceRightSprite:ZZSprite;
+	
+	function _2dInvertDoubleFaceSprite()
+	{
+		preFace=face;
+	}
 	
 	protected var invertObjectXscale:float;
 	
@@ -78,6 +85,11 @@ protected var actionImpDuringFireAnimation=AnimationImpInTimeList();
 function setFire(pNeedFire:boolean)
 {
 	fire=pNeedFire;
+}
+
+function inFiring()
+{
+	return fire;
 }
 
 protected var life:Life;
@@ -160,6 +172,16 @@ protected function impSmoothTurn(pElapseTime:float)
 	}
 }
 
+function _getSmoothAngle()
+{
+	return aimAngular;
+}
+
+function _setSmoothAngle(pAimAngular:float)
+{
+	aimAngular=pAimAngular;
+}
+
 //以转速转到此角度
 function smoothTurnToAngle(pAimAngular:float)
 {
@@ -217,6 +239,11 @@ function setTowards()
 function setAngle(pAngle:float)
 {
 	gunPivot.localEulerAngles=Vector3(0, 0, pAngle);
+}
+
+function getAngle(pAngle:float)
+{
+	return gunPivot.localEulerAngles.z;
 }
 
 function setFace()
