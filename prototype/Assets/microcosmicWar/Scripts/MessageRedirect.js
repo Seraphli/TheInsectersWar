@@ -9,6 +9,6 @@ function Start()
 
 function messageRedirectReceiver(methodName : String)
 {
-	print("@@@@@@@methodName: "+methodName);
+	//print("@@@@@@@methodName: "+methodName);
 	messageReceiver.gameObject.SendMessage(methodName);
 }

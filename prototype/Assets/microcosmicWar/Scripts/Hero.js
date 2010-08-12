@@ -7,8 +7,6 @@ var jumpSpeed = 8.0;
 
 var actionCommand:UnitActionCommand;
 
-var clearCommandEveryFrame=true;
-
 var emitter:Emitter;
 
 //射击在动画的动画,要按从小到大排
@@ -35,6 +33,8 @@ private var grounded : boolean = false;
 private var life:Life;
 
 private var myAnimation:Animation;
+
+var boardDetector:BoardDetector;
 
 var inFiring:boolean;
 
@@ -75,50 +75,21 @@ function Start()
 		
 	upBodyAction.init(upBodyActionInfo,myAnimation);
 	downBodyAction.init(downBodyActionInfo,myAnimation);
-		/*
-	myAnimation.AddClip(myAnimation["stand"].clip, "standby"); 
-	
-	//myAnimation["fire"].AddMixingTransform(transform.Find("root/Bone01/Bone02"));
-	//myAnimation["standby"].AddMixingTransform(transform.Find("root/Bone01/Bone02"));
-	myAnimation["fire"].AddMixingTransform(upBody);
-	myAnimation["standby"].AddMixingTransform(upBody);
-	
-	 myAnimation["run"].layer = 1;
-	 myAnimation["fire"].layer = 2;
-	 
-	myAnimation.CrossFade("stand");
-	myAnimation.CrossFade("standby");
-	
-	var lFireAnimationEvent=AnimationEvent();
-	lFireAnimationEvent.functionName="EmitBullet";
-	lFireAnimationEvent.time=0;
-	myAnimation["fire"].clip.AddEvent(lFireAnimationEvent);*/
 
-	//animation.Play("fire");
-	//animation.Play("run");
-
-	//控制权
-	//userControl=userControl&&zzCreatorUtility.isMine(networkView);
-	//userControl=userControl&&zzCreatorUtility.isHost();
-
-	//mZZSprite = GetComponentInChildren(ZZSprite);
 	characterController = GetComponentInChildren(CharacterController);
 	//characterController.Move(Vector3(0,0,0));
 	emitter = GetComponentInChildren(Emitter);
 	
-	//@@@@@@@@@@
-	//life= GetComponentInChildren(Life);
-	//life.setDieCallback(deadAction);
+
+	life= GetComponentInChildren(Life);
+	life.setDieCallback(deadAction);
 	
 	//?
-	characterController .detectCollisions=false;
+	//characterController .detectCollisions=false;
 	
 	collisionLayer.addCollider(gameObject);
 	
-	//@@@@@@@@@@
-	//reverseObjectTransform= transform.Find("model").transform;
 	reverseObjectTransform= transform;
-	//turnObjectTransform= transform.Find("model").transform;
 
 	//Xscale=transform.localScale.x;
 
@@ -131,17 +102,15 @@ function Start()
 			//);
 		//mZZSprite.setListener("dead",actionImpDuringDeadAnimation);
 	//}
-	
-	//@@@@@@@@@@		
-	//emitter.setBulletLayer( getBulletLayer() );
+		
+	emitter.setBulletLayer( getBulletLayer() );
 	UpdateFaceShow();
 }
 
 function getBulletLayer()
 {
 	//子弹所在层名字为:种族名字+Bullet
-	return 1;
-	//@@@@return LayerMask.NameToLayer( LayerMask.LayerToName(transform.Find("CubeReact").gameObject.layer)+"Bullet" );
+	return LayerMask.NameToLayer( LayerMask.LayerToName(transform.Find("CubeReact").gameObject.layer)+"Bullet" );
 }
 
 function EmitBullet()
@@ -149,12 +118,6 @@ function EmitBullet()
 	//print("EmitBullet");
 	emitter.EmitBullet();
 }
-
-//function EmitBulletSound()
-//{
-	//print("EmitBullet");
-//	fireSound.Play();
-//}
 
 //在死亡的回调中使用
 function deadAction()
@@ -164,6 +127,8 @@ function deadAction()
 	transform.Find("CubeReact").gameObject.layer=layers.deadObject;
 	
 	collisionLayer.updateCollider(gameObject);
+	
+	disappear();
 }
 
 function disappear()
@@ -187,6 +152,9 @@ function GetActionCommandFromInput()
 		lActionCommand.FaceRight=true;
 		lActionCommand.GoForward=true;
 	}
+	if(Input.GetButton ("down"))
+		lActionCommand.FaceDown=true;
+		
 	lActionCommand.Fire=Input.GetButton ("fire");
 	lActionCommand.Jump=Input.GetButton ("jump");
 	return lActionCommand;
@@ -198,42 +166,19 @@ function UpdateFaceShow()
 	//Xscale=|reverseObjectTransform.localScale.x|,省去判断正负
 	reverseObjectTransform.localScale.x=face*Xscale;
 	//moveV.x=lMove;
-	
-	
-	//@@@@@@@@@@
-	//if(face==1)
-	//	turnObjectTransform.rotation=Quaternion(0,0,0,1);
-	//else
-	//	turnObjectTransform.rotation=Quaternion(0,1,0,0);
 }
 
-//var preCommand=UnitActionCommand();
-/*
-function playAnimation(pName:String)
-{
-	 if(!myAnimation.IsPlaying(pName) )
-	 {
-		print(myAnimation.IsPlaying(pName));
-		print(pName);
-		myAnimation.CrossFade(pName);
-	}
-}
-*/
 //更新动画
 function Update() 
 {	
 
-	print("###########################");
-	for(var i:AnimationState in myAnimation)
-		Debug.Log(i.name+" "+i.weight+" layer:"+i.layer);
-	print("###########################");
 	moveV.x=0;
 	moveV.z=0;
-	//@@@@@@@@@@
-	//if( life.isDead() )
-	//{
-	//	return;
-	//}
+	
+	if( life.isDead() )
+	{
+		return;
+	}
 	if(userControl)
 		actionCommand=GetActionCommandFromInput();
 
@@ -261,48 +206,45 @@ function Update()
 		//设置动画 动作
 	if(actionCommand.Fire)
 	{
-		//myAnimation.CrossFade("fire");
-		//impAnimation(preCommand.Fire,actionCommand.Fire,"fire");
 		upBodyAction.playAction("fire");
-		//mZZSprite.playAnimation("fire");
 	}
 	else
 		upBodyAction.playAction("standby");
-	//else
-	//{
-		if(actionCommand.GoForward)
-		{
-			//mZZSprite.playAnimation("run");
-			//myAnimation.CrossFade("run");
-			//impAnimation(preCommand.GoForward,actionCommand.GoForward,"run");
-			//playAnimation("run");
-			downBodyAction.playAction("run");
-			moveV.x=face;
-		}
-		else
-		{
-			//myAnimation.CrossFade("stand");
-			//impAnimation(preCommand.GoForward,actionCommand.GoForward,"stand");
-			//playAnimation("stand");
-			downBodyAction.playAction("stand");
-			//mZZSprite.playAnimation("stand");
-		}
-		//preCommand=actionCommand;
+
+	if(actionCommand.GoForward)
+	{
+		downBodyAction.playAction("run");
+		moveV.x=face;
+	}
+	else
+	{
+		downBodyAction.playAction("stand");
+	}
+	
+	if(actionCommand.Jump&&actionCommand.FaceDown)
+	{
+		boardDetector.down();
+	}
+	else
+		boardDetector.recover();
 		
 }
 
 //更新characterController
 function FixedUpdate()
 {
-	//if (characterController.isGrounded && actionCommand.Jump)
-	//@@@@@@@@@@
-	//if ( life.isAlive() && grounded && actionCommand.Jump)
-	//{
-		//moveV.y = jumpSpeed;
-		//controller.animation
-	//}
-	if(grounded)
-		moveV.y = 0;
+
+	
+	if(life.isAlive() && grounded)
+	{
+		if( !actionCommand.FaceDown)
+		{
+			if(actionCommand.Jump)
+				moveV.y = jumpSpeed;
+			else
+				moveV.y = 0;		
+		}
+	}
 	else
 		moveV.y -= gravity* Time.deltaTime;
 		
@@ -311,8 +253,7 @@ function FixedUpdate()
 	//print(lVelocity);
 	var flags:CollisionFlags=characterController.Move(lVelocity* Time.deltaTime);
 	grounded = (flags & CollisionFlags.CollidedBelow) != 0;
-	//if(userControl || clearCommandEveryFrame)
-	//	actionCommand.clear();
+	
 }
 
 function setCommand(pActionCommand:UnitActionCommand)

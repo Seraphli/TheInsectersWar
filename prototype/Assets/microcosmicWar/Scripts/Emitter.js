@@ -17,7 +17,9 @@ virtual function EmitBullet()
 		var clone : GameObject;
 		clone = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, transform.rotation,0);
 		clone.layer=bulletLayer;
-		clone.GetComponentInChildren(Rigidbody).velocity=transform.right*bulletSpeed;
+		
+		//print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
+		clone.GetComponentInChildren(Rigidbody).velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
 		//clone.velocity=transform.forward;
 	}
 	if(fireSound)

@@ -134,7 +134,7 @@ function playActionType(pName:String)
 function updateAnimation()
 {
 	//Debug.Log(nameToActionType[nowActionType][nowActionIndex]);
-	myAnimation.CrossFade(nameToActionType[nowActionType][nowActionIndex]);
+	myAnimation.CrossFade(nameToActionType[nowActionType][nowActionIndex],0.1);
 }
 
 }
