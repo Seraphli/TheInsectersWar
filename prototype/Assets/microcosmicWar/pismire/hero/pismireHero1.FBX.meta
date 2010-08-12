@@ -1,0 +1,270 @@
+fileFormatVersion: 1
+guid: ac22327eb9d6dd54290a32935e9797fb
+ModelImporter:
+  importerVersion: 4
+  meshes:
+    scaleFactor: 0.01
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    generation: 0
+    calculateNormals: 0
+    smoothingAngle: 60
+    splitTangents: 0
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      run:
+        firstFrame: 1
+        lastFrame: 16
+        loop: 1
+        wrapMode: 2
+      angle0fire:
+        firstFrame: 20
+        lastFrame: 25
+        loop: 1
+        wrapMode: 2
+      stand:
+        firstFrame: 29
+        lastFrame: 30
+        loop: 1
+        wrapMode: 2
+      angle0standby:
+        firstFrame: 29
+        lastFrame: 30
+        loop: 1
+        wrapMode: 2
+  nodeInfo:
+    Bone11:
+    - 100000
+    - 400000
+    Bone10:
+    - 100002
+    - 400002
+    leftHandUp:
+    - 100004
+    - 400004
+    - 3300000
+    - 2300000
+    leftHandDown:
+    - 100006
+    - 400006
+    - 3300002
+    - 2300002
+    leftHand:
+    - 100008
+    - 400008
+    - 3300004
+    - 2300004
+    Bone26:
+    - 100010
+    - 400010
+    Bone25:
+    - 100012
+    - 400012
+    Bone24:
+    - 100014
+    - 400014
+    Bone23:
+    - 100016
+    - 400016
+    Bone22:
+    - 100018
+    - 400018
+    body:
+    - 100020
+    - 400020
+    - 3300006
+    - 2300006
+    rightHandUp:
+    - 100022
+    - 400022
+    - 3300008
+    - 2300008
+    rightHandDown:
+    - 100024
+    - 400024
+    - 3300010
+    - 2300010
+    gun:
+    - 100026
+    - 400026
+    - 3300012
+    - 2300012
+    Bone09:
+    - 100028
+    - 400028
+    Bone08:
+    - 100030
+    - 400030
+    Bone07:
+    - 100032
+    - 400032
+    Bone06:
+    - 100034
+    - 400034
+    Bone05:
+    - 100036
+    - 400036
+    head:
+    - 100038
+    - 400038
+    - 3300014
+    - 2300014
+    Bone04:
+    - 100040
+    - 400040
+    Bone03:
+    - 100042
+    - 400042
+    Bone02:
+    - 100044
+    - 400044
+    Bone01:
+    - 100046
+    - 400046
+    IK Chain01:
+    - 100048
+    - 400048
+    IK Chain02:
+    - 100050
+    - 400050
+    IK Chain04:
+    - 100052
+    - 400052
+    IK Chain03:
+    - 100054
+    - 400054
+    //RootNode:
+    - 100056
+    - 400056
+    - 11100000
+    rightThighUp:
+    - 100058
+    - 400058
+    - 3300018
+    - 2300018
+    rightThighDown:
+    - 100060
+    - 400060
+    - 3300020
+    - 2300020
+    rightLowerLeg:
+    - 100062
+    - 400062
+    - 3300022
+    - 2300022
+    Box01:
+    - 100064
+    - 400064
+    - 3300024
+    - 2300024
+    Bone30:
+    - 100066
+    - 400066
+    Bone29:
+    - 100068
+    - 400068
+    Bone28:
+    - 100070
+    - 400070
+    Bone27:
+    - 100072
+    - 400072
+    Bone21:
+    - 100074
+    - 400074
+    Bone20:
+    - 100076
+    - 400076
+    Bone19:
+    - 100078
+    - 400078
+    Bone18:
+    - 100080
+    - 400080
+    leftThighUp:
+    - 100082
+    - 400082
+    - 3300026
+    - 2300026
+    leftThighDown:
+    - 100084
+    - 400084
+    - 3300028
+    - 2300028
+    leftLowerLeg:
+    - 100086
+    - 400086
+    - 3300030
+    - 2300030
+    leftFoot:
+    - 100088
+    - 400088
+    - 3300032
+    - 2300032
+    Bone17:
+    - 100090
+    - 400090
+    Bone16:
+    - 100092
+    - 400092
+    Bone15:
+    - 100094
+    - 400094
+    Bone14:
+    - 100096
+    - 400096
+    Bone13:
+    - 100098
+    - 400098
+    Bone12:
+    - 100100
+    - 400100
+    Line01:
+    - 100102
+    - 400102
+    root:
+    - 100104
+    - 400104
+    - 3300016
+    - 2300016
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: root
+    4300002: head
+    4300004: gun
+    4300006: rightHandDown
+    4300008: rightHandUp
+    4300010: body
+    4300012: leftHand
+    4300014: leftHandDown
+    4300016: leftHandUp
+    4300018: leftFoot
+    4300020: leftLowerLeg
+    4300022: leftThighDown
+    4300024: leftThighUp
+    4300026: Box01
+    4300028: rightLowerLeg
+    4300030: rightThighDown
+    4300032: rightThighUp
+    7400000: Take 001 //// pismireHero
+    7400002: Take 001 //// pismireHero1
+    7400004: run //// pismireHero1
+    7400006: fire //// pismireHero1
+    7400008: wait //// pismireHero1
+    7400010: stand //// pismireHero1
+    7400012: standby //// pismireHero1
+    7400014: angle0Stand //// pismireHero1
+    7400016: angle0Standby //// pismireHero1
+    7400018: angle0fire //// pismireHero1
+    7400020: Stand //// pismireHero1
+    7400022: angle0standby //// pismireHero1
