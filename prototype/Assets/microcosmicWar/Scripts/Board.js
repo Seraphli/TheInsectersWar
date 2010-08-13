@@ -32,6 +32,8 @@ function turnOnCollision( pGameObject :GameObject )
 	Physics.IgnoreCollision(gameObject.collider, pGameObject.collider,false);
 }
 
-function Update () 
+
+function Start()
 {
+	collisionLayer.addCollider(gameObject);
 }

@@ -20,7 +20,27 @@ var needCreatePlayer=true;
 
 static var sSceneData:GameObject;
 //#pragma strict
+/*
+var winCondition=Hashtable();
+var loseCondition=Hashtable();
 
+function addWinCondition(pValue)
+{
+	winCondition[pValue]=true;
+}
+
+function reachCondition(pValue)
+{
+	enemyList.Remove(other.transform);
+}
+
+function checkCondition(pList:Hashtable,isWin:boolean)
+{
+	if(pList.Count==0)
+	{
+	}
+}
+*/
 // Use this for initialization
 function Awake () {
 	singletonInstance = this;
@@ -133,6 +153,12 @@ function gameResult(pWinerRaceName:String)
 		ImpGameResult(pWinerRaceName);
 	else
 		networkView.RPC( "ImpGameResult", RPCMode.Others, pWinerRaceName);
+}
+
+function getPlayerInfo()
+{
+	var playerInfo:PlayerInfo=sSceneData.GetComponent(PlayerInfo);
+	return playerInfo;
 }
 
 @script RequireComponent(NetworkView)

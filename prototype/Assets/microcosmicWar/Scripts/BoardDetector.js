@@ -32,7 +32,7 @@ function OnTriggerEnter (other : Collider)
 
 function OnTriggerExit (other : Collider) 
 {
-	print("OnTriggerExit");
+	//print("OnTriggerExit");
 	var lBoard:Board = other.GetComponent(Board);
 	if(lBoard)
 	{

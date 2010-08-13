@@ -2,7 +2,7 @@
 var runSpeed=2.0;
 var userControl=false;
 //var controlByOther=false;
-var gravity = 10.0;
+var gravity = 15.0;
 var jumpSpeed = 8.0;
 
 var actionCommand:UnitActionCommand;
@@ -276,7 +276,7 @@ function Update()
 //更新characterController
 function FixedUpdate()
 {
-	
+/*	
 	//if (characterController.isGrounded && actionCommand.Jump)
 	if ( life.isAlive() && grounded && actionCommand.Jump)
 	{
@@ -285,6 +285,20 @@ function FixedUpdate()
 	}
 	
 	moveV.y -= gravity* Time.deltaTime;
+	*/
+	if(life.isAlive() && grounded)
+	{
+		if( !actionCommand.FaceDown)
+		{
+			if(actionCommand.Jump)
+				moveV.y = jumpSpeed;
+			else
+				moveV.y = 0;		
+		}
+	}
+	else
+		moveV.y -= gravity* Time.deltaTime;//死掉后 moveV.y 就不用清零了
+		
 	// Move the controller
 	var flags = characterController.Move(Vector3(moveV.x * runSpeed,moveV.y,0)* Time.deltaTime);
 	grounded = (flags & CollisionFlags.CollidedBelow) != 0;

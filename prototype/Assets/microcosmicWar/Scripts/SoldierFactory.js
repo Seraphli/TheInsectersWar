@@ -12,9 +12,17 @@ protected var timePos=0.0;
 
 protected var adversaryLayerValue:int;
 
+var produceTransform:Transform;
+
+//Component.SendMessage ("dieCallFunction")
+//var dieCallFunction:Component;
+var objectListener=IobjectListener();
 
 function Start()
 {
+	if(!produceTransform)
+		produceTransform=transform;
+		
 	collisionLayer.addCollider(gameObject);
 	
 	adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
@@ -33,7 +41,7 @@ function Update () {
 		if(timePos>produceInterval)
 		{
 			//var lClone = Network.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
-			var lClone = zzCreatorUtility.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5,0), Quaternion(), 0);
+			var lClone = zzCreatorUtility.Instantiate(soldierToProduce, produceTransform.position, Quaternion(), 0);
 			timePos=0.0;
 			var soldierAI:SoldierAI = lClone.GetComponent(SoldierAI);
 			soldierAI.SetFinalAim(finalAim);
@@ -46,5 +54,10 @@ function Update () {
 
 function dieCall()
 {
-	GameScene.getSingleton().gameResult(adversaryName);
+	//if(dieCallFunction)
+	//	dieCallFunction.SendMessage ("dieCallFunction");
+	//else
+	objectListener.removedCall();
+	Destroy(gameObject);
+		//GameScene.getSingleton().gameResult(adversaryName);
 }

@@ -66,7 +66,9 @@ function Start()
 function SetFinalAim(pFinalAim:Transform)
 {
 	finalAim= pFinalAim;
-	finalAimPos=finalAim.position;
+	finalAimPos=Vector3();
+	if(pFinalAim)
+		finalAimPos=finalAim.position;
 }
 
 function SetSoldier(pSoldier:Soldier)
@@ -83,18 +85,23 @@ function SetAdversaryLayerValue(pLayerValue:int)
 
 function moveToFinalAim()
 {
-	var lT = finalAimPos.x - transform.position.x ;
 	var lActionCommand=UnitActionCommand();
-	lActionCommand.GoForward=true;
-	if(lT<0)
+	if(finalAim)
 	{
-		lActionCommand.FaceLeft=true;
+		var lT = finalAimPos.x - transform.position.x ;
+		//var lActionCommand=UnitActionCommand();
+		lActionCommand.GoForward=true;
+		if(lT<0)
+		{
+			lActionCommand.FaceLeft=true;
+		}
+		else
+		{
+			lActionCommand.FaceRight=true;
+		}
+		//soldier.setCommand(lActionCommand);
+		return lActionCommand;
 	}
-	else
-	{
-		lActionCommand.FaceRight=true;
-	}
-	//soldier.setCommand(lActionCommand);
 	return lActionCommand;
 }
 

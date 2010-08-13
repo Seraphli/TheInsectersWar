@@ -12,7 +12,7 @@ class layers
 	
 	public static var deadObject = LayerMask.NameToLayer("deadObject");
 	
-	public static var characterShape = LayerMask.NameToLayer("characterShape");
+	public static var board = LayerMask.NameToLayer("board");
 }
 
 //static var mIgnoreList = new Hashtable();
@@ -149,6 +149,9 @@ function Awake () {
 	IgnoreCollisionBetween(layers.beeBullet,layers.beeBullet);
 	IgnoreCollisionBetween(layers.pismireBullet,layers.beeBullet);
 	
+	IgnoreCollisionBetween(layers.board,layers.pismireBullet);
+	IgnoreCollisionBetween(layers.board,layers.beeBullet);
+	/*
 	//防止可在子弹上跳跃
 	
 	IgnoreCollisionBetween(layers.characterShape,layers.characterShape);
@@ -156,7 +159,7 @@ function Awake () {
 	IgnoreCollisionBetween(layers.characterShape,layers.bee);
 	IgnoreCollisionBetween(layers.characterShape,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.characterShape,layers.pismire);
-	
+	*/
 	if(!zzCreatorUtility.isHost())
 	{
 		//客户端子弹都可穿透  :判断都放在服务器端 , 客户端就不用管子弹层了

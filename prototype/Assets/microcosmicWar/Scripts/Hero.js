@@ -45,6 +45,11 @@ var downBodyActionInfo=BodyActionInfo();
 var upBodyAction=BodyAction();
 var downBodyAction=BodyAction();
 
+var objectListener=IobjectListener();
+
+//Component.SendMessage ("dieCallFunction")
+//var dieCallFunction:Component;
+
 //var upBodyAction
 
 //½ÇÉ«µÄ³¯Ïò
@@ -134,6 +139,9 @@ function deadAction()
 function disappear()
 {
 	//zzCreatorUtility.Destroy(gameObject);
+	//if(dieCallFunction)
+	//	dieCallFunction.SendMessage ("dieCallFunction");
+	objectListener.removedCall();
 	Destroy(gameObject);
 }
 

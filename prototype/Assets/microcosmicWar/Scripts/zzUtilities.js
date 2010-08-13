@@ -12,3 +12,16 @@ static function quickRemoveArrayElement(array:Array,index:int)
 	if(index!=array.length)
 		array[index]=t;
 }
+
+//删除第一个在Array出现的pValue
+static function removeValueInArray(array:Array, pValue)
+{
+		for( var i=0;i<array.length;++i)
+		{
+			if(array[i]== pValue)
+			{
+				array.RemoveAt(i);
+				break;
+			}
+		}
+}

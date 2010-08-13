@@ -17,10 +17,18 @@ static function eRaceToString(race:Race)
 	}
 	return ;
 }
-
 var	race:Race = Race.eNone;
 
 var 	playerName="player";
+
+var	teamName="";
+
+function Awake()
+{
+	if(teamName=="")
+		teamName=eRaceToString(race);
+}
+
 
 //function Awake()
 //{
@@ -56,6 +64,11 @@ function setPlayerName(pName:String)
 function getPlayerName()
 {
 	return eRaceToString(getRaceName());
+}
+
+function getTeamName()
+{
+	return teamName;
 }
 
 //function Update () {
