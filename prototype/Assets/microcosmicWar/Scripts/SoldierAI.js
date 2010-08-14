@@ -91,6 +91,7 @@ function moveToFinalAim()
 		var lT = finalAimPos.x - transform.position.x ;
 		//var lActionCommand=UnitActionCommand();
 		lActionCommand.GoForward=true;
+		/*
 		if(lT<0)
 		{
 			lActionCommand.FaceLeft=true;
@@ -98,11 +99,24 @@ function moveToFinalAim()
 		else
 		{
 			lActionCommand.FaceRight=true;
-		}
+		}*/
 		//soldier.setCommand(lActionCommand);
+		setFaceCommand(lActionCommand,lT);
 		return lActionCommand;
 	}
 	return lActionCommand;
+}
+
+function setFaceCommand(pActionCommand:UnitActionCommand,face:int)
+{
+		if(face<0)
+		{
+			pActionCommand.FaceLeft=true;
+		}
+		else if(face>0)
+		{
+			pActionCommand.FaceRight=true;
+		}
 }
 
 function needFire()
@@ -112,13 +126,18 @@ function needFire()
 	//print(transform.position);
 	//print(soldier);
 	//print(adversaryLayerValue);
+	//var lFaceDirection = 0;
 	if (Physics.Raycast (transform.position, Vector3(soldier.getFaceDirection(),0,0) , lHit, Random.Range (fireDistanceMin,fireDistanceMax),adversaryLayerValue)) 
 	//if (Physics.Raycast (transform.position, lFwd , lHit, 4.0,adversaryLayerValue)) 
 	{
 		fireTarget=lHit.transform;
-		return true;
+		return soldier.getFaceDirection();
 	}
-	return false;
+	if (Physics.Raycast (transform.position, Vector3(-soldier.getFaceDirection(),0,0) , lHit, fireDistanceMin,adversaryLayerValue)) 
+	{
+		return -soldier.getFaceDirection();
+	}
+	return 0;
 }
 
 function getCommand()
@@ -128,10 +147,12 @@ function getCommand()
 
 function calculate()
 {
-	if(needFire())
+	var lFireTaget = needFire();
+	if(lFireTaget!=0)
 	{
 		actionCommand.clear();
 		actionCommand.Fire=true;
+		setFaceCommand(actionCommand,lFireTaget);
 	}
 	else
 		actionCommand=moveToFinalAim();
