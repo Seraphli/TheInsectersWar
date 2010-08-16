@@ -57,7 +57,8 @@ function dieCall()
 	//if(dieCallFunction)
 	//	dieCallFunction.SendMessage ("dieCallFunction");
 	//else
-	objectListener.removedCall();
+	if(objectListener)
+		objectListener.removedCall();
 	Destroy(gameObject);
 		//GameScene.getSingleton().gameResult(adversaryName);
 }

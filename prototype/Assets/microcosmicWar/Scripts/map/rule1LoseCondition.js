@@ -12,7 +12,7 @@ class rule1LoseCondition extends IobjectListener//,MonoBehaviour
 	
 	function Start()
 	{
-		//print(gameObject.name+" "+teamName);
+		print(gameObject.name+" "+teamName);
 		initedCall();
 	}
 

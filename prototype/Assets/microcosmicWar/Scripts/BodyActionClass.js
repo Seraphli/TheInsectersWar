@@ -21,6 +21,12 @@ class ActionTypeInfo
 	var animationActionList:UnityAnimationInfo[];
 }
 
+class AnimationSettingForAction
+{
+	var name:String;
+	var useFader:boolean;
+}
+
 //身体的某一部分的动作
 class BodyActionInfo
 {
@@ -29,10 +35,16 @@ class BodyActionInfo
 	
 	var mixingTransform:Transform;
 	
-	//ActionAnimationNameList 与ActionTypeInfo.animationActionInfo 数量应相同.
-	var actionAnimationNameList:String[];
+	//animationSettingList 与ActionTypeInfo.animationActionInfo 数量应相同.
+	var animationSettingList:AnimationSettingForAction[];
 	
 	var actionTypeList:ActionTypeInfo[];
+}
+
+class AnimationSettingData
+{
+	var useFader:boolean;
+	var animationIndex:int;
 }
 
 //class BodyActionData
@@ -48,7 +60,7 @@ var nowActionIndex=0;
 var nowActionType="";
 
 //[string]=int
-var actionNameToIndex=Hashtable();
+var actionNameToAniSetting=Hashtable();
 //var actionTypeNameToIndex=Hashtable();
 //[string]=string[]
 var nameToActionType=Hashtable();
@@ -61,16 +73,22 @@ function init(cInfo:BodyActionInfo,pAnimation:Animation)
 	var actionTypeList=cInfo.actionTypeList;
 		
 	//存储动作名对应的索引
-	for(var lNameIndex=0;lNameIndex<cInfo.actionAnimationNameList.length;++lNameIndex)
+	for(var lNameIndex=0;lNameIndex<cInfo.animationSettingList.length;++lNameIndex)
 	{
-		actionNameToIndex[cInfo.actionAnimationNameList[lNameIndex]]=lNameIndex;
+		var animationSettingInfo = cInfo.animationSettingList[lNameIndex];
+		var animationSettingData=AnimationSettingData();
+		
+		animationSettingData.useFader=animationSettingInfo.useFader;
+		animationSettingData.animationIndex=lNameIndex;
+		
+		actionNameToAniSetting[animationSettingInfo.name]=animationSettingData;
 	}
 	
 	//遍历动作类型
 	for(var i=0; i<actionTypeList.length;++i)
 	{
 		var actionTypeInfo=actionTypeList[i];
-		//actionNameToIndex[actionTypeInfo.actionTypeName]=i;
+		//actionNameToAniSetting[actionTypeInfo.actionTypeName]=i;
 		
 		//遍历一个动作类型中的动作/动画
 		var animationNameList=Array();
@@ -97,7 +115,7 @@ function init(cInfo:BodyActionInfo,pAnimation:Animation)
 	}
 	nowActionType=actionTypeList[0].actionTypeName;
 }
-
+/*
 function playAction(pActionIndex:int)
 {
 	if(pActionIndex!=nowActionIndex)
@@ -106,20 +124,27 @@ function playAction(pActionIndex:int)
 		updateAnimation();
 	}
 }
-
+*/
 function playAction(pActionName:String)
 {
 	//Debug.Log(pActionName);
 	/*
-	Debug.Log(actionNameToIndex);
+	Debug.Log(actionNameToAniSetting);
 	
-	for(var i:System.Collections.DictionaryEntry in actionNameToIndex)
+	for(var i:System.Collections.DictionaryEntry in actionNameToAniSetting)
 	{
 		Debug.Log(i.Key+" "+i.Value);
 	}
 		*/
-	var lActionIndex:int = actionNameToIndex[pActionName];
-	playAction(lActionIndex);
+	//Debug.Log(pActionName);
+	var lAnimationSettingData:AnimationSettingData = actionNameToAniSetting[pActionName];
+	//Debug.Log(lAnimationSettingData);
+	//playAction(lAnimationSettingData.animationIndex);
+	if(lAnimationSettingData.animationIndex!=nowActionIndex)
+	{
+		nowActionIndex=lAnimationSettingData.animationIndex;
+		updateAnimation(lAnimationSettingData.useFader);
+	}
 }
 
 function playActionType(pName:String)
@@ -127,14 +152,17 @@ function playActionType(pName:String)
 	if(pName!=nowActionType)
 	{
 		nowActionType=pName;
-		updateAnimation();
+		updateAnimation(false);
 	}
 }
 
-function updateAnimation()
+function updateAnimation(pCrossFade:boolean)
 {
 	//Debug.Log(nameToActionType[nowActionType][nowActionIndex]);
-	myAnimation.CrossFade(nameToActionType[nowActionType][nowActionIndex],0.1);
+	if(pCrossFade)
+		myAnimation.CrossFade(nameToActionType[nowActionType][nowActionIndex],0.1);
+	else
+		myAnimation.Play(nameToActionType[nowActionType][nowActionIndex]);
 }
 
 }
