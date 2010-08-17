@@ -45,7 +45,7 @@ var downBodyActionInfo=BodyActionInfo();
 var upBodyAction=BodyAction();
 var downBodyAction=BodyAction();
 
-var objectListener=IobjectListener();
+var objectListener:IobjectListener;
 
 //Component.SendMessage ("dieCallFunction")
 //var dieCallFunction:Component;
@@ -162,6 +162,8 @@ function GetActionCommandFromInput()
 	}
 	if(Input.GetButton ("down"))
 		lActionCommand.FaceDown=true;
+	if(Input.GetButton ("up"))
+		lActionCommand.FaceUp=true;
 		
 	lActionCommand.Fire=Input.GetButton ("fire");
 	lActionCommand.Jump=Input.GetButton ("jump");
@@ -218,16 +220,21 @@ function Update()
 	}
 	else
 		upBodyAction.playAction("standby");
+		
+	if(characterController.isGrounded)
+		if(actionCommand.GoForward)
+		{
+			downBodyAction.playAction("run");
+		}
+		else
+		{
+			downBodyAction.playAction("stand");
+		}
+	else
+		downBodyAction.playAction("onAir");
 
 	if(actionCommand.GoForward)
-	{
-		downBodyAction.playAction("run");
 		moveV.x=face;
-	}
-	else
-	{
-		downBodyAction.playAction("stand");
-	}
 	
 	if(actionCommand.Jump&&actionCommand.FaceDown)
 	{
@@ -236,21 +243,55 @@ function Update()
 	else
 		boardDetector.recover();
 		
+	updatePosture(actionCommand.FaceUp,actionCommand.FaceDown,actionCommand.GoForward);
+	//print(""+actionCommand.FaceUp+actionCommand.FaceDown+actionCommand.GoForward);
+		
 }
+
+function updatePosture(pUp:boolean,pDwon:boolean,pForward:boolean)
+{
+	if(pUp==pDwon)
+	{
+		upBodyAction.playActionType("angle0");
+		return;
+	}
+	
+	if(pUp)
+	{
+		if(pForward)
+			upBodyAction.playActionType("angle45");
+		else
+			upBodyAction.playActionType("angle90");
+	}
+	else
+	{
+		if(pForward)
+			upBodyAction.playActionType("angle-45");
+		else
+			upBodyAction.playActionType("angle-90");
+	}
+}
+
+var preIsGrounded = true;
+
+//function isGrounded()
+//{
+//	return preIsGrounded==true || characterController.isGrounded==true;
+//}
 
 //更新characterController
 function FixedUpdate()
 {
 
 	
-	if(life.isAlive() && grounded)
+	if(life.isAlive() && characterController.isGrounded)
 	{
 		if( !actionCommand.FaceDown)
 		{
 			if(actionCommand.Jump)
 				moveV.y = jumpSpeed;
 			else
-				moveV.y = 0;		
+				moveV.y = -0.1;	//以免飞起来
 		}
 	}
 	else
@@ -259,8 +300,12 @@ function FixedUpdate()
 	// Move the controller
 	var lVelocity=Vector3(moveV.x * runSpeed,moveV.y,0);
 	//print(lVelocity);
+	preIsGrounded = characterController.isGrounded;
 	var flags:CollisionFlags=characterController.Move(lVelocity* Time.deltaTime);
-	grounded = (flags & CollisionFlags.CollidedBelow) != 0;
+	//grounded = (flags & CollisionFlags.CollidedBelow) != 0;
+	//print(""+preIsGrounded+characterController.isGrounded+":"+isGrounded());
+	//print(grounded);
+	//print(characterController.isGrounded );
 	
 }
 

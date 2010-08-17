@@ -35,6 +35,8 @@ class BodyActionInfo
 	
 	var mixingTransform:Transform;
 	
+	//var mixingTransform2:Transform;
+	
 	//animationSettingList 与ActionTypeInfo.animationActionInfo 数量应相同.
 	var animationSettingList:AnimationSettingForAction[];
 	
@@ -100,6 +102,11 @@ function init(cInfo:BodyActionInfo,pAnimation:Animation)
 				myAnimation[animationInfo.animationName].AddMixingTransform(cInfo.mixingTransform);
 				myAnimation[animationInfo.animationName].layer = cInfo.layer;
 			}
+			//if(cInfo.mixingTransform2)
+			//{
+			//	myAnimation[animationInfo.animationName].AddMixingTransform(cInfo.mixingTransform2);
+			//	myAnimation[animationInfo.animationName].layer = cInfo.layer;
+			//}
 			if(animationInfo.functionName.Length!=0)
 			{
 				var lAnimationEvent=AnimationEvent();
@@ -149,6 +156,7 @@ function playAction(pActionName:String)
 
 function playActionType(pName:String)
 {
+	//Debug.Log(pName);
 	if(pName!=nowActionType)
 	{
 		nowActionType=pName;

@@ -293,7 +293,7 @@ function FixedUpdate()
 			if(actionCommand.Jump)
 				moveV.y = jumpSpeed;
 			else
-				moveV.y = 0;		
+				moveV.y = -0.1;		
 		}
 	}
 	else

@@ -27,8 +27,8 @@ ModelImporter:
         loop: 1
         wrapMode: 2
       angle-90standby:
-        firstFrame: 7
-        lastFrame: 8
+        firstFrame: 6
+        lastFrame: 7
         loop: 1
         wrapMode: 2
   nodeInfo:
