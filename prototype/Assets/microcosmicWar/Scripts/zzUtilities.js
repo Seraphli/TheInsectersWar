@@ -25,3 +25,31 @@ static function removeValueInArray(array:Array, pValue)
 			}
 		}
 }
+
+class DataWrap
+{
+	var data:Object;
+	
+	function ToString () : String 
+	{
+		return data.ToString();
+	}
+}
+
+class zzPair
+{
+	function ToString () : String 
+	{
+		return "left:"+left+" right:"+right;
+	}
+	
+	function zzPair(){}
+	function zzPair(Lift,Right)
+	{
+		left = Lift;
+		right =Right;
+	}
+	
+	var left:Object;
+	var right:Object;
+}
