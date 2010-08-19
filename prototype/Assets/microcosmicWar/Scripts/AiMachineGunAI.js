@@ -36,8 +36,8 @@ function OnTriggerExit (other : Collider)
 		enemyList.Remove(other.transform);
 		
 		//移出的是否是目标兵
-		//if(fireTarget==other.transform)
-		//	searchFireTargetInList();
+		if(fireTarget==other.transform)
+			searchFireTargetInList();
 	}
 }
 
@@ -46,8 +46,8 @@ protected function searchFireTargetInList()
 	//避免一帧中多次OnTriggerExit和其他的情况,所以用此方法
 	
 	//在此情况下重新搜索
-	if(!fireTarget || !enemyList.ContainsKey(fireTarget))
-	{
+	//if(!fireTarget || !enemyList.ContainsKey(fireTarget))
+	//{
 		fireTarget=null;
 		for(var i:System.Collections.DictionaryEntry in enemyList)
 		{
@@ -58,14 +58,14 @@ protected function searchFireTargetInList()
 			}
 			enemyList.Remove(i);
 		}
-	}
+	//}
 	return fireTarget;
 }
 
-function SetAdversaryLayerValue(pLayerValue:int)
-{
-	adversaryLayerValue = pLayerValue;
-}
+//function SetAdversaryLayerValue(pLayerValue:int)
+//{
+//	adversaryLayerValue = pLayerValue;
+//}
 
 function Start()
 {
@@ -79,8 +79,8 @@ function Start()
 function ImpUpdate () 
 {
 	//searchFireTarget();
-	//if(fireTarget)
-	if(searchFireTargetInList())
+	if(fireTarget)
+	//if(searchFireTargetInList())
 	{
 		aiMachineGun.setFire(true);
 		aiMachineGun.takeAim(fireTarget.position,fireDeviation);

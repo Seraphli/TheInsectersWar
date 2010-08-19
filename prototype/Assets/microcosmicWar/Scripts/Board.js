@@ -17,6 +17,12 @@ static function turnOffCollisionWithAllBaord( pGameObject :GameObject )
 	turnOffCollisionWithAllBaord(pGameObject.collider);
 }
 
+//记得在场景结束前调用
+static function clearList()
+{
+	sBoardList.Clear();
+}
+
 function Awake()
 {
 	sBoardList.Add(gameObject);

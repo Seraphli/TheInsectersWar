@@ -220,8 +220,26 @@ function pack(pData:Object):String
 	return  getrUserSerializeFromType(typeof(pData)).userPack(pData);
 }
 
+//返回第一个数据 一般用以 Hashtable ,Array
+function unpackToData(pStr:String):Object
+{
+	var lUnpackList = unpackToList(pStr);
+	var i=0;
+	var lOut =DataWrap();
+	//while(i<lUnpackList.Count)
+	//{
+	//	i=unpack(lUnpackList,i,lOut);
+	//}
+	unpack(lUnpackList,i,lOut);
+	return lOut.data;
+}
+
 function Awake()
 {
+	if(singletonInstance)
+		Debug.LogError("have singletonInstance");
+	singletonInstance = this;
+	/*
 	var ltable:Hashtable = Hashtable();
 	print(ltable);
 	 ltable =	{
@@ -233,9 +251,6 @@ function Awake()
 	print(ltable);
 	print(typeof(ltable));
 	print(typeof(Hashtable));
-	if(singletonInstance)
-		Debug.LogError("have singletonInstance");
-	singletonInstance = this;
 	
 	zzMySerializeString.registerMySerialize();
 	//registerUserSerialize(new zzVector3Serialize());
@@ -260,22 +275,7 @@ function Awake()
 			}
 		}
 		print(lOut.data);
-	}
-	/*
-	for(var v:SerializePackData in lUnpackList)
-	{
-		var out = unpack(v);
-		print(typeof(out));
-		print(out);
 	}*/
-		
-	//var i=0;
-	//var lOut=SerializePackData();
-	//while(i<lPacked.Length)
-	//{
-	//	i = unpackOne(lPacked,i,lOut);
-	//	print(lOut.data+" type:"+lOut.type);
-	//}
 }
 
 function Update () {

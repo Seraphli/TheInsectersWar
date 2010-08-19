@@ -28,11 +28,14 @@ var fireTime:float;
 
 class _2dInvertDoubleFaceSprite
 {
-	var face=1;
+	var face=UnitFaceDirection.left;
 	
 	//var preFace=1;
 	
-	var leftFaceValue=1;
+	//var leftFaceValue=1;
+	
+	//原始的朝向
+	var originalFace= UnitFaceDirection.left;
 	
 	//var invertObject:Transform;
 	
@@ -76,10 +79,11 @@ class _2dInvertDoubleFaceSprite
 		return nowSprite;
 	}
 	
-	//以左为正
+	//以右为正
 	function setFaceDirection(pFace:int)
 	{
-		setFace(pFace*leftFaceValue);
+		//setFace(pFace*leftFaceValue);
+		setFace(pFace);
 	}
 	
 	function setAnimationListener(pAnimationName:String,pListener:AnimationListener)
@@ -101,15 +105,16 @@ class _2dInvertDoubleFaceSprite
 	
 	protected function _UpdateFaceShow()
 	{
-		if(face==1)
+		if(face==originalFace)
 			turnObject.rotation=Quaternion(0,0,0,1);
 		else
 			turnObject.rotation=Quaternion(0,1,0,0);
 			
-		if(face==leftFaceValue)
-			nowSprite = faceLeftSprite;
-		else
+		//if(face==leftFaceValue)
+		if(face==UnitFaceDirection.right)
 			nowSprite = faceRightSprite;
+		else
+			nowSprite = faceLeftSprite;
 	}
 }
 
@@ -157,8 +162,22 @@ function Start()
 	if(zzCreatorUtility.isHost())
 	{
 		zzCreatorUtility.sendMessage(gameObject,"initLayer",gameObject.layer);
-		zzCreatorUtility.sendMessage(gameObject,"initFace",invert.getFace());
+		var lIntType:int = invert.getFace();
+		zzCreatorUtility.sendMessage(gameObject,"initFace", lIntType);
 	}
+}
+
+/*
+info["face"]
+info["layer"]
+info["adversaryLayer"]
+*/
+function init(info:Hashtable)
+{
+	invert.face = info["face"];
+	gameObject.layer=info["layer"];
+	var lAi:AiMachineGunAI = GetComponentInChildren(AiMachineGunAI);
+	lAi.adversaryLayer=info["adversaryLayer"];
 }
 
 @RPC
@@ -265,6 +284,7 @@ function smoothTurnToAngle(pAimAngular:float)
 //瞄准到指定位置,如果已在枪口的deviation角度范围内,则不动
 function takeAim(pAimPos:Vector3,deviation:float)
 {
+	//print(pAimPos);
 	var lFireRay = emitter.getFireRay();
 	var lEmitterToAim=pAimPos-lFireRay.origin;
 	lEmitterToAim.Normalize();

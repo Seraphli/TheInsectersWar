@@ -8,8 +8,9 @@ function Awake()
 		defenseTower=gameObject.GetComponentInChildren(DefenseTower);
 	if(!life)
 		life=gameObject.GetComponentInChildren(Life);
-		
-	if( !zzCreatorUtility.isMine(gameObject.networkView ) )
+	
+	//print(!zzCreatorUtility.isHost());
+	if( !zzCreatorUtility.isHost() )
 	{
 		Destroy(defenseTower.GetComponentInChildren(AiMachineGunAI));
 	}

@@ -143,5 +143,16 @@ static function sendMessage(gameObject:GameObject,methodName : String)
 	zzGenericCreator.sendMessage(gameObject,methodName);
 }
 
+//联网时使用netMethodName,单机时 使用 singleMethodName
+static function sendMessag2Two(gameObject:GameObject,singleMethodName : String, netMethodName : String,value : Object)
+{
+	if(Network.peerType ==NetworkPeerType.Disconnected)
+		gameObject.SendMessage(singleMethodName,value);
+	else
+		gameObject.networkView.RPC(netMethodName,
+			RPCMode.AllBuffered,
+			value); 
+}
+
 //function Update () {
 //}

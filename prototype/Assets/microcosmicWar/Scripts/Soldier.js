@@ -54,6 +54,22 @@ function getFaceDirection()
 	return face;
 }
 
+enum UnitFaceDirection
+{
+	left,
+	right,
+}
+
+class UnitFace
+{
+	function getValue( type:UnitFaceDirection)
+	{
+		if(type == UnitFaceDirection.left)
+			return -1;
+		return 1;
+	}
+}
+
 class UnitActionCommand
 {
 	//None,
