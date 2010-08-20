@@ -10,7 +10,7 @@ class zzCreatorInfo
 {
 	//±ÿ–Î”–zzGameObjectInit
 	var name:String;
-	var prefab:GameObject;
+	var prefab:zzGameObjectInit;
 }
 
 var creatorList:zzCreatorInfo[];
@@ -33,6 +33,7 @@ function create( p:Hashtable)
 	if(p.ContainsKey("rotation"))
 		rotation = p["rotation"];
 	var clone = zzCreatorUtility.Instantiate( creatorMap[p["creatorName"]] , position , rotation , 0) ;
+	Debug.Log(p["creatorName"]+" "+clone.name);
 	var initObject:zzGameObjectInit = clone.GetComponent(zzGameObjectInit);
 	initObject.init(p);
 }

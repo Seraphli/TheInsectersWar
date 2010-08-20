@@ -13,6 +13,7 @@ class layers
 	public static var deadObject = LayerMask.NameToLayer("deadObject");
 	
 	public static var board = LayerMask.NameToLayer("board");
+	public static var boardValue = 1 << board;
 }
 
 //static var mIgnoreList = new Hashtable();

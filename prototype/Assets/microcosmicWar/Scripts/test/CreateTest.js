@@ -1,6 +1,7 @@
 
 function Update () {
 
+	//print(gameObject.name);
 	if(Input.GetButton ("test1"))
 	{
 		zzGameObjectCreator.getSingleton().create({

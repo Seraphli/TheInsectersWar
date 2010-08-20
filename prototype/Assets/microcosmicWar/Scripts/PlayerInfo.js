@@ -17,6 +17,43 @@ static function eRaceToString(race:Race)
 	}
 	return ;
 }
+
+static function getAdversaryRace(race:Race)
+{
+	switch(race)
+	{
+		case Race.ePismire: return Race.eBee;
+		case Race.eBee: return Race.ePismire;
+		//case Race.ePismire: return "pismire";
+	}
+	return ;
+}
+
+static function getRaceLayer(race:Race):int
+{
+	switch(race)
+	{
+		case Race.eBee: return layers.bee;
+		case Race.ePismire: return layers.pismire;
+		//case Race.ePismire: return "pismire";
+	}
+	Debug.LogError(race);
+	return ;
+}
+
+static function getAdversaryRaceLayer(raceLayer:int)
+{
+	switch(raceLayer)
+	{
+		case layers.pismire: return layers.bee;
+		case layers.bee: return layers.pismire;
+		//case Race.ePismire: return "pismire";
+	}
+	Debug.LogError(raceLayer);
+	return ;
+}
+
+
 var	race:Race = Race.eNone;
 
 var 	playerName="player";
