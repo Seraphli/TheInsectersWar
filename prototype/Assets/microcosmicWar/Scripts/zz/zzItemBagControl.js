@@ -2,7 +2,7 @@
 //如果索引已经设置则代表是已有的吧,未设置就用bagName创建新包
 var bagIndex=-1;
 var bagName="";
-var owner;
+var owner:GameObject;
 
 protected var itemSystem:zzItemSystem;
 
@@ -14,7 +14,7 @@ class zzMyItemInBagInfo
 
 var itemInBagInfo:zzMyItemInBagInfo[];
 
-function getBagData()
+function getBagData():ItemBagData
 {
 	return  itemSystem.getBagTable().getData(bagIndex);
 }
@@ -24,15 +24,39 @@ function setItemNum(pName:String,pNum:int)
 	getBagData().setNum(itemSystem.getItemTypeTable().getIndex(pName),pNum);
 }
 
+//0 为钱
 function addItemOne(pItemIndex:int)
 {
-	getBagData().addItem(pItemIndex);
+	getBagData().addItemOne(pItemIndex);
+}
+
+//0 为钱
+function addItem(index:int,number:int)
+{
+	getBagData().addItem(index,number);
+}
+
+function addMoney(number:int)
+{
+	//Debug.Log("addMoney");
+	addItem(0,number);
+	//Debug.Log(getMoneyNum());
+}
+
+function getNum(index:int)
+{
+	return getBagData().getNum(index);
+}
+
+function getMoneyNum()
+{
+	return getNum(0);
 }
 
 function useItemOne(pItemIndex:int,pOwner:GameObject)
 {
-	print("index:"+pItemIndex+",number:"+getBagData().getNum(pItemIndex));
-	if(getBagData().getNum(pItemIndex)>0)
+	//print("index:"+pItemIndex+",number:"+getBagData().getNum(pItemIndex));
+	if(getNum(pItemIndex)>0)
 	{
 		var item:ItemObjectImp = itemSystem.getItemTypeTable().getData(pItemIndex).getItemObject();
 		if(item.canUse(pOwner))
@@ -64,6 +88,11 @@ function Start()
 	{
 		setItemNum(i.name,i.number);
 	}
+	
+	//和发射器连接 以便得到奖励
+	var lEmitter:Emitter = owner.GetComponentInChildren(Emitter);
+	if(lEmitter)
+		lEmitter.setInjureInfo({"bagControl":this});
 	
 	//Debug.Log(getBagData());
 }

@@ -188,7 +188,9 @@ function Awake()
 
 class ItemBagData
 {
-	function ItemBagData(itemTypeNum:int)
+	var name:String;
+
+	function ItemBagData(pName:String,itemTypeNum:int)
 	{
 		itemList=new int[itemTypeNum];
 	}
@@ -207,6 +209,12 @@ class ItemBagData
 	{
 		return ++itemList[index];
 	}
+	
+	function addItem(index:int,number:int)
+	{
+		itemList[index]+=number;
+	}
+
 	
 	function removeItemOne(index:int)
 	{
@@ -230,7 +238,7 @@ var bagTable =zzIndexTable();
 //必须在结束增加物品类型后
 function addBag(name:String)
 {
-	return bagTable.addData(name,new ItemBagData(itemTypeTable.getNum()) );
+	return bagTable.addData(name,new ItemBagData(name,itemTypeTable.getNum()) );
 }
 
 function getBagTable()

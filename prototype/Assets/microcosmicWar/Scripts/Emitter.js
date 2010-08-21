@@ -6,6 +6,13 @@ var bulletLayer=0;
 
 var fireSound:AudioSource;
 
+protected var injureInfo:Hashtable;
+
+virtual function setInjureInfo(pInjureInfo:Hashtable)
+{
+	injureInfo = pInjureInfo;
+}
+
 function Update () 
 {
 }
@@ -21,6 +28,11 @@ virtual function EmitBullet()
 		//print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
 		clone.GetComponentInChildren(Rigidbody).velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
 		//clone.velocity=transform.forward;
+		if(injureInfo)
+		{
+			var pBullet:Bullet = clone.GetComponentInChildren(Bullet);
+			pBullet.setInjureInfo(injureInfo);
+		}
 	}
 	if(fireSound)
 	{

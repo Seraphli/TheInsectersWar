@@ -28,7 +28,8 @@ function Start()
 	adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
 	
 	var lLife:Life=gameObject.GetComponent(Life);
-	lLife.setDieCallback(dieCall);
+	//lLife.setDieCallback(dieCall);
+	lLife.addDieCallback(dieCall);
 	
 	if(!zzCreatorUtility.isHost())
 		Destroy(this);

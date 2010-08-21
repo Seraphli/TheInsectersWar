@@ -87,7 +87,8 @@ function Start()
 	
 
 	life= GetComponentInChildren(Life);
-	life.setDieCallback(deadAction);
+	//life.setDieCallback(deadAction);
+	life.addDieCallback(deadAction);
 	
 	//?
 	//characterController .detectCollisions=false;

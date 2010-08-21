@@ -2,6 +2,13 @@
 var aliveTime=5.0;
 var harmVale=1.0;
 
+protected var injureInfo:Hashtable;
+
+function setInjureInfo(pInjureInfo:Hashtable)
+{
+	injureInfo = pInjureInfo;
+}
+
 function Start()
 {
 	collisionLayer.addCollider(gameObject);
@@ -26,9 +33,9 @@ function OnCollisionEnter(collision : Collision)
 	var lOwner:Transform = collision.transform;
 	while(lOwner.parent)
 		lOwner=lOwner.parent;
-	var lLife=lOwner.gameObject.GetComponentInChildren(Life);
+	var lLife:Life=lOwner.gameObject.GetComponentInChildren(Life);
 	if(lLife)
-		lLife.injure(harmVale);
+		lLife.injure(harmVale,injureInfo);
 		
 	//if(zzCreatorUtility.isHost())
 	lifeEnd();

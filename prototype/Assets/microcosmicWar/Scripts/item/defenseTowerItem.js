@@ -17,18 +17,18 @@ class defenseTowerItem extends IitemObject
 		if (Physics.Raycast (position, Vector3(0,-1,0) , lHit, 4,layers.boardValue)) 
 		{
 			//var lRange = Vector2(0,2,0);
-			//Debug.Log(""+(lHit.point+Vector3(0,4,0))+(lHit.point+Vector3(0,0.1,0)));
+			Debug.Log(""+(lHit.point+Vector3(0,4,0))+(lHit.point+Vector3(0,0.1,0)));
 			//if(!Physics.CheckCapsule  (lHit.point+Vector3(0,3,0), lHit.point+Vector3(0,-1,0), 0.25 ) )
-			if(!Physics.CheckSphere(lHit.point+Vector3(0,2,0), 2,layers.boardValue) )
+			if(!Physics.CheckSphere(lHit.point+Vector3(0,2,0), 1.8,layers.boardValue) )
 			{
 				towerPosition=lHit.point;
 				towerFace=face;
 				useObject=pGameObject;
-				//Debug.Log("can use");
+				Debug.Log("can use");
 				return true;
 			}
 		}
-		//Debug.Log(lHit.point);
+		Debug.Log(""+position+","+lHit.point);
 		return false;
 	}
 

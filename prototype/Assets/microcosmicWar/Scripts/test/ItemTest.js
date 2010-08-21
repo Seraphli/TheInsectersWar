@@ -14,7 +14,7 @@ function Update ()
 {
 	if(Input.GetKeyDown(key) )
 	{
-		print("Input.GetKeyDown(key)");
+		//print("Input.GetKeyDown(key)");
 		bagControl.useItemOne(itemIndex);
 	}
 }

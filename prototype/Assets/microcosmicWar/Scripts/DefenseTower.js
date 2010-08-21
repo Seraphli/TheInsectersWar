@@ -144,7 +144,8 @@ protected var life:Life;
 function Start()
 {
 	life= GetComponentInChildren(Life);
-	life.setDieCallback(deadAction);
+	//life.setDieCallback(deadAction);
+	life.addDieCallback(deadAction);
 	
 	gunPivot = transform.Find("turn/gunPivot");
 	

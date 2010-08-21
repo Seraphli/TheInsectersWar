@@ -7,6 +7,15 @@ class EmitterContainer  extends Emitter
 {
 	var emitList:Emitter[];
 
+	virtual function setInjureInfo(pInjureInfo:Hashtable)
+	{
+		super.setInjureInfo( pInjureInfo );
+		for( var iEmit:Emitter in emitList )
+		{
+			iEmit.setInjureInfo(pInjureInfo);
+		}
+	}
+
 	function Start()
 	{
 	}

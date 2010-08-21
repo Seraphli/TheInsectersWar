@@ -106,7 +106,8 @@ function Start()
 	characterController = GetComponentInChildren(CharacterController);
 	emitter = GetComponentInChildren(Emitter);
 	life= GetComponentInChildren(Life);
-	life.setDieCallback(deadAction);
+	//life.setDieCallback(deadAction);
+	life.addDieCallback(deadAction);
 	
 	//?
 	characterController .detectCollisions=false;
@@ -195,6 +196,14 @@ function deadAction()
 	transform.Find("CubeReact").gameObject.layer=layers.deadObject;
 	
 	collisionLayer.updateCollider(gameObject);
+	
+	/*//½±ÀøÓ¢ÐÛ
+	var lInjureInfo:Hashtable = life.getInjureInfo();
+	if(lInjureInfo && lInjureInfo.ContainsKey("bagControl"))
+	{
+		var lBagControl:zzItemBagControl = lInjureInfo["bagControl"];
+		lBagControl.addMoney(shootAward);
+	}*/
 }
 
 function disappear()
