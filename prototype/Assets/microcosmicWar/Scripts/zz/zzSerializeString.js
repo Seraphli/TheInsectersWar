@@ -135,6 +135,7 @@ function SerializePackTypeToString(pType:SerializePackType)
 		case SerializePackType.userdata: return "u";
 	};
 	Debug.LogError("SerializePackTypeToString error type:"+pType);
+	return "";
 }
 
 class SerializePackData
@@ -159,6 +160,7 @@ function unpack(pSerializePackData:SerializePackData)
 		case SerializePackType.userdata: return pSerializePackData.data;
 	};
 	Debug.LogError("SerializePackTypeToString error type:"+pSerializePackData.type);
+	return null;
 }
 
 function unpackOne(pStr:String,pBeginPos:int, pSerializePackData:SerializePackData)
