@@ -7,6 +7,15 @@
 class ItemTypeInfo
 {
 	var name:String;
+	
+	var image:Texture;
+	
+	//var nameForShow:String;
+	
+	function getImage()
+	{
+		return image;
+	}
 	/*
 	protected var groupIndex=0;
 	
@@ -189,15 +198,41 @@ function Awake()
 class ItemBagData
 {
 	var name:String;
+	//var dataChangedCall = zzUtilities.nullFunction;
+	//按物品索引排列
+	var dataChangedCallList : Object[];
+	
+	protected var itemList:int[];
+	
+	function getItemTypeNum()
+	{
+		return itemList.Length;
+	}
+	
+	function addDataChangedCall(pCall,pBeginIndex:int,pEndIndex:int)
+	{
+		//dataChangedCall = pCall;
+		for(var i = pBeginIndex; i<=pEndIndex;++i)
+			dataChangedCallList[i] = pCall;
+	}
 
 	function ItemBagData(pName:String,itemTypeNum:int)
 	{
 		itemList=new int[itemTypeNum];
+		dataChangedCallList = new Object[itemTypeNum];
+		for(var i in dataChangedCallList)
+			i = zzUtilities.nullFunction;
 	}
 	
 	function setNum(index:int,num:int)
 	{
+		if(num>999999)
+			num=999999;
+		if(num<0)
+			num=0;
 		itemList[index]=num;
+		dataChangedCallList[index]();
+		//dataChangedCall();
 	}
 	
 	function getNum(index:int)
@@ -207,21 +242,22 @@ class ItemBagData
 	
 	function addItemOne(index:int)
 	{
-		return ++itemList[index];
+		//++itemList[index];
+		setNum(index,itemList[index]+1);
+		//dataChangedCall();
 	}
 	
 	function addItem(index:int,number:int)
 	{
-		itemList[index]+=number;
+		setNum(index,itemList[index]+number);
 	}
 
 	
 	function removeItemOne(index:int)
 	{
-		return --itemList[index];
+		setNum(index,itemList[index]-1);
+		//dataChangedCall();
 	}
-	
-	protected var itemList:int[];
 	
 	function ToString () : String 
 	{

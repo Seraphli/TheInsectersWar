@@ -32,7 +32,8 @@ function Start()
 
 function UpdateBar()
 {
-	var lRate = life.getBloodValue()/life.getFullBloodValue();
+	var lFullBloodValue:float = life.getFullBloodValue();
+	var lRate:float = life.getBloodValue()/lFullBloodValue;
 	if(lRate<0)
 		SetRate(0);
 	else

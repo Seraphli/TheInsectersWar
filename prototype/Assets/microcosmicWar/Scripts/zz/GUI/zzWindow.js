@@ -13,12 +13,12 @@ class zzWindow extends zzGUIContainer
 
 	function OnGUI () 
 	{
-		GUI.Window (ID, position, impSubs,title,style);
+		impGUI();
 	}
 	
 	virtual function impGUI()
 	{
-		GUI.Window (ID, position, impSubs,title,style);
+		GUI.Window (ID, getPosition(), impSubs,title,style);
 	}
 
 	// Make the contents of the window

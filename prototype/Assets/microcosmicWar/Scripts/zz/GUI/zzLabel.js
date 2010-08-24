@@ -9,4 +9,9 @@ class zzLabel extends zzInterfaceGUI
 	{
 		GUI.Label(position , content , style);
 	}
+	
+	virtual function setText(pText:String)
+	{
+		content.text = pText;
+	}
 }

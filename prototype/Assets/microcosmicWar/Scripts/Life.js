@@ -1,6 +1,6 @@
 
-var bloodValue = 5.0;
-var fullBloodValue = 5.0;
+var bloodValue:int = 5.0;
+var fullBloodValue:int = 5.0;
 
 var bloodValueChangeCallback=zzUtilities.nullFunction;
 //var dieCallback=zzUtilities.nullFunction;
@@ -53,6 +53,8 @@ function getInjureInfo():Hashtable
 
 function setBloodValue(pValue:float)
 {
+	if(pValue>fullBloodValue)
+		pValue = fullBloodValue;
 	if( bloodValue!=pValue )
 	{
 		bloodValue = pValue;

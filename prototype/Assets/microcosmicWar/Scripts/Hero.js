@@ -20,8 +20,8 @@ var deadDisappearTimePos=4.0;
 //在播放死亡动画时,会执行的动作
 protected var actionImpDuringDeadAnimation=AnimationImpInTimeList();
 
-protected var turnObjectTransform:Transform;
-protected var reverseObjectTransform:Transform;
+//protected var turnObjectTransform:Transform;
+var reverseObjectTransform:Transform;
 
 protected var Xscale:float;
 //protected var mZZSprite:ZZSprite;
@@ -70,7 +70,7 @@ function getFaceDirection()
 	return face;
 }
 
-var upBody:Transform;
+//var upBody:Transform;
 
 function Start()
 {
@@ -95,7 +95,8 @@ function Start()
 	
 	collisionLayer.addCollider(gameObject);
 	
-	reverseObjectTransform= transform;
+	if(!reverseObjectTransform)
+		reverseObjectTransform= transform;
 
 	//Xscale=transform.localScale.x;
 
@@ -273,7 +274,7 @@ function updatePosture(pUp:boolean,pDwon:boolean,pForward:boolean)
 	}
 }
 
-var preIsGrounded = true;
+//var preIsGrounded = true;
 
 //function isGrounded()
 //{
@@ -301,7 +302,7 @@ function FixedUpdate()
 	// Move the controller
 	var lVelocity=Vector3(moveV.x * runSpeed,moveV.y,0);
 	//print(lVelocity);
-	preIsGrounded = characterController.isGrounded;
+	//preIsGrounded = characterController.isGrounded;
 	var flags:CollisionFlags=characterController.Move(lVelocity* Time.deltaTime);
 	//grounded = (flags & CollisionFlags.CollidedBelow) != 0;
 	//print(""+preIsGrounded+characterController.isGrounded+":"+isGrounded());

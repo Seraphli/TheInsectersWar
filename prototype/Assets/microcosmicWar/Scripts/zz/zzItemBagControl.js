@@ -6,6 +6,11 @@ var owner:GameObject;
 
 protected var itemSystem:zzItemSystem;
 
+function getItemSystem()
+{
+	return itemSystem;
+}
+
 class zzMyItemInBagInfo
 {
 	var name:String;
@@ -13,6 +18,16 @@ class zzMyItemInBagInfo
 }
 
 var itemInBagInfo:zzMyItemInBagInfo[];
+
+function setItemChangedCall(pCall)
+{
+	getBagData().addDataChangedCall(pCall,1,getBagData().getItemTypeNum()-1);
+}
+
+function setMoneyChangedCall(pCall)
+{
+	getBagData().addDataChangedCall(pCall,0,0);
+}
 
 function getBagData():ItemBagData
 {
@@ -34,6 +49,22 @@ function addItemOne(pItemIndex:int)
 function addItem(index:int,number:int)
 {
 	getBagData().addItem(index,number);
+}
+
+//得到除索引为0以外的工具数组,以便UI显示
+function getItemList()
+{
+	var lOut = Array();
+	for(var i=1;i<itemSystem.getItemTypeTable().getNum();++i)
+	{
+		var numOfTheItem = getNum(i);
+		while(numOfTheItem>0)
+		{
+			lOut.Add(i);
+			--numOfTheItem;
+		}
+	}
+	return lOut;
 }
 
 function addMoney(number:int)
@@ -97,5 +128,3 @@ function Start()
 	//Debug.Log(getBagData());
 }
 
-function Update () {
-}

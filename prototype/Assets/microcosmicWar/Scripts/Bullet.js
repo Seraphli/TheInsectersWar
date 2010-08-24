@@ -1,6 +1,6 @@
 
 var aliveTime=5.0;
-var harmVale=1.0;
+var harmVale:int=1.0;
 
 protected var injureInfo:Hashtable;
 
