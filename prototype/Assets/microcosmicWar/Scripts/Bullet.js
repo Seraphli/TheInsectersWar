@@ -16,6 +16,12 @@ function Start()
 	//	Destroy(this);
 }
 
+function setAliveTime(pAliveTime:float)
+{
+	//print(pAliveTime);
+	aliveTime = pAliveTime;
+}
+
 function Update()
 {
 	if(zzCreatorUtility.isHost())

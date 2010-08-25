@@ -10,3 +10,8 @@ virtual function use()
 {
 	itemObject.use();
 }
+
+function setItemObject(pItemObject:IitemObject)
+{
+	itemObject = pItemObject;
+}

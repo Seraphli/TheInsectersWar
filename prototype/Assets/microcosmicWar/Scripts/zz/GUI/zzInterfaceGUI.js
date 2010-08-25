@@ -95,11 +95,15 @@ class zzInterfaceGUI extends MonoBehaviour
 	function Reset() 
 	{
 		//Ìí¼Ó
+		/*
 		if(! gameObject.GetComponent(zzGUI) )
 		{
 			var lzzGUI:zzGUI = gameObject.AddComponent(zzGUI);
 			lzzGUI.setGUI(this);
 		}
+		*/
+		var lzzGUI:zzGUI = zzUtilities.needComponent(gameObject,zzGUI);
+		lzzGUI.setGUI(this);
 	}
 	
 	function OnDrawGizmosSelected () 

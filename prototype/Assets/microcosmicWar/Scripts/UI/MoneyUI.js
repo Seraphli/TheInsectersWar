@@ -8,6 +8,12 @@ function Start()
 	if(!moneyLabel)
 		moneyLabel = gameObject.Find("Main Camera")
 			.transform.Find("UI/portrait/moneyLabel").GetComponent(zzInterfaceGUI);
+
+	bagControl.addCallAfterStart(afterBagStartCall);
+}
+
+function afterBagStartCall()
+{	
 	refreshMoneyShow();
 	bagControl.setMoneyChangedCall(refreshMoneyShow);
 }

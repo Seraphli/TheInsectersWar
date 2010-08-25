@@ -29,6 +29,12 @@ function Start()
 		selectedListUI[i-1] = selectedList.getSubElement(i.ToString());
 	}
 	setSelected(1);
+
+	bagControl.addCallAfterStart(afterBagStartCall);
+}
+
+function afterBagStartCall()
+{	
 	refreshItemShow();
 	bagControl.setItemChangedCall(refreshItemShow);
 }

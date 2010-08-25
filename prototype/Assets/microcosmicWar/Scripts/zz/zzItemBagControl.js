@@ -5,6 +5,26 @@ var bagName="";
 var owner:GameObject;
 
 protected var itemSystem:zzItemSystem;
+protected var haveBeInited = false;
+
+//为了解决初次刷新时 UI和此类 初始化先后的问题
+var callListAfterStart = Array();
+
+function addCallAfterStart(pCall)
+{
+	if(haveBeInited)
+		pCall();
+	else
+		callListAfterStart.Add(pCall);
+}
+
+protected function callAfterStart()
+{
+	for(var call in callListAfterStart)
+		call();
+	callListAfterStart.Clear();
+}
+
 
 function getItemSystem()
 {
@@ -126,5 +146,8 @@ function Start()
 		lEmitter.setInjureInfo({"bagControl":this});
 	
 	//Debug.Log(getBagData());
+	
+	haveBeInited = true;
+	callAfterStart();
 }
 

@@ -4,6 +4,16 @@ static function nullFunction()
 	
 }
 
+static function needComponent(gameObject:GameObject,componentType :System.Type) : Component
+{
+	var lOut = gameObject.GetComponent(componentType);
+	if(!lOut  )
+	{
+		lOut = gameObject.AddComponent(componentType);
+	}
+	return lOut;
+}
+
 //移除Array中索引位置的元素,用末尾取代,节省移动数组的开支
 static function quickRemoveArrayElement(array:Array,index:int)
 {

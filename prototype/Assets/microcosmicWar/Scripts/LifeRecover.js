@@ -1,9 +1,14 @@
-var recoverValue:int=50.0;
+var recoverValue:int=100.0;
 var duration = 10.0;
 var life:Life;
 
 //var timePos = 0.0;
 var recoverValueResidue=0.0;
+
+function setLife(plife:Life)
+{
+	life = plife;
+}
 
 function Update () 
 {

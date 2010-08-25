@@ -1,16 +1,26 @@
 
 var bulletPrefab:GameObject;
-var bulletSpeed=3.0;
+var bulletSpeed=20.0;
+
+//…‰≥Ã
+var shootRange:float = 10.0;
 
 var bulletLayer=0;
 
 var fireSound:AudioSource;
 
 protected var injureInfo:Hashtable;
+protected var bulletAliveTime:float;
 
 virtual function setInjureInfo(pInjureInfo:Hashtable)
 {
 	injureInfo = pInjureInfo;
+}
+
+function Start()
+{
+	bulletAliveTime = shootRange/bulletSpeed;
+	//print(""+bulletAliveTime+"="+shootRange"//"+bulletSpeed);
 }
 
 function Update () 
@@ -28,9 +38,10 @@ virtual function EmitBullet()
 		//print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
 		clone.GetComponentInChildren(Rigidbody).velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
 		//clone.velocity=transform.forward;
+		var pBullet:Bullet = clone.GetComponentInChildren(Bullet);
+		pBullet.setAliveTime(bulletAliveTime);
 		if(injureInfo)
 		{
-			var pBullet:Bullet = clone.GetComponentInChildren(Bullet);
 			pBullet.setInjureInfo(injureInfo);
 		}
 	}

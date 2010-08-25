@@ -70,31 +70,6 @@ class UnitFace
 	}
 }
 
-class UnitActionCommand
-{
-	//None,
-	
-	var FaceLeft=false;//朝向左
-	var FaceRight=false;//朝向右
-	var FaceUp=false;
-	var FaceDown=false;
-	var GoForward=false;//前进
-	var Fire=false;//开火
-	var Jump=false;//跳跃
-	
-	function clear()
-	{
-		MoveLeft=false;
-		MoveRight=false;
-		Fire=false;
-		Jump=false;
-		FaceLeft=false;
-		FaceRight=false;
-		FaceUp=false;
-		FaceDown=false;
-		GoForward=false;
-	}
-}
 
 function Start()
 {
