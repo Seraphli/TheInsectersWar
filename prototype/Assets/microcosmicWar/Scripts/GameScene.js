@@ -75,8 +75,8 @@ function CreatePlayer()
 	var cameraFollow:_2DCameraFollow = GameObject.Find("Main Camera").GetComponent(_2DCameraFollow);
 	cameraFollow.target=lClone.transform;
 	
-	var soldier:Soldier = lClone.GetComponent(Soldier);
-	soldier.userControl=true;
+	//var soldier:Soldier = lClone.GetComponent(Soldier);
+	//#####soldier.userControl=true;
 	
 	//		var soldierAI:SoldierAI = lClone.GetComponent(SoldierAI);
 	//		soldierAI.SetFinalAim(playerSpawn);

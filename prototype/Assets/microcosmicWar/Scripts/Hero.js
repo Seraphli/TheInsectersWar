@@ -1,16 +1,12 @@
 
 var runSpeed=2.0;
-var userControl=false;
+//var userControl=false;
 //var controlByOther=false;
 var gravity = 10.0;
 var jumpSpeed = 8.0;
-
-var actionCommand:UnitActionCommand;
+var character=zzCharacter();
 
 var emitter:Emitter;
-
-//射击在动画的动画,要按从小到大排
-var fireTimeList:float[];
 
 //被打死后小时的时间
 var deadDisappearTimePos=4.0;
@@ -25,9 +21,9 @@ var reverseObjectTransform:Transform;
 
 protected var Xscale:float;
 //protected var mZZSprite:ZZSprite;
-protected var characterController:CharacterController;
+//protected var characterController:CharacterController;
 
-private var moveV = Vector3.zero;
+//private var moveV = Vector3.zero;
 private var grounded : boolean = false;
 
 private var life:Life;
@@ -53,8 +49,9 @@ var objectListener:IobjectListener;
 //var upBodyAction
 
 //角色的朝向
-protected var face = -1;
-
+//protected var face = -1;
+var actionCommandControl:ActionCommandControl;
+/*
 function getVelocity()
 {
 	return moveV;
@@ -64,10 +61,10 @@ function setVelocity(pVelocity:Vector3)
 {
 	moveV=pVelocity;
 }
-
+*/
 function getFaceDirection()
 {
-	return face;
+	return actionCommandControl.getFaceValue();
 }
 
 //var upBody:Transform;
@@ -77,11 +74,19 @@ function Start()
 
 	if(!myAnimation)
 		myAnimation = GetComponentInChildren(Animation);
+	if(!actionCommandControl)
+		actionCommandControl = GetComponent(ActionCommandControl);
 		
 	upBodyAction.init(upBodyActionInfo,myAnimation);
 	downBodyAction.init(downBodyActionInfo,myAnimation);
 
-	characterController = GetComponentInChildren(CharacterController);
+	//characterController = GetComponentInChildren(CharacterController);
+	character.characterController = GetComponentInChildren(CharacterController);
+	/*
+	character.runSpeed=runSpeed;
+	character.gravity = gravity;
+	character.jumpSpeed = jumpSpeed;
+	*/
 	//characterController.Move(Vector3(0,0,0));
 	emitter = GetComponentInChildren(Emitter);
 	
@@ -147,36 +152,12 @@ function disappear()
 	Destroy(gameObject);
 }
 
-function GetActionCommandFromInput()
-{
-	var lActionCommand=UnitActionCommand();
-	//lActionCommand.MoveLeft=Input.GetButton ("left");
-	if(Input.GetButton ("left"))
-	{
-		lActionCommand.FaceLeft=true;
-		lActionCommand.GoForward=true;
-	}
-	//lActionCommand.MoveRight=Input.GetButton ("right");
-	if(Input.GetButton ("right"))
-	{
-		lActionCommand.FaceRight=true;
-		lActionCommand.GoForward=true;
-	}
-	if(Input.GetButton ("down"))
-		lActionCommand.FaceDown=true;
-	if(Input.GetButton ("up"))
-		lActionCommand.FaceUp=true;
-		
-	lActionCommand.Fire=Input.GetButton ("fire");
-	lActionCommand.Jump=Input.GetButton ("jump");
-	return lActionCommand;
-}
-
 function UpdateFaceShow()
 {
 	
 	//Xscale=|reverseObjectTransform.localScale.x|,省去判断正负
-	reverseObjectTransform.localScale.x=face*Xscale;
+	//reverseObjectTransform.localScale.x=face*Xscale;
+	reverseObjectTransform.localScale.x=actionCommandControl.getFaceValue()*Xscale;
 	//moveV.x=lMove;
 }
 
@@ -184,47 +165,28 @@ function UpdateFaceShow()
 function Update() 
 {	
 
-	moveV.x=0;
-	moveV.z=0;
+	//moveV.x=0;
+	//moveV.z=0;
 	
 	if( life.isDead() )
 	{
 		return;
 	}
-	if(userControl)
-		actionCommand=GetActionCommandFromInput();
-
-
-		//设置角色朝向
-	//{
-		var lMove = 0;
-		if(actionCommand.FaceLeft)
-		{
-			lMove+=-1;
-		}
-		if(actionCommand.FaceRight)
-		{
-			lMove+=1;
-		}
-		
-		if(lMove!=0 && lMove!=face )
-		{
-			face=lMove;
-			UpdateFaceShow();
-		}
-		
-	//}
 	
+	if(actionCommandControl.updateFace())
+		UpdateFaceShow();
+	
+	var lActionCommand = actionCommandControl.getCommand();
 		//设置动画 动作
-	if(actionCommand.Fire)
+	if(lActionCommand.Fire)
 	{
 		upBodyAction.playAction("fire");
 	}
 	else
 		upBodyAction.playAction("standby");
 		
-	if(characterController.isGrounded)
-		if(actionCommand.GoForward)
+	if(character.isGrounded())
+		if(lActionCommand.GoForward)
 		{
 			downBodyAction.playAction("run");
 		}
@@ -235,17 +197,15 @@ function Update()
 	else
 		downBodyAction.playAction("onAir");
 
-	if(actionCommand.GoForward)
-		moveV.x=face;
 	
-	if(actionCommand.Jump&&actionCommand.FaceDown)
+	if(lActionCommand.Jump&&lActionCommand.FaceDown)
 	{
 		boardDetector.down();
 	}
 	else
 		boardDetector.recover();
 		
-	updatePosture(actionCommand.FaceUp,actionCommand.FaceDown,actionCommand.GoForward);
+	updatePosture(lActionCommand.FaceUp,lActionCommand.FaceDown,lActionCommand.GoForward);
 	//print(""+actionCommand.FaceUp+actionCommand.FaceDown+actionCommand.GoForward);
 		
 }
@@ -284,13 +244,15 @@ function updatePosture(pUp:boolean,pDwon:boolean,pForward:boolean)
 //更新characterController
 function FixedUpdate()
 {
-
+	character.update(actionCommandControl.getCommand(),actionCommandControl.getFaceValue(),life.isAlive());
+/*
+	var lActionCommand = actionCommandControl.getCommand();
 	
 	if(life.isAlive() && characterController.isGrounded)
 	{
-		if( !actionCommand.FaceDown)
+		if( !lActionCommand.FaceDown)
 		{
-			if(actionCommand.Jump)
+			if(lActionCommand.Jump)
 				moveV.y = jumpSpeed;
 			else
 				moveV.y = -0.1;	//以免飞起来
@@ -301,22 +263,8 @@ function FixedUpdate()
 		
 	// Move the controller
 	var lVelocity=Vector3(moveV.x * runSpeed,moveV.y,0);
-	//print(lVelocity);
-	//preIsGrounded = characterController.isGrounded;
+
 	var flags:CollisionFlags=characterController.Move(lVelocity* Time.deltaTime);
-	//grounded = (flags & CollisionFlags.CollidedBelow) != 0;
-	//print(""+preIsGrounded+characterController.isGrounded+":"+isGrounded());
-	//print(grounded);
-	//print(characterController.isGrounded );
+*/
 	
-}
-
-function setCommand(pActionCommand:UnitActionCommand)
-{
-	actionCommand=pActionCommand;
-}
-
-function getCommand()
-{
-	return actionCommand;
 }

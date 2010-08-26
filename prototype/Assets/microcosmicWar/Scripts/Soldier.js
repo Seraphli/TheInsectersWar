@@ -1,11 +1,7 @@
 
-var runSpeed=2.0;
-var userControl=false;
-//var controlByOther=false;
-var gravity = 15.0;
-var jumpSpeed = 8.0;
+var character=zzCharacter();
 
-var actionCommand:UnitActionCommand;
+//var actionCommand:UnitActionCommand;
 
 var clearCommandEveryFrame=true;
 
@@ -29,16 +25,18 @@ protected var reverseObjectTransform:Transform;
 
 protected var Xscale:float;
 protected var mZZSprite:ZZSprite;
-protected var characterController:CharacterController;
+//protected var characterController:CharacterController;
 
 private var moveV = Vector3.zero;
 private var grounded : boolean = false;
 
 private var life:Life;
 
-//角色的朝向
-protected var face = -1;
+var actionCommandControl:ActionCommandControl;
 
+//角色的朝向
+//protected var face = -1;
+/*
 function getVelocity()
 {
 	return moveV;
@@ -48,28 +46,22 @@ function setVelocity(pVelocity:Vector3)
 {
 	moveV=pVelocity;
 }
+*/
+
+function getActionCommandControl()
+{
+	return actionCommandControl;
+}
+
+function getCharacter()
+{
+	return character;
+}
 
 function getFaceDirection()
 {
-	return face;
+	return actionCommandControl.getFaceValue();
 }
-
-enum UnitFaceDirection
-{
-	left,
-	right,
-}
-
-class UnitFace
-{
-	function getValue( type:UnitFaceDirection)
-	{
-		if(type == UnitFaceDirection.left)
-			return -1;
-		return 1;
-	}
-}
-
 
 function Start()
 {
@@ -78,14 +70,19 @@ function Start()
 	//userControl=userControl&&zzCreatorUtility.isHost();
 
 	mZZSprite = GetComponentInChildren(ZZSprite);
-	characterController = GetComponentInChildren(CharacterController);
+	//characterController = GetComponentInChildren(CharacterController);
+	character.characterController = GetComponentInChildren(CharacterController);
+	
 	emitter = GetComponentInChildren(Emitter);
 	life= GetComponentInChildren(Life);
+	
+	if(!actionCommandControl)
+		actionCommandControl= GetComponentInChildren(ActionCommandControl);
 	//life.setDieCallback(deadAction);
 	life.addDieCallback(deadAction);
 	
 	//?
-	characterController .detectCollisions=false;
+	//characterController .detectCollisions=false;
 	
 	collisionLayer.addCollider(gameObject);
 
@@ -187,33 +184,13 @@ function disappear()
 	Destroy(gameObject);
 }
 
-function GetActionCommandFromInput()
-{
-	var lActionCommand=UnitActionCommand();
-	//lActionCommand.MoveLeft=Input.GetButton ("left");
-	if(Input.GetButton ("left"))
-	{
-		lActionCommand.FaceLeft=true;
-		lActionCommand.GoForward=true;
-	}
-	//lActionCommand.MoveRight=Input.GetButton ("right");
-	if(Input.GetButton ("right"))
-	{
-		lActionCommand.FaceRight=true;
-		lActionCommand.GoForward=true;
-	}
-	lActionCommand.Fire=Input.GetButton ("fire");
-	lActionCommand.Jump=Input.GetButton ("jump");
-	return lActionCommand;
-}
-
 function UpdateFaceShow()
 {
-	
+	var lFace:int = actionCommandControl.getFaceValue();
 	//Xscale=|reverseObjectTransform.localScale.x|,省去判断正负
-	reverseObjectTransform.localScale.x=face*Xscale;
+	reverseObjectTransform.localScale.x=lFace*Xscale;
 	//moveV.x=lMove;
-	if(face==1)
+	if(lFace==1)
 		turnObjectTransform.rotation=Quaternion(0,0,0,1);
 	else
 		turnObjectTransform.rotation=Quaternion(0,1,0,0);
@@ -229,41 +206,23 @@ function Update()
 		//mZZSprite.playAnimation("dead");
 		return;
 	}
-	if(userControl)
-		actionCommand=GetActionCommandFromInput();
 
-
-		//设置角色朝向
-	//{
-		var lMove = 0;
-		if(actionCommand.FaceLeft)
-		{
-			lMove+=-1;
-		}
-		if(actionCommand.FaceRight)
-		{
-			lMove+=1;
-		}
+	if(actionCommandControl.updateFace())
+		UpdateFaceShow();
 		
-		if(lMove!=0 && lMove!=face )
-		{
-			face=lMove;
-			UpdateFaceShow();
-		}
-		
-	//}
+	var lActionCommand = actionCommandControl.getCommand();
 	
 		//设置动画 动作
-	if(actionCommand.Fire)
+	if(lActionCommand.Fire)
 	{
 		mZZSprite.playAnimation("fire");
 	}
 	else
 	{
-		if(actionCommand.GoForward)
+		if(lActionCommand.GoForward)
 		{
 			mZZSprite.playAnimation("run");
-			moveV.x=face;
+			//moveV.x=face;
 		}
 		else
 		{
@@ -276,21 +235,15 @@ function Update()
 //更新characterController
 function FixedUpdate()
 {
+	character.update(actionCommandControl.getCommand(),actionCommandControl.getFaceValue(),life.isAlive());
 /*	
-	//if (characterController.isGrounded && actionCommand.Jump)
-	if ( life.isAlive() && grounded && actionCommand.Jump)
-	{
-		moveV.y = jumpSpeed;
-		//controller.animation
-	}
-	
-	moveV.y -= gravity* Time.deltaTime;
-	*/
+
+	var lActionCommand = actionCommandControl.getCommand();
 	if(life.isAlive() && grounded)
 	{
-		if( !actionCommand.FaceDown)
+		if( !lActionCommand.FaceDown)
 		{
-			if(actionCommand.Jump)
+			if(lActionCommand.Jump)
 				moveV.y = jumpSpeed;
 			else
 				moveV.y = -0.1;		
@@ -304,14 +257,5 @@ function FixedUpdate()
 	grounded = (flags & CollisionFlags.CollidedBelow) != 0;
 	//if(userControl || clearCommandEveryFrame)
 	//	actionCommand.clear();
-}
-
-function setCommand(pActionCommand:UnitActionCommand)
-{
-	actionCommand=pActionCommand;
-}
-
-function getCommand()
-{
-	return actionCommand;
+	*/
 }

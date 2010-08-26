@@ -98,13 +98,13 @@ function isDead()
 
 function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 {
-	var lBloodValue:float;
+	var lBloodValue:int=getBloodValue();
 	
 	//---------------------------------------------------
-	if (stream.isWriting)
-	{
-		lBloodValue=getBloodValue();
-	}
+	//if (stream.isWriting)
+	//{
+	//	lBloodValue=getBloodValue();
+	//}
 	
 	stream.Serialize(lBloodValue);
 	

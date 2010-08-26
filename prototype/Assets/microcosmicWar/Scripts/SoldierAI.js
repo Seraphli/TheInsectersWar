@@ -9,7 +9,7 @@ var fequencyTimer=zzFrequencyTimer();
 
 //protected var timePos=0.0;
 
-var soldier:Soldier;
+var actionCommandControl:ActionCommandControl;
 var finalAim:Transform;
 //var enemyLayer:int;
 var enable=true;
@@ -51,8 +51,8 @@ function Start()
 		adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
 	//print(LayerMask.NameToLayer(adversaryName));
 	//print(adversaryLayerValue);
-	if(!soldier)
-		soldier=gameObject.GetComponentInChildren(Soldier);
+	if(!actionCommandControl)
+		actionCommandControl=gameObject.GetComponentInChildren(ActionCommandControl);
 	fequencyTimer.setImpFunction(AiUpdate);
 	
 	fireDistanceMin=Random.Range(fireDistanceMinRandMin,fireDistanceMinRandMax);
@@ -127,15 +127,16 @@ function needFire()
 	//print(soldier);
 	//print(adversaryLayerValue);
 	//var lFaceDirection = 0;
-	if (Physics.Raycast (transform.position, Vector3(soldier.getFaceDirection(),0,0) , lHit, Random.Range (fireDistanceMin,fireDistanceMax),adversaryLayerValue)) 
+	var lFaceValue = actionCommandControl.getFaceValue();
+	if (Physics.Raycast (transform.position, Vector3(lFaceValue,0,0) , lHit, Random.Range (fireDistanceMin,fireDistanceMax),adversaryLayerValue)) 
 	//if (Physics.Raycast (transform.position, lFwd , lHit, 4.0,adversaryLayerValue)) 
 	{
 		fireTarget=lHit.transform;
-		return soldier.getFaceDirection();
+		return lFaceValue;
 	}
-	if (Physics.Raycast (transform.position, Vector3(-soldier.getFaceDirection(),0,0) , lHit, fireDistanceMin,adversaryLayerValue)) 
+	if (Physics.Raycast (transform.position, Vector3(-lFaceValue,0,0) , lHit, fireDistanceMin,adversaryLayerValue)) 
 	{
-		return -soldier.getFaceDirection();
+		return -lFaceValue;
 	}
 	return 0;
 }
@@ -147,7 +148,7 @@ function getCommand()
 
 function calculate()
 {
-	var lFireTaget = needFire();
+	var lFireTaget:int = needFire();
 	if(lFireTaget!=0)
 	{
 		actionCommand.clear();
@@ -183,5 +184,5 @@ function Update ()
 function AiUpdate()
 {
 	calculate();
-	soldier.setCommand(getCommand());
+	actionCommandControl.setCommand(getCommand());
 }

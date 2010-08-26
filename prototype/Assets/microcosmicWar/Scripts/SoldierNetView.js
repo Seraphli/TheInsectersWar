@@ -1,13 +1,17 @@
 
 var soldier:Soldier;
 var life:Life;
+var character:zzCharacter;
+var actionCommandControl:ActionCommandControl;
 //var transform;
 
 function Awake()
 {
 	//soldier=gameObject.GetComponent(soldier);
-	if(!soldier)
-		soldier=gameObject.GetComponentInChildren(Soldier);
+	//if(!soldier)
+	//	soldier=gameObject.GetComponentInChildren(Soldier).getCharacter();
+	character = gameObject.GetComponentInChildren(Soldier).getCharacter();
+	actionCommandControl = gameObject.GetComponentInChildren(ActionCommandControl);
 	if(!life)
 		life=gameObject.GetComponentInChildren(Life);
 	/*
@@ -26,6 +30,9 @@ function Awake()
 function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 {
 	life.OnSerializeNetworkView(stream,info);
+	character.OnSerializeNetworkView(stream,info);
+	actionCommandControl.OnSerializeNetworkView(stream,info);
+	/*
 	var pos=Vector3();
 	var rot=Quaternion();
 	var lVelocity=Vector3();
@@ -64,6 +71,7 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 		soldier.setCommand(lActionCommand);
 		
 	}
+	*/
 }
 
 //function Update () {
