@@ -43,6 +43,10 @@ var downBodyAction=BodyAction();
 
 var objectListener:IobjectListener;
 
+
+//原始的朝向
+var originalFace= UnitFaceDirection.left;
+
 //Component.SendMessage ("dieCallFunction")
 //var dieCallFunction:Component;
 
@@ -62,6 +66,12 @@ function setVelocity(pVelocity:Vector3)
 	moveV=pVelocity;
 }
 */
+
+function getCharacter()
+{
+	return character;
+}
+
 function getFaceDirection()
 {
 	return actionCommandControl.getFaceValue();
@@ -105,7 +115,7 @@ function Start()
 
 	//Xscale=transform.localScale.x;
 
-	Xscale=reverseObjectTransform.localScale.x;
+	Xscale=Mathf.Abs( reverseObjectTransform.localScale.x );
 	
 	//}
 	//死亡的后的动作
@@ -148,7 +158,8 @@ function disappear()
 	//zzCreatorUtility.Destroy(gameObject);
 	//if(dieCallFunction)
 	//	dieCallFunction.SendMessage ("dieCallFunction");
-	objectListener.removedCall();
+	if(objectListener)
+		objectListener.removedCall();
 	Destroy(gameObject);
 }
 
@@ -157,8 +168,13 @@ function UpdateFaceShow()
 	
 	//Xscale=|reverseObjectTransform.localScale.x|,省去判断正负
 	//reverseObjectTransform.localScale.x=face*Xscale;
-	reverseObjectTransform.localScale.x=actionCommandControl.getFaceValue()*Xscale;
+	//reverseObjectTransform.localScale.x=actionCommandControl.getFaceValue()*Xscale;
 	//moveV.x=lMove;
+	
+	if( originalFace == actionCommandControl.getFace() )
+		reverseObjectTransform.localScale.x=Xscale;
+	else
+		reverseObjectTransform.localScale.x=-Xscale;
 }
 
 //更新动画

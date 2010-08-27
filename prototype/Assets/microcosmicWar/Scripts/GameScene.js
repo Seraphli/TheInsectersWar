@@ -69,6 +69,7 @@ static function getSingleton()
 
 function CreatePlayer()
 {			
+/*
 	var lClone:GameObject = zzCreatorUtility.Instantiate(playerPrefab, playerSpawn.position,playerSpawn.rotation, 0);
 	//lClone.GetComponent(SoldierAI).SetAdversaryLayerValue(adversaryLayerValue);
 	
@@ -81,6 +82,7 @@ function CreatePlayer()
 	//		var soldierAI:SoldierAI = lClone.GetComponent(SoldierAI);
 	//		soldierAI.SetFinalAim(playerSpawn);
 	//	soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
+*/
 }
 
 function Start()

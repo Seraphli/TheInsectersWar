@@ -1,6 +1,7 @@
 
-//如果索引已经设置则代表是已有的吧,未设置就用bagName创建新包
-var bagIndex=-1;
+var bagIndex=0;
+//若为真 代表是已有的包,未设置就用bagName创建新包
+var useExistBag = false;
 var bagName="";
 var owner:GameObject;
 
@@ -9,6 +10,12 @@ protected var haveBeInited = false;
 
 //为了解决初次刷新时 UI和此类 初始化先后的问题
 var callListAfterStart = Array();
+
+function setUseExistBag(pUse:boolean,pBagIndex:int)
+{
+	useExistBag = pUse;
+	bagIndex = pBagIndex;
+}
 
 function addCallAfterStart(pCall)
 {
@@ -128,12 +135,17 @@ function Start()
 	if(!owner)
 		owner= gameObject;
 	itemSystem = zzItemSystem.getSingleton();
-	if(bagIndex!=-1)
+	if(useExistBag)
 	{
+		//print("bagIndex!=-1");
+		//print(bagIndex);
 		bagName = getBagData().name;
 	}
 	else
+	{
 		bagIndex =itemSystem.addBag(bagName);
+		//print(bagIndex);
+	}
 		
 	for(var i:zzMyItemInBagInfo in itemInBagInfo)
 	{

@@ -18,27 +18,33 @@ class rule1LoseCondition extends IobjectListener//,MonoBehaviour
 
 	virtual function initedCall()
 	{
-		if(rule1LoseConditionType==Rule1LoseConditionType.eInAll)
+		if(rule1.getSingleton())
 		{
-			rule1.getSingleton().getTeamLoseRule(teamName).addLoseConditionInAll(GetInstanceID());
-		}
-		else
-		{
-			rule1.getSingleton().getTeamLoseRule(teamName).addLoseConditionInOne(GetInstanceID());
+			if(rule1LoseConditionType==Rule1LoseConditionType.eInAll)
+			{
+				rule1.getSingleton().getTeamLoseRule(teamName).addLoseConditionInAll(GetInstanceID());
+			}
+			else
+			{
+				rule1.getSingleton().getTeamLoseRule(teamName).addLoseConditionInOne(GetInstanceID());
+			}
 		}
 	}
 
 	virtual function removedCall()
 	{
-		if(rule1LoseConditionType==Rule1LoseConditionType.eInAll)
+		if(rule1.getSingleton())
 		{
-			rule1.getSingleton().getTeamLoseRule(teamName).removeLoseConditionInAll(GetInstanceID());
+			if(rule1LoseConditionType==Rule1LoseConditionType.eInAll)
+			{
+				rule1.getSingleton().getTeamLoseRule(teamName).removeLoseConditionInAll(GetInstanceID());
+			}
+			else
+			{
+				rule1.getSingleton().getTeamLoseRule(teamName).removeLoseConditionInOne(GetInstanceID());
+			}
+			checkResult();
 		}
-		else
-		{
-			rule1.getSingleton().getTeamLoseRule(teamName).removeLoseConditionInOne(GetInstanceID());
-		}
-		checkResult();
 	}
 	
 	function checkResult()

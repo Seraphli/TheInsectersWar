@@ -30,6 +30,7 @@ class ZzNetCreator extends IzzGenericCreator
 {
 	virtual function Instantiate(prefab : Object, position : Vector3, rotation : Quaternion, group : int) 
 	{
+		//Debug.Log("Network.Instantiate"+prefab.name);
 		return Network.Instantiate(prefab, position, rotation, group);
 	}
 	
@@ -114,6 +115,7 @@ static function Instantiate(prefab : Object, position : Vector3, rotation : Quat
 {
 	//Debug.Log("Instantiate");
 	//Debug.Log(zzGenericCreator);
+	//Debug.Log(zzGenericCreator);
 	return zzGenericCreator.Instantiate(prefab, position, rotation, group);
 }
 static function Destroy (gameObject : GameObject)
@@ -154,5 +156,9 @@ static function sendMessag2Two(gameObject:GameObject,singleMethodName : String, 
 			value); 
 }
 
+function Awake()
+{
+	resetCreator();
+}
 //function Update () {
 //}

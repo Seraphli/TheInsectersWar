@@ -1,10 +1,16 @@
 
-var moveLeftkey : KeyCode;
-var moveRightkey : KeyCode;
-var useItemKey : KeyCode;
+var moveLeftkey = KeyCode.U;
+var moveRightkey = KeyCode.I;
+var useItemKey = KeyCode.H;
 
 
 var bagItemUI:BagItemUI;
+
+function Start()
+{
+	if(!bagItemUI)
+		bagItemUI = gameObject.GetComponent(BagItemUI);
+}
 
 function Update () 
 {

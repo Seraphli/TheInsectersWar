@@ -14,7 +14,7 @@ class zzCharacter
 		moveV.x=0;
 		moveV.z=0;
 		
-		if(pUnitActionCommand.GoForward)
+		if(isAlive && pUnitActionCommand.GoForward)
 			moveV.x=pFaceValue;
 		
 		if(isAlive && characterController.isGrounded)
@@ -75,6 +75,9 @@ enum UnitFaceDirection
 
 class UnitFace
 {
+	static var leftFaceValue=-1;
+	static var rightFaceValue=1;
+	
 	static function getValue( type:UnitFaceDirection)
 	{
 		if(type == UnitFaceDirection.left)
@@ -95,7 +98,13 @@ var face:UnitFaceDirection = UnitFaceDirection.left;
 //返回在x上的值
 function getFaceValue():int
 {
+	//Debug.Log("face:"+face+" "+UnitFace.getValue(face));
 	return UnitFace.getValue(face);
+}
+
+function getFace()
+{
+	return face;
 }
 
 
@@ -147,11 +156,13 @@ function updateFace():boolean
 		if(unitActionCommand.FaceLeft && face==UnitFaceDirection.right)
 		{
 			face=UnitFaceDirection.left;
+			//Debug.Log("Change to left");
 			return true;
 		}
 		if(unitActionCommand.FaceRight && face==UnitFaceDirection.left)
 		{
 			face=UnitFaceDirection.right;
+			//Debug.Log("Change to right");
 			return true;
 		}
 	}

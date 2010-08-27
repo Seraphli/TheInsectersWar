@@ -27,7 +27,7 @@ protected var Xscale:float;
 protected var mZZSprite:ZZSprite;
 //protected var characterController:CharacterController;
 
-private var moveV = Vector3.zero;
+//private var moveV = Vector3.zero;
 private var grounded : boolean = false;
 
 private var life:Life;
@@ -199,8 +199,8 @@ function UpdateFaceShow()
 //¸üÐÂ¶¯»­
 function Update() 
 {	
-	moveV.x=0;
-	moveV.z=0;
+	//moveV.x=0;
+	//moveV.z=0;
 	if( life.isDead() )
 	{
 		//mZZSprite.playAnimation("dead");

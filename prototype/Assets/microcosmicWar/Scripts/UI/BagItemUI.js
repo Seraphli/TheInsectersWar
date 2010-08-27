@@ -13,6 +13,9 @@ var itemIndexList = Array();
 
 function Start()
 {
+	if(!bagControl)
+		bagControl = gameObject.GetComponent(zzItemBagControl);
+	
 	if(!UIroot)
 		UIroot = gameObject.Find("Main Camera")
 			.transform.Find("UI/ItemInventory").GetComponent(zzInterfaceGUI);
