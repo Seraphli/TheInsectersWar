@@ -110,7 +110,7 @@ class zzPairSerialize extends IzzUserDataSerializeString
 		var right = DataWrap();
 		pPos = zzSerialize.unpack(pSerializePackList,pPos,right);
 		
-		pOut.data = zzPair(left,right);
+		pOut.data = zzPair(left.data,right.data);
 		return pPos;
 	}
 };
@@ -138,7 +138,7 @@ class zzArraySerialize extends IzzUserDataSerializeString
 		{
 			lOut+= zzSerialize.pack(v);
 		}
-		Debug.Log( lOut );
+		//Debug.Log( lOut );
 		return lOut;
 	}
 	

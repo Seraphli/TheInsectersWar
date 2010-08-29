@@ -77,6 +77,11 @@ function getFaceDirection()
 	return actionCommandControl.getFaceValue();
 }
 
+function getFace()
+{
+	return actionCommandControl.getFace();
+}
+
 //var upBody:Transform;
 
 function Start()

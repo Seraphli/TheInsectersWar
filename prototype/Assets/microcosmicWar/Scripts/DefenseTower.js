@@ -175,10 +175,14 @@ info["adversaryLayer"]
 */
 function init(info:Hashtable)
 {
+	//print(info["face"]);
+	//print(invert);
 	invert.face = info["face"];
 	gameObject.layer=info["layer"];
 	var lAi:AiMachineGunAI = GetComponentInChildren(AiMachineGunAI);
-	lAi.adversaryLayer=info["adversaryLayer"];
+
+	if(zzCreatorUtility.isHost())
+		lAi.adversaryLayer=info["adversaryLayer"];
 }
 
 @RPC

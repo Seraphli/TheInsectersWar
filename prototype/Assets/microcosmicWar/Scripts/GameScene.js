@@ -5,7 +5,7 @@ static protected var singletonInstance:GameScene;
 var lastSceneInfoName="_info";
 //var sceneDataName = "_sceneData";
 var sceneData:GameObject;
-
+/*
 var pismirePlayerSpawn:Transform;
 var beePlayerSpawn:Transform;
 
@@ -15,6 +15,12 @@ var beePlayerPrefab:GameObject;
 var playerSpawn:Transform;
 var playerPrefab:GameObject;
 var adversaryLayerValue:int;
+*/
+var pismirePlayerSpawn:HeroSpawn;
+var beePlayerSpawn:HeroSpawn;
+
+var playerSpawn:HeroSpawn;
+var adversaryPlayerSpawn:HeroSpawn;
 
 var needCreatePlayer=true;
 
@@ -83,6 +89,10 @@ function CreatePlayer()
 	//		soldierAI.SetFinalAim(playerSpawn);
 	//	soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
 */
+		playerSpawn.createHeroFirstTime();
+		
+		if(Network.connections.Length>0)
+			adversaryPlayerSpawn.createHeroFirstTime();
 }
 
 function Start()
@@ -95,19 +105,31 @@ function Start()
 	//sif(1)
 	{
 		playerSpawn=pismirePlayerSpawn;
-		playerPrefab=pismirePlayerPrefab;
+		adversaryPlayerSpawn=beePlayerSpawn;
+		//playerPrefab=pismirePlayerPrefab;
 		adversaryLayerValue= 1<<LayerMask.NameToLayer("pismire");
 	}
 	else
 	{
 		playerSpawn=beePlayerSpawn;
-		playerPrefab=beePlayerPrefab;
+		adversaryPlayerSpawn=pismirePlayerSpawn;
+		//playerPrefab=beePlayerPrefab;
 		adversaryLayerValue= 1<<LayerMask.NameToLayer("bee");
 	}
 	
 	//adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
-	if(needCreatePlayer)
-		CreatePlayer();
+	if( zzCreatorUtility.isHost() )
+	{
+		if(needCreatePlayer)
+		{
+			playerSpawn.setOwer(Network.player);
+			
+			if(Network.connections.Length>0)
+				adversaryPlayerSpawn.setOwer(Network.connections[0]);
+			CreatePlayer();
+		}
+	}
+	
 }
 
 protected var needOnGUI=false;

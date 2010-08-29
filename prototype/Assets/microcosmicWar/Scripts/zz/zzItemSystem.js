@@ -201,6 +201,8 @@ class ItemBagData
 	//var dataChangedCall = zzUtilities.nullFunction;
 	//按物品索引排列
 	var dataChangedCallList : Object[];
+	var networkView:NetworkView;
+	var bagIndex;
 	
 	protected var itemList:int[];
 	
@@ -224,7 +226,17 @@ class ItemBagData
 			i = zzUtilities.nullFunction;
 	}
 	
+	//改变数据,只能在服务器端
 	function setNum(index:int,num:int)
+	{
+		//dataChangedCall();
+		if(Network.peerType ==NetworkPeerType.Disconnected)
+			_impSetNum(index,num);
+		else
+			networkView.RPC( "setBagItemNum", RPCMode.AllBuffered ,bagIndex , index,  num);
+	}
+	
+	function _impSetNum(index:int,num:int)
 	{
 		if(num>999999)
 			num=999999;
@@ -232,7 +244,6 @@ class ItemBagData
 			num=0;
 		itemList[index]=num;
 		dataChangedCallList[index]();
-		//dataChangedCall();
 	}
 	
 	function getNum(index:int)
@@ -271,15 +282,26 @@ class ItemBagData
 
 var bagTable =zzIndexTable();
 
-//必须在结束增加物品类型后
-function addBag(name:String)
+//必须在结束增加物品类型后 , 返回索引
+function addBag(name:String):int
 {
-	return bagTable.addData(name,new ItemBagData(name,itemTypeTable.getNum()) );
+	var bagIndex = bagTable.addData(name,new ItemBagData(name,itemTypeTable.getNum()) );
+	var lItemBagData:ItemBagData = bagTable.getData(bagIndex);
+	lItemBagData.bagIndex = bagIndex;
+	lItemBagData.networkView = networkView;
+	return bagIndex;
 }
 
 function getBagTable()
 {
 	return bagTable;
+}
+
+@RPC
+function setBagItemNum(pBagIndex:int,itemIndex:int,num:int)
+{
+	var lItemBagData:ItemBagData = bagTable.getData(pBagIndex);
+	lItemBagData._impSetNum(itemIndex,num);
 }
 
 class ItemInfo

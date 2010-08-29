@@ -10,6 +10,11 @@ class zzFrequencyTimer
 	var timePos=0.0;
 
 	protected var impFunction=zzUtilities.nullFunction;
+	
+	function setFrequencyOfImp(pFrequency)
+	{
+		frequencyOfImplement = pFrequency;
+	}
 
 
 	function setImpFunction(pFunc)

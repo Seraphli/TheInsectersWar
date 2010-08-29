@@ -167,7 +167,7 @@ function unpackOne(pStr:String,pBeginPos:int, pSerializePackData:SerializePackDa
 {
 	//var lStrOut:String=pStrOut;
 	var lCommaIndex:int = pStr.IndexOf(",",pBeginPos);
-	Debug.Log(pStr.Substring(pBeginPos) );
+	//Debug.Log(pStr.Substring(pBeginPos) );
 	pSerializePackData.type=stringToSerializePackType(pStr.Substring(pBeginPos,lCommaIndex-pBeginPos));
 	var lCutIndex:int = pStr.IndexOf(":",++lCommaIndex);
 	var lStrLength:int=  System.Convert.ToInt32( pStr.Substring(lCommaIndex,lCutIndex-lCommaIndex) );
@@ -211,7 +211,7 @@ function unpack(pSerializePackList:Array,pPos:int,pOut:DataWrap)
 
 function pack(pData:Object):String
 {
-	Debug.Log(typeof(pData));
+	//Debug.Log(typeof(pData));
 	switch(typeof(pData))
 	{
 		case String: return pack(pData as String);
@@ -219,6 +219,8 @@ function pack(pData:Object):String
 		case float: return pack( System.Convert.ToSingle(pData));
 		case boolean: return pack( System.Convert.ToBoolean(pData));
 	}
+	
+	//Debug.Log(getrUserSerializeFromType(typeof(pData)));
 	return  getrUserSerializeFromType(typeof(pData)).userPack(pData);
 }
 
@@ -241,6 +243,35 @@ function Awake()
 	if(singletonInstance)
 		Debug.LogError("have singletonInstance");
 	singletonInstance = this;
+	zzMySerializeString.registerMySerialize();
+	
+	/*
+	var ltable:Hashtable = Hashtable();
+	print(ltable);
+	 ltable =	{
+					"a":123,
+					"b":345,
+					"fasda":"adsf",
+					"zzzz":false,
+					"face":0
+				};
+				
+	var lPacked= pack(ltable);
+	var lUnPacked = unpackToData(lPacked);
+	for(var i:System.Collections.DictionaryEntry in ltable)
+	{
+		print(""+i.Key+" "+i.Value);
+	}
+	print("----------------------------------------");
+	print("----------------------------------------");
+	for(var i:System.Collections.DictionaryEntry in lUnPacked)
+	{
+		print(""+i.Key+" "+i.Value);
+	}
+	print(lUnPacked["face"]);
+	*/
+	
+	
 	/*
 	var ltable:Hashtable = Hashtable();
 	print(ltable);
@@ -254,7 +285,6 @@ function Awake()
 	print(typeof(ltable));
 	print(typeof(Hashtable));
 	
-	zzMySerializeString.registerMySerialize();
 	//registerUserSerialize(new zzVector3Serialize());
 	var lPacked= pack("a")+pack(123)+pack(true)+pack(1.5/34)+pack(Vector3(1,2,3))
 		+pack(Quaternion(7,6,5,4))+pack( zzPair(4,Vector3(4,5,6)) )

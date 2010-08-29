@@ -10,9 +10,12 @@ function init( p:Hashtable)
 		if(Network.peerType ==NetworkPeerType.Disconnected)
 			impInit(p);
 		else
-			gameObject.networkView.RPC("initedFromRPC",
-				RPCMode.AllBuffered,
+		{
+			impInit(p);
+			networkView.RPC("initedFromRPC",
+				RPCMode.OthersBuffered ,
 				zzSerializeString.getSingleton().pack(p)); 
+		}
 	}
 }
 

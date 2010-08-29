@@ -13,7 +13,15 @@ static function needComponent(gameObject:GameObject,componentType :System.Type) 
 	}
 	return lOut;
 }
-
+/*
+static function reAddComponent(gameObject:GameObject,componentType :System.Type) : Component
+{
+	if(gameObject.GetComponent(componentType))
+		gameObject.Destroy(gameObject.GetComponent(componentType));
+		
+	return gameObject.AddComponent(componentType);
+}
+*/
 //移除Array中索引位置的元素,用末尾取代,节省移动数组的开支
 static function quickRemoveArrayElement(array:Array,index:int)
 {

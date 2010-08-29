@@ -33,6 +33,7 @@ function Start()
 	}
 	setSelected(1);
 
+	//print(gameObject.name+bagControl+(bagControl==null));
 	bagControl.addCallAfterStart(afterBagStartCall);
 }
 
@@ -40,6 +41,8 @@ function afterBagStartCall()
 {	
 	refreshItemShow();
 	bagControl.setItemChangedCall(refreshItemShow);
+	//Debug.Log(selectedIndex);
+	//Debug.Log(gameObject.name);
 }
 
 function Reset() 
@@ -50,6 +53,7 @@ function Reset()
 function refreshItemShow()
 {
 	var lItemList:Array = bagControl.getItemList();
+	//Debug.Log(lItemList);
 	itemIndexList = lItemList;
 	var lItemUIIndex = 0;
 	var lItemTypeTable:zzIndexTable = bagControl
@@ -63,6 +67,7 @@ function refreshItemShow()
 	
 	itemNum=lItemUIIndex;
 	
+	//Debug.Log(lItemUIIndex);
 	//更新选择的位置
 	if(lItemUIIndex<selectedIndex)
 		setSelected(lItemUIIndex);
@@ -88,10 +93,13 @@ function setSelected(pIndex:int)
 		selectedListUI[pIndex-1].setVisible(true);
 		
 	selectedIndex = pIndex;
+	//Debug.Log(selectedIndex);
 }
 
 function haveItem()
 {
+	//Debug.Log(selectedIndex);
+	//Debug.Log(gameObject.name);
 	return selectedIndex>0;
 }
 

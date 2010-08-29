@@ -8,10 +8,10 @@ class defenseTowerItem extends IitemObject
 	virtual function canUse(pGameObject:GameObject):boolean
 	{
 		var hero:Hero = pGameObject.GetComponentInChildren(Hero);
-		var face = hero.getFaceDirection();
+		var face:int = hero.getFace();
 		var position = pGameObject.transform.position;
 			
-		position.x+=face*3;
+		position.x+=hero.getFaceDirection()*3;
 		position.y+=2;
 		var lHit : RaycastHit;
 		if (Physics.Raycast (position, Vector3(0,-1,0) , lHit, 4,layers.boardValue)) 
@@ -23,6 +23,7 @@ class defenseTowerItem extends IitemObject
 			{
 				towerPosition=lHit.point;
 				towerFace=face;
+				//Debug.Log(face);
 				useObject=pGameObject;
 				//Debug.Log("can use");
 				return true;

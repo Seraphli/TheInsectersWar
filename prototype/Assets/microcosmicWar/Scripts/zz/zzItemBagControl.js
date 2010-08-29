@@ -11,9 +11,18 @@ protected var haveBeInited = false;
 //为了解决初次刷新时 UI和此类 初始化先后的问题
 var callListAfterStart = Array();
 
-function setUseExistBag(pUse:boolean,pBagIndex:int)
+function setUseExistBag(pBagIndex:int)
 {
-	useExistBag = pUse;
+	//useExistBag = pUse;
+	//bagIndex = pBagIndex;
+	
+	zzCreatorUtility.sendMessage(gameObject,"impSetUseExistBag",pBagIndex);
+}
+
+@RPC
+function impSetUseExistBag(pBagIndex:int)
+{
+	useExistBag = true;
 	bagIndex = pBagIndex;
 }
 
@@ -114,6 +123,20 @@ function getMoneyNum()
 function useItemOne(pItemIndex:int,pOwner:GameObject)
 {
 	//print("index:"+pItemIndex+",number:"+getBagData().getNum(pItemIndex));
+	if( zzCreatorUtility.isHost() )
+		impUseItemOne(pItemIndex,pOwner);
+	else
+		networkView.RPC( "RPCUseItemOne", RPCMode.Server ,pItemIndex , networkView.viewID );
+}
+
+@RPC
+function RPCUseItemOne(pItemIndex:int,pOwnerID:NetworkViewID)
+{
+	impUseItemOne(pItemIndex,NetworkView.Find(pOwnerID).gameObject);
+}
+
+protected function impUseItemOne(pItemIndex:int,pOwner:GameObject)
+{
 	if(getNum(pItemIndex)>0)
 	{
 		var item:ItemObjectImp = itemSystem.getItemTypeTable().getData(pItemIndex).getItemObject();
@@ -128,6 +151,11 @@ function useItemOne(pItemIndex:int,pOwner:GameObject)
 function useItemOne(pItemIndex:int)
 {
 	useItemOne(pItemIndex,owner);
+}
+
+function getBagID()
+{
+	return bagIndex;
 }
 
 function Start()
