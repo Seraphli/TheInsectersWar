@@ -16,6 +16,13 @@ var adversaryLayer=-1;
 //敌人还在这个角度时,枪不动
 var fireDeviation=4.0;
 
+//var adversaryNumInFireRange = 0;
+
+function setAdversaryLayer(pLayer:int)
+{
+	adversaryLayer = pLayer;
+}
+
 function OnTriggerEnter (other : Collider)
 {
 	//print("OnTriggerEnter"+other.gameObject.layer);
@@ -31,14 +38,24 @@ function OnTriggerEnter (other : Collider)
 function OnTriggerExit (other : Collider) 
 {
 	//print("OnTriggerExit"+other.gameObject.layer);
-	if(other.gameObject.layer==adversaryLayer)
-	{
+	//if(other.gameObject.layer==adversaryLayer)
+	//{
+	/*
+		print("OnTriggerExit");
+		if(fireTarget==null)
+		{
+			print(transform.parent.parent.gameObject.name);
+			print(fireTarget==null);
+			print(enemyList.Count);
+		}
+	*/
+		
 		enemyList.Remove(other.transform);
 		
 		//移出的是否是目标兵
 		if(fireTarget==other.transform)
 			searchFireTargetInList();
-	}
+	//}
 }
 
 protected function searchFireTargetInList()
@@ -58,6 +75,15 @@ protected function searchFireTargetInList()
 			}
 			enemyList.Remove(i);
 		}
+		
+	/*
+		if(fireTarget==null)
+		{
+			print(transform.parent.parent.gameObject.name);
+			print(fireTarget==null);
+			print(enemyList.Count);
+		}
+		*/
 	//}
 	return fireTarget;
 }
@@ -88,7 +114,9 @@ function ImpUpdate ()
 	else
 	{
 		aiMachineGun.setFire(false);
+		searchFireTargetInList();//有时物体被移除时,没有OnTriggerExit
 	}
+	//adversaryNumInFireRange = enemyList.Count;
 }
 
 function Update()

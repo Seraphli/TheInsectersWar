@@ -9,6 +9,11 @@ function Start()
 		relativePostion=transform.position - target.position ;
 }
 
+function setTaget(pTarget:Transform)
+{
+	target = pTarget;
+}
+
 
 function Update () 
 {    

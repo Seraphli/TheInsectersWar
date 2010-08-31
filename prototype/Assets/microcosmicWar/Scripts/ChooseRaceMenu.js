@@ -72,7 +72,7 @@ function OnGUI () {
 		GameObject.Find(savedDataName)
 			.GetComponentInChildren(PlayerInfo)
 				.setRace(raceSelectToEnum(raceSelect));
-		Application.LoadLevel("testScene");
+		Application.LoadLevel("netSewer1");
 		//print("Application.LoadLevel");
 	}
 	GUILayout.Space(20);

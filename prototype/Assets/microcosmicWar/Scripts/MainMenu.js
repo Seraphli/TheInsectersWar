@@ -26,11 +26,11 @@ function OnGUI () {
 	
 	
 	GUILayout.BeginVertical();
-	if(GUILayout.Button("New Map (please click me)")){
+	if(GUILayout.Button("sewer 1")){
 		Application.LoadLevel("sewer1");
 	}
 	GUILayout.Space(20);
-	if(GUILayout.Button("Single Player")){
+	if(GUILayout.Button("Single Player:sewer (new)")){
 		Application.LoadLevel("ChooseRace");
 	}
 	GUILayout.Space(20);

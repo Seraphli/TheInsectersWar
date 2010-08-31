@@ -62,11 +62,20 @@ function setBloodValue(pValue:float)
 		if(bloodValue<=0)
 		{
 			//dieCallback();
-			for(var dieCallback in dieCallbackList)
-				dieCallback();
+			//for(var dieCallback in dieCallbackList)
+			//	dieCallback();
 			//zzCreatorUtility.Destroy (gameObject);
+			zzCreatorUtility.sendMessage(gameObject,"Life_die");
 		}
 	}
+}
+
+@RPC
+function Life_die()
+{
+	bloodValue = 0;
+	for(var dieCallback in dieCallbackList)
+		dieCallback();
 }
 
 function setFullBloodValue(lValue:float)

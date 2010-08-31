@@ -9,7 +9,7 @@ var itemBagID:int;
 var hero:GameObject;
 
 //是否创建过
-var haveFirstCreate=false;
+protected var haveFirstCreate=false;
 
 function Start()
 {
@@ -39,6 +39,8 @@ function setOwerImp(pOwner:NetworkPlayer)
 
 function createHeroFirstTime()
 {
+	if(haveFirstCreate)
+		Debug.LogError("haveFirstCreate == true");
 	hero = _createHero();
 	var itemBagControl:zzItemBagControl = hero.GetComponent(zzItemBagControl);
 	itemBagControl.addCallAfterStart(_toGetItemBagID);
@@ -50,6 +52,9 @@ function _toGetItemBagID()
 	var itemBagControl:zzItemBagControl = hero.GetComponent(zzItemBagControl);
 	itemBagID = itemBagControl.getBagID();
 }
+
+//function _theHeroDead()
+
 
 //创建只能在服务器端调用
 function _reviveHero()
@@ -71,32 +76,60 @@ protected function _createHero()
 {
 	var lHeroObject:GameObject = zzCreatorUtility.Instantiate(heroPrefab,transform.position,Quaternion(),0);
 
-	zzCreatorUtility.sendMessage(gameObject,"createNetControl",lHeroObject.networkView.viewID);
+	//print(lHeroObject.GetInstanceID());
+	//print(owner);
+	//zzCreatorUtility.sendMessage(gameObject,"createNetControl",lHeroObject.networkView.viewID);
+	if(Network.peerType ==NetworkPeerType.Disconnected)
+		createControl(lHeroObject);
+	else
+	{
+		if(Network.player == owner )//服务器端
+			createNetControl(lHeroObject);
+		else
+			networkView.RPC("RPCcreateNetControl",owner,lHeroObject.networkView.viewID);
+	}
+	
+	var lRemoveCall:IobjectListener = lHeroObject.GetComponent(IobjectListener);
+	
+	lRemoveCall.setRemovedCallFunc(_reviveHero);
 	
 	return lHeroObject;
 }
 
 @RPC
-function createNetControl(pHeroID:NetworkViewID)
+protected function RPCcreateNetControl(pHeroID:NetworkViewID)
 {
-	if(Network.player != owner)
-		return;
-		
 	var lHeroObject:GameObject = NetworkView.Find(pHeroID).gameObject;
-	
+	createNetControl(lHeroObject);
+}
+
+protected function createNetControl(pHeroObject:GameObject)
+{
 	//创建同步组件
 	var lnetSysn:GameObject = zzCreatorUtility.Instantiate(netSysnPrefab,Vector3(),Quaternion(),0);
 	var lHeroNetView:HeroNetView = lnetSysn.GetComponent(HeroNetView);
-	lHeroNetView.setOwner(lHeroObject);
+	lHeroNetView.setOwner(pHeroObject);
 	
+	createControl(pHeroObject);
+}
+
+protected function createControl( pHeroObject:GameObject)
+{	
 	//绑定输入
 	var lSystem:GameObject = GameObject.Find("System");
 	var lMainInput:mainInput = lSystem.GetComponent(mainInput);
-	lMainInput.setToControl(lHeroObject.GetComponent(ActionCommandControl));
+	lMainInput.setToControl(pHeroObject.GetComponent(ActionCommandControl));
+	//print(pHeroObject.name);
+	//print(pHeroObject.GetInstanceID());
 	
 	//绑定UI
-	lHeroObject.AddComponent(BagItemUI);
-	lHeroObject.AddComponent(MoneyUI);
-	lHeroObject.AddComponent(bagItemUIInput);
+	pHeroObject.AddComponent(BagItemUI);
+	pHeroObject.AddComponent(MoneyUI);
+	pHeroObject.AddComponent(bagItemUIInput);
+	
+	//绑定摄像机
+	var lCameraFollow:_2DCameraFollow=gameObject.Find("Main Camera").GetComponent(_2DCameraFollow);
+	lCameraFollow.setTaget(pHeroObject.transform);
+
 }
 

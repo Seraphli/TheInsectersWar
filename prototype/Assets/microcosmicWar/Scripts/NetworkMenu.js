@@ -96,7 +96,7 @@ function LoadMyLevel (race:int)
 	playerInfo.setPlayerName(playerName);
 	
 	//Application.LoadLevel("testScene");
-	Application.LoadLevel("netTest");
+	Application.LoadLevel("netSewer1");
 }
 
 function OnGUI ()

@@ -41,6 +41,11 @@ static function getRaceLayer(race:Race):int
 	return ;
 }
 
+static function getAdversaryRaceLayer(race:Race)
+{
+	return getRaceLayer( getAdversaryRace(race) );
+}
+
 static function getAdversaryRaceLayer(raceLayer:int)
 {
 	switch(raceLayer)

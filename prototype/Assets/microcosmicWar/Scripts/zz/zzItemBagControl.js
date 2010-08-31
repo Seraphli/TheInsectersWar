@@ -173,12 +173,12 @@ function Start()
 	{
 		bagIndex =itemSystem.addBag(bagName);
 		//print(bagIndex);
+		for(var i:zzMyItemInBagInfo in itemInBagInfo)
+		{
+			setItemNum(i.name,i.number);
+		}
 	}
 		
-	for(var i:zzMyItemInBagInfo in itemInBagInfo)
-	{
-		setItemNum(i.name,i.number);
-	}
 	
 	//和发射器连接 以便得到奖励
 	var lEmitter:Emitter = owner.GetComponentInChildren(Emitter);

@@ -66,6 +66,19 @@ function Awake () {
 	zzCreatorUtility.resetCreator();
 	
 	sSceneData=sceneData;
+	
+	
+	//creat team info
+	//{
+		var lRule:rule1 = gameObject.GetComponent(rule1);
+		var lTeam1Info = TeamInfo();
+		lTeam1Info.teamName = PlayerInfo.eRaceToString(Race.ePismire);
+		var lTeam2Info = TeamInfo();
+		lTeam2Info.teamName = PlayerInfo.eRaceToString(Race.eBee);
+		lRule.addTeam(lTeam1Info);
+		lRule.addTeam(lTeam2Info);
+	
+	//}
 }
 
 static function getSingleton()
