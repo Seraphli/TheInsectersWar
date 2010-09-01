@@ -7,22 +7,24 @@ var actionCommandControl:ActionCommandControl;
 
 function Awake()
 {
-	//soldier=gameObject.GetComponent(soldier);
+	if(!soldier)
+		soldier=gameObject.GetComponentInChildren(Soldier);
 	//if(!soldier)
 	//	soldier=gameObject.GetComponentInChildren(Soldier).getCharacter();
-	character = gameObject.GetComponentInChildren(Soldier).getCharacter();
+	//character = gameObject.GetComponentInChildren(Soldier).getCharacter();
+	character = soldier.getCharacter();
 	actionCommandControl = gameObject.GetComponentInChildren(ActionCommandControl);
 	if(!life)
 		life=gameObject.GetComponentInChildren(Life);
-	/*
+	
 	if( !zzCreatorUtility.isHost() )
 	{
 		Destroy(soldier.GetComponentInChildren(SoldierAI));
-	}*/
-	if( !zzCreatorUtility.isMine(gameObject.networkView ) )
-	{
-		Destroy(soldier.GetComponentInChildren(SoldierAI));
 	}
+	//if( !zzCreatorUtility.isMine(gameObject.networkView ) )
+	//{
+	//	Destroy(soldier.GetComponentInChildren(SoldierAI));
+	//}
 	//if(!soldier)
 	//	Debug.LogError(gameObject.name);
 }

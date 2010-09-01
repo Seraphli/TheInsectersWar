@@ -37,7 +37,7 @@ function OnGUI () {
 	
 	//GUILayout.Space(10);
 	
-	if(GUILayout.Button("Network Player (don't try me)")){
+	if(GUILayout.Button("Network Player :sewer (new)")){
 		Application.LoadLevel("NetworkMenu");
 	}
 	GUILayout.Space(20);

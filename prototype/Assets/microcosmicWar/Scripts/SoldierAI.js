@@ -38,6 +38,7 @@ function Start()
 {
 	//客户端的AI 在 SoldierNetView 中去除
 	//if(!zzCreatorUtility.isHost())
+	//	Debug.LogError("AI not removed in not host");
 	//{
 	//	Destroy(this);
 	//	timeToWait=100.0;

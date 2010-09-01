@@ -134,12 +134,26 @@ class UnitActionCommand
 		Fire=false;
 		Jump=false;
 	}
+	
+	function ToString():String
+	{
+		return "FaceLeft:"+FaceLeft+" FaceRight:"+FaceRight+" FaceUp:"+FaceUp
+			+" FaceDown:"+FaceDown+" GoForward:"+GoForward+" Fire:"+Fire+" Jump:"+Jump;
+	}
 }
 
 var unitActionCommand:UnitActionCommand;
 
 function setCommand( pUnitActionCommand:UnitActionCommand)
 {
+/*
+	if(gameObject.name!="pismireHero1(Clone)")
+	{
+		print(gameObject.name);
+		print("setCommand");
+		print(pUnitActionCommand);
+	}
+*/
 	unitActionCommand = pUnitActionCommand;
 }
 
@@ -186,5 +200,17 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	stream.Serialize(unitActionCommand.Fire);
 	stream.Serialize(unitActionCommand.Jump);
 	
+	/*
+	if(info.networkView.name!="NS")
+	{
+		print(info.networkView.viewID );
+		print(info.networkView.name );
+		
+		print("isWriting"+stream.isWriting);
+		print("GoForward"+unitActionCommand.GoForward);
+		print("FaceRight"+unitActionCommand.FaceRight);
+		print("----------------------------------------------");
+	}
+	*/
 	
 }

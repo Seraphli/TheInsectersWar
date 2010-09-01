@@ -223,10 +223,14 @@ function Update()
 		{
 			mZZSprite.playAnimation("run");
 			//moveV.x=face;
+			//print("run");
 		}
 		else
 		{
 			mZZSprite.playAnimation("stand");
+			//print(gameObject.name);
+			//print("stand");
+			//print(lActionCommand);
 		}
 		
 	}

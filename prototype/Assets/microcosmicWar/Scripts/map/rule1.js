@@ -128,6 +128,7 @@ var teamNameListInfo:TeamInfo[];
 
 function Awake()
 {
+	//print(gameObject.name);
 	if(singletonInstance)
 		Debug.LogError("have singletonInstance");
 	singletonInstance = this;

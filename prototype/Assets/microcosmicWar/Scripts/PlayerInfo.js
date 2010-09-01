@@ -63,12 +63,12 @@ var	race:Race = Race.eNone;
 
 var 	playerName="player";
 
-var	teamName="";
+//var	teamName="";
 
 function Awake()
 {
-	if(teamName=="")
-		teamName=eRaceToString(race);
+	//if(teamName=="")
+	//	teamName=eRaceToString(race);
 }
 
 
@@ -94,8 +94,9 @@ function getRace():Race
 
 function getRaceName()
 {
-	return race;
+	//return race;
 	//return 1;
+	return eRaceToString(race);
 }
 
 function setPlayerName(pName:String)
@@ -105,12 +106,13 @@ function setPlayerName(pName:String)
 
 function getPlayerName()
 {
-	return eRaceToString(getRaceName());
+	return eRaceToString(race);
 }
 
 function getTeamName()
 {
-	return teamName;
+	//return teamName;
+	return getRaceName();
 }
 
 //function Update () {

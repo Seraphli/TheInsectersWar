@@ -112,6 +112,7 @@ function OnGUI ()
 		playerName= GUILayout.TextField(playerName, GUILayout.MinWidth(100));
 		GUILayout.Space(5);
 		
+		GUILayout.Label("As Server");
 		GUILayout.Label("choose team");
 		GUILayout.Space(5);
 		raceSelect = GUILayout.SelectionGrid (raceSelect,["pismire","bee"],2);
@@ -119,7 +120,7 @@ function OnGUI ()
 		GUILayout.Space(10);
 		
 		GUILayout.BeginHorizontal();
-		if (GUILayout.Button ("Start Server"))
+		if (GUILayout.Button ("Start Server:"))
 		{
 			//Network.useNat = useNAT;
 			// Use NAT punchthrough if no public IP present
@@ -137,8 +138,9 @@ function OnGUI ()
 		remotePort = parseInt(GUILayout.TextField(remotePort.ToString()));
 		GUILayout.EndHorizontal();
 		
-		GUILayout.Space(10);
+		GUILayout.Space(15);
 		
+		GUILayout.Label("As Client:");
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button ("Manual Connect"))
 		{

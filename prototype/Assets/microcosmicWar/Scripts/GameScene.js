@@ -110,7 +110,8 @@ function CreatePlayer()
 
 function Start()
 {
-	var playerInfo:PlayerInfo = sceneData.GetComponent(PlayerInfo);
+	//var playerInfo:PlayerInfo = sceneData.GetComponent(PlayerInfo);
+	var playerInfo:PlayerInfo = getPlayerInfo();
 	//print(playerInfo.getRace());
 	//var race:Race=playerInfo.getRace();
 
@@ -138,11 +139,22 @@ function Start()
 			playerSpawn.setOwer(Network.player);
 			
 			if(Network.connections.Length>0)
+			{
+				var lIntRace:int = playerInfo.getAdversaryRace(playerInfo.getRace());
+				networkView.RPC("RPCSetRace",Network.connections[0],lIntRace);
 				adversaryPlayerSpawn.setOwer(Network.connections[0]);
+			}
 			CreatePlayer();
 		}
 	}
 	
+}
+
+@RPC
+function RPCSetRace(pRace:int)
+{
+	var playerInfo:PlayerInfo = getPlayerInfo();
+	playerInfo.setRace(pRace);
 }
 
 protected var needOnGUI=false;
