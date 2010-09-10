@@ -1,0 +1,10 @@
+fileFormatVersion: 1
+guid: 9987558d39c3ec844919eee9635ab808
+AudioImporter:
+  importerVersion: 3
+  format: -1
+  quality: 0.5
+  3d: 1
+  forceToMono: 0
+  decompressOnLoad: 1
+  bitrate: 156000

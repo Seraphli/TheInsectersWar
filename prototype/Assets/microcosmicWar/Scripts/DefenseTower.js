@@ -208,7 +208,8 @@ function initLayer(pLayer:int)
 
 function deadAction()
 {
-	zzCreatorUtility.Destroy(gameObject);
+	//zzCreatorUtility.Destroy(gameObject);
+	Destroy(gameObject);
 }
 
 function getBulletLayer()

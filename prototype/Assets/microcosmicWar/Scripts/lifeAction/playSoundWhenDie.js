@@ -1,4 +1,6 @@
 
+var soundToPlay:AudioSource[];
+
 
 function Start()
 {
@@ -10,5 +12,6 @@ function Start()
 //在死亡的回调中使用
 function deadAction()
 {
-	Destroy(gameObject);
+	if(soundToPlay.Length!=0)
+		soundToPlay[Random.Range(0,soundToPlay.Length)].Play();
 }
