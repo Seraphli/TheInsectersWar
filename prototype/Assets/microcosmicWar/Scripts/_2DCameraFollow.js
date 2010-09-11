@@ -1,12 +1,13 @@
+// The target we are following
 var target:Transform;
-
-var useRelative=false;
-var relativePostion:Vector3;
+// Smooth switcher
+var useSmooth = true;
+// How much we 
+var positionDamping = 1.0;
 
 function Start()
 {
-	if(useRelative)
-		relativePostion=transform.position - target.position ;
+	
 }
 
 function setTaget(pTarget:Transform)
@@ -17,15 +18,23 @@ function setTaget(pTarget:Transform)
 
 function Update () 
 {    
-	if(target && useRelative)
+	if ( target )
 	{
-		transform.position=target.position+relativePostion;
-		//transform.position.x = target.position.x+relativePostion.x;
-		//transform.position.y = target.position.y+relativePostion.y;
-	}
-	else if(target)
-	{
-		transform.position.x = Mathf.Lerp(transform.position.x, target.position.x, 0.75);
-		transform.position.y = Mathf.Lerp(transform.position.y, target.position.y, 0.75); 
+		if ( useSmooth)
+		{
+			translationx = (target.position.x - transform.position.x) / positionDamping * Time.deltaTime;
+			translationy = (target.position.y - transform.position.y) / positionDamping * Time.deltaTime;
+			if ( transform.position.x != target.position.x && transform.position.y != target.position.y )
+			transform.Translate = (translationx, translationy,o);
+			//transform.position.y = Mathf.Lerp(transform.position.y, target.position.y, timeDamping);
+			//transform.position.x = Mathf.Lerp(transform.position.x, target.position.x, 1.75);
+			//transform.position.y = Mathf.Lerp(transform.position.y, target.position.y, 1.75); 
+			//transform.position = target.position;
+		}
+		else
+		{
+			transform.position.x = target.position.x;
+			transform.position.y = target.position.y;
+		}
 	}
 }
