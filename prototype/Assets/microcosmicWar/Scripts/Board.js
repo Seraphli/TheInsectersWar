@@ -41,5 +41,6 @@ function turnOnCollision( pGameObject :GameObject )
 
 function Start()
 {
+	//用于子弹的穿透
 	collisionLayer.addCollider(gameObject);
 }

@@ -37,13 +37,18 @@ function OnCollisionEnter(collision : Collision)
 {
 	//print("OnCollisionEnter");
 	var lOwner:Transform = collision.transform;
-	var lLife:Life=lOwner.gameObject.GetComponentInChildren(Life);
+	//var lLife:Life=lOwner.gameObject.GetComponentInChildren(Life);
+	var lLife:Life=lOwner.gameObject.GetComponent(Life);
 	
 	if(!lLife)
 	{
-		if(lOwner.parent)
+		while(lOwner.parent)
+		{
 			lOwner=lOwner.parent;
-		lLife=lOwner.gameObject.GetComponent(Life);
+			lLife = lOwner.gameObject.GetComponent(Life);
+			if(lLife)
+				break;
+		}
 	}
 	
 	if(lLife)
