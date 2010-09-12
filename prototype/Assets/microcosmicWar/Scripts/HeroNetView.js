@@ -34,6 +34,7 @@ function RPCSetOwner(pOwnerID:NetworkViewID)
 	var lOwnerHeroObject:GameObject = NetworkView.Find(pOwnerID).gameObject;
 	
 	gameObject.name="NS";
+	transform.parent = lOwnerHeroObject.transform;
 	owner = lOwnerHeroObject;
 	
 	//-------------------------------------------

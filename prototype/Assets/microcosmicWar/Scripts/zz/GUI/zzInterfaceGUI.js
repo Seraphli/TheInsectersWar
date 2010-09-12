@@ -9,35 +9,53 @@ enum zzGUIDockPos
 	custom
 };
 
+class zzGUIRelativeLength
+{
+	var useRelative=false;
+	var relativeLength:float;//[0,1]
+}
+
 class zzInterfaceGUI extends MonoBehaviour
 {
 	//var data:int;
 	var position : Rect;
 	var depth:int;
+	
+	//位置信息;custom 则使用position的
 	var horizontalDockPosition:zzGUIDockPos=zzGUIDockPos.custom;
 	var verticalDockPosition:zzGUIDockPos=zzGUIDockPos.custom;
+	
+	//相对尺寸信息,useRelative=false,则使用position的
+	var relativeWidth=zzGUIRelativeLength();
+	var relativeHeight=zzGUIRelativeLength();
+	
 	var visible:boolean = true;
 	
-	function setVisible(pVisible:boolean)
+	//只是为了付类型
+	protected function nullGUICallback(pGUI:zzInterfaceGUI):void
+	{
+	}
+	
+	function setVisible(pVisible:boolean):void
 	{
 		visible = pVisible;
 	}
 	
-	function getVisible()
+	function getVisible():boolean
 	{
 		return visible;
 	}
 	
-	virtual function impGUI()
+	virtual function impGUI():void
 	{
 	
 	}
 	
-	virtual function setImage(pImage:Texture)
+	virtual function setImage(pImage:Texture):void
 	{
 	}
 	
-	virtual function setText(pText:String)
+	virtual function setText(pText:String):void
 	{
 	}
 	
@@ -51,6 +69,28 @@ class zzInterfaceGUI extends MonoBehaviour
 				return impGUI.getGUI();
 		}
 		return null;
+	}
+	
+	function getParent():zzInterfaceGUI
+	{
+		var impGUI:zzGUI = transform.parent.GetComponent(zzGUI);
+		if(impGUI)
+			return impGUI.getGUI();
+		return null;
+	}
+	
+	virtual function getWidth():float
+	{
+		if(relativeWidth.useRelative)
+			return relativeWidth.relativeLength*getParent().getWidth();
+		return position.width;
+	}
+	
+	virtual function getHeight():float
+	{
+		if(relativeHeight.useRelative)
+			return relativeWidth.relativeLength*getParent().getHeight();
+		return position.height;
 	}
 	
 	virtual function getPosition()
@@ -89,6 +129,12 @@ class zzInterfaceGUI extends MonoBehaviour
 			//	break;
 		}
 		
+		lOut.width = getWidth();
+		//print(gameObject.name);
+		//print(relativeWidth.useRelative);
+		//print(lOut.width);
+		lOut.height= getHeight();
+		
 		return lOut;
 	}
 	
@@ -123,12 +169,13 @@ class zzInterfaceGUI extends MonoBehaviour
 		
 		Gizmos.matrix = transform.localToWorldMatrix;
 		
-		Gizmos.DrawLine (Vector3(position.x,-position.y,0), Vector3(position.xMax,-position.y,0));
-		Gizmos.DrawLine (Vector3(position.x,-position.y,0), Vector3(position.x,-position.yMax,0));
+		var lPosition = getPosition();
+		Gizmos.DrawLine (Vector3(lPosition.x,-lPosition.y,0), Vector3(lPosition.xMax,-lPosition.y,0));
+		Gizmos.DrawLine (Vector3(lPosition.x,-lPosition.y,0), Vector3(lPosition.x,-lPosition.yMax,0));
 		
 		
-		Gizmos.DrawLine (Vector3(position.xMax,-position.y,0), Vector3(position.xMax,-position.yMax,0));
-		Gizmos.DrawLine (Vector3(position.x,-position.yMax,0), Vector3(position.xMax,-position.yMax,0));
+		Gizmos.DrawLine (Vector3(lPosition.xMax,-lPosition.y,0), Vector3(lPosition.xMax,-lPosition.yMax,0));
+		Gizmos.DrawLine (Vector3(lPosition.x,-lPosition.yMax,0), Vector3(lPosition.xMax,-lPosition.yMax,0));
 		/*
 			
 		Gizmos.DrawLine (Vector3(position.x,-position.y,0), Vector3(position.xMax-position.width/2,-position.y,0));

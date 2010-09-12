@@ -9,8 +9,9 @@ class zzImageGUI extends zzInterfaceGUI
 
 	virtual function impGUI()
 	{
+		//print("zzImageGUI impGUI");
 		if(image)
-			GUI.DrawTexture (position , image , scaleMode , alphaBlend , imageAspect);
+			GUI.DrawTexture (getPosition() , image , scaleMode , alphaBlend , imageAspect);
 	}
 	
 	virtual function setImage(pImage:Texture)

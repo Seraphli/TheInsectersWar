@@ -1,13 +1,13 @@
 
 class zzGUIContainer extends zzInterfaceGUI
 {
-	virtual function impGUI()
+	virtual function impGUI():void
 	{
 		impSubs();
 	}
 	
 	
-	function impSubs()
+	function impSubs():void
 	{
 		var lGUIlist = ArrayList();
 		for(var lTransform:Transform in transform)

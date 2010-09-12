@@ -1,25 +1,39 @@
 
-@script ExecuteInEditMode()
 
 class zzWindow extends zzGUIContainer
 {
 
 	//var windowRect = Rect (20, 20, 120, 50);
 	var title : GUIContent;
+	var useDefaultStyle=false;
 	var  style : GUIStyle;
 	var ID=0;
+	
+	var enableDrag=false;
 
 	//var subElements:zzGUI[];
 
-	function OnGUI () 
+	
+	virtual function impGUI():void
 	{
-		impGUI();
+		if(useDefaultStyle)
+		{
+			//print("useDefaultStyle");
+			position = GUI.Window (ID, getPosition(), DoMyWindow,title);
+			return;
+		}
+			//print("not useDefaultStyle");
+		position = GUI.Window (ID, getPosition(), DoMyWindow,title,style);
 	}
 	
-	virtual function impGUI()
+	virtual function DoMyWindow (windowID : int)
 	{
-		GUI.Window (ID, getPosition(), impSubs,title,style);
+		impSubs();
+			//print("enableDrag:"+enableDrag);
+		if(enableDrag)
+			GUI.DragWindow ();
 	}
+	
 
 	// Make the contents of the window
 	//function DoMyWindow (windowID : int) 
