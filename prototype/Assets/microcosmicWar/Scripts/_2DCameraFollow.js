@@ -27,11 +27,11 @@ function Update ()
 					translationx = (target.position.x - 10.0 - transform.position.x) / positionDamping * Time.deltaTime;
 					if ( Input.GetButton ("up"))
 					{
-					translationy = (target.position.y + 8.0 - transform.position.y) / positionDamping * Time.deltaTime;
+					translationy = (target.position.y + 6.0 - transform.position.y) / positionDamping * Time.deltaTime;
 					}
 					else if (Input.GetButton ("down"))
 					{
-					translationy = (target.position.y - 8.0 - transform.position.y) / positionDamping * Time.deltaTime;
+					translationy = (target.position.y - 6.0 - transform.position.y) / positionDamping * Time.deltaTime;
 					}
 					else
 					translationy = (target.position.y - transform.position.y) / positionDamping * Time.deltaTime;
@@ -43,14 +43,28 @@ function Update ()
 					translationx = (target.position.x + 10.0 - transform.position.x) / positionDamping * Time.deltaTime;
 					if ( Input.GetButton ("up"))
 					{
-					translationy = (target.position.y + 8.0 - transform.position.y) / positionDamping * Time.deltaTime;
+					translationy = (target.position.y + 6.0 - transform.position.y) / positionDamping * Time.deltaTime;
 					}
 					else if (Input.GetButton ("down"))
 					{
-					translationy = (target.position.y - 8.0 - transform.position.y) / positionDamping * Time.deltaTime;
+					translationy = (target.position.y - 6.0 - transform.position.y) / positionDamping * Time.deltaTime;
 					}
 					else
 					translationy = (target.position.y - transform.position.y) / positionDamping * Time.deltaTime;
+					if ( transform.position.x != target.position.x && transform.position.y != target.position.y )
+					transform.Translate(translationx, translationy, 0);
+				}
+				else if ( Input.GetButton ("up"))
+				{
+					translationx = (target.position.x - transform.position.x) / positionDamping * Time.deltaTime;
+					translationy = (target.position.y + 6.0 - transform.position.y) / positionDamping * Time.deltaTime;
+					if ( transform.position.x != target.position.x && transform.position.y != target.position.y )
+					transform.Translate(translationx, translationy, 0);
+				}
+				else if (Input.GetButton ("down"))
+				{
+					translationx = (target.position.x - transform.position.x) / positionDamping * Time.deltaTime;
+					translationy = (target.position.y - 6.0 - transform.position.y) / positionDamping * Time.deltaTime;
 					if ( transform.position.x != target.position.x && transform.position.y != target.position.y )
 					transform.Translate(translationx, translationy, 0);
 				}
