@@ -1,5 +1,6 @@
 
 var objectToCreate:GameObject;
+var life:Life;
 
 function Start()
 {

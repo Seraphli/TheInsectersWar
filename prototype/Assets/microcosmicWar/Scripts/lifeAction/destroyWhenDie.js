@@ -1,8 +1,9 @@
 
+var delayTime=0.0;
 
 function Start()
 {
-	life = gameObject.GetComponentInChildren(Life);
+	var life:Life = gameObject.GetComponentInChildren(Life);
 	life.addDieCallback(deadAction);
 }
 
@@ -10,5 +11,5 @@ function Start()
 //在死亡的回调中使用
 function deadAction()
 {
-	Destroy(gameObject);
+	Destroy(gameObject,delayTime);
 }

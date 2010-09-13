@@ -1,4 +1,6 @@
 
+@script RequireComponent(destroyWhenDie)
+
 var runSpeed=2.0;
 //var userControl=false;
 //var controlByOther=false;
@@ -165,7 +167,7 @@ function disappear()
 	//	dieCallFunction.SendMessage ("dieCallFunction");
 	if(objectListener)
 		objectListener.removedCall();
-	Destroy(gameObject);
+	//Destroy(gameObject);
 }
 
 function UpdateFaceShow()

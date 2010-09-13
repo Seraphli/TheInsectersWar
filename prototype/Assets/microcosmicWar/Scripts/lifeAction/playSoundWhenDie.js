@@ -1,5 +1,6 @@
 
 var soundToPlay:AudioSource[];
+var life:Life;
 
 
 function Start()

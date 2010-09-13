@@ -23,7 +23,7 @@ ModelImporter:
     clips:
       run:
         firstFrame: 1
-        lastFrame: 25
+        lastFrame: 20
         loop: 1
         wrapMode: 2
       stand:
