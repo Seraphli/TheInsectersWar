@@ -7,9 +7,17 @@ var autoCreatePlayer:boolean=false;
 var itemBagID:int;
 
 var hero:GameObject;
+var rebirthClockUI:zzInterfaceGUI;
 
 //是否创建过
 protected var haveFirstCreate=false;
+
+//重生所需的时间
+var rebirthTime = 10;
+protected var rebirthClockTimer:zzTimer;
+//重生剩余的时间
+protected var rebirthTimeLeave=0;
+protected var rebirthTimer:zzTimer;
 
 function Start()
 {
@@ -23,6 +31,8 @@ function Start()
 */
 	if(autoCreatePlayer)
 		createHeroFirstTime();
+	if(!rebirthClockUI)
+		rebirthClockUI = gameObject.Find("Main Camera/UI/rebirthClock").GetComponent(zzInterfaceGUI);
 }
 
 function setOwer(pOwner:NetworkPlayer)
@@ -57,18 +67,74 @@ function _toGetItemBagID()
 
 
 //创建只能在服务器端调用
-function _reviveHero()
+function _rebirthHero()
 {
 	if(!haveFirstCreate)
 		Debug.LogError("haveFirstCreate == false");
+		
+	_createHeroRebirthClock();
+	
+	//重生的延迟执行
+	rebirthTimer = gameObject.AddComponent(zzTimer);
+	rebirthTimer.setImpFunction(_rebirthHeroCreate);
+	rebirthTimer.setInterval(rebirthTime);
 	//if(Network.peerType !=NetworkPeerType.Disconnected)
 	//	var lHeroObject:GameObject = Network.Instantiate(heroPrefab,transform.position,Quaternion(),0);
-	hero = _createHero();
-	
-	var itemBagControl:zzItemBagControl = hero.GetComponent(zzItemBagControl);
-	itemBagControl.setUseExistBag(itemBagID);
 	
 	//haveFirstCreate = true;
+}
+
+//计时器的显示更新
+protected function _createHeroRebirthClock()
+{
+	if(Network.peerType ==NetworkPeerType.Disconnected)
+		RPCCreateHeroRebirthClock();
+	else
+	{
+		if(Network.player == owner )//服务器端
+			RPCCreateHeroRebirthClock();
+		else
+			networkView.RPC("RPCCreateHeroRebirthClock",owner);
+	}
+}
+
+@RPC
+function RPCCreateHeroRebirthClock()
+{
+	rebirthClockTimer = gameObject.AddComponent(zzTimer);
+	rebirthClockTimer.setImpFunction(_updateRebirthTimeLeave);
+	rebirthClockTimer.setInterval(1.0);
+	
+	rebirthClockUI.setVisible(true);
+	rebirthTimeLeave = rebirthTime;
+	rebirthClockUI.setText(rebirthTimeLeave.ToString());
+}
+
+//被rebirthTimer调用
+protected function _rebirthHeroCreate()
+{
+	//计时结束 rebirthTimer 的Update,并销毁
+	rebirthTimer.enabled=false;
+	Destroy(rebirthTimer);
+	
+	hero = _createHero();
+
+	var itemBagControl:zzItemBagControl = hero.GetComponent(zzItemBagControl);
+	itemBagControl.setUseExistBag(itemBagID);
+}
+
+//被rebirthClockTimer调用
+protected function _updateRebirthTimeLeave()
+{
+	--rebirthTimeLeave;
+	if(rebirthTimeLeave<=0)
+	{
+		//计时结束 关闭rebirthClockTimer 的Update,并销毁
+		rebirthClockUI.setVisible(false);
+		rebirthClockTimer.enabled=false;
+		Destroy(rebirthClockTimer);
+	}
+	rebirthClockUI.setText(rebirthTimeLeave.ToString());
 }
 
 //创建只能在服务器端调用
@@ -91,7 +157,7 @@ protected function _createHero()
 	
 	var lRemoveCall:IobjectListener = lHeroObject.GetComponent(IobjectListener);
 	
-	lRemoveCall.setRemovedCallFunc(_reviveHero);
+	lRemoveCall.setRemovedCallFunc(_rebirthHero);
 	
 	return lHeroObject;
 }

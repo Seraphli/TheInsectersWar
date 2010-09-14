@@ -7,7 +7,7 @@ class zzLabel extends zzInterfaceGUI
 
 	virtual function impGUI()
 	{
-		GUI.Button(getPosition() , content , style);
+		GUI.Label (getPosition() , content , style);
 	}
 	
 	virtual function setText(pText:String)

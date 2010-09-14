@@ -1,7 +1,7 @@
 
 var interval:float;
 
-protected var frequencyTimer:zzFrequencyTimer;
+protected var frequencyTimer=zzFrequencyTimer();
 
 function Start()
 {
@@ -15,7 +15,10 @@ function setImpFunction(pFunc)
 
 function setInterval( pInterval: float )
 {
-	frequencyTimer.setFrequencyOfImp(1/pInterval);
+	//print(1.0/pInterval);
+	//防止在 Start 前执行,使interval未赋值执行setInterval
+	interval = pInterval;
+	frequencyTimer.setFrequencyOfImp(1.0/pInterval);
 }
 
 function Update ()

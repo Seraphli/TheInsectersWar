@@ -4,7 +4,8 @@ var myGUI:zzInterfaceGUI;
 function impGUI()
 {
 	//GUI.depth = myGUI.depth;
-	if(myGUI.visible)
+	
+	if(myGUI.getVisible())
 		myGUI.impGUI();
 }
 

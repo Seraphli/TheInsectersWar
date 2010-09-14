@@ -36,12 +36,12 @@ class zzInterfaceGUI extends MonoBehaviour
 	{
 	}
 	
-	function setVisible(pVisible:boolean):void
+	virtual function setVisible(pVisible:boolean):void
 	{
 		visible = pVisible;
 	}
 	
-	function getVisible():boolean
+	virtual function getVisible():boolean
 	{
 		return visible;
 	}
