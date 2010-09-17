@@ -22,6 +22,9 @@ function Update ()
 	{
 		if ( useSmooth)
 		{
+			var translationx:float;
+			var translationy:float;
+			
 				if (Input.GetButton ("left")) 
 				{
 					translationx = (target.position.x - 10.0 - transform.position.x) / positionDamping * Time.deltaTime;
@@ -70,10 +73,10 @@ function Update ()
 				}
 			else
 			{
-			translationx = (target.position.x - transform.position.x) / positionDamping * Time.deltaTime;
-			translationy = (target.position.y - transform.position.y) / positionDamping * Time.deltaTime;
-			if ( transform.position.x != target.position.x && transform.position.y != target.position.y )
-			transform.Translate(translationx, translationy, 0);
+				translationx = (target.position.x - transform.position.x) / positionDamping * Time.deltaTime;
+				translationy = (target.position.y - transform.position.y) / positionDamping * Time.deltaTime;
+				if ( transform.position.x != target.position.x && transform.position.y != target.position.y )
+				transform.Translate(translationx, translationy, 0);
 			}
 			//transform.position.y = Mathf.Lerp(transform.position.y, target.position.y, timeDamping);
 			//transform.position.x = Mathf.Lerp(transform.position.x, target.position.x, 1.75);

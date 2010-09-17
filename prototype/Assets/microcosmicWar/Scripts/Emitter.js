@@ -36,7 +36,8 @@ virtual function EmitBullet()
 		clone.layer=bulletLayer;
 		
 		//print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
-		clone.GetComponentInChildren(Rigidbody).velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
+		var lRigidbody:Rigidbody = clone.GetComponentInChildren(Rigidbody);
+		lRigidbody.velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
 		//clone.velocity=transform.forward;
 		var pBullet:Bullet = clone.GetComponentInChildren(Bullet);
 		pBullet.setAliveTime(bulletAliveTime);
@@ -65,4 +66,9 @@ virtual function getForward()
 virtual function getFireRay()
 {
 	return Ray(transform.position,transform.right.normalized);
+}
+
+function OnDrawGizmosSelected() 
+{
+	Gizmos.DrawLine(transform.position,transform.position+transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*shootRange);
 }
