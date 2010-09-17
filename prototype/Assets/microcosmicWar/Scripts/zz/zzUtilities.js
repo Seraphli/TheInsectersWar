@@ -44,6 +44,15 @@ static function removeValueInArray(array:Array, pValue)
 		}
 }
 
+static function normalize(pValue:float):float
+{
+	if(pValue>0)
+		return 1;
+	else if(pValue<0)
+		return -1;
+	return 0;
+}
+
 class DataWrap
 {
 	var data:Object;

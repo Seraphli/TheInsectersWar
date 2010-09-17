@@ -1,133 +1,29 @@
 
+//是否被限制转角,否则可以任意旋转,为true时, maxUpAngle , maxDownAngle 才有用
+var limitedAngle = true;
+
 var maxUpAngle=50.0;
 
 var maxDownAngle=50.0;
 
 var angularVelocity=20.0;
 
-//会在update中同步到物体
+//会在update中同步到物体,以原始角度为0度
 var nowAngular=0.0;
 
 //剩余要移动的角度,用于平滑的移动
 //var wantToTurn:float;
 
 
-static var NULL_aimAngular=361.0;
+static var NULL_aimAngular=1000.0;
 //设置一个不会用到的值,作为不是用时的值
 var aimAngular=NULL_aimAngular;
 
 var gunPivot:Transform;
 
-var gunSprite:ZZSprite;
-
 var emitter:Emitter;
 
 var fire=false;
-
-var fireTime:float;
-
-class _2dInvertDoubleFaceSprite
-{
-	var face=UnitFaceDirection.left;
-	
-	//var preFace=1;
-	
-	//var leftFaceValue=1;
-	
-	//原始的朝向
-	var originalFace= UnitFaceDirection.left;
-	
-	//var invertObject:Transform;
-	
-	var turnObject:Transform;
-
-	var faceLeftSprite:ZZSprite;
-
-	var faceRightSprite:ZZSprite;
-	
-	var nowSprite:ZZSprite;
-	
-	function _2dInvertDoubleFaceSprite()
-	{
-		//preFace=face;
-		//_UpdateFaceShow();
-	}
-	
-	function init(pFace:int)
-	{
-		face=pFace;
-		_UpdateFaceShow();
-	}
-	
-	protected var invertObjectXscale:float;
-	
-	function setFace(pFace:int)
-	{
-		//invertObjectXscale=invertObject.localScale.x;
-		UpdateFaceShow(pFace);
-		face=pFace;
-		return nowSprite;
-	}
-	
-	function getFace()
-	{
-		return face;
-	}
-	
-	function getNowSprite()
-	{
-		return nowSprite;
-	}
-	
-	//以右为正
-	function setFaceDirection(pFace:int)
-	{
-		//setFace(pFace*leftFaceValue);
-		setFace(pFace);
-	}
-	
-	function setAnimationListener(pAnimationName:String,pListener:AnimationListener)
-	{
-		faceLeftSprite.setListener(pAnimationName,pListener);
-		faceRightSprite.setListener(pAnimationName,pListener);
-	}
-	
-	function UpdateFaceShow(pFace:int)
-	{
-		if(face!=pFace)
-		{
-			face=pFace;
-			_UpdateFaceShow();
-		}
-			
-		return nowSprite;
-	}
-	
-	protected function _UpdateFaceShow()
-	{
-		if(face==originalFace)
-			turnObject.rotation=Quaternion(0,0,0,1);
-		else
-			turnObject.rotation=Quaternion(0,1,0,0);
-			
-		//if(face==leftFaceValue)
-		if(face==UnitFaceDirection.right)
-			nowSprite = faceRightSprite;
-		else
-			nowSprite = faceLeftSprite;
-	}
-}
-
-//物体朝向
-//var face = 1;
-
-//protected var gunPivot:Transform;
-//protected var Xscale:float;
-
-var invert=_2dInvertDoubleFaceSprite();
-
-//在播放射击动画时,会执行的动作
-protected var actionImpDuringFireAnimation=AnimationImpInTimeList();
 
 function setFire(pNeedFire:boolean)
 {
@@ -143,29 +39,33 @@ protected var life:Life;
 
 function Start()
 {
+	if(!limitedAngle)
+	{
+		maxUpAngle = 360;
+		maxDownAngle = 360;
+	}
+	
 	life= GetComponentInChildren(Life);
 	//life.setDieCallback(deadAction);
 	life.addDieCallback(deadAction);
 	
-	gunPivot = transform.Find("turn/gunPivot");
+	if(!gunPivot)
+		gunPivot = transform.Find("turn/gunPivot");
 	
 	maxDownAngle=-maxDownAngle;
 	
-	//UpdateFaceShow();
-	//gunSprite=invert.UpdateFaceShow();
-	invert.setAnimationListener("fire",actionImpDuringFireAnimation);
-	
-	actionImpDuringFireAnimation.setImpInfoList(
-			[AnimationImpTimeListInfo(fireTime,EmitBullet)]
-		);
-		
 	
 	if(zzCreatorUtility.isHost())
 	{
 		zzCreatorUtility.sendMessage(gameObject,"initLayer",gameObject.layer);
-		var lIntType:int = invert.getFace();
-		zzCreatorUtility.sendMessage(gameObject,"initFace", lIntType);
+		//var lIntType:int = invert.getFace();
+		//zzCreatorUtility.sendMessage(gameObject,"initFace", lIntType);
+		initWhenHost();
 	}
+}
+
+virtual function initWhenHost()
+{
 }
 
 /*
@@ -173,23 +73,16 @@ info["face"]
 info["layer"]
 info["adversaryLayer"]
 */
-function init(info:Hashtable)
+virtual function init(info:Hashtable)
 {
 	//print(info["face"]);
 	//print(invert);
-	invert.face = info["face"];
+	//invert.face = info["face"];
 	gameObject.layer=info["layer"];
 	var lAi:AiMachineGunAI = GetComponentInChildren(AiMachineGunAI);
 
 	if(zzCreatorUtility.isHost())
 		lAi.adversaryLayer=info["adversaryLayer"];
-}
-
-@RPC
-function initFace(pFace:int)
-{
-	invert.init(pFace);
-	gunSprite=invert.getNowSprite();
 }
 
 @RPC
@@ -219,13 +112,13 @@ function getBulletLayer()
 	return LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" );
 }
 
-function Update () 
+virtual function Update () 
 {
 	//print(gunSprite);
-	if(fire)
-		gunSprite.playAnimation("fire");
-	else
-		gunSprite.playAnimation("wait");
+	//if(fire)
+	//	gunSprite.playAnimation("fire");
+	//else
+	//	gunSprite.playAnimation("wait");
 	impSmoothTurn(Time.deltaTime );
 	setAngle(nowAngular);
 }
@@ -246,16 +139,25 @@ protected function impSmoothTurn(pElapseTime:float)
 	if(aimAngular!=NULL_aimAngular)
 	{
 		var lRemainAngular=aimAngular-nowAngular;
+		//print("b:"+lRemainAngular);
+		//转过一周后的处理办法,虽然和目标角度离得很近,但是值却差很多
+		if(Mathf.Abs (lRemainAngular)>180)
+			lRemainAngular = lRemainAngular-zzUtilities.normalize(lRemainAngular)*360;
+		//print("a:"+lRemainAngular);
 		var lRemainAngularAbs=Mathf.Abs (lRemainAngular);
 		var lTurnAngular=angularVelocity*pElapseTime;
+		//print("lTurnAngular:"+lTurnAngular+"lRemainAngularAbs:"+lRemainAngularAbs);
 		if(lTurnAngular<lRemainAngularAbs)
 			nowAngular+=lTurnAngular*(lRemainAngular/lRemainAngularAbs);
 		else
 		{
 			//到达目标位置,并停止转动
 			nowAngular+=lRemainAngular;
+			//print("final:"+nowAngular);
 			aimAngular=NULL_aimAngular;
 		}
+		
+		nowAngular = nowAngular%360;
 	}
 }
 
@@ -272,8 +174,10 @@ function _setSmoothAngle(pAimAngular:float)
 //以转速转到此角度
 function smoothTurnToAngle(pAimAngular:float)
 {
+	//print("smoothTurnToAngle"+pAimAngular);
 	if(pAimAngular==NULL_aimAngular)
 		return;
+	pAimAngular = pAimAngular%360.0;
 		
 	if(pAimAngular>maxUpAngle)
 	{
@@ -295,17 +199,22 @@ function takeAim(pAimPos:Vector3,deviation:float)
 	var lEmitterToAim=pAimPos-lFireRay.origin;
 	lEmitterToAim.Normalize();
 	
-	var lAngle = Vector3.Angle(lFireRay.direction, lEmitterToAim);
+	var lAngle:float = Vector3.Angle(lFireRay.direction, lEmitterToAim);
 	
 	if(lAngle>deviation)
 	{
+		var lCross:Vector3 = Vector3.Cross(lFireRay.direction,lEmitterToAim);
 	/*
-		print(pAimPos);
-		print(lFireRay);
-		print(lEmitterToAim);
-		print(lAngle);
+		print("pAimPos:"+pAimPos);
+		print("lFireRay:"+lFireRay);
+		print("lEmitterToAim:"+lEmitterToAim);
+		print("lAngle:"+lAngle);
+		print("deviation:"+deviation);
 	*/
-		if(lEmitterToAim.y>lFireRay.direction.y)
+		//if(lEmitterToAim.y>lFireRay.direction.y)
+		
+		//因为射击口射线不一定穿过转轴,所以采取 nowAngular+/-lAngle的方式 设置角度
+		if(lCross.z>0)
 		{
 			//print("lEmitterToAim.y>lFireRay.direction.y");
 			smoothTurnToAngle(nowAngular+lAngle);
@@ -334,17 +243,18 @@ function setAngle(pAngle:float)
 //	return gunPivot.localEulerAngles.z;
 //}
 
-function setFaceDirection(pFace:int)
+virtual function setFaceDirection(pFace:int)
 {
 	//print(gunSprite);
-	gunSprite=invert.setFace(pFace);
+	//gunSprite=invert.setFace(pFace);
 }
 
 
-function getFaceDirection()
+virtual function getFaceDirection():UnitFaceDirection
 {
-	return invert.getFace();
+	//return invert.getFace();
 	//return face;
+	return UnitFaceDirection.left;
 }
 
 

@@ -65,7 +65,7 @@ virtual function getForward()
 
 virtual function getFireRay()
 {
-	return Ray(transform.position,transform.right.normalized);
+	return Ray(transform.position,transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)));
 }
 
 function OnDrawGizmosSelected() 
