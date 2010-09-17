@@ -30,7 +30,7 @@ function setBloodValueChangeCallback(call)
 	bloodValueChangeCallback=call;
 }
 
-function injure(value:float,pInjureInfo:Hashtable)
+function injure(value:int,pInjureInfo:Hashtable)
 {
 	injureInfo=pInjureInfo;
 	if( bloodValue>0)
@@ -40,7 +40,7 @@ function injure(value:float,pInjureInfo:Hashtable)
 	injureInfo=null;
 }
 
-function injure(value:float)
+function injure(value:int)
 {
 	injure(value,null);
 }
@@ -51,7 +51,7 @@ function getInjureInfo():Hashtable
 	return injureInfo;
 }
 
-function setBloodValue(pValue:float)
+function setBloodValue(pValue:int)
 {
 	if(pValue>fullBloodValue)
 		pValue = fullBloodValue;
@@ -121,6 +121,23 @@ function OnSerializeNetworkView(stream : BitStream, info : NetworkMessageInfo)
 	{
 		setBloodValue(lBloodValue);
 	}
+}
+
+static function getLifeFromTransform(pOwn:Transform):Life
+{	
+	var lLife:Life=pOwn.gameObject.GetComponent(Life);
+	
+	if(!lLife)
+	{
+		while(pOwn.parent)
+		{
+			pOwn=pOwn.parent;
+			lLife = pOwn.gameObject.GetComponent(Life);
+			if(lLife)
+				break;
+		}
+	}
+	return lLife;
 }
 
 //function Update ()

@@ -38,6 +38,7 @@ function OnCollisionEnter(collision : Collision)
 	//print("OnCollisionEnter");
 	var lOwner:Transform = collision.transform;
 	//var lLife:Life=lOwner.gameObject.GetComponentInChildren(Life);
+	/*
 	var lLife:Life=lOwner.gameObject.GetComponent(Life);
 	
 	if(!lLife)
@@ -50,6 +51,8 @@ function OnCollisionEnter(collision : Collision)
 				break;
 		}
 	}
+	*/
+	var lLife:Life=Life.getLifeFromTransform(collision.transform);
 	
 	if(lLife)
 		lLife.injure(harmVale,injureInfo);
