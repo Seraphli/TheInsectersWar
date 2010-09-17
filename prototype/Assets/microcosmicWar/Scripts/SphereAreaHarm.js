@@ -5,6 +5,7 @@ var oneTime=true;
 var harmRadius=5.0;
 var harmValueInCentre=10.0;
 
+//[Life]=Distance  œ÷‘⁄”√”⁄¥Ê¥¢√¿π§”–…˙√¸ŒŒÔ,¿Î±¨’®µ„µƒ◊ÓΩ¸æ‡¿Î
 protected var injuredLifeInTheFrame=Hashtable();
 
 function Start () 
@@ -14,15 +15,44 @@ function Start ()
 function Update()
 {
 	var lColliderList: Collider[] = Physics.OverlapSphere(transform.position,harmRadius);
+	//À——∞∑∂Œßƒ⁄µƒLife,≤¢—∞’“◊Ó∂Ãæ‡¿Î
 	for(var i:Collider in  lColliderList)
 	{
 		var lLife:Life = Life.getLifeFromTransform(i.transform);
-		if(lLife && (!injuredLifeInTheFrame.ContainsKey(lLife)))
+		if(lLife)
 		{
-			lLife.injure(harmValueInCentre);
-			injuredLifeInTheFrame[lLife] = true;
+			//lLife.injure(harmValueInCentre);
+			var lClosestPoint = i.ClosestPointOnBounds(transform.position);
+			var lDistance = Vector3.Distance(lClosestPoint, transform.position);
+			
+			//“ÚŒ™“ª∏ˆ”–LifeµƒŒÔÃÂ…œ,ø…ƒ‹”–∂‡∏ˆCollider
+			if(injuredLifeInTheFrame.ContainsKey(lLife))
+			{
+				if(injuredLifeInTheFrame[lLife]>lDistance)
+				{
+					//print(""+injuredLifeInTheFrame[lLife]+">"+lDistance);
+					injuredLifeInTheFrame[lLife] = lDistance;
+				}
+			}
+			else
+				injuredLifeInTheFrame[lLife] = lDistance;
 		}
+		
 	}
+	
+	//÷¥––…À∫¶
+	for(var lifeToDistance:System.Collections.DictionaryEntry in injuredLifeInTheFrame)
+	{
+		// The hit points we apply fall decrease with distance from the explosion point
+		var lLifeImp:Life = lifeToDistance.Key;
+		var lDistanceImp:float = lifeToDistance.Value;
+		var lHarmRange:float = 1.0 - Mathf.Clamp01(lDistanceImp / harmRadius);
+		//print(lDistanceImp);
+		//print(lHarmRange);
+		//print(lHarmRange *harmValueInCentre );
+		lLifeImp.injure( lHarmRange *harmValueInCentre );
+	}
+	
 	injuredLifeInTheFrame.Clear();
 	if(oneTime)
 	{
