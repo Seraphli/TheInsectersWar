@@ -160,7 +160,7 @@ function playActionType(pName:String)
 	if(pName!=nowActionType)
 	{
 		nowActionType=pName;
-		updateAnimation(false);
+		updateAnimation(true);
 	}
 }
 

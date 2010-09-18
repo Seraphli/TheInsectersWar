@@ -179,7 +179,7 @@ function  endGameScene(pInfo:String)
 {
 	//假如已经停止了,则不往下执行
 	Board.clearList();
-	Time.timeScale=0.1;
+	Time.timeScale=0;
 	if(needOnGUI)
 		return;
 	needOnGUI=true;
