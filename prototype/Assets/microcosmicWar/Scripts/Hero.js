@@ -200,6 +200,8 @@ function Update()
 	{
 		return;
 	}
+	else
+	{
 	
 	if(actionCommandControl.updateFace())
 		UpdateFaceShow();
@@ -235,7 +237,7 @@ function Update()
 		
 	updatePosture(lActionCommand.FaceUp,lActionCommand.FaceDown,lActionCommand.GoForward);
 	//print(""+actionCommand.FaceUp+actionCommand.FaceDown+actionCommand.GoForward);
-		
+	}
 }
 
 function updatePosture(pUp:boolean,pDwon:boolean,pForward:boolean)

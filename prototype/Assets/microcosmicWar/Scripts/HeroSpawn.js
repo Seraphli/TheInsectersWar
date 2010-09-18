@@ -45,6 +45,11 @@ function setOwer(pOwner:NetworkPlayer)
 	zzCreatorUtility.sendMessage(gameObject,"setOwerImp",pOwner);
 }
 
+function releaseHeroControl()
+{
+	_releaseControl(hero);
+}
+
 @RPC
 function setOwerImp(pOwner:NetworkPlayer)
 {
