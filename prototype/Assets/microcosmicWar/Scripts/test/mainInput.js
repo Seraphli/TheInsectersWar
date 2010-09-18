@@ -34,5 +34,6 @@ function GetActionCommandFromInput():UnitActionCommand
 function Update ()
 {
 	//if( zzCreatorUtility.isHost())
-	actionCommandControl.setCommand(GetActionCommandFromInput());
+	if(actionCommandControl)
+		actionCommandControl.setCommand(GetActionCommandFromInput());
 }

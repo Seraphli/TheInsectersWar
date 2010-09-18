@@ -145,6 +145,11 @@ function getBulletLayer()
 function EmitBullet()
 {
 	//print("EmitBullet");
+	if( life.isDead() )
+	{
+		//防止死后开火动画仍然播放,导致开火
+		return;
+	}
 	emitter.EmitBullet();
 }
 
@@ -189,7 +194,7 @@ function Update()
 
 	//moveV.x=0;
 	//moveV.z=0;
-	var lActionCommand;
+	var lActionCommand:UnitActionCommand;
 	
 	if( life.isDead() )
 	{

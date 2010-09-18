@@ -8,6 +8,7 @@ var itemBagID:int;
 
 var hero:GameObject;
 var rebirthClockUI:zzInterfaceGUI;
+var SystemObject:GameObject;
 
 //是否创建过
 protected var haveFirstCreate=false;
@@ -33,6 +34,9 @@ function Start()
 		createHeroFirstTime();
 	if(!rebirthClockUI)
 		rebirthClockUI = gameObject.Find("Main Camera/UI/rebirthClock").GetComponent(zzInterfaceGUI);
+		
+	if(!SystemObject)
+		SystemObject= GameObject.Find("System");
 }
 
 function setOwer(pOwner:NetworkPlayer)
@@ -71,6 +75,12 @@ function _rebirthHero()
 {
 	if(!haveFirstCreate)
 		Debug.LogError("haveFirstCreate == false");
+		
+	if(HeroBelongToThePlayer)
+	{
+		//释放之前的输入
+		_releaseControl(hero);
+	}
 	
 	_createHeroRebirthClock();
 	
@@ -85,9 +95,24 @@ function _rebirthHero()
 	//haveFirstCreate = true;
 }
 
+//此英雄是否属于此玩家
+function HeroBelongToThePlayer():boolean
+{
+	if(Network.peerType ==NetworkPeerType.Disconnected)
+	{
+		return true;
+	}
+	
+	if(Network.player == owner)
+		return true;
+		
+	return false;
+}
+
 //计时器的显示更新
 protected function _createHeroRebirthClock()
 {
+/*
 	if(Network.peerType ==NetworkPeerType.Disconnected)
 		RPCCreateHeroRebirthClock();
 	else
@@ -97,6 +122,11 @@ protected function _createHeroRebirthClock()
 		else
 			networkView.RPC("RPCCreateHeroRebirthClock",owner);
 	}
+*/
+	if(HeroBelongToThePlayer())
+		RPCCreateHeroRebirthClock();
+	else
+		networkView.RPC("RPCCreateHeroRebirthClock",owner);
 }
 
 @RPC
@@ -183,8 +213,8 @@ protected function createNetControl(pHeroObject:GameObject)
 protected function createControl( pHeroObject:GameObject)
 {	
 	//绑定输入
-	var lSystem:GameObject = GameObject.Find("System");
-	var lMainInput:mainInput = lSystem.GetComponent(mainInput);
+	//var lSystem:GameObject = GameObject.Find("System");
+	var lMainInput:mainInput = SystemObject.GetComponent(mainInput);
 	lMainInput.setToControl(pHeroObject.GetComponent(ActionCommandControl));
 	//print(pHeroObject.name);
 	//print(pHeroObject.GetInstanceID());
@@ -200,7 +230,10 @@ protected function createControl( pHeroObject:GameObject)
 
 }
 
-protected function releaseControl( pHeroObject:GameObject)
+protected function _releaseControl( pHeroObject:GameObject)
 {
+	var lMainInput:mainInput = SystemObject.GetComponent(mainInput);
+	lMainInput.setToControl(null);
+	Destroy(pHeroObject.GetComponent(bagItemUIInput));
 	
 }
