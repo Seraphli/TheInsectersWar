@@ -24,7 +24,7 @@ class zzCharacter
 				if(pUnitActionCommand.Jump)
 					moveV.y = jumpSpeed;
 				else
-					moveV.y = -0.1;	//以免飞起来
+					moveV.y = -0.01;	//以免飞起来
 			}
 		}
 		else

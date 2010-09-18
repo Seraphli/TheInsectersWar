@@ -52,9 +52,13 @@ class rule1LoseCondition extends IobjectListener//,MonoBehaviour
 		var teamName:String = GameScene.getSingleton().getPlayerInfo().getTeamName();
 		
 		if(rule1.getSingleton().isWin(teamName))
+		{
 			GameScene.getSingleton().endGameScene( "you win" );
+		}
 		else if(rule1.getSingleton().isLose(teamName))
-			GameScene.getSingleton().endGameScene( "you lose" );
+		{
+			GameScene.getSingleton().endGameScene( "you lose" );	
+		}
 	}
 }
 

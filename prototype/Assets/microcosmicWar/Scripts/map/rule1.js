@@ -5,7 +5,7 @@ class TeamLoseData
 	var mLoseConditionInOne=Array();
 	var mLose=false;
 	
-	//要失去所有的条件才会数
+	//要失去所有的战败条件才会输
 	function addLoseConditionInAll(pValue)
 	{
 		//Debug.Log("addLoseConditionInAll"+pValue);
@@ -18,6 +18,7 @@ class TeamLoseData
 		//Debug.Log("addLoseConditionInOne"+pValue);
 	}
 	
+	//去掉多个战败条件中特定编号的一个条件
 	function removeLoseConditionInAll(pValue)
 	{/*
 		for( var i=0;i<mLoseConditionInAll.length;++i)
@@ -31,6 +32,7 @@ class TeamLoseData
 		//Debug.Log("removeLoseConditionInAll"+pValue);
 		zzUtilities.removeValueInArray(mLoseConditionInAll,pValue);
 			
+		//判断战败条件是否为空
 		if(mLoseConditionInAll.length==0)
 			mLose=true;
 		//Debug.Log("mLoseConditionInAll.length"+mLoseConditionInAll.length+mLose);

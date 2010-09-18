@@ -1,9 +1,9 @@
 //单实例类,一个场景只许有一个
-
 static protected var singletonInstance:GameScene;
 
 var lastSceneInfoName="_info";
 //var sceneDataName = "_sceneData";
+
 var sceneData:GameObject;
 /*
 var pismirePlayerSpawn:Transform;
@@ -179,9 +179,9 @@ function  endGameScene(pInfo:String)
 {
 	//假如已经停止了,则不往下执行
 	Board.clearList();
+	Time.timeScale=0.1;
 	if(needOnGUI)
 		return;
-	Time.timeScale=0;
 	needOnGUI=true;
 	buttonInfo=pInfo;
 }

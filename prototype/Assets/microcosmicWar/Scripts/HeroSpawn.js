@@ -71,11 +71,12 @@ function _rebirthHero()
 {
 	if(!haveFirstCreate)
 		Debug.LogError("haveFirstCreate == false");
-		
+	
 	_createHeroRebirthClock();
 	
 	//重生的延迟执行
 	rebirthTimer = gameObject.AddComponent(zzTimer);
+	
 	rebirthTimer.setImpFunction(_rebirthHeroCreate);
 	rebirthTimer.setInterval(rebirthTime);
 	//if(Network.peerType !=NetworkPeerType.Disconnected)
@@ -199,3 +200,7 @@ protected function createControl( pHeroObject:GameObject)
 
 }
 
+protected function releaseControl( pHeroObject:GameObject)
+{
+	
+}

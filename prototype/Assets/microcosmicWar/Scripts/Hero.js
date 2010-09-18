@@ -156,7 +156,6 @@ function deadAction()
 	transform.Find("CubeReact").gameObject.layer=layers.deadObject;
 	
 	collisionLayer.updateCollider(gameObject);
-	
 	disappear();
 }
 
@@ -190,6 +189,7 @@ function Update()
 
 	//moveV.x=0;
 	//moveV.z=0;
+	var lActionCommand;
 	
 	if( life.isDead() )
 	{
@@ -199,7 +199,7 @@ function Update()
 	if(actionCommandControl.updateFace())
 		UpdateFaceShow();
 	
-	var lActionCommand = actionCommandControl.getCommand();
+	lActionCommand = actionCommandControl.getCommand();
 		//设置动画 动作
 	if(lActionCommand.Fire)
 	{
