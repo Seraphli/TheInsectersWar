@@ -19,6 +19,8 @@ static var NULL_aimAngular=1000.0;
 //设置一个不会用到的值,作为不是用时的值
 var aimAngular=NULL_aimAngular;
 
+var turnObject:Transform;
+
 var gunPivot:Transform;
 
 var emitter:Emitter;
@@ -119,6 +121,8 @@ virtual function Update ()
 	//	gunSprite.playAnimation("fire");
 	//else
 	//	gunSprite.playAnimation("wait");
+	
+	//执行平滑旋转,计算 nowAngular
 	impSmoothTurn(Time.deltaTime );
 	setAngle(nowAngular);
 }
@@ -204,6 +208,17 @@ function takeAim(pAimPos:Vector3,deviation:float)
 	if(lAngle>deviation)
 	{
 		var lCross:Vector3 = Vector3.Cross(lFireRay.direction,lEmitterToAim);
+		
+		//如果有xz面的转向物体,则叉乘结果转向,否则 lCross.z 不管用
+		if(turnObject)
+			lCross =turnObject.rotation*lCross;
+		//var lToRight = Quaternion();
+		//lToRight.SetFromToRotation(lFireRay.direction,Vector3.right);
+		//lToRight.SetFromToRotation(Vector3.right,lFireRay.direction);
+		//print("lCrossB:"+lCross);
+		//lCross = lToRight * lCross;
+		//print("lToRight:"+lToRight);
+		//print("lCrossA:"+lCross);
 	/*
 		print("pAimPos:"+pAimPos);
 		print("lFireRay:"+lFireRay);
