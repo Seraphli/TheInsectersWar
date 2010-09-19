@@ -1,7 +1,7 @@
 
 //用于爆炸的破坏(去血效果)
 
-var oneTime=true;
+var onlyOnce=true;
 var harmRadius=5.0;
 var harmValueInCentre=10.0;
 
@@ -54,7 +54,7 @@ function Update()
 	}
 	
 	injuredLifeInTheFrame.Clear();
-	if(oneTime)
+	if(onlyOnce)
 	{
 		Destroy(this);
 	}

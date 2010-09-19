@@ -1,8 +1,23 @@
 
+@script RequireComponent(Rigidbody)
+@script RequireComponent(Life)
+@script RequireComponent(destroyWhenDie)
+
 var aliveTime=5.0;
 var harmVale:int=1.0;
+var bulletLife:Life;
 
 protected var injureInfo:Hashtable;
+
+
+var bulletRigidbody:Rigidbody ;
+
+function Awake()
+{
+	bulletRigidbody= gameObject.GetComponent(Rigidbody);
+	bulletLife = gameObject.GetComponent(Life);
+	bulletLife.addDieCallback(lifeEndImp);
+}
 
 function setInjureInfo(pInjureInfo:Hashtable)
 {
@@ -63,7 +78,8 @@ function OnCollisionEnter(collision : Collision)
 
 function lifeEnd()
 {
-	zzCreatorUtility.sendMessage(gameObject,"lifeEndImp");
+//	zzCreatorUtility.sendMessage(gameObject,"lifeEndImp");
+	bulletLife.setBloodValue(0);
 }
 
 @RPC
@@ -71,7 +87,7 @@ function lifeEndImp()
 {
 	particleEmitterDetach();
 	//zzCreatorUtility.sendMessage(gameObject,"particleEmitterDetach");
-	Destroy(gameObject);
+	//Destroy(gameObject);
 }
 
 ////@RPC
@@ -86,4 +102,35 @@ function particleEmitterDetach()
 		lTransform.parent =null;
 	}
 	//脱离所有子物体 临时
+}
+
+function getForward():Vector3
+{
+	return transform.rotation*Vector3.right;
+}
+
+//设置子弹飞的方向
+function setForward(pForward:Vector3)
+{
+	pForward.z=0;
+	var lRotation = Quaternion ();
+	lRotation.SetFromToRotation(Vector3.right,pForward);
+	//transform.rotation.SetFromToRotation(Vector3.right,pForward);
+	transform.rotation=lRotation;
+	var lSpeed:float = bulletRigidbody.velocity.magnitude;
+	bulletRigidbody.velocity = pForward.normalized*lSpeed;
+}
+
+
+//设置子弹飞的方向和速度
+function setForwardVelocity(pVelocity:Vector3)
+{
+	pVelocity.z=0;
+	transform.rotation.SetFromToRotation(Vector3.right,pVelocity);
+	bulletRigidbody.velocity = pVelocity;
+}
+
+function OnDrawGizmosSelected() 
+{
+	Gizmos.DrawLine(transform.position,transform.position+getForward()*3 );
 }

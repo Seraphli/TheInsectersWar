@@ -12,6 +12,17 @@ var fireSound:AudioSource;
 protected var injureInfo:Hashtable;
 protected var bulletAliveTime:float;
 
+protected function initBulletNullFunc(pBullet:Bullet)
+{
+}
+
+var initBulletFunc = initBulletNullFunc;
+
+function setInitBulletFunc(pFunc)
+{
+	initBulletFunc = pFunc;
+}
+
 virtual function setInjureInfo(pInjureInfo:Hashtable)
 {
 	injureInfo = pInjureInfo;
@@ -36,11 +47,14 @@ virtual function EmitBullet()
 		clone.layer=bulletLayer;
 		
 		//print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
-		var lRigidbody:Rigidbody = clone.GetComponentInChildren(Rigidbody);
-		lRigidbody.velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
+		//var lRigidbody:Rigidbody = clone.GetComponentInChildren(Rigidbody);
+		//lRigidbody.velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
 		//clone.velocity=transform.forward;
 		var pBullet:Bullet = clone.GetComponentInChildren(Bullet);
 		pBullet.setAliveTime(bulletAliveTime);
+		//pBullet.setForward(getForward());
+		//pBullet.setSpeed(bulletSpeed);
+		pBullet.setForwardVelocity(getForward()*bulletSpeed);
 		if(injureInfo)
 		{
 			pBullet.setInjureInfo(injureInfo);
@@ -58,17 +72,18 @@ virtual function setBulletLayer(pBulletLayer:int)
 	bulletLayer= pBulletLayer;
 }
 
-virtual function getForward()
+virtual function getForward():Vector3
 {
-	return transform.right;
+	//return transform.right;
+	return transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0));
 }
 
-virtual function getFireRay()
+virtual function getFireRay():Ray
 {
-	return Ray(transform.position,transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)));
+	return Ray(transform.position,getForward());
 }
 
 function OnDrawGizmosSelected() 
 {
-	Gizmos.DrawLine(transform.position,transform.position+transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*shootRange);
+	Gizmos.DrawLine(transform.position,transform.position+getForward()*shootRange);
 }
