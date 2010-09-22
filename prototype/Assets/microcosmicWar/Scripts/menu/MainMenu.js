@@ -43,7 +43,7 @@ function bindGUI()
 	bindButtonCall(buttonParentGUI,"Quit",QuitButtonCall);
 	
 	//ÏÔÊ¾°æ±¾ºÅ
-	buttonParentGUI.getSubElement("versionLabel").setText("The Insecters War "+versionnumber);
+	buttonParentGUI.getSubElement("versionLabel").setText("å¾®è§‚æˆ˜äº‰ "+versionnumber);
 }
 
 /*

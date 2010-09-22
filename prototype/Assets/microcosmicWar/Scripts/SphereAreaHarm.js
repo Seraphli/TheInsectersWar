@@ -18,6 +18,9 @@ function Update()
 	//搜寻范围内的Life,并寻找最短距离
 	for(var i:Collider in  lColliderList)
 	{
+		//Trigger 也会被探测到
+		if(i.isTrigger)
+			continue;
 		var lLife:Life = Life.getLifeFromTransform(i.transform);
 		if(lLife)
 		{

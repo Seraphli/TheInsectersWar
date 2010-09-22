@@ -20,6 +20,7 @@ class zzInterfaceGUI extends MonoBehaviour
 	//var data:int;
 	var position : Rect;
 	var depth:int;
+	var skin : GUISkin;
 	
 	//位置信息;custom 则使用position的
 	var horizontalDockPosition:zzGUIDockPos=zzGUIDockPos.custom;
@@ -34,6 +35,11 @@ class zzInterfaceGUI extends MonoBehaviour
 	//只是为了付类型
 	protected function nullGUICallback(pGUI:zzInterfaceGUI):void
 	{
+	}
+	
+	virtual function getSkin():GUISkin
+	{
+		return skin;
 	}
 	
 	virtual function setVisible(pVisible:boolean):void
