@@ -1,5 +1,6 @@
 var versionnumber="0.00";
 var GUIRoot:zzInterfaceGUI;
+var chSkin : GUISkin;
 
 function Awake()
 {
@@ -30,7 +31,10 @@ function QuitButtonCall(pGUI:zzInterfaceGUI)
 
 function CnButtonCall(pGUI:zzInterfaceGUI)
 {
-	zzLanguage.getSingleton.setChinese();
+	var buttonParentGUI:zzInterfaceGUI = GUIRoot.getSubElement("window");
+	var chinese : String;
+	chinese=zzLanguage.getSingleton().setChinese();
+	buttonParentGUI.getSubElement("Quit").setText(chinese);
 }
 
 

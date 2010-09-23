@@ -13,11 +13,11 @@ function Awake()
 	singletonInstance = this;
 }
 
-function setChinese()
+static function setChinese() : String
 {
-	var getValue : String;
+	var resValue : String;
 	
-	getValue = zzLanguageResource.getResource("Quit");
+	resValue = zzLanguageResource.getResource("Quit");
 	
-	Debug.Log(getValue);
+	return resValue;
 }

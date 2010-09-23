@@ -1,11 +1,12 @@
-var zzLanguageResource : Hashtable ={
+static var zzLanguageRes : Hashtable ={
 	"Quit" : "退出"
 };
 
-function getResource(key : String)
+static function getResource(key : String) :String
 {
-	if (zzLanguageResource.ContainsKey(key))
+	if (zzLanguageRes.ContainsKey(key))
 	{
-		return zzLanguageResource[key];
+		return zzLanguageRes[key];
 	}
+	return "error";
 }
