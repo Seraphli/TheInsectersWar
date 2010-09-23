@@ -28,6 +28,12 @@ function QuitButtonCall(pGUI:zzInterfaceGUI)
 	Application.Quit();
 }
 
+function CnButtonCall(pGUI:zzInterfaceGUI)
+{
+	zzLanguage.getSingleton.setChinese();
+}
+
+
 function bindButtonCall(pButtonContain:zzInterfaceGUI,pButtonName:String,pCall)
 {
 	var lButton:zzButton= pButtonContain.getSubElement(pButtonName);
@@ -41,6 +47,7 @@ function bindGUI()
 	bindButtonCall(buttonParentGUI,"SinglePlayer",ChooseRaceButtonCall);
 	bindButtonCall(buttonParentGUI,"NetworkPlayer",NetworkMenuButtonCall);
 	bindButtonCall(buttonParentGUI,"Quit",QuitButtonCall);
+	bindButtonCall(buttonParentGUI,"Cn",CnButtonCall);
 	
 	//ÏÔÊ¾°æ±¾ºÅ
 	buttonParentGUI.getSubElement("versionLabel").setText("å¾®è§‚æˆ˜äº‰ "+versionnumber);
