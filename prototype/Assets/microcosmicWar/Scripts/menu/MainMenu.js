@@ -29,14 +29,22 @@ function QuitButtonCall(pGUI:zzInterfaceGUI)
 	Application.Quit();
 }
 
+//转换成中文
 function CnButtonCall(pGUI:zzInterfaceGUI)
 {
-	var buttonParentGUI:zzInterfaceGUI = GUIRoot.getSubElement("window");
-	var chinese : String;
-	chinese=zzLanguage.getSingleton().setChinese();
-	buttonParentGUI.getSubElement("Quit").setText(chinese);
+	
+	var buttonParentGUI : zzInterfaceGUI = GUIRoot.getSubElement("window");
+	//设置中文
+	zzLanguage.getSingleton().setChinese(buttonParentGUI);
 }
 
+//转化成英文
+function EnButtonCall(pGUI:zzInterfaceGUI)
+{
+	var buttonParentGUI : zzInterfaceGUI = GUIRoot.getSubElement("window");
+	//设置英文
+	zzLanguage.getSingleton().setEnglish(buttonParentGUI);
+}
 
 function bindButtonCall(pButtonContain:zzInterfaceGUI,pButtonName:String,pCall)
 {
@@ -52,6 +60,7 @@ function bindGUI()
 	bindButtonCall(buttonParentGUI,"NetworkPlayer",NetworkMenuButtonCall);
 	bindButtonCall(buttonParentGUI,"Quit",QuitButtonCall);
 	bindButtonCall(buttonParentGUI,"Cn",CnButtonCall);
+	bindButtonCall(buttonParentGUI,"En",EnButtonCall);
 	
 	//��ʾ�汾��
 	buttonParentGUI.getSubElement("versionLabel").setText("微观战争 "+versionnumber);
