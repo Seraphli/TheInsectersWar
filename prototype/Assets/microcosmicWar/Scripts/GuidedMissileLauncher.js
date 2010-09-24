@@ -28,6 +28,21 @@ class GuidedMissileLauncher extends DefenseTower
 		fireTimer.setInterval(getIntervalAndMove());
 	}
 	
+	virtual function getBulletLayer()
+	{
+		return LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Missile" );
+	}
+
+	virtual function setAdversaryLayer(pLayer:int)
+	{
+
+		if(zzCreatorUtility.isHost())
+		{
+			var lAi:GuidedMissileLauncherAI = GetComponentInChildren(GuidedMissileLauncherAI);
+				lAi.setAdversaryLayer( pLayer );
+		}
+	}
+	
 	function Start()
 	{
 		super.Start();

@@ -5,7 +5,8 @@ class zzGUIRender extends zzGUIContainer
 {
 	function OnGUI () 
 	{
-		impSubs();
+		//impSubs();
+		zzGUI.impGUI(this);
 	}
 	
 	virtual function getWidth()

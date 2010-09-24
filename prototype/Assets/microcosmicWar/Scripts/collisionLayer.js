@@ -14,6 +14,9 @@ class layers
 	
 	public static var board = LayerMask.NameToLayer("board");
 	public static var boardValue = 1 << board;
+	
+	public static var pismireMissile = LayerMask.NameToLayer("pismireMissile");
+	public static var beeMissile = LayerMask.NameToLayer("beeMissile");
 }
 
 //static var mIgnoreList = new Hashtable();
@@ -88,9 +91,12 @@ static function updateCollider( gameObject:GameObject)
 
 static function addCollider( gameObject:GameObject)
 {
+	//if(gameObject.layer==layers.beeMissile)
+	//	print("addCollider before:"+gameObject.name);
 	if(gameObject.collider && gameObject.layer>7 )
 	{
-		//print("addCollider :"+gameObject.name);
+		//if(gameObject.layer==layers.beeMissile)
+		//	print("addCollider :"+gameObject.name);
 		var ignoreList:Array = mLayersIgnoreList[gameObject.layer];
 		//print(ignoreList);
 		for(var i:int in ignoreList )
@@ -143,6 +149,11 @@ function Start () {
 function Awake () {
 	//print("Awake");
 	initialize();
+	
+	//print("layers.pismireMissile:"+layers.pismireMissile);
+	//print("layers.beeMissile:"+layers.beeMissile);
+	
+	//子弹
 	IgnoreCollisionBetween(layers.pismire,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.bee,layers.beeBullet);
 	
@@ -152,6 +163,16 @@ function Awake () {
 	
 	IgnoreCollisionBetween(layers.board,layers.pismireBullet);
 	IgnoreCollisionBetween(layers.board,layers.beeBullet);
+	
+	//导弹
+	IgnoreCollisionBetween(layers.pismire,layers.pismireMissile);
+	IgnoreCollisionBetween(layers.pismireBullet,layers.pismireMissile);
+	
+	IgnoreCollisionBetween(layers.bee,layers.beeMissile);
+	IgnoreCollisionBetween(layers.beeBullet,layers.beeMissile);
+	
+	IgnoreCollisionBetween(layers.board,layers.pismireMissile);
+	IgnoreCollisionBetween(layers.board,layers.beeMissile);
 	/*
 	//防止可在子弹上跳跃
 	

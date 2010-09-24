@@ -68,11 +68,13 @@ protected function searchFireTargetInList()
 		fireTarget=null;
 		for(var i:System.Collections.DictionaryEntry in enemyList)
 		{
+			//判断物体是否还在场景中
 			if(i.Key)
 			{
 				fireTarget=i.Key;
 				break;
 			}
+			//若已被消毁,则从表中将其删去
 			enemyList.Remove(i);
 		}
 		

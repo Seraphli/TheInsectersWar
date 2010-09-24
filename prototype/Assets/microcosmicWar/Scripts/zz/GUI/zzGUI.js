@@ -1,24 +1,29 @@
 
 var myGUI:zzInterfaceGUI;
 
-function impGUI()
+static function impGUI(pMyGUI:zzInterfaceGUI)
 {
 	//GUI.depth = myGUI.depth;
 	
-	if(myGUI.getVisible())
+	if(pMyGUI.getVisible())
 	{
-		var lSkin:GUISkin = myGUI.getSkin();
+		var lSkin:GUISkin = pMyGUI.getSkin();
 		if(lSkin)
 		{
 			//สนำร Skin
 			var lPreSkin :GUISkin = GUI.skin ;
 			GUI.skin = lSkin;
-			myGUI.impGUI();
+			pMyGUI.impGUI();
 			GUI.skin = lPreSkin;
 		}
 		else
-			myGUI.impGUI();
+			pMyGUI.impGUI();
 	}
+}
+
+function impGUI()
+{
+	impGUI(myGUI);
 }
 
 function getDepth()

@@ -81,10 +81,15 @@ virtual function init(info:Hashtable)
 	//print(invert);
 	//invert.face = info["face"];
 	gameObject.layer=info["layer"];
-	var lAi:AiMachineGunAI = GetComponentInChildren(AiMachineGunAI);
+	//var lAi:AiMachineGunAI = GetComponentInChildren(AiMachineGunAI);
 
-	if(zzCreatorUtility.isHost())
-		lAi.adversaryLayer=info["adversaryLayer"];
+	//if(zzCreatorUtility.isHost())
+	//	lAi.adversaryLayer=info["adversaryLayer"];
+	setAdversaryLayer(info["adversaryLayer"]);
+}
+
+virtual function setAdversaryLayer(pLayer:int)
+{
 }
 
 @RPC
@@ -107,7 +112,7 @@ function deadAction()
 	Destroy(gameObject);
 }
 
-function getBulletLayer()
+virtual function getBulletLayer()
 {
 	//print( LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" ));
 	//子弹所在层名字为:种族名字+Bullet
@@ -125,6 +130,7 @@ virtual function Update ()
 	//执行平滑旋转,计算 nowAngular
 	impSmoothTurn(Time.deltaTime );
 	setAngle(nowAngular);
+	//print(nowAngular);
 }
 
 function EmitBullet()
@@ -182,6 +188,7 @@ function smoothTurnToAngle(pAimAngular:float)
 	if(pAimAngular==NULL_aimAngular)
 		return;
 	pAimAngular = pAimAngular%360.0;
+	//print("pAimAngular%360.0:"+pAimAngular);
 		
 	if(pAimAngular>maxUpAngle)
 	{
@@ -193,6 +200,7 @@ function smoothTurnToAngle(pAimAngular:float)
 	}
 	else
 		aimAngular=pAimAngular;
+	//print("aimAngular:"+aimAngular);
 }
 
 //瞄准到指定位置,如果已在枪口的deviation角度范围内,则不动

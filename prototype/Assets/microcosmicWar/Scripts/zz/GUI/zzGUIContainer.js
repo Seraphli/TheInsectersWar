@@ -15,7 +15,7 @@ class zzGUIContainer extends zzInterfaceGUI
 			var impGUI:zzGUI = lTransform.GetComponent(zzGUI);
 			if(impGUI)
 			{
-				//按深度排序
+				//按深度排序,小的排在前面,先被渲染,会被深度大的遮住
 				for(var i=0;i<lGUIlist.Count;++i)
 				{
 					if(impGUI.getDepth()<lGUIlist[i].getDepth())

@@ -4,7 +4,7 @@ var bullet:Bullet;
 
 function Start()
 {
-	target = gameObject.Find("BulletFollowAITest").transform;
+	//target = gameObject.Find("BulletFollowAITest").transform;
 }
 
 function setTarget(pTarget:Transform)

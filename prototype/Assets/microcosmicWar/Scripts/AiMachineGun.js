@@ -110,6 +110,17 @@ class AiMachineGun extends DefenseTower
 
 	//在播放射击动画时,会执行的动作
 	protected var actionImpDuringFireAnimation=AnimationImpInTimeList();
+	
+
+	virtual function setAdversaryLayer(pLayer:int)
+	{
+
+		if(zzCreatorUtility.isHost())
+		{
+			var lAi:AiMachineGunAI = GetComponentInChildren(AiMachineGunAI);
+				lAi.setAdversaryLayer( pLayer );
+		}
+	}
 
 
 	function Start()

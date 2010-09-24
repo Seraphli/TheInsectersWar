@@ -59,6 +59,9 @@ virtual function EmitBullet()
 		{
 			pBullet.setInjureInfo(injureInfo);
 		}
+		
+		//执行外部的初始化子弹的函数
+		initBulletFunc(pBullet);
 	}
 	if(fireSound)
 	{

@@ -5,19 +5,33 @@ var onlyOnce=true;
 var harmRadius=5.0;
 var harmValueInCentre=10.0;
 
+// ·ûºÏ ´Ë mask µÄÎïÌå,Ö´ĞĞÉËº¦
+var harmLayerMask:int;
+
 //[Life]=Distance  ÏÖÔÚÓÃÓÚ´æ´¢ÃÀ¹¤ÓĞÉúÃüÎÎï,Àë±¬Õ¨µãµÄ×î½ü¾àÀë
 protected var injuredLifeInTheFrame=Hashtable();
 
-function Start () 
+
+function setHarmLayerMask(pMark:int)
 {
+	harmLayerMask = pMark;
+	//print(harmLayerMask);
+	//print(transform.position);
 }
 
 function Update()
 {
-	var lColliderList: Collider[] = Physics.OverlapSphere(transform.position,harmRadius);
+/*
+	print("harmLayerMask");
+	print(transform.position);
+	print("harmRadius:"+harmRadius);
+	print("harmValueInCentre:"+harmValueInCentre);
+*/
+	var lColliderList: Collider[] = Physics.OverlapSphere(transform.position,harmRadius,harmLayerMask);
 	//ËÑÑ°·¶Î§ÄÚµÄLife,²¢Ñ°ÕÒ×î¶Ì¾àÀë
 	for(var i:Collider in  lColliderList)
 	{
+	
 		//Trigger Ò²»á±»Ì½²âµ½
 		if(i.isTrigger)
 			continue;

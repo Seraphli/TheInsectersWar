@@ -75,7 +75,7 @@ function Life_die()
 {
 	bloodValue = 0;
 	for(var dieCallback in dieCallbackList)
-		dieCallback();
+		dieCallback(this);
 }
 
 function setFullBloodValue(lValue:float)

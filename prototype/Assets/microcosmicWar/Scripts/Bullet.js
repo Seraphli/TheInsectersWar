@@ -6,6 +6,7 @@
 var aliveTime=5.0;
 var harmVale:int=1.0;
 var bulletLife:Life;
+var shape:GameObject;
 
 protected var injureInfo:Hashtable;
 
@@ -26,7 +27,18 @@ function setInjureInfo(pInjureInfo:Hashtable)
 
 function Start()
 {
-	collisionLayer.addCollider(gameObject);
+	if(shape)
+	{
+		//print("collisionLayer.addCollider(shape)");
+		shape.layer = gameObject.layer;
+		collisionLayer.addCollider(shape);
+	}
+	else
+	{
+		//print("collisionLayer.addCollider(gameObject)");
+		collisionLayer.addCollider(gameObject);
+	}
+	//print(gameObject.layer);
 	//if(!zzCreatorUtility.isHost())
 	//	Destroy(this);
 }

@@ -1,9 +1,10 @@
 
 class defenseTowerItem extends IitemObject
 {
-	var towerPosition:Vector3;
-	var towerFace:int;
-	var useObject:GameObject;
+	var defenseTowerTypeName:String;
+	protected var towerPosition:Vector3;
+	protected var towerFace:int;
+	protected var useObject:GameObject;
 	
 	virtual function canUse(pGameObject:GameObject):boolean
 	{
@@ -36,7 +37,8 @@ class defenseTowerItem extends IitemObject
 	virtual function use()
 	{
 		zzGameObjectCreator.getSingleton().create({
-			"creatorName":"AiMachineGun",
+			//"creatorName":"AiMachineGun",
+			"creatorName":defenseTowerTypeName,
 			"position":towerPosition,
 			"rotation":Quaternion(),
 			"face":towerFace,
