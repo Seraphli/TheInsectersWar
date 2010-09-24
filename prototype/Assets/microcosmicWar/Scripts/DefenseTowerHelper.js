@@ -7,7 +7,13 @@ function Awake()
 		return;
 		
 	var lTowerObject:GameObject = gameObject;
-	var lTowerAI:AiMachineGunAI = lTowerObject.GetComponentInChildren(AiMachineGunAI);
+	//var lTowerAI:AiMachineGunAI = lTowerObject.GetComponentInChildren(AiMachineGunAI);
+	var lTowerAI:AiMachineGunAI = lTowerObject.transform.Find("turn/enemyDetector").GetComponent(AiMachineGunAI);
+	//var AIOb: Transform = transform.Find("turn/enemyDetector");
+	//print("AIOb:"+(AIOb==null));
+	//print(AIOb.GetComponent(AiMachineGunAI)==null);
+	//print(AIOb.GetComponent(AiMachineGunAI).enabled);
+	//print(AIOb.active);
 	/*
 	switch( race )
 	{
@@ -22,6 +28,8 @@ function Awake()
 	}
 	*/
 	lTowerObject.layer = PlayerInfo.getRaceLayer(race);
+	//print(gameObject.name);
+	//print(lTowerAI==null);
 	//print(lTowerObject.layer);
 	lTowerAI.setAdversaryLayer(PlayerInfo.getAdversaryRaceLayer(race));
 }

@@ -27,7 +27,7 @@ function GetActionCommandFromInput():UnitActionCommand
 		lActionCommand.FaceUp=true;
 		
 	lActionCommand.Fire=Input.GetButton ("fire");
-	lActionCommand.Jump=Input.GetButton ("jump");
+	lActionCommand.Jump=Input.GetButtonDown("jump");
 	return lActionCommand;
 }
 
