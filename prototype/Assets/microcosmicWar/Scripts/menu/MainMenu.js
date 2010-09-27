@@ -1,6 +1,11 @@
 var versionnumber="0.00";
 var GUIRoot:zzInterfaceGUI;
 var chSkin : GUISkin;
+enum Language
+{
+	En = 0,
+	Cn = 1,
+};
 
 function Awake()
 {
@@ -32,10 +37,13 @@ function QuitButtonCall(pGUI:zzInterfaceGUI)
 //转换成中文
 function CnButtonCall(pGUI:zzInterfaceGUI)
 {
-	
+	//var result:String;
+	//Debug.Log("Got");
 	var buttonParentGUI : zzInterfaceGUI = GUIRoot.getSubElement("window");
 	//设置中文
 	zzLanguage.getSingleton().setChinese(buttonParentGUI);
+	//result=zzLanguage.getSingleton().SwitchLanguage("Quit",Language.En);
+	//Debug.Log(result);
 }
 
 //转化成英文
