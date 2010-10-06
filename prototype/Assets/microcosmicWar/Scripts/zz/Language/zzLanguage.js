@@ -1,10 +1,26 @@
+enum LanguageID
+{
+	En = 0,
+	Cn = 1,
+};
 
 //单实例类指针赋初值
 static protected var singletonInstance:zzLanguage=null;
+public var language:String = "English" ;
 
 static function getSingleton()
 {
 	return singletonInstance;
+}
+
+function Language() :String
+{
+	return language;
+}
+
+function Language(change:String) 
+{
+	language = change;
 }
 
 function Awake()
@@ -55,10 +71,10 @@ static function SwitchLanguage (Res : String,Lang : int)
 {
 	switch (Lang)
 	{
-		case Language.En :if (LangResForEn.Res.Contains(Res))
+		case LanguageID.En :if (LangResForEn.Res.Contains(Res))
 											return LangResForEn.Res[Res];
 					break;
-		case Language.Cn :if (LangResForCn.Res.Contains(Res))
+		case LanguageID.Cn :if (LangResForCn.Res.Contains(Res))
 											return LangResForCn.Res[Res];
 					break;
 	}

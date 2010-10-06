@@ -1,11 +1,9 @@
 var versionnumber="0.00";
 var GUIRoot:zzInterfaceGUI;
 var chSkin : GUISkin;
-enum Language
-{
-	En = 0,
-	Cn = 1,
-};
+var languageCtrl:zzLanguage;
+var buttonParentGUI:zzInterfaceGUI;
+
 
 function Awake()
 {
@@ -34,26 +32,25 @@ function QuitButtonCall(pGUI:zzInterfaceGUI)
 	Application.Quit();
 }
 
-//转换成中文
-function CnButtonCall(pGUI:zzInterfaceGUI)
+function LanguageButtonCall(pGUI:zzInterfaceGUI)
 {
-	//var result:String;
-	//Debug.Log("Got");
-	var buttonParentGUI : zzInterfaceGUI = GUIRoot.getSubElement("window");
-	//设置中文
-	zzLanguage.getSingleton().setChinese(buttonParentGUI);
-	//result=zzLanguage.getSingleton().SwitchLanguage("Quit",Language.En);
-	//Debug.Log(result);
+	switch (languageCtrl.Language()) {
+		case "English" :
+			
+			buttonParentGUI.getSubElement("Language").setText("English");
+			languageCtrl.Language("Chinese");
+			zzLanguage.getSingleton().setChinese(buttonParentGUI);
+			break;
+		
+		case "Chinese" :
+		
+			buttonParentGUI.getSubElement("Language").setText("中文");
+			languageCtrl.Language("English");
+			zzLanguage.getSingleton().setEnglish(buttonParentGUI);
+			break;
+		
+	}
 }
-
-//转化成英文
-function EnButtonCall(pGUI:zzInterfaceGUI)
-{
-	var buttonParentGUI : zzInterfaceGUI = GUIRoot.getSubElement("window");
-	//设置英文
-	zzLanguage.getSingleton().setEnglish(buttonParentGUI);
-}
-
 function bindButtonCall(pButtonContain:zzInterfaceGUI,pButtonName:String,pCall)
 {
 	var lButton:zzButton= pButtonContain.getSubElement(pButtonName);
@@ -62,16 +59,15 @@ function bindButtonCall(pButtonContain:zzInterfaceGUI,pButtonName:String,pCall)
 
 function bindGUI()
 {
-	var buttonParentGUI:zzInterfaceGUI = GUIRoot.getSubElement("window");
 	bindButtonCall(buttonParentGUI,"sewer1",sewer1ButtonCall);
 	bindButtonCall(buttonParentGUI,"SinglePlayer",ChooseRaceButtonCall);
 	bindButtonCall(buttonParentGUI,"NetworkPlayer",NetworkMenuButtonCall);
 	bindButtonCall(buttonParentGUI,"Quit",QuitButtonCall);
-	bindButtonCall(buttonParentGUI,"Cn",CnButtonCall);
-	bindButtonCall(buttonParentGUI,"En",EnButtonCall);
-	
+	bindButtonCall(buttonParentGUI,"Language",LanguageButtonCall);
+
 	//��ʾ�汾��
 	buttonParentGUI.getSubElement("versionLabel").setText("微观战争 "+versionnumber);
+	buttonParentGUI.getSubElement("Language").setText("中文");
 }
 
 /*
