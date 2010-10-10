@@ -30,23 +30,23 @@ function Awake()
 	singletonInstance = this;
 }
 //设置成中文
-static function setChinese(pGUI : zzInterfaceGUI) : String
-{
-	for(var i:System.Collections.DictionaryEntry in LangResForCn.Res)
-		{
-			if(pGUI.getSubElement(i.Key))
-				pGUI.getSubElement(i.Key).setText(i.Value);
-		}
-}
+//static function setChinese(pGUI : zzInterfaceGUI) : String
+//{
+//	for(var i:System.Collections.DictionaryEntry in LangResForCn.Res)
+//		{
+//			if(pGUI.getSubElement(i.Key))
+//				pGUI.getSubElement(i.Key).setText(i.Value);
+//		}
+//}
 //设置成英文
-static function setEnglish(pGUI : zzInterfaceGUI) : String
-{
-	for(var i:System.Collections.DictionaryEntry in LangResForEn.Res)
-		{
-			if(pGUI.getSubElement(i.Key))
-				pGUI.getSubElement(i.Key).setText(i.Value);
-		}
-}
+//static function setEnglish(pGUI : zzInterfaceGUI) : String
+//{
+//	for(var i:System.Collections.DictionaryEntry in LangResForEn.Res)
+//		{
+//			if(pGUI.getSubElement(i.Key))
+//				pGUI.getSubElement(i.Key).setText(i.Value);
+//		}
+//}
 //加入到哈希表中,0代表英文,1代表中文
 /*static function addRes(key : String,value : String,Language : int)
 {

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>9.0.21022</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{3EE8108C-957D-1A4B-80FA-2D13A658D72C}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace>Irrelevant</RootNamespace>
+	<AssemblyName>Irrelvant</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>E:/Program Files/Unity/Editor/Data/lib/UnityEngine-Debug.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>E:/Program Files/Unity/Editor/Data/lib/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <None Include="Assets\microcosmicWar\注意事项.txt" />
+     <Compile Include="Assets\Detonator\System\Detonator.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorBurstEmitter.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorCloudRing.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorFireball.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorForce.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorGlow.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorHeatwave.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorLight.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorShockwave.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorSmoke.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorSound.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorSparks.cs" />
+     <Compile Include="Assets\Detonator\System\DetonatorSpray.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\ActionCommandControl.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGun.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGunAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AnimationListeners.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Board.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BoardDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BodyActionClass.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Bullet.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BulletFollowAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\collisionLayer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\DefenseTower.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerAim.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerHelper.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Emitter.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\EmitterContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\GameScene.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncher.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherHelp.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Hero.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\HeroNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\HeroSpawn.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\IobjectListener.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Life.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\LifeRecover.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\MessageRedirect.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactory.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SoldierNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\_2DCameraFollow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\item\IitemObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\item\ItemObjectImp.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\awakeShooterWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\createObjectWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\destroyWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\playAnimationWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\playSoundWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\map\rule1.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\map\rule1LoseCondition.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\MainMenu.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkMenu.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\test\mainInput.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\UI\BagItemUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\UI\bagItemUIInput.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\UI\MoneyUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzFrequencyTimerClass.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectCreator.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectInit.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIndexTableClass.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemBagControl.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzInterfaceGUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzLabel.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzWindow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzObjectSearcher.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetector.cs" />
+     <Compile Include="Assets\Standard Assets\Camera Scripts\MouseLook.cs" />
+     <Compile Include="Assets\Standard Assets\Scripts\ActivateTrigger.cs" />
+     <Compile Include="Assets\Standard Assets\Scripts\CombineChildren.cs" />
+     <Compile Include="Assets\Standard Assets\Scripts\MeshCombineUtility.cs" />
+     <None Include="Assets\Detonator\Resources\Detonator\Textures\HeatDistort.shader" />
+     <None Include="Assets\Detonator\Sample Supporting Emitters\Detonator Spray Helper.js" />
+     <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
+     <None Include="Assets\Editor\_2Dphysics.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\ActionCommandControl.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\AiMachineGun.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\AiMachineGunAI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\AnimationListeners.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\awakeShooterWhenDie.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\BagItemUI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\bagItemUIInput.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\BloodBar.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\Board.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\BoardDetector.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\BodyActionClass.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\Bullet.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\BulletFollowAI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\ChooseRaceMenu.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\collisionLayer.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\createObjectWhenDie.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\CreateTest.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\DefenseTower.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\DefenseTowerAim.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\DefenseTowerHelper.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\defenseTowerItem.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\DefenseTowerNetView.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\destroyWhenDie.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\Emitter.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\EmitterContainer.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\GameScene.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\GuidedMissileLauncher.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\GuidedMissileLauncherAI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\GuidedMissileLauncherHelp.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\healthPackItem.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\Hero.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\HeroNetView.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\HeroSpawn.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\IitemObject.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\IobjectListener.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\ItemObjectImp.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\ItemTest.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\Life.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\LifeRecover.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\mainInput.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\MainMenu.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\MessageRedirect.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\MoneyUI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\NetworkMenu.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\playAnimationWhenDie.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\PlayerInfo.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\playSoundWhenDie.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\rule1.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\rule1LoseCondition.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\Soldier.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\SoldierAI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\SoldierFactory.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\SoldierNetView.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\SphereAreaHarm.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\test.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzButton.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzCreatorUtility.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzDetectorBase.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzDetectorContainer.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzFrequencyTimerClass.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzGameObjectCreator.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzGameObjectInit.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzGUI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzGUIContainer.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzGUIGroup.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzGUIRender.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzImageGUI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzIndexTableClass.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzInterFaceGUI.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzItemBagControl.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzItemSystem.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzLabel.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzLanguage.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzLanguageResource.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzMySerializeString.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzObjectSearcher.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzRayDetector.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzSerializeString.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\ZZSprite.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzTimer.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzUtilities.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\zzWindow.js" />
+     <None Include="Assets\microcosmicWar\jsScripts\_2DCameraFollow.js" />
+     <None Include="Assets\Standard Assets\Camera Scripts\MouseOrbit.js" />
+     <None Include="Assets\Standard Assets\Camera Scripts\SmoothFollow.js" />
+     <None Include="Assets\Standard Assets\Camera Scripts\SmoothLookAt.js" />
+     <None Include="Assets\Standard Assets\Scripts\DragRigidbody.js" />
+     <None Include="Assets\Standard Assets\Scripts\FPSWalker.js" />
+     <None Include="Assets\Standard Assets\Scripts\TimedObjectDestructor.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
+	
