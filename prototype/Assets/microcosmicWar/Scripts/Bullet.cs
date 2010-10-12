@@ -70,24 +70,23 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        //print("OnCollisionEnter");
-        //Transform lOwner = collision.transform;
-        //Life lLife=lOwner.gameObject.GetComponentInChildren<Life>();
-        /*
-        Life lLife=lOwner.gameObject.GetComponent<Life>();
-	
-        if(!lLife)
-        {
-            while(lOwner.parent)
-            {
-                lOwner=lOwner.parent;
-                lLife = lOwner.gameObject.GetComponent<Life>();
-                if(lLife)
-                    break;
-            }
-        }
-        */
-        Life lLife = Life.getLifeFromTransform(collision.transform);
+        _touch(collision.transform);
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        //print("OnTriggerEnter(Collider collider):"+collider.name);
+        if (!collider.isTrigger)
+            _touch(collider.transform);
+    }
+
+    void _touch(Transform pOther)
+    {
+        //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
+        if (bulletLife.getBloodValue() <= 0)
+            return;
+
+        Life lLife = Life.getLifeFromTransform(pOther);
 
         if (lLife)
             lLife.injure(harmVale, injureInfo);

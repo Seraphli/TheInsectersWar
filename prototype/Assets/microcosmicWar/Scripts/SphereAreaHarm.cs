@@ -7,15 +7,14 @@ public class SphereAreaHarm : MonoBehaviour
 
     //用于爆炸的破坏(去血效果)
 
-    public bool onlyOnce = true;
+    //public bool onlyOnce = true;
     public float harmRadius = 5.0f;
     public float harmValueInCentre = 10.0f;
 
     // 符合 此 mask 的物体,执行伤害
-    public int harmLayerMask;
+    public int harmLayerMask = -1;
 
-    //[Life]=Distance  现在用于存储美工有生命挝?离爆炸点的最近距离
-    protected Hashtable injuredLifeInTheFrame = new Hashtable();
+    //protected Hashtable lInjuredLifeMinDistance = new Hashtable();
 
 
     public void setHarmLayerMask(int pMark)
@@ -33,7 +32,20 @@ public class SphereAreaHarm : MonoBehaviour
             print("harmRadius:"+harmRadius);
             print("harmValueInCentre:"+harmValueInCentre);
         */
-        Collider[] lColliderList = Physics.OverlapSphere(transform.position, harmRadius, harmLayerMask);
+        impSphereAreaHarm(transform.position, harmRadius, harmValueInCentre, harmLayerMask);
+        //if (onlyOnce)
+        //{
+        Destroy(gameObject);
+        //}
+
+    }
+
+    //执行圆球范围的伤害,伤害随离中心距离增加而递减
+    public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius, float pHarmValueInCentre, int pHarmLayerMask)
+    {
+        //现在用于存储有生命的物体,离爆炸点的最近距离
+        Hashtable lInjuredLifeMinDistance = new Hashtable();
+        Collider[] lColliderList = Physics.OverlapSphere(pCenterPos, pHarmRadius, pHarmLayerMask);
         //搜寻范围内的Life,并寻找最短距离
         foreach (Collider i in lColliderList)
         {
@@ -45,43 +57,41 @@ public class SphereAreaHarm : MonoBehaviour
             if (lLife)
             {
                 //lLife.injure(harmValueInCentre);
-                Vector3 lClosestPoint = i.ClosestPointOnBounds(transform.position);
-                float lDistance = Vector3.Distance(lClosestPoint, transform.position);
+                //获得物体离中心pCenterPos的最近距离
+                Vector3 lClosestPoint = i.ClosestPointOnBounds(pCenterPos);
+                float lDistance = Vector3.Distance(lClosestPoint, pCenterPos);
 
                 //因为一个有Life的物体上,可能有多个Collider
-                if (injuredLifeInTheFrame.ContainsKey(lLife))
+                if (lInjuredLifeMinDistance.ContainsKey(lLife))
                 {
-                    float lObjectDistance = (float)injuredLifeInTheFrame[lLife];
+                    float lObjectDistance = (float)lInjuredLifeMinDistance[lLife];
                     if (lObjectDistance > lDistance)
                     {
-                        //print(""+injuredLifeInTheFrame[lLife]+">"+lDistance);
-                        injuredLifeInTheFrame[lLife] = lDistance;
+                        //相同Life时,若距离比之前获得的Collider物体小,则替换
+                        //print(""+lInjuredLifeMinDistance[lLife]+">"+lDistance);
+                        lInjuredLifeMinDistance[lLife] = lDistance;
                     }
                 }
                 else
-                    injuredLifeInTheFrame[lLife] = lDistance;
+                    lInjuredLifeMinDistance[lLife] = lDistance;
             }
 
         }
 
         //执行伤害
-        foreach (System.Collections.DictionaryEntry lifeToDistance in injuredLifeInTheFrame)
+        foreach (System.Collections.DictionaryEntry lifeToDistance in lInjuredLifeMinDistance)
         {
             // The hit points we apply fall decrease with distance from the explosion point
             Life lLifeImp = (Life)lifeToDistance.Key;
             float lDistanceImp = (float)lifeToDistance.Value;
-            float lHarmRange = 1.0f - Mathf.Clamp01(lDistanceImp / harmRadius);
+            float lHarmRange = 1.0f - Mathf.Clamp01(lDistanceImp / pHarmRadius);
             //print(lDistanceImp);
             //print(lHarmRange);
             //print(lHarmRange *harmValueInCentre );
-            lLifeImp.injure((int)(lHarmRange * harmValueInCentre));
+            lLifeImp.injure((int)(lHarmRange * pHarmValueInCentre));
         }
 
-        injuredLifeInTheFrame.Clear();
-        if (onlyOnce)
-        {
-            Destroy(gameObject);
-        }
+        //lInjuredLifeMinDistance.Clear();
 
     }
 
