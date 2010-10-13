@@ -40,8 +40,19 @@ public class SphereAreaHarm : MonoBehaviour
 
     }
 
-    //执行圆球范围的伤害,伤害随离中心距离增加而递减
+    public bool canHarmFunc(Life p);
+
+    bool canHarmAll(Life p)
+    {
+
+    }
     public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius, float pHarmValueInCentre, int pHarmLayerMask)
+    {
+        impSphereAreaHarm(pCenterPos, pHarmRadius, pHarmValueInCentre, pHarmLayerMask, canHarmAll);
+    }
+
+    //执行圆球范围的伤害,伤害随离中心距离增加而递减
+    public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius, float pHarmValueInCentre, int pHarmLayerMask, canHarmFunc pCanHarmFunc)
     {
         //现在用于存储有生命的物体,离爆炸点的最近距离
         Hashtable lInjuredLifeMinDistance = new Hashtable();
@@ -83,12 +94,18 @@ public class SphereAreaHarm : MonoBehaviour
         {
             // The hit points we apply fall decrease with distance from the explosion point
             Life lLifeImp = (Life)lifeToDistance.Key;
-            float lDistanceImp = (float)lifeToDistance.Value;
-            float lHarmRange = 1.0f - Mathf.Clamp01(lDistanceImp / pHarmRadius);
-            //print(lDistanceImp);
-            //print(lHarmRange);
-            //print(lHarmRange *harmValueInCentre );
-            lLifeImp.injure((int)(lHarmRange * pHarmValueInCentre));
+
+            //判断是否可以执行伤害
+            if(pCanHarmFunc(lLifeImp))
+            {
+                float lDistanceImp = (float)lifeToDistance.Value;
+                float lHarmRange = 1.0f - Mathf.Clamp01(lDistanceImp / pHarmRadius);
+                //print(lDistanceImp);
+                //print(lHarmRange);
+                //print(lHarmRange *harmValueInCentre );
+                lLifeImp.injure((int)(lHarmRange * pHarmValueInCentre));
+
+            }
         }
 
         //lInjuredLifeMinDistance.Clear();
