@@ -40,10 +40,11 @@ public class SphereAreaHarm : MonoBehaviour
 
     }
 
-    public bool canHarmFunc(Life p);
+    public delegate bool canHarmFunc(Life p);
 
-    bool canHarmAll(Life p)
+    static bool canHarmAll(Life p)
     {
+        return true;
 
     }
     public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius, float pHarmValueInCentre, int pHarmLayerMask)
