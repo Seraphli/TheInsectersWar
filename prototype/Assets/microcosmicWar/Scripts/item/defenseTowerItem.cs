@@ -45,6 +45,7 @@ class defenseTowerItem : IitemObject
         lInfo["rotation"] = new Quaternion();
         lInfo["face"] = towerFace;
         lInfo["layer"] = useObject.layer;
+        lInfo["race"] = (int)PlayerInfo.getRace(useObject.layer);
         lInfo["adversaryLayer"] = PlayerInfo.getAdversaryRaceLayer(useObject.layer);
         zzGameObjectCreator.getSingleton().create(lInfo);
         //zzGameObjectCreator.getSingleton().create({

@@ -73,6 +73,17 @@ public class PlayerInfo : MonoBehaviour
         return 0;
     }
 
+    public static Race getRace(int raceLayer)
+    {
+        if (raceLayer == layers.pismire)
+            return Race.ePismire;
+        else if (raceLayer == layers.bee)
+            return Race.eBee;
+
+        Debug.LogError(raceLayer);
+        return Race.eNone;
+    }
+
 
     public Race race = Race.eNone;
 

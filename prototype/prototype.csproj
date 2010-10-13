@@ -84,11 +84,14 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Life.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\LifeRecover.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\MessageRedirect.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\ObjectProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SonicAttack.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SonicWaveTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2DCameraFollow.cs" />
