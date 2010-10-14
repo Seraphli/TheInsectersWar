@@ -42,7 +42,19 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <None Include="Assets\AstarPathfinding\Pathfinding\AstarClasses.cs.txt" />
+     <None Include="Assets\AstarPathfinding\Pathfinding\AstarPath.cs.txt" />
      <None Include="Assets\microcosmicWar\注意事项.txt" />
+     <Compile Include="Assets\AstarPathfinding\Editor\AstarDataEditor.cs" />
+     <Compile Include="Assets\AstarPathfinding\Editor\AstarPathEditor.cs" />
+     <Compile Include="Assets\AstarPathfinding\Editor\AstarWelcome.cs" />
+     <Compile Include="Assets\AstarPathfinding\GridData\AstarData.cs" />
+     <Compile Include="Assets\AstarPathfinding\Pathfinding\AstarClasses.cs" />
+     <Compile Include="Assets\AstarPathfinding\Pathfinding\AstarMath.cs" />
+     <Compile Include="Assets\AstarPathfinding\Pathfinding\AstarPath.cs" />
+     <Compile Include="Assets\AstarPathfinding\Pathfinding\AstarProcessing.cs" />
+     <Compile Include="Assets\AstarPathfinding\Pathfinding\AstarUser.cs" />
+     <Compile Include="Assets\AstarPathfinding\Pathfinding\Seeker.cs" />
      <Compile Include="Assets\Detonator\System\Detonator.cs" />
      <Compile Include="Assets\Detonator\System\DetonatorBurstEmitter.cs" />
      <Compile Include="Assets\Detonator\System\DetonatorCloudRing.cs" />
@@ -127,23 +139,23 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzInterfaceGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzLabel.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzObjectSearcher.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetector.cs" />
      <Compile Include="Assets\Standard Assets\Camera Scripts\MouseLook.cs" />
      <Compile Include="Assets\Standard Assets\Scripts\ActivateTrigger.cs" />
      <Compile Include="Assets\Standard Assets\Scripts\CombineChildren.cs" />
      <Compile Include="Assets\Standard Assets\Scripts\MeshCombineUtility.cs" />
      <None Include="Assets\Detonator\Resources\Detonator\Textures\HeatDistort.shader" />
+     <None Include="Assets\AstarPathfinding\Editor\HeighmapFromTexture.js" />
      <None Include="Assets\Detonator\Sample Supporting Emitters\Detonator Spray Helper.js" />
      <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
      <None Include="Assets\Editor\_2Dphysics.js" />

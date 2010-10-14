@@ -17,13 +17,13 @@ public class zzGUIContainer : zzInterfaceGUI
         ArrayList lGUIlist = new ArrayList();
         foreach (Transform lTransform in transform)
         {
-            zzGUI impGUI = lTransform.GetComponent<zzGUI>();
+            zzInterfaceGUI impGUI = lTransform.GetComponent<zzInterfaceGUI>();
             if (impGUI)
             {
                 //按深度排序,小的排在前面,先被渲染,会被深度大的遮住
                 for (int i = 0; i < lGUIlist.Count; ++i)
                 {
-                    zzGUI lGUIlistTemp = (zzGUI)lGUIlist[i];
+                    zzInterfaceGUI lGUIlistTemp = (zzInterfaceGUI)lGUIlist[i];
                     if (impGUI.getDepth() < lGUIlistTemp.getDepth())
                     {
                         lGUIlist.Insert(i, impGUI);
@@ -37,10 +37,10 @@ public class zzGUIContainer : zzInterfaceGUI
         }
 
         //print("********************");
-        foreach (zzGUI imp in lGUIlist)
+        foreach (zzInterfaceGUI imp in lGUIlist)
         {
             //print(imp.gameObject.name+" "+imp.getDepth());
-            imp.impGUI();
+            imp.renderGUI();
         }
     }
 }

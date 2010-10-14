@@ -6,16 +6,18 @@ using System.Collections;
 class zzLabel : zzInterfaceGUI
 {
     //FIXME_VAR_TYPE position= new Rect();
-    public GUIContent content = new GUIContent();
-    public GUIStyle style = new GUIStyle();
+    //public GUIContent _content = new GUIContent();
+    //public GUIStyle _style = new GUIStyle();
+
+    public zzGUIStyle ContentAndStyle;
 
     public override void impGUI()
     {
-        GUI.Label(getPosition(), content, style);
+        GUI.Label(getPosition(), ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
     public override void setText(string pText)
     {
-        content.text = pText;
+        ContentAndStyle.Content.text = pText;
     }
 }

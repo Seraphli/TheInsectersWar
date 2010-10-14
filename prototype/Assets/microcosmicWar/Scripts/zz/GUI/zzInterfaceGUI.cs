@@ -53,12 +53,43 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     public bool visible = true;
 
+    //public GUIContent getContent()
+    //{
+    //    return _content;
+    //}
+
+    //public _style getStyle()
+    //{
+    //    return _style;
+    //}
+
+
     //只是为了付类型
     //protected void nullGUICallback ( zzInterfaceGUI pGUI  ){
     //}
     protected static void nullGUICallback ( zzInterfaceGUI pGUI  ){}
 
     public delegate void GUICallFunc(zzInterfaceGUI pGUI);
+
+    public void renderGUI()
+    {
+
+        if (getVisible())
+        {
+            GUISkin lSkin = getSkin();
+            if (lSkin)
+            {
+                //使用 Skin
+                GUISkin lPreSkin = GUI.skin;
+                GUI.skin = lSkin;
+                impGUI();
+                GUI.skin = lPreSkin;
+            }
+            else
+                impGUI();
+        }
+
+    }
 
     public virtual GUISkin getSkin()
     {
@@ -90,20 +121,21 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         Transform lTransform = transform.Find(pName);
         if (lTransform)
         {
-            zzGUI impGUI = lTransform.GetComponent<zzGUI>();
-            if (impGUI)
-                return impGUI.getGUI();
+            zzInterfaceGUI impGUI = lTransform.GetComponent<zzInterfaceGUI>();
+            //if (impGUI)
+                return impGUI;
         }
         return null;
     }
 
     public zzInterfaceGUI getParent()
     {
-        zzGUI impGUI = transform.parent.GetComponent<zzGUI>();
-        if (impGUI)
-            return impGUI.getGUI();
+        zzInterfaceGUI impGUI = transform.parent.GetComponent<zzInterfaceGUI>();
+        //if (impGUI)
+        //    return impGUI.getGUI();
         //print('"null"');
-        return null;
+        //return null;
+        return impGUI;
     }
 
     public virtual float getWidth()
@@ -139,6 +171,12 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         //FIXME_VAR_TYPE lOut= position;
         Rect lOut = new Rect();
 
+
+        lOut.width = getWidth();
+        //print(gameObject.name);
+        //print(relativeWidth.useRelative);
+        //print(lOut.width);
+        lOut.height = getHeight();
         //horizontal
         switch (horizontalDockPosition)
         {
@@ -146,10 +184,10 @@ public abstract class zzInterfaceGUI : MonoBehaviour
                 lOut.x = 0;
                 break;
             case zzGUIDockPos.center:
-                lOut.x = Screen.width / 2 - lOut.width / 2;
+                lOut.x = getParent().getWidth() / 2 - lOut.width / 2;
                 break;
             case zzGUIDockPos.max:
-                lOut.x = Screen.width - lOut.width;
+                lOut.x = getParent().getWidth() - lOut.width;
                 break;
             case zzGUIDockPos.custom:
                 lOut.x = getPosX();
@@ -163,39 +201,38 @@ public abstract class zzInterfaceGUI : MonoBehaviour
                 lOut.y = 0;
                 break;
             case zzGUIDockPos.center:
-                lOut.y = Screen.height / 2 - lOut.height / 2;
+                lOut.y = getParent().getHeight() / 2 - lOut.height / 2;
                 break;
             case zzGUIDockPos.max:
-                lOut.y = Screen.height - lOut.height;
+                lOut.y = getParent().getHeight() - lOut.height;
                 break;
             case zzGUIDockPos.custom:
                 lOut.y = getPosY();
                 break;
         }
 
-        lOut.width = getWidth();
-        //print(gameObject.name);
-        //print(relativeWidth.useRelative);
-        //print(lOut.width);
-        lOut.height = getHeight();
-
         position = lOut;
         return lOut;
     }
 
-    void Reset()
+    public virtual int getDepth()
     {
-        //添加
-        /*
-        if(! gameObject.GetComponent<zzGUI>() )
-        {
-            zzGUI lzzGUI = gameObject.AddComponent<zzGUI>();
-            lzzGUI.setGUI(this);
-        }
-        */
-        zzGUI lzzGUI = (zzGUI)zzUtilities.needComponent(gameObject, typeof(zzGUI) );
-        lzzGUI.setGUI(this);
+        return depth;
     }
+
+    //void Reset()
+    //{
+    //    //添加
+    //    /*
+    //    if(! gameObject.GetComponent<zzGUI>() )
+    //    {
+    //        zzGUI lzzGUI = gameObject.AddComponent<zzGUI>();
+    //        lzzGUI.setGUI(this);
+    //    }
+    //    */
+    //    zzGUI lzzGUI = (zzGUI)zzUtilities.needComponent(gameObject, typeof(zzGUI) );
+    //    lzzGUI.setGUI(this);
+    //}
 
     void OnDrawGizmosSelected()
     {

@@ -7,25 +7,25 @@ public class zzGUIGroup : zzGUIContainer
 {
 
     //FIXME_VAR_TYPE windowRect= new Rect(20, 20, 120, 50);
-    public GUIContent content = new GUIContent();
-    public bool useDefaultStyle = false;
-    public GUIStyle style = new GUIStyle();
+    //public GUIContent _content = new GUIContent();
+    //public bool _useDefaultStyle = false;
+    //public GUIStyle _style = new GUIStyle();
 
     //zzGUI[] subElements;
-
+    public zzGUIStyle  ContentAndStyle;
 
     public override void impGUI()
     {
-        if (useDefaultStyle)
+        if (ContentAndStyle.UseDefaultStyle)
         {
-            //print("useDefaultStyle");
-            GUI.BeginGroup(getPosition(), content);
+            //print("_useDefaultStyle");
+            GUI.BeginGroup(getPosition(), ContentAndStyle.Content);
             impSubs();
             GUI.EndGroup();
             return;
         }
-        //print("not useDefaultStyle");
-        GUI.BeginGroup(getPosition(), content, style);
+        //print("not _useDefaultStyle");
+        GUI.BeginGroup(getPosition(), ContentAndStyle.Content, ContentAndStyle.Style);
         impSubs();
         GUI.EndGroup();
     }
@@ -38,16 +38,16 @@ public class zzGUIGroup : zzGUIContainer
     //if (GUI.Button ( new Rect(10,20,100,20), "Hello World"))
     //print ("Got a click");
     //foreach(zzGUI i in subElements)
-    //	i.impGUI();
+    //	i.renderGUI();
     //print("DoMyWindow begin");
 
     /*
 foreach(Transform i in transform)
 {
     //print(i.name);
-    zzGUI impGUI = i.GetComponent<zzGUI>();
-    if(impGUI)
-        impGUI.impGUI();
+    zzGUI renderGUI = i.GetComponent<zzGUI>();
+    if(renderGUI)
+        renderGUI.renderGUI();
 }
 */
     //print("DoMyWindow end");

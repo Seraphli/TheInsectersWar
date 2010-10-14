@@ -13,7 +13,7 @@ public class zzImageGUI : zzInterfaceGUI
 
     public override void impGUI()
     {
-        //print("zzImageGUI impGUI");
+        //print("zzImageGUI renderGUI");
         if (image)
             GUI.DrawTexture(getPosition(), image, scaleMode, alphaBlend, imageAspect);
     }

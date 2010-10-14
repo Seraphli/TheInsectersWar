@@ -4,7 +4,7 @@ using System.Collections;
 /// MouseLook rotates the transform based on the mouse delta.
 /// Minimum and Maximum values can be used to constrain the possible rotation
 
-/// To make an FPS style character:
+/// To make an FPS _style character:
 /// - Create a capsule.
 /// - Add a rigid body to the capsule
 /// - Add the MouseLook script to the capsule.

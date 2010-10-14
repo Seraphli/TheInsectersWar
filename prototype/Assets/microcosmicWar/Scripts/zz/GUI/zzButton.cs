@@ -6,9 +6,10 @@ using System.Collections;
 public class zzButton : zzInterfaceGUI
 {
     //FIXME_VAR_TYPE position= new Rect();
-    public GUIContent content = new GUIContent();
-    public bool useDefaultStyle = false;
-    public GUIStyle style = new GUIStyle();
+    //public GUIContent _content = new GUIContent();
+    //public bool _useDefaultStyle = false;
+    //public GUIStyle _style = new GUIStyle();
+    public zzGUIStyle ContentAndStyle;
     public zzInterfaceGUI.GUICallFunc clickCall = nullGUICallback;
 
     public override void impGUI()
@@ -19,14 +20,14 @@ public class zzButton : zzInterfaceGUI
 
     bool _drawButton()
     {
-        if (useDefaultStyle)
-            return GUI.Button(getPosition(), content);
-        return GUI.Button(getPosition(), content, style);
+        if (ContentAndStyle.UseDefaultStyle)
+            return GUI.Button(getPosition(), ContentAndStyle.Content);
+        return GUI.Button(getPosition(), ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
     public override void setText(string pText)
     {
-        content.text = pText;
+        ContentAndStyle.Content.text = pText;
     }
 
     public virtual void setClickCall(zzInterfaceGUI.GUICallFunc pCall)

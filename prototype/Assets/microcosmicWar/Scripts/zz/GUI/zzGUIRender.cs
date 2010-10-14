@@ -10,7 +10,8 @@ public class zzGUIRender : zzGUIContainer
     void OnGUI()
     {
         //impSubs();
-        zzGUI.impGUI(this);
+        //zzGUI.renderGUI(this);
+        renderGUI();
     }
 
     public override float getWidth()

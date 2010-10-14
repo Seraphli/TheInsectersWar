@@ -17,9 +17,9 @@ public abstract class zzDetectorBase : MonoBehaviour
     }
 
 
-    void Reset()
-    {
-        zzObjectSearcher lzzObjectSearcher = (zzObjectSearcher)zzUtilities.needComponent(gameObject, typeof(zzObjectSearcher));
-        lzzObjectSearcher.setDetector(this);
-    }
+    //void Reset()
+    //{
+    //    zzObjectSearcher lzzObjectSearcher = (zzObjectSearcher)zzUtilities.needComponent(gameObject, typeof(zzObjectSearcher));
+    //    lzzObjectSearcher.setDetector(this);
+    //}
 }
