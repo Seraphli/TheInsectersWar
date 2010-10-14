@@ -47,9 +47,9 @@ public class DetonatorSound : DetonatorComponent {
 		}		
 		if (_explodeDelay <= 0) 
 		{
-			_soundComponent.minVolume = minVolume;
-			_soundComponent.maxVolume = maxVolume;
-			_soundComponent.rolloffFactor = rolloffFactor;
+	//		_soundComponent.minVolume = minVolume;
+	//		_soundComponent.maxVolume = maxVolume;
+	//		_soundComponent.rolloffFactor = rolloffFactor;
 			
 			if (Vector3.Distance(Camera.main.transform.position, this.transform.position) < distanceThreshold)
 			{

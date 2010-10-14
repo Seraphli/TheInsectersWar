@@ -9,7 +9,7 @@ public class zzButton : zzInterfaceGUI
     //public GUIContent _content = new GUIContent();
     //public bool _useDefaultStyle = false;
     //public GUIStyle _style = new GUIStyle();
-    public zzGUIStyle ContentAndStyle;
+    public zzGUIStyle ContentAndStyle = new zzGUIStyle();
     public zzInterfaceGUI.GUICallFunc clickCall = nullGUICallback;
 
     public override void impGUI()

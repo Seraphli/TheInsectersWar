@@ -3,7 +3,7 @@ using System.Collections;
 
 class GuidedMissileLauncher : DefenseTower
 {
-    public float[] fireInterval;
+    public float[] fireInterval = new float[]{};
 
     public zzTimer fireTimer;
 

@@ -12,7 +12,7 @@ public class zzGUIGroup : zzGUIContainer
     //public GUIStyle _style = new GUIStyle();
 
     //zzGUI[] subElements;
-    public zzGUIStyle  ContentAndStyle;
+    public zzGUIStyle ContentAndStyle = new zzGUIStyle();
 
     public override void impGUI()
     {

@@ -3,6 +3,7 @@ using System.Collections;
 /*
 	Todo - set duration and color properly (actually, i'm not sure this is possible)
 	calculate count based on detail
+	inherit velocity
 */
 
 [RequireComponent (typeof (Detonator))]
@@ -12,7 +13,6 @@ public class DetonatorSpray : DetonatorComponent {
 	public GameObject sprayObject;
 	public int count = 10;
 	public float startingRadius = 0f;
-	public float velocity = 15f;
 	public float minScale = 1f;
 	public float maxScale = 1f;
 	
@@ -50,16 +50,15 @@ public class DetonatorSpray : DetonatorComponent {
 			for (int i=0;i<detailCount;i++) 
 			{
 				Vector3 randVec = Random.onUnitSphere * (startingRadius * size);
-				Vector3 velocityVec = new Vector3((velocity*size),(velocity*size),(velocity*size));
+				Vector3 velocityVec = new Vector3((velocity.x*size),(velocity.y*size),(velocity.z*size));
 				GameObject chunk = Instantiate(sprayObject, (this.transform.position + randVec), this.transform.rotation) as GameObject;
 				chunk.transform.parent = this.transform;
 				
 				//calculate scale for this piece
 				_tmpScale = (minScale + (Random.value * (maxScale - minScale)));
 				_tmpScale = _tmpScale * size;
-				
-				//randomize scale
-				chunk.transform.localScale = Random.value * (new Vector3(_tmpScale,_tmpScale,_tmpScale)) ;
+
+				chunk.transform.localScale = new Vector3(_tmpScale,_tmpScale,_tmpScale);
 				chunk.rigidbody.velocity = Vector3.Scale(randVec.normalized,velocityVec);
 				Destroy(chunk, (duration * timeScale)); 
 
@@ -74,9 +73,11 @@ public class DetonatorSpray : DetonatorComponent {
 		}
 	}
 	
+	
+	
 	public void Reset()
 	{
-
+		velocity = new Vector3(15f,15f,15f);
 	}
 }
 

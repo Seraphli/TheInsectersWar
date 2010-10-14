@@ -11,7 +11,7 @@ public enum Rule1LoseConditionType
 
 class rule1LoseCondition : IobjectListener
 {
-    public string teamName;
+    public string teamName = "unnamed team";
     public Rule1LoseConditionType rule1LoseConditionType;
 
     void Start()

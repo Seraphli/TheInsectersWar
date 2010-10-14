@@ -99,7 +99,7 @@ class AiMachineGun : DefenseTower
 
     public ZZSprite gunSprite;
 
-    public float fireTime;
+    public float fireTime=0.0f;
 
 
     //ÎïÌå³¯Ïò

@@ -4,7 +4,7 @@ using System.Collections;
 
 class defenseTowerItem : IitemObject
 {
-    public string defenseTowerTypeName;
+    public string defenseTowerTypeName = "unnamed defenseTowerItem";
     protected Vector3 towerPosition;
     protected int towerFace;
     protected GameObject useObject;

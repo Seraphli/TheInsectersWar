@@ -50,7 +50,8 @@ public class DetonatorForce : DetonatorComponent {
 		}
 		if (_explodeDelay <= 0) //if the delayTime is zero
 		{
-			_explosionPosition = transform.position;
+			//tweak the position such that the explosion center is related to the explosion's direction
+			_explosionPosition = transform.position; //- Vector3.Normalize(MyDetonator().direction);
 			_colliders = Physics.OverlapSphere (_explosionPosition, radius);
 			
 			foreach (Collider hit in _colliders) 
@@ -62,11 +63,22 @@ public class DetonatorForce : DetonatorComponent {
 				
 				if (hit.rigidbody)
 				{
-					hit.rigidbody.AddExplosionForce((power * size), _explosionPosition, (radius * size), (3.0f * size));
+					//align the force along the object's rotation
+					//this is wrong - need to attenuate the velocity according to distance from the explosion center			
+					//offsetting the explosion force position by the negative of the explosion's direction may help
+					hit.rigidbody.AddExplosionForce((power * size), _explosionPosition, (radius * size), (4f * MyDetonator().upwardsBias * size));
+					
+					SendMessage("OnDetonatorForceHit", null, SendMessageOptions.DontRequireReceiver);
 					
 					//and light them on fire for Rune
 					if (fireObject)
 					{
+						//check to see if the object already is on fire. being on fire twice is silly
+						if (hit.transform.Find(fireObject.name+"(Clone)"))
+						{
+							return;
+						}
+						
 						_tempFireObject = (Instantiate(fireObject, this.transform.position, this.transform.rotation)) as GameObject;
 						_tempFireObject.transform.parent = hit.transform;
 						_tempFireObject.transform.localPosition = new Vector3(0f,0f,0f);

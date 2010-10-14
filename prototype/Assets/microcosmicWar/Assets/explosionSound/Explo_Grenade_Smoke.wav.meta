@@ -1,10 +1,11 @@
 fileFormatVersion: 1
 guid: efdbed7f27e39c04cbc22cf24d0eebff
 AudioImporter:
-  importerVersion: 3
+  importerVersion: 4
   format: -1
   quality: 0.5
   3d: 1
   forceToMono: 0
-  decompressOnLoad: 1
+  stream: 0
   bitrate: 156000
+  useHardware: 0

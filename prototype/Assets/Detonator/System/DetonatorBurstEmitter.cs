@@ -22,7 +22,6 @@ public class DetonatorBurstEmitter : DetonatorComponent
 	private float _baseSize = 1f;
 	private Color _baseColor = Color.white;
 	
-	public Vector3 velocity = new Vector3(1f, 1f, 1f);
 	public float damping = 1f;
 	public float startRadius = 1f;
 	public float maxScreenSize = 2f;
@@ -34,6 +33,11 @@ public class DetonatorBurstEmitter : DetonatorComponent
 	public float sizeGrow = 20f;
 	public bool exponentialGrowth = true;
 	public float durationVariation = 0f;
+	public bool useWorldSpace = true;
+	public float upwardsBias = 0f;
+	public float angularVelocity = 20f;
+	public bool randomRotation = true;
+	
 	public ParticleRenderMode renderMode;
 	
 	//TODO make this based on some var
@@ -66,7 +70,7 @@ public class DetonatorBurstEmitter : DetonatorComponent
 		_particleEmitter.hideFlags = HideFlags.HideAndDontSave;
 		_particleRenderer.hideFlags = HideFlags.HideAndDontSave;
 		_particleAnimator.hideFlags = HideFlags.HideAndDontSave;
-
+		
 		_particleAnimator.damping = _baseDamping;
 
         _particleEmitter.emit = false;
@@ -137,11 +141,15 @@ public class DetonatorBurstEmitter : DetonatorComponent
 	private float _scaledDurationVariation; 
 	private float _scaledStartRadius; 
 	private float _scaledColor; //color with alpha adjusted according to detail and duration
+	private float _randomizedRotation;
+	private float _tmpAngularVelocity; //random angular velocity from -angularVelocity to +angularVelocity, if randomRotation is true;
 	
     override public void Explode()
     {
 		if (on)
 		{
+			_particleEmitter.useWorldSpace = useWorldSpace;
+			
 			_scaledDuration = timeScale * duration;
 			_scaledDurationVariation = timeScale * durationVariation;
 			_scaledStartRadius = size * startRadius;
@@ -178,7 +186,14 @@ public class DetonatorBurstEmitter : DetonatorComponent
 				_tmpCount = count * detail;
 				if (_tmpCount < 1) _tmpCount = 1;
 				
-				_thisPos = this.gameObject.transform.position;
+				if (_particleEmitter.useWorldSpace == true)
+				{
+					_thisPos = this.gameObject.transform.position;
+				}
+				else
+				{
+					_thisPos = new Vector3(0,0,0);
+				}
 
 				for (int i = 1; i <= _tmpCount; i++)
 				{
@@ -186,12 +201,26 @@ public class DetonatorBurstEmitter : DetonatorComponent
 					_tmpPos = _thisPos + _tmpPos;
 									
 					_tmpDir = Vector3.Scale(Random.insideUnitSphere, new Vector3(velocity.x, velocity.y, velocity.z)); 
+					_tmpDir.y = (_tmpDir.y + (2 * (Mathf.Abs(_tmpDir.y) * upwardsBias)));
+					
+					if (randomRotation == true)
+					{
+						_randomizedRotation = Random.Range(-1f,1f);
+						_tmpAngularVelocity = Random.Range(-1f,1f) * angularVelocity;
+						
+					}
+					else
+					{
+						_randomizedRotation = 0f;
+						_tmpAngularVelocity = angularVelocity;
+					}
+					
 					_tmpDir = Vector3.Scale(_tmpDir, new Vector3(size, size, size));
 					
 					 _tmpParticleSize = size * (particleSize + (Random.value * sizeVariation));
 					
 					_tmpDuration = _scaledDuration + (Random.value * _scaledDurationVariation);
-					_particleEmitter.Emit(_tmpPos, _tmpDir, _tmpParticleSize, _tmpDuration, color);
+					_particleEmitter.Emit(_tmpPos, _tmpDir, _tmpParticleSize, _tmpDuration, color, _randomizedRotation, _tmpAngularVelocity);
 				}
 					
 				_emitTime = Time.time;

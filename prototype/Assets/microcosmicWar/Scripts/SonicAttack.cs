@@ -26,7 +26,7 @@ public class SonicAttack : MonoBehaviour
     bool canHarm(Life pLife)
     {
         ObjectProperty AcousticTowerTemp = pLife.gameObject.GetComponent<ObjectProperty>();
-        print(pLife.gameObject.name);
+        //print(pLife.gameObject.name);
         if (AcousticTowerTemp
             && AcousticTowerTemp.identity == Identitys.Tower)
         {

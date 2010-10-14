@@ -45,44 +45,50 @@ using System.Collections;
 */
 public abstract class DetonatorComponent : MonoBehaviour
 {
-	public virtual bool on = true;
-	public virtual bool detonatorControlled = true;
+	public bool on = true;
+	public bool detonatorControlled = true;
 	
 	 [HideInInspector] 
-	public virtual float startSize = 1f;
-    public virtual float size = 1f;
+	public  float startSize = 1f;
+    public  float size = 1f;
 	
-    public virtual float explodeDelayMin = 0f;
-    public virtual float explodeDelayMax = 0f;
+    public  float explodeDelayMin = 0f;
+    public  float explodeDelayMax = 0f;
 
 	[HideInInspector]  
-	public virtual float startDuration = 2f;
-	public virtual float duration = 2f;
-	
+	public  float startDuration = 2f;
+	public  float duration = 2f;
+		
 	[HideInInspector]
-	public virtual float timeScale = 1f;
+	public  float timeScale = 1f;
 	
 	 [HideInInspector] 
-	public virtual float startDetail = 1f;
-	public virtual float detail = 1f;
+	public  float startDetail = 1f;
+	public  float detail = 1f;
 	
 	 [HideInInspector] 
-	public virtual Color startColor = Color.white;
-	public virtual Color color = Color.white;
+	public  Color startColor = Color.white;
+	public  Color color = Color.white;
 	
 	[HideInInspector]
-	public virtual Vector3 startLocalPosition = Vector3.zero;
-	public virtual Vector3 localPosition = Vector3.zero;
+	public  Vector3 startLocalPosition = Vector3.zero;
+	public  Vector3 localPosition = Vector3.zero;
 	
-	public virtual Vector3 force = Vector3.zero;
-
+	[HideInInspector]
+	public  Vector3 startForce = Vector3.zero;
+	public  Vector3 force = Vector3.zero;
+	
+	[HideInInspector]
+	public  Vector3 startVelocity = Vector3.zero;
+	public  Vector3 velocity = Vector3.zero;
+	
     public abstract void Explode();
 	
 	//The main Detonator calls this instead of using Awake() or Start() on subcomponents
 	//which ensures it happens when we want.
 	public abstract void Init();
 	
-	public virtual float detailThreshold;
+	public  float detailThreshold;
 
 	/*
 		This exists because Detonator makes relative changes
@@ -93,6 +99,8 @@ public abstract class DetonatorComponent : MonoBehaviour
 	public void SetStartValues()
 	{
 		startSize = size;
+		startForce = force;
+		startVelocity = velocity;
 		startDuration = duration;
 		startDetail = detail;
 		startColor = color;
@@ -124,8 +132,11 @@ public class Detonator : MonoBehaviour {
 	public bool explodeOnStart = true;
 	public float duration = Detonator._baseDuration;
 	public float detail = 1f; 
+	public float upwardsBias = 0f;
 	
 	public float destroyTime = 7f; //sorry this is not auto calculated... yet.
+	public bool useWorldSpace = true;
+	public Vector3 direction = Vector3.zero;
 	
 	public Material fireballAMaterial;
 	public Material fireballBMaterial;
@@ -302,6 +313,8 @@ public class Detonator : MonoBehaviour {
 					component.size = component.startSize * (size / _baseSize);
 					component.timeScale = (duration / _baseDuration);
 					component.detail = component.startDetail * detail;
+					component.force = (component.startForce *  (size /_baseSize)) + (direction * (size /_baseSize));
+					component.velocity = (component.startVelocity *  (size /_baseSize)) + (direction * (size /_baseSize));
 				
 					//take the alpha of detonator color and consider it a weight - 1=use all detonator, 0=use all components
 					component.color = Color.Lerp(component.startColor, color, color.a);
@@ -325,7 +338,7 @@ public class Detonator : MonoBehaviour {
 	
 	public void Reset() 
 	{
-		size = _baseSize;
+		size = 10f; //this is hardcoded because _baseSize up top is not really the default as much as what we match to
 		color = _baseColor;
 		duration = _baseDuration;
 		FillDefaultMaterials();
@@ -412,7 +425,7 @@ public class Detonator : MonoBehaviour {
         defaultShockwaveMaterial = new Material(Shader.Find("Particles/Additive"));
 		defaultShockwaveMaterial.name = "Shockwave-Default";
         Texture2D tex = Resources.Load("Detonator/Textures/Shockwave") as Texture2D;
-		defaultShockwaveMaterial.SetColor("_TintColor", Color.white);
+		defaultShockwaveMaterial.SetColor("_TintColor", new Color(0.1f,0.1f,0.1f,1f));
 		defaultShockwaveMaterial.mainTexture = tex;
 		return defaultShockwaveMaterial;
 	}

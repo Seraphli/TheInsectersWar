@@ -14,7 +14,6 @@ public class DetonatorCloudRing : DetonatorComponent
 	private GameObject _cloudRing;
 	private DetonatorBurstEmitter _cloudRingEmitter;
 	public Material cloudRingMaterial;
-	public Vector3 velocity;
 	
 	override public void Init()
 	{

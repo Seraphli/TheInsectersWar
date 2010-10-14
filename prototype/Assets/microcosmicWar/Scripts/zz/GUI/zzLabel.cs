@@ -9,7 +9,7 @@ class zzLabel : zzInterfaceGUI
     //public GUIContent _content = new GUIContent();
     //public GUIStyle _style = new GUIStyle();
 
-    public zzGUIStyle ContentAndStyle;
+    public zzGUIStyle ContentAndStyle = new zzGUIStyle();
 
     public override void impGUI()
     {

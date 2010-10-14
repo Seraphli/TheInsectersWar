@@ -10,7 +10,7 @@ class zzWindow : zzGUIContainer
     //public bool _useDefaultStyle = false;
     //public GUIStyle _style;
 
-    public zzGUIStyle ContentAndStyle;
+    public zzGUIStyle ContentAndStyle = new zzGUIStyle();
     public int ID = 0;
 
     public bool enableDrag = false;

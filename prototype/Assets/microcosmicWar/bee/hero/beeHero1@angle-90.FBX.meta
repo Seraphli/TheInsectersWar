@@ -1,15 +1,16 @@
 fileFormatVersion: 1
 guid: 6cbc7faaeb16428489bd03b7f27b69a6
 ModelImporter:
-  importerVersion: 4
+  importerVersion: 7
   meshes:
     scaleFactor: 0.01
+    useFileUnits: 1
     meshCompression: 0
     generateColliders: 0
     swapUVs: 0
   tangentSpace:
-    generation: 0
-    calculateNormals: 0
+    normalImportMode: 0
+    tangentImportMode: 1
     smoothingAngle: 60
     splitTangents: 0
   materials:

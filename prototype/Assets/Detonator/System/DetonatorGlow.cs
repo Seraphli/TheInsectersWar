@@ -14,7 +14,6 @@ public class DetonatorGlow : DetonatorComponent
 	private GameObject _glow;
 	private DetonatorBurstEmitter _glowEmitter;
 	public Material glowMaterial;
-	public Vector3 velocity;
 		
 	override public void Init()
 	{
@@ -43,6 +42,8 @@ public class DetonatorGlow : DetonatorComponent
 		_glowEmitter.material = glowMaterial;
 		_glowEmitter.exponentialGrowth = false;
 		_glowEmitter.useExplicitColorAnimation = true;
+		_glowEmitter.useWorldSpace = MyDetonator().useWorldSpace;
+		
     }
 	
 	public void UpdateGlow()
