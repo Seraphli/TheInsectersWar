@@ -20,6 +20,8 @@ public class Bullet : MonoBehaviour
 
     public Rigidbody bulletRigidbody;
 
+    public Transform particleEmitter;
+
     void Awake()
     {
         bulletRigidbody = gameObject.GetComponent<Rigidbody>();
@@ -111,13 +113,15 @@ public class Bullet : MonoBehaviour
     ////@RPC
     void particleEmitterDetach()
     {
-        Transform lTransform = transform.Find("particleEmitter");
-        if (lTransform)
+        if(!particleEmitter)
+            particleEmitter = transform.Find("particleEmitter");
+        //Transform lTransform = transform.Find("particleEmitter");
+        if (particleEmitter)
         {
             //防止同时执行Update 和 OnCollisionEnter的情况
-            ParticleEmitter lParticleEmitter = lTransform.gameObject.GetComponent<ParticleEmitter>();
+            ParticleEmitter lParticleEmitter = particleEmitter.gameObject.GetComponent<ParticleEmitter>();
             lParticleEmitter.emit = false;
-            lTransform.parent = null;
+            particleEmitter.parent = null;
         }
         //脱离所有子物体 临时
     }

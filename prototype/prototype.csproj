@@ -67,6 +67,7 @@
      <Compile Include="Assets\Editor\AstarPathEditor.cs" />
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
      <None Include="Assets\Editor\_2Dphysics.js" />
+     <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\IitemObject.cs" />
@@ -128,8 +129,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerAim.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerHelper.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\DestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Emitter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\EmitterContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\FireSpark.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GameScene.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncher.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherAI.cs" />

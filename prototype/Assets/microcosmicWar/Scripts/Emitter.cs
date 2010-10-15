@@ -15,6 +15,7 @@ public class Emitter : MonoBehaviour
     public int bulletLayer = 0;
 
     public AudioSource fireSound;
+    public GameObject fireSpark;
 
     protected Hashtable injureInfo;
     protected float bulletAliveTime;
@@ -75,6 +76,14 @@ public class Emitter : MonoBehaviour
         if (fireSound)
         {
             fireSound.Play();
+        }
+
+        if(fireSpark)
+        {
+            GameObject clone;
+            clone = (GameObject)Instantiate(fireSpark, transform.position, transform.rotation);
+            FireSpark lFireSpark = clone.GetComponent<FireSpark>();
+            lFireSpark.setForward(getForward());
         }
     }
 
