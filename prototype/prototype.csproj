@@ -145,6 +145,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\LifeRecover.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\MessageRedirect.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ObjectProperty.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\PlatformerPushBodies.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />

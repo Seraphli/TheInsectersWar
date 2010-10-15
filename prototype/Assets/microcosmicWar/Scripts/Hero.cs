@@ -141,7 +141,7 @@ public class Hero : MonoBehaviour
     public int getBulletLayer()
     {
         //子弹所在层名字为:种族名字+Bullet
-        return LayerMask.NameToLayer(LayerMask.LayerToName(transform.Find("CubeReact").gameObject.layer) + "Bullet");
+        return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Bullet");
     }
 
     public void EmitBullet()
