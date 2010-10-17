@@ -16,6 +16,8 @@ public class MainMenu : MonoBehaviour
         //断开网络, 以免回到主菜单后, 影响后面的行为
         Network.Disconnect();
         bindGUI();
+        zzLanguage.GetInstance().pGUI = GUIRoot.getSubElement("window");
+        zzLanguage.GetInstance().Language = "English";
     }
 
     void sewer1ButtonCall(zzInterfaceGUI pGUI)
@@ -37,19 +39,16 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
-    ////杞崲鎴愪腑鏂?void  CnButtonCall ( zzInterfaceGUI pGUI  ){
-
-    //    zzInterfaceGUI buttonParentGUI = GUIRoot.getSubElement("window");
-    //    //璁剧疆涓枃
-    //    zzLanguage.getSingleton().setChinese(buttonParentGUI);
-    //}
-
-    ////杞寲鎴愯嫳鏂?void  EnButtonCall ( zzInterfaceGUI pGUI  ){
-    //    zzInterfaceGUI buttonParentGUI = GUIRoot.getSubElement("window");
-    //    //璁剧疆鑻辨枃
-    //    zzLanguage.getSingleton().setEnglish(buttonParentGUI);
-    //}
+	
+	void LanguageButtonCall(zzInterfaceGUI pGUI)
+    {
+        zzLanguage.GetInstance().pGUI = GUIRoot.getSubElement("window");
+        if (zzLanguage.GetInstance().Language == "English")
+            zzLanguage.GetInstance().Language = "Chinese";
+        else
+            zzLanguage.GetInstance().Language = "English";
+		//Debug.Log(zzLanguage .GetInstance().Language);
+    }
 
     void bindButtonCall(zzInterfaceGUI pButtonContain, string pButtonName, zzInterfaceGUI.GUICallFunc pCall)
     {
@@ -64,9 +63,8 @@ public class MainMenu : MonoBehaviour
         bindButtonCall(buttonParentGUI, "SinglePlayer", ChooseRaceButtonCall);
         bindButtonCall(buttonParentGUI, "NetworkPlayer", NetworkMenuButtonCall);
         bindButtonCall(buttonParentGUI, "Quit", QuitButtonCall);
-        //bindButtonCall(buttonParentGUI,"Cn",CnButtonCall);
-        //bindButtonCall(buttonParentGUI,"En",EnButtonCall);
-
+        bindButtonCall(buttonParentGUI, "Language", LanguageButtonCall);
+        
         //显示版本号
         buttonParentGUI.getSubElement("versionLabel").setText("微观战争 " + versionnumber);
     }
