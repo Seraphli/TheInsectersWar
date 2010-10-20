@@ -53,7 +53,7 @@ public class SoldierFactory : MonoBehaviour
                 produceTransform.position,new Quaternion(), 0);
             timePos = 0.0f;
             SoldierAI soldierAI = lClone.GetComponent<SoldierAI>();
-            soldierAI.SetFinalAim(finalAim);
+            soldierAI.AddFinalAim(finalAim);
             soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
             //lClone.GetComponent<SoldierAI>().SetSoldier(lClone.GetComponent<Soldier>());
             //lClone.GetComponent<SoldierAI>().SetAdversaryLayerValue(adversaryLayerValue);

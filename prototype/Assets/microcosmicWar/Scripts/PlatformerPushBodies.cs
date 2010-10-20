@@ -40,7 +40,7 @@ public class PlatformerPushBodies : MonoBehaviour
 
         // Calculate push direction from move direction, we only push objects to the sides
         // never up and down
-        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+        //Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
 
         // push with move speed but never more than walkspeed
         //body.velocity = pushDir * pushPower * Mathf.Min (controller.GetSpeed (), controller.movement.walkSpeed);

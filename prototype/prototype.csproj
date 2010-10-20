@@ -35,16 +35,16 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
 	<Reference Include="Boo.Lang">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityScript">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -64,8 +64,11 @@
      <Compile Include="Assets\Detonator\System\DetonatorSparks.cs" />
      <Compile Include="Assets\Detonator\System\DetonatorSpray.cs" />
      <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
+     <Compile Include="Assets\Editor\AstarPathEditor.cs" />
+     <Compile Include="Assets\Editor\AstarWelcome.cs" />
      <None Include="Assets\Editor\_2Dphysics.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
+     <Compile Include="Assets\microcosmicWar\scene\Shield\Shield.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\IitemObject.cs" />
@@ -81,6 +84,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\menu\MainMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\test\mainInput.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\test\timerTest.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\test\TriggerTest.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\BagItemUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\bagItemUIInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\MoneyUI.cs" />
@@ -99,6 +104,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAimTranformList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzFrequencyTimerClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectCreator.cs" />
@@ -111,6 +118,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPoint.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ActionCommandControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGunAI.cs" />
@@ -153,7 +161,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2DCameraFollow.cs" />
+     <None Include="Assets\microcosmicWar\t\Board.js" />
      <None Include="Assets\microcosmicWar\注意事项.txt" />
+     <Compile Include="Assets\Pathfinding\AstarClasses.cs" />
+     <Compile Include="Assets\Pathfinding\AstarMath.cs" />
+     <Compile Include="Assets\Pathfinding\AstarPath.cs" />
+     <Compile Include="Assets\Pathfinding\Seeker.cs" />
      <Compile Include="Assets\Standard Assets\Camera Scripts\MouseLook.cs" />
      <None Include="Assets\Standard Assets\Camera Scripts\MouseOrbit.js" />
      <None Include="Assets\Standard Assets\Camera Scripts\SmoothFollow.js" />

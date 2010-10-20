@@ -40,6 +40,8 @@ public class Soldier : MonoBehaviour
 
     public ActionCommandControl actionCommandControl;
 
+    public BoardDetector boardDetector;
+
     //角色的朝向
     //protected FIXME_VAR_TYPE face= -1;
     /*
@@ -241,6 +243,13 @@ public class Soldier : MonoBehaviour
             }
 
         }
+
+        if (lActionCommand.Jump && lActionCommand.FaceDown)
+        {
+            boardDetector.down();
+        }
+        else
+            boardDetector.recover();
     }
 
     //更新characterController

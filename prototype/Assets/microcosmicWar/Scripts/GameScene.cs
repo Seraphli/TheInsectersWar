@@ -108,7 +108,7 @@ public class GameScene : MonoBehaviour
             //#####soldier.userControl=true;
 	
             //		SoldierAI soldierAI = lClone.GetComponent<SoldierAI>();
-            //		soldierAI.SetFinalAim(playerSpawn);
+            //		soldierAI.AddFinalAim(playerSpawn);
             //	soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
         */
         playerSpawn.createHeroFirstTime();
