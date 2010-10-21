@@ -160,7 +160,7 @@ public class Hero : MonoBehaviour
     {
         //mZZSprite.playAnimation("dead");
         gameObject.layer = layers.deadObject;
-        transform.Find("CubeReact").gameObject.layer = layers.deadObject;
+        //transform.Find("CubeReact").gameObject.layer = layers.deadObject;
 
         collisionLayer.updateCollider(gameObject);
         disappear();

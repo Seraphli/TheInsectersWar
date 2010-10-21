@@ -264,10 +264,10 @@ public class NetworkMenu : MonoBehaviour
     //                Debug.Log("Testing if firewall can be circumnvented");
     //                natCapable = Network.TestConnectionNAT();
     //                probingPublicIP = true;
-    //                timer = Time.time + 10;
+    //                pathTimer = Time.time + 10;
     //            }
     //            // NAT punchthrough test was performed but we still get blocked
-    //            else if (Time.time > timer)
+    //            else if (Time.time > pathTimer)
     //            {
     //                probingPublicIP = false; 		// reset
     //                Network.useNat = true;

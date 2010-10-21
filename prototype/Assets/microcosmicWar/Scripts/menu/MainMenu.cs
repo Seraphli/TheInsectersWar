@@ -17,7 +17,8 @@ public class MainMenu : MonoBehaviour
         Network.Disconnect();
         bindGUI();
         zzLanguage.GetInstance().pGUI = GUIRoot.getSubElement("window");
-        zzLanguage.GetInstance().Language = "English";
+        //zzLanguage.GetInstance().Language = "English";
+        zzLanguage.GetInstance().Language = "Chinese";
     }
 
     void sewer1ButtonCall(zzInterfaceGUI pGUI)
@@ -67,6 +68,7 @@ public class MainMenu : MonoBehaviour
         
         //显示版本号
         buttonParentGUI.getSubElement("versionLabel").setText("微观战争 " + versionnumber);
+
     }
 
     /*

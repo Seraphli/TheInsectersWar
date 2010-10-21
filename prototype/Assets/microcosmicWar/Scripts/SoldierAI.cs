@@ -5,14 +5,19 @@ using System.Collections.Generic;
 
 public class SoldierAI : MonoBehaviour
 {
-
+    public CharacterController character;
     public string adversaryName;
 
     //执行频率/每秒执行的次数
     //FIXME_VAR_TYPE frequencyOfImplement=3.0f;
     public float frequencyOfImplement = 3.0f;
     //public zzFrequencyTimer fequencyTimer = new zzFrequencyTimer();
-    zzCoroutineTimer timer;
+
+    //寻路计时器,在这些时间后执行寻路命令
+    zzCoroutineTimer pathTimer;
+
+    //动作技术器,计算并发送动作命令
+    zzTimer actionCommandTimer;
 
     //protected float timeToWait;//=1.0f/frequencyOfImplement
 
@@ -56,7 +61,7 @@ public class SoldierAI : MonoBehaviour
     //目标是否在可追赶的范围内
     public bool needPursuit(Transform pAim)
     {
-        if((pAim.position - transform.position).sqrMagnitude<100.0f)
+        if((pAim.position - transform.position).sqrMagnitude<225.0f)
             return true;
         return false;
     }
@@ -129,10 +134,18 @@ public class SoldierAI : MonoBehaviour
 
         //产生第一个命令
         if (enable)
-            AiUpdate();
-        timer = gameObject.AddComponent<zzCoroutineTimer>();
-        timer.setInterval(1.0f / frequencyOfImplement);
-        timer.setImpFunction(AiUpdate);
+        {
+            //AiUpdate();
+            pathUpdate();
+            actionCommandUpdate();
+        }
+        pathTimer = gameObject.AddComponent<zzCoroutineTimer>();
+        pathTimer.setInterval(2.0f);
+        pathTimer.setImpFunction(pathUpdate);
+
+        actionCommandTimer = gameObject.AddComponent<zzTimer>();
+        actionCommandTimer.setInterval(1.0f / frequencyOfImplement);
+        actionCommandTimer.setImpFunction(actionCommandUpdate);
     }
 
     public void AddFinalAim(Transform pFinalAim)
@@ -156,6 +169,9 @@ public class SoldierAI : MonoBehaviour
         adversaryLayerValue = pLayerValue;
     }
 
+    //判断前进的方向上是否有可站立的地方
+    public zzDetectorBase forwardBoardDetector;
+
     //public UnitActionCommand moveToAim(Transform pAim)
     public UnitActionCommand moveToAim(Vector3 pAimPos)
     {
@@ -171,7 +187,7 @@ public class SoldierAI : MonoBehaviour
 
             if(Mathf.Abs(pAimPos.x - transform.position.x) < 1.0f)
             {
-                if (pAimPos.y > transform.position.y + 0.5f)
+                if (pAimPos.y > transform.position.y + 0.8f)
                     lActionCommand.Jump = true;
                 else if(pAimPos.y < transform.position.y - 0.5f)
                 {
@@ -183,6 +199,13 @@ public class SoldierAI : MonoBehaviour
 
             if (Mathf.Abs(pAimPos.x - transform.position.x) < 0.3)
                 lActionCommand.GoForward = false;
+            else if (
+                character.isGrounded
+                && pAimPos.y >= transform.position.y
+                && !lActionCommand.Jump 
+                && forwardBoardDetector.detector(1, layers.boardValue).Length == 0
+                )//判断前进的方向上是否有可站立的地方,没有 这跳跃
+                lActionCommand.Jump = true;
             /*
             if(lT<0)
             {
@@ -243,26 +266,26 @@ public class SoldierAI : MonoBehaviour
         return actionCommand;
     }
 
-    public void calculate()
-    {
-        Transform lAim = getNowAimTransform();
-        if (lAim)
-        {
-            pathSeeker.StartPath(transform.position, lAim.position );
-            int lFireTaget = needFire();
-            if (lFireTaget != 0)
-            {
-                actionCommand.clear();
-                actionCommand.Fire = true;
-                setFaceCommand(actionCommand, lFireTaget);
-            }
-            else
-                actionCommand = moveToAim(aimPosition);
+    //public void calculate()
+    //{
+    //    Transform lAim = getNowAimTransform();
+    //    if (lAim)
+    //    {
+    //        pathSeeker.StartPath(transform.position, lAim.position );
+    //        int lFireTaget = needFire();
+    //        if (lFireTaget != 0)
+    //        {
+    //            actionCommand.clear();
+    //            actionCommand.Fire = true;
+    //            setFaceCommand(actionCommand, lFireTaget);
+    //        }
+    //        else
+    //            actionCommand = moveToAim(aimPosition);
 
-        }
-    }
+    //    }
+    //}
 
-    Vector3 aimPosition;
+    public Vector3 aimPosition;
     public void PathComplete(Vector3[] newPoints)
     {
         wayPoints = newPoints;
@@ -287,17 +310,21 @@ public class SoldierAI : MonoBehaviour
         //print(newPoints[0]);
     }
     public Vector3[] wayPoints;
+    public bool showWayPoints = false;
     public void OnDrawGizmos()
     {
-        //if (wayPoints)
-        //{
-        Gizmos.color = Color.red;
-
-        for (int i = 0; i < wayPoints.Length; i++)
+        if (showWayPoints)
         {
-            Gizmos.DrawSphere(wayPoints[i], 1.0f);
+            Gizmos.color = Color.red;
+
+            for (int i = 0; i < wayPoints.Length; i++)
+            {
+                Gizmos.DrawSphere(wayPoints[i], 0.6f);
+            }
+
+            Gizmos.color = Color.black;
+            Gizmos.DrawSphere(aimPosition, 1.0f);
         }
-        //}
     }
     //void Update()
     //{
@@ -319,12 +346,42 @@ public class SoldierAI : MonoBehaviour
 
     //}
 
-    void AiUpdate()
+    //void AiUpdate()
+    //{
+    //    if (enable)
+    //    {
+    //        calculate();
+    //        actionCommandControl.setCommand(getCommand());
+    //    }
+    //}
+
+    void pathUpdate()
     {
-        if (enable)
+        Transform lAim = getNowAimTransform();
+        if (enable && lAim)
         {
-            calculate();
+            pathSeeker.StartPath(transform.position, lAim.position);
+        }
+
+    }
+
+    void actionCommandUpdate()
+    {
+        Transform lAim = getNowAimTransform();
+        if (enable && lAim)
+        {
+            int lFireTaget = needFire();
+            if (lFireTaget != 0)
+            {
+                actionCommand.clear();
+                actionCommand.Fire = true;
+                setFaceCommand(actionCommand, lFireTaget);
+            }
+            else
+                actionCommand = moveToAim(aimPosition);
+
             actionCommandControl.setCommand(getCommand());
         }
+
     }
 }

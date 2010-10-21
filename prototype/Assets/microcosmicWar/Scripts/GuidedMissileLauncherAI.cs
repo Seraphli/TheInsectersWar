@@ -17,7 +17,7 @@ public class GuidedMissileLauncherAI : MonoBehaviour
     public int targetNum = 0;
     //protected 
     public int targetNowIndex = 0;
-    //zzTimer timer;
+    //zzTimer pathTimer;
     public int adversaryLayer;
 
     public SphereAreaHarm sphereAreaHarm;
@@ -30,7 +30,7 @@ public class GuidedMissileLauncherAI : MonoBehaviour
     void Start()
     {
         targetList = new Transform[maxRequired];
-        //timer = AddComponent<zzTimer>();
+        //pathTimer = AddComponent<zzTimer>();
         emitter.setInitBulletFunc(initBullet);
     }
 

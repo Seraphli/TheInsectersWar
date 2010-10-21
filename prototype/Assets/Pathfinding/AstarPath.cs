@@ -878,7 +878,7 @@ public class AstarPath : MonoBehaviour
                     t += Time.realtimeSinceStartup - startTime;
 
                     //@Performance Debug calls cost performance
-                    Debug.Log("A* Pathfinding Completed Succesfully\nTime: " + t + " Seconds\nFrames " + frames + "\nAverage Seconds/Frame " + (t / frames) + "\nPoints:" + path.Length + "\nSearched Nodes" + closedNodes + "\nPath Length (G score) Was " + end.g);
+                    //Debug.Log("A* Pathfinding Completed Succesfully\nTime: " + t + " Seconds\nFrames " + frames + "\nAverage Seconds/Frame " + (t / frames) + "\nPoints:" + path.Length + "\nSearched Nodes" + closedNodes + "\nPath Length (G score) Was " + end.g);
 
                 }
                 else if (AstarPath.active.simplify == Simplify.Simple)
@@ -1026,7 +1026,7 @@ public class AstarPath : MonoBehaviour
                     t += Time.realtimeSinceStartup - startTime;
 
                     //@Performance Debug calls cost performance
-                    Debug.Log("A* Pathfinding Completed Succesfully\nTime: " + t + " Seconds\nFrames " + frames + "\nAverage Seconds/Frame " + (t / frames) + "\nPoints:" + path.Length + "\nSearched Nodes" + closedNodes + "\nPath Length (G score) Was " + end.g);
+                    //Debug.Log("A* Pathfinding Completed Succesfully\nTime: " + t + " Seconds\nFrames " + frames + "\nAverage Seconds/Frame " + (t / frames) + "\nPoints:" + path.Length + "\nSearched Nodes" + closedNodes + "\nPath Length (G score) Was " + end.g);
 
                     //We have now found the end and filled the "path" array
                     //The next frame the Seeker script will find that this is done and send a message with the path data
