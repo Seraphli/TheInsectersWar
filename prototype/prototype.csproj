@@ -152,6 +152,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\ObjectProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlatformerPushBodies.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Shield.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\ShieldBasic.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactory.cs" />
