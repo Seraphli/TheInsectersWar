@@ -1,4 +1,4 @@
-//    © Copyright 2009 Aron Granberg
+//    ?Copyright 2009 Aron Granberg
 //    AstarPathEditor.cs script is licenced under a Creative Commons Attribution-Noncommercial 3.0 Unported License.
 //    If you want to use the script in commercial projects, please contact me at aron.g@me.com
 
@@ -735,7 +735,7 @@ public class AstarPathEditor : Editor {
 								EditorGUILayout.EndHorizontal ();
 								
 								//if (GUI.changed) {
-								//	path.physicsChangedGrid = i;
+								//	path.physicsChangedGrid = lOutIndex;
 								//	path.anyPhysicsChanged = true;
 								//}
 								
@@ -1333,6 +1333,6 @@ public class AstarPathEditor : Editor {
 	}
 }
 
-//    © Copyright 2009 Aron Granberg
+//    ?Copyright 2009 Aron Granberg
 //    AstarPathEditor.cs script is licenced under a Creative Commons Attribution-Noncommercial 3.0 Unported License.
 //    If you want to use the script in commercial projects, please contact me at aron.g@me.com

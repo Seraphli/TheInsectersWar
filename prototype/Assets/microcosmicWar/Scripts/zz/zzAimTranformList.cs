@@ -39,7 +39,7 @@ public class zzAimTranformList
 
     public Transform getAim()
     {
-        if (!nowAim && (mAimList.Count>0) )
+        if (!collisionLayer.isAliveFullCheck(nowAim) && (mAimList.Count>0) )
             nowAim = popAim();
         return nowAim;
     }
@@ -50,7 +50,7 @@ public class zzAimTranformList
         //Debug.Log(pAim);
         //Debug.Log(nowAim);
         //Debug.Log(pAim && (nowAim != pAim));
-        if (pAim && (nowAim != pAim))
+        if (collisionLayer.isAliveFullCheck(pAim) && (nowAim != pAim))
         {
             if (nowAim)
                 mAimList.Add(nowAim);

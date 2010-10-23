@@ -34,7 +34,7 @@ public class AiMachineGunAI : MonoBehaviour
         //print("OnTriggerEnter"+other.gameObject.layer);
         if (other.gameObject.layer == adversaryLayer)
         {
-            if (!fireTarget)
+            if (!collisionLayer.isAliveFullCheck(fireTarget))
                 fireTarget = other.transform;
             enemyList[other.transform] = true;
         }
@@ -75,7 +75,7 @@ public class AiMachineGunAI : MonoBehaviour
         foreach (System.Collections.DictionaryEntry i in enemyList)
         {
             //判断物体是否还在场景中
-            if (i.Key as Transform)
+            if (collisionLayer.isAliveFullCheck(i.Key as Transform))
             {
                 fireTarget = (Transform)i.Key;
                 break;

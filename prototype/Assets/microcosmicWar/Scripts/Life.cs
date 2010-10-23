@@ -147,6 +147,18 @@ public class Life : MonoBehaviour
         return lLife;
     }
 
+    //返回活着的物体的生命组件,可用来判断是否存活
+    public static Life getLifeIfAlive(Transform pOwn)
+    {
+        Life lLife = getLifeFromTransform(pOwn);
+        if(lLife && lLife.isDead())
+        {
+            lLife = null;
+        }
+        return lLife;
+    }
+
+
     //function Update ()
     //{
     //}0

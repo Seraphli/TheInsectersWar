@@ -42,13 +42,13 @@ class zzDetectorContainer : zzDetectorBase
     }
 
 
-    public override Collider[] detector(int pMaxRequired, LayerMask pLayerMask)
+    public override Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc)
     {
         //Collider[] lOut = new Collider[0];
         List<Collider> lOut = new List<Collider>();
         foreach (zzDetectorBase subDetector in subDetectorList)
         {
-            Collider[] lSubResult = subDetector.detector(pMaxRequired, pLayerMask);
+            Collider[] lSubResult = subDetector.detect(pMaxRequired, pLayerMask,pNeedDetectedFunc);
             pMaxRequired -= lSubResult.Length;
             //lOut += lSubResult;
             lOut.AddRange(lSubResult);

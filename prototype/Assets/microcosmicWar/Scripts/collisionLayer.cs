@@ -110,7 +110,7 @@ public class collisionLayer : MonoBehaviour
             foreach (int i in ignoreList)
             {
                 //遍历忽略的层
-                //print("(int i in ignoreList )"+gameObject.name);
+                //print("(int lOutIndex in ignoreList )"+gameObject.name);
                 ArrayList objectList = mLayersObjectList[i];
                 for (int a = objectList.Count - 1; a >= 0; a -= 1)
                 {
@@ -145,6 +145,21 @@ public class collisionLayer : MonoBehaviour
             //print(child.name);
             addCollider(child.gameObject);
         }
+    }
+
+    //从物体的所属层来判断是否存活
+    public static bool isAlive(Transform pOwn)
+    {
+        if (pOwn.gameObject.layer == layers.deadObject)
+            return false;
+        return true;
+    }
+
+    public static bool isAliveFullCheck(Transform pOwn)
+    {
+        if (pOwn)
+            return isAlive(pOwn);
+        return false;
     }
 
     // Use this for initialization

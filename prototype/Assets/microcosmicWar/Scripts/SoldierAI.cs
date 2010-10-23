@@ -185,16 +185,19 @@ public class SoldierAI : MonoBehaviour
             //FIXME_VAR_TYPE lActionCommand=UnitActionCommand();
             lActionCommand.GoForward = true;
 
-            if(Mathf.Abs(pAimPos.x - transform.position.x) < 1.0f)
+            if (character.isGrounded)
             {
-                if (pAimPos.y > transform.position.y + 0.8f)
-                    lActionCommand.Jump = true;
-                else if(pAimPos.y < transform.position.y - 0.5f)
+                if (Mathf.Abs(pAimPos.x - transform.position.x) < 1.0f)
                 {
-                    lActionCommand.Jump = true;
-                    lActionCommand.FaceDown = true;
-                }
+                    if (pAimPos.y > transform.position.y + 0.8f)
+                        lActionCommand.Jump = true;
+                    else if (pAimPos.y < transform.position.y - 0.5f)
+                    {
+                        lActionCommand.Jump = true;
+                        lActionCommand.FaceDown = true;
+                    }
 
+                }
             }
 
             if (Mathf.Abs(pAimPos.x - transform.position.x) < 0.3)
@@ -203,8 +206,8 @@ public class SoldierAI : MonoBehaviour
                 character.isGrounded
                 && pAimPos.y >= transform.position.y
                 && !lActionCommand.Jump 
-                && forwardBoardDetector.detector(1, layers.boardValue).Length == 0
-                )//判断前进的方向上是否有可站立的地方,没有 这跳跃
+                && forwardBoardDetector.detect(1, layers.boardValue).Length == 0
+                )//判断前进的方向上是否有可站立的地方,没有 就跳跃
                 lActionCommand.Jump = true;
             /*
             if(lT<0)

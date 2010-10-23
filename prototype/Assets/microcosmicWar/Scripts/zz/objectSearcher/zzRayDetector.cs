@@ -8,16 +8,38 @@ class zzRayDetector : zzDetectorBase
     //Transform _from;
     public Transform _to;
 
-    public override Collider[] detector(int pMaxRequired, LayerMask pLayerMask)
+    public override Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc)
     {
         RaycastHit[] lHits;
         lHits = Physics.RaycastAll(getOrigin(), getDirection(), getDistance(), pLayerMask);
         int lOutNum;
         lOutNum = Mathf.Min(pMaxRequired, lHits.Length);
         Collider[] lOut = new Collider[lOutNum];
-        for (int i = 0; i < lOutNum; ++i)
+
+
+        //执行探测过滤,未测试
+        if (pNeedDetectedFunc!=null)
         {
-            lOut[i] = lHits[i].collider;
+            int lHitsIndex = 0;
+            int lOutIndex = 0;
+            for (;lOutIndex < lOutNum && lHitsIndex < lHits.Length;)
+            {
+                if (pNeedDetectedFunc(lHits[lOutIndex].collider))
+                {
+                    lOut[lOutIndex] = lHits[lOutIndex].collider;
+                    ++lOutIndex;
+                }
+                ++lHitsIndex;
+            }
+
+        }
+        else
+        {
+            for (int lOutIndex = 0; lOutIndex < lOutNum; ++lOutIndex)
+            {
+                lOut[lOutIndex] = lHits[lOutIndex].collider;
+            }
+
         }
         return lOut;
     }

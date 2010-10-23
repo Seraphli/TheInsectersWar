@@ -34,10 +34,17 @@ public class GuidedMissileLauncherAI : MonoBehaviour
         emitter.setInitBulletFunc(initBullet);
     }
 
+    ////过滤掉死掉的物体
+    //bool detectorFilterFunc(Collider pCollider)
+    //{
+    //    return Life.getLifeIfAlive(pCollider.transform)!=null;
+    //}
+
     public int resetAndSearchEnemy()
     {
         targetNowIndex = 0;
-        Collider[] lHits = detector.detector(maxRequired, 1 << adversaryLayer);
+        //线投时,已经根据层 过滤掉了死掉的物体,所以不需设置探测过滤
+        Collider[] lHits = detector.detect(maxRequired, 1 << adversaryLayer);
         targetNum = lHits.Length;
         //print("targetNum:"+targetNum);
         if (targetNum > 0)
@@ -64,7 +71,10 @@ public class GuidedMissileLauncherAI : MonoBehaviour
     public Transform getTargetAndMove()
     {
         int targetIndex = getNextTagetIndex();
-        if (targetNum > 0 && targetList[targetIndex])
+        if (
+            targetNum > 0 
+            && collisionLayer.isAliveFullCheck( targetList[targetIndex] )
+            )
         {
             targetNowIndex = targetIndex;
             return targetList[targetIndex];
