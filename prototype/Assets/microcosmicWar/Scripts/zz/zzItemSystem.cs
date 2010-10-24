@@ -134,12 +134,12 @@ public class ItemTypeInfo
 		}*/
     }
 
-    public ItemObjectImp getItemObject()
+    public IitemObject getItemObject()
     {
         //Debug.Log(useItemComponentName);
         //Debug.Log(useItemObject!=null);
         //return useItemObject.GetComponent<useItemComponentName>();
-        return useItem.GetComponent<ItemObjectImp>();
+        return useItem.GetComponent<IitemObject>();
     }
 
     public override string ToString()

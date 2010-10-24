@@ -71,7 +71,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\IitemObject.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\item\ItemObjectImp.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\awakeShooterWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\createObjectWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\destroyWhenDie.cs" />

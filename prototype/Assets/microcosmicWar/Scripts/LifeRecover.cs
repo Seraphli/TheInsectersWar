@@ -5,8 +5,10 @@ using System.Collections;
 public class LifeRecover : MonoBehaviour
 {
 
-
+    //总共可以恢复的生命值
     public int recoverValue = 100;
+
+    //效果持续时间
     public float duration = 10.0f;
     public Life life;
 

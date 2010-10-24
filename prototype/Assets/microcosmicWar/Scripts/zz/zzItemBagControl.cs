@@ -160,7 +160,7 @@ public class zzItemBagControl : MonoBehaviour
         {
             ItemTypeInfo lItemTypeInfo = itemSystem.getItemTypeTable()
                 .getData(pItemIndex) as ItemTypeInfo;
-            ItemObjectImp item = lItemTypeInfo.getItemObject();
+            IitemObject item = lItemTypeInfo.getItemObject();
             if (item.canUse(pOwner))
             {
                 item.use();
