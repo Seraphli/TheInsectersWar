@@ -72,7 +72,7 @@ public class Shield : MonoBehaviour
     public GameObject shield;
     public float countTimer = 10;          //持续时间
     public float changeSpeed = 1;          //变化速度
-    public int adversaryLayer = 11;
+    public int adversaryWeaponLayer = 11;   //阻挡的子弹的层
 
     private Vector3 vector;                 //到碰撞点的向量
     private ShieldBasic shieldLeft = new ShieldBasic();     //左面护甲
@@ -106,10 +106,14 @@ public class Shield : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == adversaryLayer)
+        if (other.gameObject.layer == adversaryWeaponLayer)
         {
             vector = other.transform.position - transform.position;
-            Destroy(other.gameObject);
+
+            //使用将生命值设为0的方式,消除子弹
+            Life lLife = other.gameObject.GetComponent<Life>();
+            lLife.setBloodValue(0);
+
             //Timerbefore = Time.time;
             if (vector.x >= 0)
             {
