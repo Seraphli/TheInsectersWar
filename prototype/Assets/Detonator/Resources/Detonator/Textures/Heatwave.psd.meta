@@ -1,5 +1,5 @@
 fileFormatVersion: 1
-guid: 6afb434a05206a8498be9dcdde17038e
+guid: a4c93665122ceca46a386b5fa625a6e7
 TextureImporter:
   importerVersion: 2
   maxTextureSize: 1024
@@ -10,7 +10,7 @@ TextureImporter:
   isReadable: 0
   textureType: 5
   mipmaps:
-    generation: 1
+    generation: 0
     correctGamma: 0
     border: 0
     filter: 0
@@ -20,7 +20,7 @@ TextureImporter:
   bumpmap:
     generation: 1
     external: 1
-    bumpyness: 0.128125
+    bumpyness: 0.3
     filter: 0
   textureSettings:
     filterMode: 1

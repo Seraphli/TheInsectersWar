@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 [System.Serializable]
 public class AnimationInfo
@@ -23,8 +25,8 @@ public class AnimationInfo
 public class AnimationData
 {
 
-    public Material material;
     public string animationName;
+    public Material material;
     public float animationLength;
 
 
@@ -48,6 +50,8 @@ public class AnimationData
     public int pixelVerticalNum;
     public int pixelHorizonNum;
     public bool loop = true;
+
+    public int index = -1;
 }
 
 public class AnimationListener
@@ -90,19 +94,30 @@ public class ZZSprite : MonoBehaviour
     public AnimationInfo[] animationInfos;
 
     //AnimationInfo animationInfo;
-    public Hashtable animationDatas = new Hashtable();
+    public zzGenericIndexTable<string, AnimationData> animationDatas
+        = new zzGenericIndexTable<string, AnimationData>();
+
+    [HideInInspector]
     public AnimationData nowAnimationData = new AnimationData();
 
     public float playTime;
 
     protected AnimationListener nowListener = new AnimationListener();
 
-    public Hashtable animationListeners = new Hashtable();
+    //public Hashtable animationListeners = new Hashtable();
+
+    //动画索引对应的监听
+    public AnimationListener[] animationListeners;
 
     //playAnimation后才奏效
+    public void setListener(int animationIndex, AnimationListener listener)
+    {
+        animationListeners[animationIndex] = listener;
+    }
+
     public void setListener(string animationName, AnimationListener listener)
     {
-        animationListeners[animationName] = listener;
+        setListener(animationDatas.getIndex(animationName), listener);
     }
 
     //现在播放到的帧,从0开始
@@ -125,7 +140,7 @@ public class ZZSprite : MonoBehaviour
         new Vector2(1, 1), new Vector2(0, 1) 
     };
 
-    protected MeshFilter meshFilter;
+    //protected MeshFilter meshFilter;
     protected MeshRenderer meshRenderer;
     protected Mesh mesh;   // Reference to our mesh (contained in the MeshFilter)
 
@@ -170,42 +185,45 @@ public class ZZSprite : MonoBehaviour
     }
 
     //初始化,并指定默认动画
-    protected void InitShow()
+    protected void InitSprite(Mesh pMesh)
     {
 
         vertices = new Vector3[]{
-                new Vector3(-spriteWidth/2,-spriteWidth/2,0),
-                new Vector3(spriteWidth/2,-spriteWidth/2,0),
-                new Vector3(spriteWidth/2,spriteWidth/2,0),
-                new Vector3(-spriteWidth/2,spriteWidth/2,0)
+                new Vector3(-spriteWidth/2,-spriteHeight/2,0),
+                new Vector3(spriteWidth/2,-spriteHeight/2,0),
+                new Vector3(spriteWidth/2,spriteHeight/2,0),
+                new Vector3(-spriteWidth/2,spriteHeight/2,0)
         };
+
+        animationDatas = new zzGenericIndexTable<string, AnimationData>();
         // iterate through the array
         foreach (AnimationInfo value in animationInfos)
         {
             //print(animationInfo);
-            animationDatas[value.animationName] = CreateDataFromInfo(value);
+            //animationDatas[value.animationName] = CreateDataFromInfo(value);
+            AnimationData lAnimationData = CreateDataFromInfo(value);
+            lAnimationData.index = animationDatas.addData(value.animationName, lAnimationData);
         }
+        animationListeners = new AnimationListener[animationDatas.Count];
         //nowAnimationData = animationDatas[defaultAnimation];
         //print(nowAnimationData.animationName);
 
-        meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
+        //meshFilter = GetComponent<MeshFilter>();
+        //meshRenderer = GetComponent<MeshRenderer>();
         //mesh = meshFilter.mesh;
         //mesh = meshFilter.sharedMesh;
-        meshFilter.mesh = new Mesh();
-        mesh = meshFilter.mesh;
+        //mesh = pMesh;
 
         //meshRenderer.material=nowAnimationData.material;
-        mesh.vertices = vertices;
-        mesh.uv = UVs;
+        pMesh.vertices = vertices;
+        pMesh.uv = UVs;
         //mesh.normals = normals;
-        mesh.triangles = triIndices;
-        mesh.normals = new Vector3[]{
-        new Vector3(0,0,-1),new Vector3(0,0,-1),
-        new Vector3(0,0,-1),new Vector3(0,0,-1)
-    };
+        pMesh.triangles = triIndices;
+        pMesh.normals = new Vector3[]{
+            new Vector3(0,0,-1),new Vector3(0,0,-1),
+            new Vector3(0,0,-1),new Vector3(0,0,-1)
+        };
 
-        playAnimation(defaultAnimation);
 
         /*
         numOfVerticalPic = material.mainTexture.width/pixelVerticalNum;
@@ -221,7 +239,7 @@ public class ZZSprite : MonoBehaviour
         */
     }
 
-    protected void updateShow()
+    protected void updateMesh(Mesh pMesh)
     {
         //FIXME_VAR_TYPE lTextureHeight= material.mainTexture.height;
         //FIXME_VAR_TYPE lTextureWidth= material.mainTexture.width;
@@ -243,7 +261,8 @@ public class ZZSprite : MonoBehaviour
         UVs[1].x = UVs[2].x;
         UVs[1].y = UVs[0].y;
 
-        mesh.uv = UVs;
+
+        pMesh.uv = UVs;
     }
 
     //function UpdateUV()
@@ -251,10 +270,31 @@ public class ZZSprite : MonoBehaviour
     //	mesh.uv = UVs;
     //}
 
-    void Start()
+    //在编辑模式下显示
+    void OnDrawGizmosSelected()
     {
+        if( !Application.isPlaying )
+        {
+            Mesh lMesh = new Mesh();
+            GetComponent<MeshFilter>().sharedMesh = lMesh;
+            meshRenderer = GetComponent<MeshRenderer>();
+            InitSprite(lMesh);
+
+            playAnimation(defaultAnimation, lMesh);
+
+        }
+    }
+
+    void Awake()
+    {
+        Mesh lMesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = lMesh;
+        meshRenderer = GetComponent<MeshRenderer>();
         //初始化,并使用默认动画
-        InitShow();
+        InitSprite(lMesh);
+
+        mesh = lMesh;
+        playAnimation(defaultAnimation);
 
         //updateShow();
     }
@@ -282,7 +322,7 @@ public class ZZSprite : MonoBehaviour
         if (lPicNum != nowPicNum)
         {
             nowPicNum = lPicNum;
-            updateShow();
+            updateMesh(mesh);
         }
         nowListener.updateCallback(playTime);
 
@@ -291,20 +331,65 @@ public class ZZSprite : MonoBehaviour
         //FIXME_VAR_TYPE lTimePos= 
     }
 
-    public void playAnimation(string animationName)
+    public void playAnimation(string animationName,Mesh pMesh)
+    {
+        ////print(animationName);
+        //if (nowAnimationData.animationName == animationName)
+        //    return;
+        ////nowListener.endTheAnimationCallback();
+        ////nowAnimationData = animationDatas[animationName] as AnimationData;
+        //nowAnimationData = animationDatas.getDataByKey(animationName);
+        //nowListener = animationListeners[animationName] as AnimationListener;
+        //if (nowListener == null)
+        //    nowListener = new AnimationListener();
+        //nowListener.beginTheAnimationCallback();
+        //meshRenderer.material = nowAnimationData.material;
+        //playTime = 0;
+        //updateMesh(pMesh);
+        playAnimation(animationDatas.getIndex(animationName), pMesh);
+    }
+
+    public void playAnimation(int animationIndex, Mesh pMesh)
     {
         //print(animationName);
-        if (nowAnimationData.animationName == animationName)
+        if (nowAnimationData.index == animationIndex)
             return;
         //nowListener.endTheAnimationCallback();
-        nowAnimationData = animationDatas[animationName] as AnimationData;
-        nowListener = animationListeners[animationName] as AnimationListener;
-        if (nowListener==null)
+        //nowAnimationData = animationDatas[animationName] as AnimationData;
+        nowAnimationData = animationDatas.getData(animationIndex);
+        nowListener = animationListeners[animationIndex] ;
+        if (nowListener == null)
             nowListener = new AnimationListener();
         nowListener.beginTheAnimationCallback();
         meshRenderer.material = nowAnimationData.material;
         playTime = 0;
-        updateShow();
+        updateMesh(pMesh);
+    }
+
+    public void playAnimation(string animationName)
+    {
+        playAnimation(animationName,mesh);
+    }
+
+    public void playAnimation(int animationIndex)
+    {
+        playAnimation(animationIndex, mesh);
+    }
+
+    //得到动画名字列表,按索引顺序排列
+    public ReadOnlyCollection<string> getAnimNameList()
+    {
+        return animationDatas.getKeyList();
+    }
+
+    public int  getNowAnimIndex()
+    {
+        return nowAnimationData.index;
+    }
+
+    public int getAnimationNum()
+    {
+        return animationDatas.Count;
     }
 
 }

@@ -66,6 +66,7 @@
      <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
      <Compile Include="Assets\Editor\AstarPathEditor.cs" />
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
+     <Compile Include="Assets\Editor\ZZSpriteEditor.cs" />
      <None Include="Assets\Editor\_2Dphysics.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
@@ -158,7 +159,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierNetView.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\SonicWave.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SonicWaveTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
