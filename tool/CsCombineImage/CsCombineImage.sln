@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Packages", "Packages.mdproj", "{63CCAFDC-2C4E-4534-B9BF-B0DD365BA010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "combineImage", "combineImage\combineImage.csproj", "{75F628DF-0553-4FF0-93B5-AF7651A59A7A}"
+EndProject
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Packages", "Packages.mdproj", "{5FA02629-DE5E-4D9B-9B38-8235D05777EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FA02629-DE5E-4D9B-9B38-8235D05777EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5FA02629-DE5E-4D9B-9B38-8235D05777EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{63CCAFDC-2C4E-4534-B9BF-B0DD365BA010}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{63CCAFDC-2C4E-4534-B9BF-B0DD365BA010}.Release|x86.ActiveCfg = Release|Any CPU
+		{75F628DF-0553-4FF0-93B5-AF7651A59A7A}.Debug|x86.ActiveCfg = Debug|x86
+		{75F628DF-0553-4FF0-93B5-AF7651A59A7A}.Debug|x86.Build.0 = Debug|x86
+		{75F628DF-0553-4FF0-93B5-AF7651A59A7A}.Release|x86.ActiveCfg = Release|x86
+		{75F628DF-0553-4FF0-93B5-AF7651A59A7A}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Packages.mdproj
+	EndGlobalSection
+EndGlobal
