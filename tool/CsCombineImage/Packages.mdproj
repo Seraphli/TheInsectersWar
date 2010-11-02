@@ -1,1 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  <PropertyGroup>    <ItemType>PackagingProject</ItemType>    <ProductVersion>9.0.21022</ProductVersion>    <SchemaVersion>2.0</SchemaVersion>    <ProjectGuid>{5FA02629-DE5E-4D9B-9B38-8235D05777EF}</ProjectGuid>    <Packages>      <Packages xmlns="">        <Package name="Microsoft Windows Binaries">          <Builder targetFile="CsCombineImage-windows.tar.gz" platform="Windows" configuration="Debug|x86" ctype="BinariesZipPackageBuilder">            <ChildEntries>              <SolutionItemReference path="combineImage\combineImage.csproj" />            </ChildEntries>            <RootEntry path="CsCombineImage.sln" id=":root:" />          </Builder>        </Package>      </Packages>    </Packages>  </PropertyGroup></Project>
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5FA02629-DE5E-4D9B-9B38-8235D05777EF}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package name="Microsoft Windows Binaries">
+          <Builder targetFile="CsCombineImage-windows.tar.gz" platform="Windows" configuration="Debug|x86" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="combineImage\combineImage.csproj" />
+            </ChildEntries>
+            <ExcludedFiles>
+              <File>combineImage,ProgramFiles,combineImage.pdb</File>
+            </ExcludedFiles>
+            <RootEntry path="CsCombineImage.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Linux Binaries">
+          <Builder targetFile="CsCombineImage.tar.gz" platform="Linux" configuration="Debug|x86" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="combineImage\combineImage.csproj" />
+            </ChildEntries>
+            <RootEntry path="CsCombineImage.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+</Project>

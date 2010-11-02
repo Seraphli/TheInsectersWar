@@ -11,7 +11,7 @@ namespace combineImage
 			{
 				mFinalImageDataPtr = new finalImageData();
 				mFinalImageDataPtr.FactorWidth(lFactorWidth);
-				mFinalImageDataPtr.FactorHeight(lFactorWidth);
+				mFinalImageDataPtr.FactorHeight(lFactorHeight);
 				mFinalImageDataPtr.ImageNum(lImageNum);
 
 				if(lImageNum>15)

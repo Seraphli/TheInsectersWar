@@ -66,7 +66,6 @@
      <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
      <Compile Include="Assets\Editor\AstarPathEditor.cs" />
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
-     <Compile Include="Assets\Editor\ZZSpriteEditor.cs" />
      <None Include="Assets\Editor\_2Dphysics.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
@@ -89,6 +88,9 @@
      <Compile Include="Assets\microcosmicWar\Scripts\UI\BagItemUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\bagItemUIInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\MoneyUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzAnimationEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
@@ -126,6 +128,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGunAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AnimationListeners.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BehaviourList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Board.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BoardDetector.cs" />
