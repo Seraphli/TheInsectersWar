@@ -109,6 +109,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\tool\zzToolRuler.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAimTranformList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
