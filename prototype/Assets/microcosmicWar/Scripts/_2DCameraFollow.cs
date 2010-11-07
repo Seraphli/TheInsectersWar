@@ -1,40 +1,71 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 摄像机平滑跟随目标
+/// </summary>
 public class _2DCameraFollow : MonoBehaviour
 {
     // The target we are following
     public Transform target;
+
     // Smooth switcher
     public bool useSmooth = true;
-    // How much we 
+
+    // 位移量;一帧内的逻辑, 可以看成要花positionDamping的时间,到达目标
     public float positionDamping = 0.74f;
 
-    void Start()
-    {
+    //void Start()
+    //{
 
-    }
+    //}
 
+    /// <summary>
+    /// 设置跟踪目标
+    /// </summary>
+    /// <param name="pTarget">要跟踪目标</param>
     public void setTaget(Transform pTarget)
     {
         target = pTarget;
     }
 
+    /// <summary>
+    /// 每帧调用,获得平滑过渡值
+    /// </summary>
+    /// <param name="OffsetValue">向目标值的偏移量,用于摄像机偏移到转向的位置</param>
+    /// <param name="lastValue">目标值</param>
+    /// <param name="nowValue">目前的值</param>
+    /// <returns></returns>
     protected float tranF(float OffsetValue, float lastValue, float nowValue)
     {
+        //要花positionDamping的时间,到达目标位置
         return (lastValue + OffsetValue /* Time.deltaTime*/ - nowValue) / positionDamping * Time.deltaTime;
     }
 
+    /// <summary>
+    /// 每帧调用,获得x轴上的平滑过渡值
+    /// </summary>
+    /// <param name="OV">向目标值的x偏移量</param>
+    /// <returns></returns>
     protected float tranFX(float OV)
     {
         return tranF(OV, target.position.x, transform.position.x);
     }
 
+    /// <summary>
+    /// 每帧调用,获得y轴上的平滑过渡值
+    /// </summary>
+    /// <param name="OV">向目标值的y偏移量</param>
+    /// <returns></returns>
     protected float tranFY(float OV)
     {
         return tranF(OV, target.position.y, transform.position.y);
     }
 
+    /// <summary>
+    /// 是否要移动的判断
+    /// </summary>
+    /// <returns></returns>
     protected bool TarTranNotEqual()
     {
         if (transform.position.x != target.position.x || transform.position.y != target.position.y)
