@@ -77,6 +77,11 @@ public class Life : MonoBehaviour
         }
     }
 
+    public void makeDead()
+    {
+        setBloodValue(0);
+    }
+
     [RPC]
     public void Life_die()
     {

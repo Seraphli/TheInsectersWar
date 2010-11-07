@@ -90,6 +90,23 @@ public class PlayerInfo : MonoBehaviour
         return 0;
     }
 
+    public static int getBulletLayer(int raceLayer)
+    {
+        //switch (raceLayer)
+        //{
+        //case layers.pismire: return layers.bee;
+        //case layers.bee: return layers.pismire;
+        //case Race.ePismire: return "pismire";
+        //}
+        if (raceLayer == layers.pismire)
+            return layers.pismireBullet;
+        else if (raceLayer == layers.bee)
+            return layers.beeBullet;
+
+        Debug.LogError(raceLayer);
+        return 0;
+    }
+
     public static Race getRace(int raceLayer)
     {
         if (raceLayer == layers.pismire)

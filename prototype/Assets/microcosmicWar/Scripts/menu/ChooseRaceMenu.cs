@@ -84,7 +84,7 @@ public class ChooseRaceMenu : MonoBehaviour
                                                         .GetComponentInChildren<PlayerInfo>();
 
             lPlayerInfo.setRace(raceSelectToEnum(raceSelect));
-            Application.LoadLevel("netSewer1");
+            Application.LoadLevel("netSewer2");
             //print("Application.LoadLevel");
         }
         GUILayout.Space(20);

@@ -95,7 +95,7 @@ public class SonicWaveTower : MonoBehaviour
         ObjectProperty AcousticTowerTemp = pLife.gameObject.GetComponent<ObjectProperty>();
         //print(pLife.gameObject.name);
         if (AcousticTowerTemp
-            && AcousticTowerTemp.identity == Identitys.Tower)
+            && AcousticTowerTemp.identity == Identitys.Structure)
         {
             return false;
         }

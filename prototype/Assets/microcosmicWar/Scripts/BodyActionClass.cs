@@ -116,6 +116,8 @@ public class BodyAction
                 //	myAnimation[animationInfo.animationName].AddMixingTransform(cInfo.mixingTransform2);
                 //	myAnimation[animationInfo.animationName].layer = cInfo.layer;
                 //}
+
+                //设置动画事件
                 if (animationInfo.functionName.Length != 0)
                 {
                     AnimationEvent lAnimationEvent = new AnimationEvent();

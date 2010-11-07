@@ -4,14 +4,14 @@ using System.Collections;
 
 public enum Identitys
 {
-    Tower,
+    Structure,
     Soldier,
     Barrel,
 };
 
 public class ObjectProperty : MonoBehaviour
 {
-    public Identitys identity = Identitys.Tower;
+    public Identitys identity = Identitys.Structure;
 
     void setPosition()
     {

@@ -187,10 +187,14 @@ public class SoldierAI : MonoBehaviour
 
             if (character.isGrounded)
             {
+                //目标x值 在一定范围内时,可跳跃
                 if (Mathf.Abs(pAimPos.x - transform.position.x) < 1.0f)
                 {
                     if (pAimPos.y > transform.position.y + 0.8f)
+                    {
                         lActionCommand.Jump = true;
+                        //Debug.Log("jump1");
+                    }
                     else if (pAimPos.y < transform.position.y - 0.5f)
                     {
                         lActionCommand.Jump = true;
@@ -200,15 +204,19 @@ public class SoldierAI : MonoBehaviour
                 }
             }
 
+            //目标x值 在一定范围内时,停止前进
             if (Mathf.Abs(pAimPos.x - transform.position.x) < 0.3)
                 lActionCommand.GoForward = false;
             else if (
                 character.isGrounded
                 && pAimPos.y >= transform.position.y
-                && !lActionCommand.Jump 
+                && !lActionCommand.Jump
                 && forwardBoardDetector.detect(1, layers.boardValue).Length == 0
                 )//判断前进的方向上是否有可站立的地方,没有 就跳跃
+            {
                 lActionCommand.Jump = true;
+                //Debug.Log("jump2");
+            }
             /*
             if(lT<0)
             {

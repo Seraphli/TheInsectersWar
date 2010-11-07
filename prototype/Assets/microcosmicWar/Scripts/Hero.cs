@@ -20,7 +20,7 @@ public class Hero : MonoBehaviour
     //AudioSource fireSound;
 
     //在播放死亡动画时,会执行的动作
-    protected AnimationImpInTimeList actionImpDuringDeadAnimation = new AnimationImpInTimeList();
+    //protected AnimationImpInTimeList actionImpDuringDeadAnimation = new AnimationImpInTimeList();
 
     //protected Transform turnObjectTransform;
     public Transform reverseObjectTransform;
@@ -141,7 +141,8 @@ public class Hero : MonoBehaviour
     public int getBulletLayer()
     {
         //子弹所在层名字为:种族名字+Bullet
-        return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Bullet");
+        //return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Bullet");
+        return PlayerInfo.getBulletLayer(gameObject.layer);
     }
 
     public void EmitBullet()
