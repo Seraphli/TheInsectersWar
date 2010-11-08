@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 //actionType: 平举 向上
@@ -78,6 +79,11 @@ public class BodyAction
     //FIXME_VAR_TYPE nameToActionListMap=Hashtable();
     public Animation myAnimation;
 
+    /// <summary>
+    /// 标记已经添加过事件的动画Clip
+    /// </summary>
+    static Dictionary<AnimationClip, bool> haveAddedEvent = new Dictionary<AnimationClip, bool>();
+
     public void init(BodyActionInfo cInfo, Animation pAnimation)
     {
         myAnimation = pAnimation;
@@ -117,15 +123,21 @@ public class BodyAction
                 //	myAnimation[animationInfo.animationName].layer = cInfo.layer;
                 //}
 
-                //设置动画事件
-                if (animationInfo.functionName.Length != 0)
+                
+                AnimationClip   lAnimationClip = myAnimation[animationInfo.animationName].clip;
+                if (!haveAddedEvent.ContainsKey(lAnimationClip))
                 {
-                    AnimationEvent lAnimationEvent = new AnimationEvent();
-                    lAnimationEvent.functionName = "messageRedirectReceiver";
-                    lAnimationEvent.stringParameter = animationInfo.functionName;
-                    lAnimationEvent.time = animationInfo.functionImpTime;
-                    myAnimation[animationInfo.animationName].clip.AddEvent(lAnimationEvent);
-                    //Debug.Log(animationInfo.animationName+"  "+animationInfo.functionName);
+                    //设置动画事件
+                    if (animationInfo.functionName.Length != 0)
+                    {
+                        AnimationEvent lAnimationEvent = new AnimationEvent();
+                        lAnimationEvent.functionName = "messageRedirectReceiver";
+                        lAnimationEvent.stringParameter = animationInfo.functionName;
+                        lAnimationEvent.time = animationInfo.functionImpTime;
+                        lAnimationClip.AddEvent(lAnimationEvent);
+                        //Debug.Log(animationInfo.animationName+"  "+animationInfo.functionName);
+                    }
+                    haveAddedEvent[lAnimationClip] = true;
                 }
             }
             //将动作/动画表存储在 对应类型名称下

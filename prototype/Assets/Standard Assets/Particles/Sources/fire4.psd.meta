@@ -9,7 +9,7 @@ TextureImporter:
   generateCubemap: 0
   isReadable: 0
   mipmaps:
-    generation: 0
+    generation: 1
     correctGamma: 0
     border: 0
     filter: 0

@@ -33,6 +33,11 @@ public class zzAnimationConfig : MonoBehaviour
     public Animation myAnimation;
     public unityAniStateConfigInfo[]    animationConfig;
 
+    /// <summary>
+    /// 标记已经添加过事件的动画Clip
+    /// </summary>
+    static Dictionary<AnimationClip, bool> haveAddedEvent = new Dictionary<AnimationClip, bool>();
+
     void Start()
     {
         foreach (unityAniStateConfigInfo lStateConfigInfo in animationConfig)
@@ -44,15 +49,25 @@ public class zzAnimationConfig : MonoBehaviour
                 lAnimationState.speed = lStateConfigInfo.speed;
                 lAnimationState.layer = lStateConfigInfo.layer;
 
-                //创建事件
-                foreach (unityAniEventInfo lEventInfo in lStateConfigInfo.events)
+                AnimationClip   lAnimationClip = lAnimationState.clip;
+                if (!haveAddedEvent.ContainsKey(lAnimationClip))
                 {
-                    AnimationEvent lAnimationEvent = new AnimationEvent();
-                    lAnimationEvent.functionName = lEventInfo.functionName;
-                    lAnimationEvent.stringParameter = lEventInfo.stringParameter;
-                    lAnimationEvent.time = lEventInfo.time;
-                    lAnimationState.clip.AddEvent(lAnimationEvent);
+                    //创建事件
+                    foreach (unityAniEventInfo lEventInfo in lStateConfigInfo.events)
+                    {
+                        AnimationEvent lAnimationEvent = new AnimationEvent();
+                        lAnimationEvent.functionName = lEventInfo.functionName;
+                        lAnimationEvent.stringParameter = lEventInfo.stringParameter;
+                        lAnimationEvent.time = lEventInfo.time;
+                        lAnimationClip.AddEvent(lAnimationEvent);
+                    }
+                    haveAddedEvent[lAnimationClip] = true;
+
                 }
+                //else
+                //{
+                //    Debug.Log("haveAddedEvent.ContainsKey(lAnimationClip)");
+                //}
             }
         }
     }

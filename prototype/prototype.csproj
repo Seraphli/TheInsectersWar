@@ -111,6 +111,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\tool\zzToolRuler.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAimTranformList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzFrequencyTimerClass.cs" />
@@ -137,6 +138,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Bullet.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BulletFollowAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\collisionLayer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\DeadZone.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerAim.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerHelper.cs" />
@@ -163,6 +165,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SoldierSkeleton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SonicWaveTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
@@ -177,12 +180,15 @@
      <None Include="Assets\Standard Assets\Camera Scripts\MouseOrbit.js" />
      <None Include="Assets\Standard Assets\Camera Scripts\SmoothFollow.js" />
      <None Include="Assets\Standard Assets\Camera Scripts\SmoothLookAt.js" />
+     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <Compile Include="Assets\Standard Assets\Scripts\ActivateTrigger.cs" />
      <Compile Include="Assets\Standard Assets\Scripts\CombineChildren.cs" />
      <None Include="Assets\Standard Assets\Scripts\DragRigidbody.js" />
      <None Include="Assets\Standard Assets\Scripts\FPSWalker.js" />
      <Compile Include="Assets\Standard Assets\Scripts\MeshCombineUtility.cs" />
      <None Include="Assets\Standard Assets\Scripts\TimedObjectDestructor.js" />
+     <Compile Include="Assets\Standard Assets\Water (Basic)\Sources\Scripts\WaterSimple.cs" />
+     <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
