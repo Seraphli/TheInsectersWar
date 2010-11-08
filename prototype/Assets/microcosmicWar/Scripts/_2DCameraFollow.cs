@@ -134,7 +134,7 @@ public class _2DCameraFollow : MonoBehaviour
                     translationx = tranFX(0.0f);
                     translationy = tranFY(0.0f);
                     if (TarTranNotEqual())
-                        transform.Translate(translationx, translationy, 0);
+                        transform.Translate(translationx, translationy, 0f);
                 }
                 //transform.position.y = Mathf.Lerp(transform.position.y, target.position.y, timeDamping);
                 //transform.position.x = Mathf.Lerp(transform.position.x, target.position.x, 1.74f);
@@ -144,7 +144,7 @@ public class _2DCameraFollow : MonoBehaviour
             else
             {
                 Vector3 lTargetPos = target.position;
-                lTargetPos.z = 0.0f;
+                lTargetPos.z = -5f;
                 transform.position = lTargetPos;
                 //transform.position.x = target.position.x;
                 //transform.position.y = target.position.y;

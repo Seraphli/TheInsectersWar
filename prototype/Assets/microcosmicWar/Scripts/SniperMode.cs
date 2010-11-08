@@ -30,10 +30,11 @@ public class SniperMode : MonoBehaviour
     private Transform targetTemp;
     //使用狙击的英雄
     private GameObject heroObject;
+    //smooth
+    private smooth smoothT;
 
     //贴图的起始x y坐标
-    private float textureX;
-    private float textureY;
+    private Vector3 vReticle;
     //用于贴图矩形大小
     private float rectWidth;
     private float rectHeight;
@@ -94,28 +95,17 @@ public class SniperMode : MonoBehaviour
             if (Input.GetButton("fire"))
             {
                 shoot();
+                //print("1");
             }
-            if (Input.GetButton("up"))
-            {
-                mainCamera.transform.Translate(0,0.1f,0);
-            }
-            else if (Input.GetButton("down"))
-            {
-                mainCamera.transform.Translate(0, -0.1f, 0);
-            }
-            else if (Input.GetButton("right"))
-            {
-                mainCamera.transform.Translate(0.1f, 0, 0);
-            }
-            else if (Input.GetButton("left"))
-            {
-                mainCamera.transform.Translate(-0.1f, 0, 0);
-            }
-            
+            reticleSmooth();
         }
     }
 
-
+    private void reticleSmooth()
+    {
+        vReticle = smoothT.local;
+        mainCamera = smoothT.mainCamera;
+    }
 
     /// <summary>
     /// 切换(开启 关闭)狙击模式
@@ -131,7 +121,7 @@ public class SniperMode : MonoBehaviour
 
             heroObject = sHero;
             Vector3 v3 = new Vector3(heroObject.transform.position.x,heroObject.transform.position.y,-10f);
-            
+
 
 
             targetTemp = cameraFollow.target;
@@ -139,7 +129,27 @@ public class SniperMode : MonoBehaviour
 
             amplificationTime.enabled = true;
 
-            moveWindows(v3);
+            if (!smoothT)
+            {
+                smoothT=mainCamera.AddComponent<smooth>();
+            }
+
+
+            #warning 更改
+            rectHeight = Screen.height * 4;
+            rectWidth = rectHeight;
+
+            vReticle.y= (Screen.height - rectHeight) / 2;
+            vReticle.x = (Screen.width - rectWidth) / 2;
+
+            Vector3 vTemp = new Vector3();
+
+            vTemp = vReticle;
+
+            smoothT.target = vTemp;
+            smoothT.local = vReticle;
+
+            smoothT.mainCamera = mainCamera;
         }
 
     }
@@ -152,6 +162,8 @@ public class SniperMode : MonoBehaviour
         targetTemp = null;
 
         reduceTime.enabled = true;
+
+        
     }
 
 
@@ -178,19 +190,6 @@ public class SniperMode : MonoBehaviour
 
 
 
-    public void moveWindows(Vector3 v3)
-    {
-        mainCamera.transform.position = v3;
-
-
-        #warning 更改
-        rectHeight = Screen.height * 4;
-        rectWidth = rectHeight;
-
-        textureY = (Screen.height - rectHeight) / 2;
-        textureX = (Screen.width - rectWidth) / 2;
-    }
-
 
 
 
@@ -201,16 +200,17 @@ public class SniperMode : MonoBehaviour
     /// </summary>
     public void shoot()
     {
+        //print("2");
         RaycastHit[] hits;
         Vector3 vc3 = transform.position;
         vc3.z -= 50;
         hits = Physics.RaycastAll(vc3, transform.forward, 100.0F);
 
         ArrayList lifeLists = new ArrayList();
-
         if (hits.Length > 0)
         {
-            for (int i = 0; i < (hits.Length - 1); i++)
+            print(hits.Length);
+            for (int i = 0; i <= (hits.Length - 1); i++)
             {
                 Transform hit = hits[i].transform;
                 do
@@ -218,14 +218,15 @@ public class SniperMode : MonoBehaviour
                     Life lifeTemp = hit.gameObject.GetComponent<Life>();
                     if (lifeTemp)
                     {
-                        foreach (Life lList in lifeLists)
-                        {
-                            if (lList==lifeTemp)
+                            foreach (Life lList in lifeLists)
                             {
-                                lifeLists.Remove(lList);   
+                                if (lList == lifeTemp)
+                                {
+                                    lifeLists.Remove(lList);
+                                }
                             }
-                        }
                         lifeLists.Add(lifeTemp);
+                        lifeTemp = null;
                     }
                     hit = hit.parent;
                 }
@@ -236,6 +237,13 @@ public class SniperMode : MonoBehaviour
         {
             lList.injure(sniperObject.GetComponent<SniperEntrance>().getSniperData().damage);
         }
+        wait(3);
+        //print("3");
+    }
+
+    private IEnumerable wait(float second)
+    {
+        yield return new WaitForSeconds(second);
     }
 
     void OnGUI()
@@ -245,7 +253,7 @@ public class SniperMode : MonoBehaviour
         {
             //渲染狙击镜图片到GUI上
             GUI.DrawTexture(
-                new Rect(textureX, textureY,
+                new Rect(vReticle.x, vReticle.y,
                     rectWidth,rectHeight), reticle);
         }
     }

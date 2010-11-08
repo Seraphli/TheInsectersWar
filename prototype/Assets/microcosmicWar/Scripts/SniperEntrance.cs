@@ -12,7 +12,7 @@ public class SniperEntrance : MonoBehaviour
 
 	// Use this for initialization
 	void Start () {
-        sniperData.damage = 500;
+        sniperData.damage = 50;
 	}
 	
 	// Update is called once per frame

@@ -66,6 +66,7 @@ public class StartSniperMode : MonoBehaviour
             
             if (!lSniperMode.getSniperBool())
             {
+                
                 //狙击镜未开启
 
                 if (surveyBool())
@@ -105,6 +106,9 @@ public class StartSniperMode : MonoBehaviour
 
         IMainInput.actionCommandControl = lActionCommandControlTemp;
         lSniperMode.changeSniper();
+        Vector3 v3 = gameObject.transform.position;
+        v3.z = -10f;
+        mainCamera.transform.position = v3;
         //print()
 
     }
@@ -136,7 +140,7 @@ public class StartSniperMode : MonoBehaviour
         hits = Physics.RaycastAll(vc3, transform.forward, 100.0F);
         if (hits.Length > 0)
         {
-            for (int i = 0; i < (hits.Length - 1); i++)
+            for (int i = 0; i <=(hits.Length - 1); i++)
             {
                 //一直搜寻父物体 看是否狙击台 知道最父层物体
                 Transform hit = hits[i].transform;
@@ -144,7 +148,6 @@ public class StartSniperMode : MonoBehaviour
                 {
                     if (hit.tag == "sniper")
                     {
-
                         return hit.gameObject;
                     }
                     hit = hit.parent;
