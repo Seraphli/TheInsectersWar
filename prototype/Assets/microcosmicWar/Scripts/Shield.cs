@@ -8,9 +8,21 @@ public class Shield : MonoBehaviour
     {
 
         public float alpha = 0;
-        public float Timerbefore = 0;         //碰撞时的时间
-        public float countTimer;              //持续时间
-        public float changeSpeed;         //变化速度
+
+        /// <summary>
+        /// 碰撞时的时间
+        /// </summary>
+        public float allAppearTimePos = 0;     
+    
+        /// <summary>
+        /// 完全显示后 持续的时间
+        /// </summary>
+        public float allAppearContinueTime ;
+
+        /// <summary>
+        /// 变化速度
+        /// </summary>
+        public float changeSpeed; 
 
         public bool use = false;
         private Transform shield;
@@ -26,11 +38,13 @@ public class Shield : MonoBehaviour
         }
         public Color color;
 
-        //判断变化时间
+        /// <summary>
+        /// 判断变化时间
+        /// </summary>
         public void Change()
         {
             ShieldBasic lShield = this;
-            if (lShield.use == true && (float)(Time.time - Timerbefore) < countTimer)
+            if (lShield.use == true && (float)(Time.time - allAppearTimePos) < allAppearContinueTime)
             {
                 ShieldAppear();
             }
@@ -42,24 +56,29 @@ public class Shield : MonoBehaviour
             applyColor();
         }
 
-        //防护盾消失效果
+        /// <summary>
+        /// 防护盾消失效果
+        /// </summary>
         private void ShieldDispear()
         {
             ShieldBasic changeShield = this;
-            if ((float)(Time.time - Timerbefore) > countTimer)
+            if ((float)(Time.time - allAppearTimePos) > allAppearContinueTime)
             {
                 if (changeShield.alpha > 0)
                     changeShield.alpha = changeShield.alpha - changeSpeed * Time.deltaTime;
             }
         }
-        //防护盾显示效果
+
+        /// <summary>
+        /// 防护盾显示效果
+        /// </summary>
         private void ShieldAppear()
         {
             ShieldBasic changeShield = this;
             if (changeShield.alpha < 1)
             {
                 changeShield.alpha = changeShield.alpha + changeSpeed * Time.deltaTime;
-                Timerbefore = Time.time;
+                allAppearTimePos = Time.time;
             }
         }
 
@@ -70,7 +89,11 @@ public class Shield : MonoBehaviour
     }
 
     public GameObject shield;
-    public float countTimer = 10;          //持续时间
+
+    /// <summary>
+    /// 完全显示后 持续的时间
+    /// </summary>
+    public float allAppearContinueTime = 0.4f; 
     public float changeSpeed = 1;          //变化速度
     public int adversaryWeaponLayer = 11;   //阻挡的子弹的层
 
@@ -92,8 +115,8 @@ public class Shield : MonoBehaviour
         ShieldInstantiate();
         //SetColor();
 
-        shieldLeft.countTimer = countTimer;
-        shieldRight.countTimer = countTimer;
+        shieldLeft.allAppearContinueTime = allAppearContinueTime;
+        shieldRight.allAppearContinueTime = allAppearContinueTime;
 
         shieldLeft.changeSpeed = changeSpeed;
         shieldRight.changeSpeed = changeSpeed;
@@ -118,12 +141,12 @@ public class Shield : MonoBehaviour
             if (vector.x >= 0)
             {
                 shieldRight.use = true;
-                shieldRight.Timerbefore = Time.time;
+                shieldRight.allAppearTimePos = Time.time;
             }
             else if (vector.x <= 0)
             {
                 shieldLeft.use = true;
-                shieldLeft.Timerbefore = Time.time;
+                shieldLeft.allAppearTimePos = Time.time;
             }
         }
     }

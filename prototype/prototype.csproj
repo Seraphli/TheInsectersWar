@@ -90,6 +90,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\UI\MoneyUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzAnimationEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
