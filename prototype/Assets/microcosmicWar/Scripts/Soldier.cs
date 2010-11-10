@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SoldierSkeleton : MonoBehaviour
+public class Soldier : MonoBehaviour
 {
     public Animation characterAnimation;
 

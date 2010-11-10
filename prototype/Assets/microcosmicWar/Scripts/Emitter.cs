@@ -53,7 +53,7 @@ public class Emitter : MonoBehaviour
         if (zzCreatorUtility.isHost())
         {
             GameObject clone;
-            clone = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, transform.rotation, 0);
+            clone = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, new Quaternion(), 0);
             clone.layer = bulletLayer;
 
             //print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );

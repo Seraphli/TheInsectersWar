@@ -32,6 +32,12 @@ public class GuidedMissileLauncherAI : MonoBehaviour
         targetList = new Transform[maxRequired];
         //pathTimer = AddComponent<zzTimer>();
         emitter.setInitBulletFunc(initBullet);
+        defenseTowerAim.setAimIsActiveFunc(aimIsActive);
+    }
+
+    bool aimIsActive(Transform pTarget)
+    {
+        return collisionLayer.isAlive(pTarget);
     }
 
     ////过滤掉死掉的物体

@@ -83,6 +83,46 @@ public class zzUtilities
         return 0;
     }
 
+    /// <summary>
+    /// 在指定位置播放音源
+    /// </summary>
+    /// <param name="pAudioSource">复制此音源的设置</param>
+    /// <param name="position">声源位置</param>
+    /// <returns>新建的音源,将会在播放后销毁</returns>
+    public static AudioSource playAudioSourceAtPoint(AudioSource pAudioSource, Vector3 position)
+    {
+        return playAudioSourceAtPoint(pAudioSource, pAudioSource.clip, position);
+    }
+
+    /// <summary>
+    /// 用音源设置,在指定的位置 播放AudioClip
+    /// </summary>
+    /// <param name="pAudioSource"></param>
+    /// <param name="pAudioClip"></param>
+    /// <param name="position"></param>
+    /// <returns>新建的音源,将会在播放后销毁</returns>
+    public static AudioSource playAudioSourceAtPoint(AudioSource pAudioSource, AudioClip pAudioClip, Vector3 position)
+    {
+        GameObject lAudioSourceObject = new GameObject("One shot audio");
+        lAudioSourceObject.transform.position = position;
+        AudioSource source = lAudioSourceObject.AddComponent<AudioSource>();
+        source.clip = pAudioClip;
+        source.volume = pAudioSource.volume;
+        source.pitch = pAudioSource.pitch;
+        source.velocityUpdateMode = pAudioSource.velocityUpdateMode;
+        source.panLevel = pAudioSource.panLevel;
+        source.dopplerLevel = pAudioSource.dopplerLevel;
+        source.spread = pAudioSource.spread;
+        source.priority = pAudioSource.priority;
+        source.minDistance = pAudioSource.minDistance;
+        source.maxDistance = pAudioSource.maxDistance;
+        source.pan = pAudioSource.pan;
+        source.rolloffMode = pAudioSource.rolloffMode;
+        source.Play();
+        GameObject.Destroy(lAudioSourceObject, pAudioClip.length);
+        return source;
+    }
+
 
 }
 public class DataWrap

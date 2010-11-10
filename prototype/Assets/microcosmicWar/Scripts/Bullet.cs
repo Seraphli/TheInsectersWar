@@ -148,7 +148,9 @@ public class Bullet : MonoBehaviour
     public void setForwardVelocity(Vector3 pVelocity)
     {
         pVelocity.z = 0;
-        transform.rotation.SetFromToRotation(Vector3.right, pVelocity);
+        var lRotation = new Quaternion();
+        lRotation.SetFromToRotation(Vector3.right, pVelocity);
+        transform.rotation = lRotation;
         bulletRigidbody.velocity = pVelocity;
     }
 
