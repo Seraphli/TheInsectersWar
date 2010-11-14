@@ -95,6 +95,7 @@ public class StartSniperMode : MonoBehaviour
 
         lActionCommandControlTemp = IMainInput.actionCommandControl;
         IMainInput.actionCommandControl = null;
+        reset();
         lSniperMode.changeSniper(sniperObjectT,gameObject);
 
     }
@@ -105,12 +106,19 @@ public class StartSniperMode : MonoBehaviour
     {
 
         IMainInput.actionCommandControl = lActionCommandControlTemp;
+        reset();
         lSniperMode.changeSniper();
+        
+        //print()
+
+    }
+
+    //摄像机复位到英雄当前坐标
+    private void reset()
+    {
         Vector3 v3 = gameObject.transform.position;
         v3.z = -10f;
         mainCamera.transform.position = v3;
-        //print()
-
     }
 
     //检查是否处于狙击台 狙击台是否开启

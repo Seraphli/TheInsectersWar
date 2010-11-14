@@ -8,6 +8,8 @@ public class SniperMode : MonoBehaviour
 {
     //狙击镜贴图
     public Texture reticle;
+	//太近 提示贴图
+	public Texture near;
     //地图的一个重要对象 
     public GameObject SystemObject;
     //场景中的摄像机
@@ -32,6 +34,8 @@ public class SniperMode : MonoBehaviour
     private GameObject heroObject;
     //smooth
     private smooth smoothT;
+	//射击状态
+	private bool shootBool=true;
 
     //贴图的起始x y坐标
     private Vector3 vReticle;
@@ -44,9 +48,10 @@ public class SniperMode : MonoBehaviour
     private zzTimer amplificationTime;
     //缩小
     private zzTimer reduceTime;
-    //
+    //射击
+	private zzTimer shootTime;
 
-
+    private Ray ray;
 
     // Use this for initialization
     void Start()
@@ -80,12 +85,22 @@ public class SniperMode : MonoBehaviour
         reduceTime.setInterval(intervalNumber);
         reduceTime.setImpFunction(reduce);
         reduceTime.enabled = false;
-
-
-        
-        
-        
+		
+		shootTime = gameObject.AddComponent<zzTimer>();
+        shootTime.setInterval(sniperObject.GetComponent<SniperEntrance>().getSniperData().interval);
+        shootTime.setImpFunction(shootBoolFunction);
+        shootTime.enabled = false;
+		
+		
     }
+	
+	private void shootBoolFunction()
+	{
+		shootBool=true;
+		shootTime.enabled=false;
+	}
+	
+	
 
     // Update is called once per frame
     void Update()
@@ -99,6 +114,7 @@ public class SniperMode : MonoBehaviour
             }
             reticleSmooth();
         }
+        Debug.DrawLine(ray.origin, ray.origin);
     }
 
     private void reticleSmooth()
@@ -201,10 +217,23 @@ public class SniperMode : MonoBehaviour
     public void shoot()
     {
         //print("2");
+		if(!shootBool)
+		{
+			return ;
+		}
         RaycastHit[] hits;
-        Vector3 vc3 = transform.position;
-        vc3.z -= 50;
-        hits = Physics.RaycastAll(vc3, transform.forward, 100.0F);
+        Vector3 vc3=vReticle;
+        vc3.x +=rectWidth / 2;
+        vc3.y +=rectHeight/2;
+        vc3.z = 0;
+        ray = camera.ScreenPointToRay(vc3);
+
+
+
+        mainCamera.transform.position = ray.origin;
+
+        hits = Physics.RaycastAll(ray.origin, transform.forward, 100.0F);
+        print(ray.origin);
 
         ArrayList lifeLists = new ArrayList();
         if (hits.Length > 0)
@@ -237,15 +266,14 @@ public class SniperMode : MonoBehaviour
         {
             lList.injure(sniperObject.GetComponent<SniperEntrance>().getSniperData().damage);
         }
-        wait(3);
-        //print("3");
+		
+		shootBool=false;
+		shootTime.enabled=true;
     }
 
-    private IEnumerable wait(float second)
-    {
-        yield return new WaitForSeconds(second);
-    }
-
+	
+	
+	
     void OnGUI()
     {
         
@@ -255,7 +283,18 @@ public class SniperMode : MonoBehaviour
             GUI.DrawTexture(
                 new Rect(vReticle.x, vReticle.y,
                     rectWidth,rectHeight), reticle);
+			
+			Vector3 v3=mainCamera.transform.position;
+		v3.z=heroObject.transform.position.z;
+		float temp=Vector3.Distance(v3,heroObject.transform.position);
+		//if(temp<=50)
+		//{
+		//	GUI.DrawTexture(
+         //       new Rect(near.x, vReticle.y,
+         //           rectWidth,rectHeight), near);
+		//}
         }
+		
     }
 
 

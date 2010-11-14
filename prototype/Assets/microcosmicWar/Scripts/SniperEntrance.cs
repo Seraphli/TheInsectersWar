@@ -7,12 +7,16 @@ public class SniperEntrance : MonoBehaviour
     private bool status=true;
     //¾Ñ»÷µÄÊý¾Ý
     private SniperData sniperData;
+	
+	public  int damage =500;
+	public int interval=3;
 
 
 
 	// Use this for initialization
 	void Start () {
-        sniperData.damage = 50;
+        sniperData.damage = damage;
+		sniperData.interval =interval;
 	}
 	
 	// Update is called once per frame
