@@ -58,6 +58,7 @@ public class GameScene : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        Random.seed = System.Environment.TickCount;
         singletonInstance = this;
         //print("Awake");
         //if(Network.peerType==NetworkPeerType.Disconnected || Network.peerType==NetworkPeerType.Connecting )

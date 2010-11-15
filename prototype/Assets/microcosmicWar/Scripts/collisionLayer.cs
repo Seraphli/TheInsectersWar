@@ -80,14 +80,15 @@ public class collisionLayer : MonoBehaviour
 
     static void IgnoreCollisionBetween(int layer1Num, int layer2Num)
     {
-        //mIgnoreList[1 << layer1Num & 1 << layer2Num] = true;
-        if (layer1Num == layer2Num)
-        {
-            mLayersIgnoreList[layer1Num].Add(layer1Num);
-            return;
-        }
-        mLayersIgnoreList[layer1Num].Add(layer2Num);
-        mLayersIgnoreList[layer2Num].Add(layer1Num);
+        ////mIgnoreList[1 << layer1Num & 1 << layer2Num] = true;
+        //if (layer1Num == layer2Num)
+        //{
+        //    mLayersIgnoreList[layer1Num].Add(layer1Num);
+        //    return;
+        //}
+        //mLayersIgnoreList[layer1Num].Add(layer2Num);
+        //mLayersIgnoreList[layer2Num].Add(layer1Num);
+        Physics.IgnoreLayerCollision(layer1Num, layer2Num);
     }
 
     //目前只可用于deadObject
@@ -96,56 +97,60 @@ public class collisionLayer : MonoBehaviour
         //print("@@@@@@@@@@@@@@@@  updateCollider");
         addCollider(gameObject);
     }
-
     public static void addCollider(GameObject gameObject)
     {
-        //if(gameObject.layer==layers.beeMissile)
-        //	print("addCollider before:"+gameObject.name);
-        if (gameObject.collider && gameObject.layer > 7)
-        {
-            //if(gameObject.layer==layers.beeMissile)
-            //	print("addCollider :"+gameObject.name);
-            ArrayList ignoreList = mLayersIgnoreList[gameObject.layer];
-            //print(ignoreList);
-            foreach (int i in ignoreList)
-            {
-                //遍历忽略的层
-                //print("(int lOutIndex in ignoreList )"+gameObject.name);
-                ArrayList objectList = mLayersObjectList[i];
-                for (int a = objectList.Count - 1; a >= 0; a -= 1)
-                {
-                    //遍历此层物体
-                    //print("( int a = objectList.length - 1; a >= 0; a-=1 )");
-                    GameObject aGameObject = (GameObject)objectList[a];
-                    if (aGameObject && aGameObject.active && aGameObject != gameObject)
-                    {
-                        //print("Physics.IgnoreCollision "+gameObject.name+" "+objectList[a].name);
-                        Physics.IgnoreCollision(gameObject.collider, aGameObject.collider);
-                    }
-                    else
-                    {
-                        //Debug.LogWarning("objectList.RemoveAt(a)@@@@@@@@@@@@@@@@");
-                        //objectList.RemoveAt(a);
-                        //objectList[a]=objectList.Pop();
-                        zzUtilities.quickRemoveArrayElement(objectList, a);
-                    }
-                }
-            }
-            //print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
-            checkAndClearStep(mLayersObjectList[gameObject.layer]);
-            //print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
-            mLayersObjectList[gameObject.layer].Add(gameObject);
-            //print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
 
-        }
-
-        //遍历子物体
-        foreach (Transform child in gameObject.transform)
-        {
-            //print(child.name);
-            addCollider(child.gameObject);
-        }
     }
+
+    //public static void addCollider(GameObject gameObject)
+    //{
+    //    //if(gameObject.layer==layers.beeMissile)
+    //    //	print("addCollider before:"+gameObject.name);
+    //    if (gameObject.collider && gameObject.layer > 7)
+    //    {
+    //        //if(gameObject.layer==layers.beeMissile)
+    //        //	print("addCollider :"+gameObject.name);
+    //        ArrayList ignoreList = mLayersIgnoreList[gameObject.layer];
+    //        //print(ignoreList);
+    //        foreach (int i in ignoreList)
+    //        {
+    //            //遍历忽略的层
+    //            //print("(int lOutIndex in ignoreList )"+gameObject.name);
+    //            ArrayList objectList = mLayersObjectList[i];
+    //            for (int a = objectList.Count - 1; a >= 0; a -= 1)
+    //            {
+    //                //遍历此层物体
+    //                //print("( int a = objectList.length - 1; a >= 0; a-=1 )");
+    //                GameObject aGameObject = (GameObject)objectList[a];
+    //                if (aGameObject && aGameObject.active && aGameObject != gameObject)
+    //                {
+    //                    //print("Physics.IgnoreCollision "+gameObject.name+" "+objectList[a].name);
+    //                    Physics.IgnoreCollision(gameObject.collider, aGameObject.collider);
+    //                }
+    //                else
+    //                {
+    //                    //Debug.LogWarning("objectList.RemoveAt(a)@@@@@@@@@@@@@@@@");
+    //                    //objectList.RemoveAt(a);
+    //                    //objectList[a]=objectList.Pop();
+    //                    zzUtilities.quickRemoveArrayElement(objectList, a);
+    //                }
+    //            }
+    //        }
+    //        //print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
+    //        checkAndClearStep(mLayersObjectList[gameObject.layer]);
+    //        //print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
+    //        mLayersObjectList[gameObject.layer].Add(gameObject);
+    //        //print(LayerMask.LayerToName(gameObject.layer)+mLayersObjectList[gameObject.layer].length);
+
+    //    }
+
+    //    //遍历子物体
+    //    foreach (Transform child in gameObject.transform)
+    //    {
+    //        //print(child.name);
+    //        addCollider(child.gameObject);
+    //    }
+    //}
 
     //从物体的所属层来判断是否存活
     public static bool isAlive(Transform pOwn)
@@ -173,7 +178,7 @@ public class collisionLayer : MonoBehaviour
     void Awake()
     {
         //print("Awake");
-        initialize();
+        //initialize();
 
         //print("layers.pismireMissile:"+layers.pismireMissile);
         //print("layers.beeMissile:"+layers.beeMissile);
@@ -217,6 +222,8 @@ public class collisionLayer : MonoBehaviour
 
         IgnoreCollisionBetween(layers.bee, layers.bee);
         IgnoreCollisionBetween(layers.pismire, layers.pismire);
+
+        IgnoreCollisionBetween(layers.pismire, layers.bee);
 
         for (int i = 8; i < 32; i += 1)
         {

@@ -5,6 +5,10 @@ using System.Collections;
 //[CustomEditor(typeof(GameObject))]
 class zzGobalTransformWindow : EditorWindow
 {
+    Transform tempObject1;
+    Transform tempObject2;
+    Transform tempObject3;
+
     [MenuItem("Window/Gobal Transform")]
     static void Init()
     {
@@ -25,6 +29,9 @@ class zzGobalTransformWindow : EditorWindow
             EditorGUILayout.EndVertical();
 
         }
+        tempObject1 = (Transform)EditorGUILayout.ObjectField(tempObject1, typeof(Transform));
+        tempObject2 = (Transform)EditorGUILayout.ObjectField(tempObject2, typeof(Transform));
+        tempObject3 = (Transform)EditorGUILayout.ObjectField(tempObject3, typeof(Transform));
     }
 
     void OnInspectorUpdate()

@@ -124,6 +124,27 @@ public class zzUtilities
     }
 
 
+    /// <summary>
+    /// 画一个从pFrom到pTo的箭头
+    /// </summary>
+    /// <param name="pFrom"></param>
+    /// <param name="pTo"></param>
+    public static void GizmosArrow(Vector3 pFrom, Vector3 pTo)
+    {
+        //箭头心在原点,朝Vector3.right 的情况
+        //Vector3 point1 = new Vector3(-1.0f,1.0f,0.0f);
+        //Vector3 point2 = new Vector3(-1.0f,-1.0f,0.0f);
+
+        //Quaternion rot = new Quaternion();
+        //rot.SetFromToRotation(Vector3.right, pTo - pFrom);
+
+        Gizmos.DrawLine(pFrom, pTo);
+        Gizmos.DrawSphere(pTo, 0.3f);
+        //Gizmos.DrawLine(rot * point1, pTo);
+        //Gizmos.DrawLine(rot * point2, pTo);
+    }
+
+
 }
 public class DataWrap
 {

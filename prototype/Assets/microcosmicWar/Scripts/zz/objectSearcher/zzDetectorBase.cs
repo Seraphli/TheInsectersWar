@@ -22,7 +22,50 @@ public abstract class zzDetectorBase : MonoBehaviour
         return detect(pMaxRequired, pLayerMask, null);
     }
 
-    public abstract Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc);
+    //public abstract Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc);
+
+    public virtual RaycastHit[] _impDetect(LayerMask pLayerMask)
+    {
+        Debug.LogError("public virtual RaycastHit[] _impDetect()");
+        return null;
+    }
+
+    public virtual Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc)
+    {
+        RaycastHit[] lHits;
+        //lHits = Physics.SphereCastAll(getOrigin(), radius, getDirection(), Mathf.Infinity, pLayerMask);
+        lHits = _impDetect(pLayerMask);
+        int lOutNum;
+        lOutNum = Mathf.Min(pMaxRequired, lHits.Length);
+        Collider[] lOut = new Collider[lOutNum];
+
+
+        //执行探测过滤,未测试
+        if (pNeedDetectedFunc != null)
+        {
+            int lHitsIndex = 0;
+            int lOutIndex = 0;
+            for (; lOutIndex < lOutNum && lHitsIndex < lHits.Length; )
+            {
+                if (pNeedDetectedFunc(lHits[lOutIndex].collider))
+                {
+                    lOut[lOutIndex] = lHits[lOutIndex].collider;
+                    ++lOutIndex;
+                }
+                ++lHitsIndex;
+            }
+
+        }
+        else
+        {
+            for (int lOutIndex = 0; lOutIndex < lOutNum; ++lOutIndex)
+            {
+                lOut[lOutIndex] = lHits[lOutIndex].collider;
+            }
+
+        }
+        return lOut;
+    }
 
     public virtual int getPriority()
     {

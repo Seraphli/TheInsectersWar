@@ -61,25 +61,32 @@ public class SoldierAI : MonoBehaviour
     //目标是否在可追赶的范围内
     public bool needPursuit(Transform pAim)
     {
-        if((pAim.position - transform.position).sqrMagnitude<225.0f)
+        if((pAim.position - transform.position).sqrMagnitude<400.0f)
             return true;
         return false;
     }
 
     public Transform getNowAimTransform()
     {
-        Transform lOut = runtimeAim.getAim();
+        Transform lOut = runtimeAim.getAim(transform);
+        pathTimer.setInterval(2.0f);
 
         //获取没有超出追赶范围的目标
         while( lOut && (!needPursuit(lOut)) )
         {
+            //删除超出范围的
             runtimeAim.removeNowAim();
-            lOut = runtimeAim.getAim();
+            lOut = runtimeAim.getAim(transform);
         }
 
         if(!lOut)
         {
-            lOut = fixedAim.getAim();
+            lOut = fixedAim.getAim(transform);
+        }
+        else if (lOut.GetComponent<Hero>() != null)
+        {
+            //如果遇到英雄,则减小寻路间隔
+            pathTimer.setInterval(0.5f);
         }
         return lOut;
     }
@@ -106,8 +113,24 @@ public class SoldierAI : MonoBehaviour
 
     void Start()
     {
-        fixedAim.initAimList();
-        runtimeAim.initAimList();
+
+        //寻路的计时器
+        pathTimer = gameObject.AddComponent<zzCoroutineTimer>();
+        pathTimer.setInterval(2.0f);
+        pathTimer.setImpFunction(pathUpdate);
+
+        //行为更新的计时器
+        actionCommandTimer = gameObject.AddComponent<zzTimer>();
+        actionCommandTimer.setInterval(1.0f / frequencyOfImplement);
+        actionCommandTimer.setImpFunction(actionCommandUpdate);
+
+        //广范围探测敌人的计时器
+        zzCoroutineTimer lEnemyDetectorTimer = gameObject.AddComponent<zzCoroutineTimer>();
+        lEnemyDetectorTimer.setInterval(0.5f);
+        lEnemyDetectorTimer.setImpFunction(detectEnemy);
+
+        //fixedAim.initAimList();
+        //runtimeAim.initAimList();
         //initAimList();
         //客户端的AI 在 SoldierNetView 中去除
         //if(!zzCreatorUtility.isHost())
@@ -129,8 +152,8 @@ public class SoldierAI : MonoBehaviour
             actionCommandControl = gameObject.GetComponentInChildren<ActionCommandControl>();
         //fequencyTimer.setImpFunction(AiUpdate);
 
-        fireDistanceMin = Random.Range(fireDistanceMinRandMin, fireDistanceMinRandMax);
-        fireDistanceMax = Random.Range(fireDistanceMaxRandMin, fireDistanceMaxRandMax);
+        fireDistanceMin = UnityEngine.Random.Range(fireDistanceMinRandMin, fireDistanceMinRandMax);
+        fireDistanceMax = UnityEngine.Random.Range(fireDistanceMaxRandMin, fireDistanceMaxRandMax);
 
         //产生第一个命令
         if (enable)
@@ -139,22 +162,18 @@ public class SoldierAI : MonoBehaviour
             pathUpdate();
             actionCommandUpdate();
         }
-        pathTimer = gameObject.AddComponent<zzCoroutineTimer>();
-        pathTimer.setInterval(2.0f);
-        pathTimer.setImpFunction(pathUpdate);
-
-        actionCommandTimer = gameObject.AddComponent<zzTimer>();
-        actionCommandTimer.setInterval(1.0f / frequencyOfImplement);
-        actionCommandTimer.setImpFunction(actionCommandUpdate);
     }
 
-    public void AddFinalAim(Transform pFinalAim)
+    //enum AimType = zzAimTranformList.AimType;
+
+    public void AddFinalAim(Transform pFinalAim, zzAimTranformList.AimType pAimType)
     {
         //finalAim = pFinalAim;
         //pAimPos = new Vector3();
         //if (pFinalAim)
         //    pAimPos = finalAim.position;
-        fixedAim.checkAndAddAim(pFinalAim);
+        //fixedAim.checkAndAddAim(pFinalAim, pAimType);
+        fixedAim.checkAndAddAim(new zzAimTranformList.AimInfo(pFinalAim, pAimType));
     }
 
     //public void SetSoldier(Soldier pSoldier)
@@ -171,6 +190,27 @@ public class SoldierAI : MonoBehaviour
 
     //判断前进的方向上是否有可站立的地方
     public zzDetectorBase forwardBoardDetector;
+
+    public zzDetectorBase enemyDetector;
+
+    void detectEnemy()
+    {
+        if(runtimeAim.getAim(transform)==null)
+        {
+            Collider[] lEnemyes = enemyDetector.detect(1, adversaryLayerValue);
+            if (lEnemyes.Length > 0)
+            {
+                runtimeAim.checkAndAddAim(lEnemyes[0].transform);
+                //print(adversaryLayerValue);
+                //print("detectEnemy:" + lEnemyes[0].transform.name);
+                //if (lEnemyes[0].transform.parent)
+                //    print("detectEnemy:" + lEnemyes[0].transform.parent.name);
+                //print("Layer:" + lEnemyes[0].gameObject.layer);
+                //print("LayerValue:" + (1 << lEnemyes[0].gameObject.layer));
+                pathUpdate();
+            }
+        }
+    }
 
     //public UnitActionCommand moveToAim(Transform pAim)
     public UnitActionCommand moveToAim(Vector3 pAimPos)
@@ -312,7 +352,7 @@ public class SoldierAI : MonoBehaviour
         else
         {
             //haveAim = false;
-            aimPosition = newPoints[0];
+            aimPosition = (newPoints[0] + getNowAimTransform().position)/2.0f;
             //print(newPoints[0]);
 
         }

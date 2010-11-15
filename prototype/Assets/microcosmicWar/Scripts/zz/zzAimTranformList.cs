@@ -9,27 +9,122 @@ public class zzAimTranformList
     //目标列表,用于存储与获取目标,自动剔除已销毁的目标
 
     //用来初始化目标列表.索引小的 先被追踪
-    public Transform[] aims = new Transform[] { };
+    //public Transform[] aims = new Transform[] { };
+
+    public enum AimType
+    {
+        aliveAim,
+        checkPoint,
+    }
+
+    [System.Serializable]
+    public class AimInfo
+    {
+        public AimInfo(Transform pAimTransform, AimType pAimType)
+        {
+            aimType = pAimType;
+            aimTransform = pAimTransform;
+        }
+
+        public AimType aimType = AimType.aliveAim;
+        public Transform aimTransform = null;
+    }
+
+    const float checkPointRadius = 1.0f;
+    const float sqrCheckPointRadius = 1.0f;
 
     //目标列表
-    List<Transform> mAimList = new List<Transform>();
+    List<AimInfo> mAimList = new List<AimInfo>();
 
-    Transform popAim()
+    //for debug
+    public AimInfo[] aimDebugInfo;
+    void refreshAimDebugInfo()
     {
-        Transform lOut = null;
+        aimDebugInfo = mAimList.ToArray();
+    }
+
+    /// <summary>
+    /// 检测目标点是否可用,可用则返回真
+    /// </summary>
+    /// <param name="pAimInfo">目标点信息</param>
+    /// <returns></returns>
+    bool activeCheck(AimInfo pAimInfo)
+    {
+        if (pAimInfo!=null)
+        {
+            switch(pAimInfo.aimType)
+            {
+                case AimType.checkPoint:
+                    return true;
+                    //break;
+
+                case AimType.aliveAim:
+                    //Debug.Log(collisionLayer.isAliveFullCheck(pAimInfo.aimTransform));
+                    return collisionLayer.isAliveFullCheck(pAimInfo.aimTransform);
+                    //break;
+
+                //default: 
+                //    Debug.LogError("activeCheck(AimInfo pAimInfo)"); 
+                    //break;
+            }
+            Debug.LogError("activeCheck(AimInfo pAimInfo)");
+
+        }
+        //Debug.Log("activeCheck(AimInfo pAimInfo) return false");
+        return false;
+    }
+
+    /// <summary>
+    /// 检测目标点是否可用,可用则返回真
+    /// </summary>
+    /// <param name="pAimInfo">目标点信息</param>
+    /// <param name="pSearcher">寻找者的位置</param>
+    /// <returns></returns>
+    bool activeCheck(AimInfo pAimInfo,Transform pSearcher)
+    {
+        //Debug.Log(pAimInfo==null?"null":pAimInfo.ToString());
+        if (pAimInfo != null)
+        {
+            switch (pAimInfo.aimType)
+            {
+                case AimType.checkPoint:
+                    Vector3 lLengthVector
+                        = pAimInfo.aimTransform.position - pSearcher.position;
+
+                    //Debug.Log("" + lLengthVector.sqrMagnitude + ">" + sqrCheckPointRadius);
+                    return lLengthVector.sqrMagnitude > sqrCheckPointRadius;
+
+                case AimType.aliveAim:
+                    //Debug.Log(AimType.aliveAim);
+                    return collisionLayer.isAliveFullCheck(pAimInfo.aimTransform);
+
+            }
+            Debug.LogError("activeCheck(AimInfo pAimInfo,Transform pSearcher)");
+        }
+        //Debug.Log("pAimInfo==null");
+        return false; 
+
+    }
+
+    AimInfo popAim()
+    {
+        AimInfo lOut = null;
 
         //获取排在最后一个的 可用的 Transform
-        while ((!lOut) && mAimList.Count > 0)
+        //todo:可用性检测
+        while ((lOut==null) && mAimList.Count > 0)
         {
             lOut = mAimList[mAimList.Count - 1];
             mAimList.RemoveAt(mAimList.Count - 1);
         }
+
+        refreshAimDebugInfo();
         return lOut;
     }
 
     //现在锁定的目标
     [SerializeField]
-    Transform nowAim;
+    AimInfo nowAim;
 
     //移除当前的目标
     public void removeNowAim()
@@ -37,33 +132,51 @@ public class zzAimTranformList
         nowAim = popAim();
     }
 
-    public Transform getAim()
+    /// <summary>
+    /// 得到目标的位移
+    /// </summary>
+    /// <param name="pSearcher">搜寻者自身的位移</param>
+    /// <returns></returns>
+    public Transform getAim(Transform pSearcher)
     {
-        if (!collisionLayer.isAliveFullCheck(nowAim) && (mAimList.Count>0) )
+        //if (!collisionLayer.isAliveFullCheck(nowAim) && (mAimList.Count > 0))
+        //Debug.Log(activeCheck(nowAim, pSearcher));
+        //Debug.Log("mAimList.Count" + mAimList.Count);
+        if (!activeCheck(nowAim, pSearcher) && (mAimList.Count > 0))
             nowAim = popAim();
-        return nowAim;
+        return nowAim == null? null: nowAim.aimTransform;
     }
 
-    //增加目标,并设置为当前目标
+    //增加目标,并设置为当前目标,类型为AimType.aliveAim
     public void checkAndAddAim(Transform pAim)
+    {
+        checkAndAddAim(new AimInfo(pAim, AimType.aliveAim));
+    }
+
+    public void checkAndAddAim(AimInfo pAim)
     {
         //Debug.Log(pAim);
         //Debug.Log(nowAim);
         //Debug.Log(pAim && (nowAim != pAim));
-        if (collisionLayer.isAliveFullCheck(pAim) && (nowAim != pAim))
+        //if (collisionLayer.isAliveFullCheck(pAim) && (nowAim != pAim))
+        //Debug.Log(pAim.aimTransform.name);
+        //Debug.Log("added before" + mAimList.Count);
+        if (activeCheck(pAim) && (nowAim != pAim))
         {
-            if (nowAim)
+            if (activeCheck(nowAim))
                 mAimList.Add(nowAim);
             nowAim = pAim;
         }
+        refreshAimDebugInfo();
+        //Debug.Log("added after" + mAimList.Count);
     }
 
-    public void initAimList()
-    {
-        mAimList.Clear();
-        for (int i = aims.Length - 1; i >= 0; --i)
-        {
-            checkAndAddAim(aims[i]);
-        }
-    }
+    //public void initAimList()
+    //{
+    //    mAimList.Clear();
+    //    for (int i = aims.Length - 1; i >= 0; --i)
+    //    {
+    //        checkAndAddAim(aims[i]);
+    //    }
+    //}
 }

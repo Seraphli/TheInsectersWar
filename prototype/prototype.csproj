@@ -18,7 +18,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_3_0_0;UNITY_3_0;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_1_0;UNITY_3_1;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -35,16 +35,16 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>E:/Program Files/Unity3/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>E:/Program Files/Unity3/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
 	<Reference Include="Boo.Lang">
-	  <HintPath>E:/Program Files/Unity3/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityScript">
-	  <HintPath>E:/Program Files/Unity3/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +107,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
@@ -163,6 +164,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\playSoundWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Shield.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\smooth.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SniperData.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SniperEntrance.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SniperMode.cs" />
