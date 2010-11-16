@@ -94,18 +94,19 @@ public class SoldierFactory : MonoBehaviour
 
             //foreach (CheckPointPath lCheckPointPath in checkPointPaths)
             //{
-            CheckPointPath lCheckPointPath = checkPointPathWeightList[Random.Range(0, checkPointPathWeightList.Length)];
             soldierAI.AddFinalAim(finalAim, zzAimTranformList.AimType.aliveAim);
-                //if (lCheckPointPath.CheckPointList.Length > 0)
-                //{
-            for (int i = lCheckPointPath.CheckPointList.Length-1; i>=0; --i)
+
+            if(checkPointPathWeightList.Length>0)
             {
-                Transform lNowPoint = lCheckPointPath.CheckPointList[i];
-                soldierAI.AddFinalAim(lNowPoint, zzAimTranformList.AimType.checkPoint);
+                CheckPointPath lCheckPointPath = checkPointPathWeightList[Random.Range(0, checkPointPathWeightList.Length)];
+
+                for (int i = lCheckPointPath.CheckPointList.Length - 1; i >= 0; --i)
+                {
+                    Transform lNowPoint = lCheckPointPath.CheckPointList[i];
+                    soldierAI.AddFinalAim(lNowPoint, zzAimTranformList.AimType.checkPoint);
+                }
+
             }
-                //    Gizmos.DrawLine(lLastPoint.position, finalAim.position);
-                //}
-            //}
 
 
             soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
