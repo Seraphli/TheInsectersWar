@@ -86,17 +86,18 @@ public class SniperMode : MonoBehaviour
         reduceTime.setImpFunction(reduce);
         reduceTime.enabled = false;
 		
-		shootTime = gameObject.AddComponent<zzTimer>();
-        shootTime.setInterval(sniperObject.GetComponent<SniperEntrance>().getSniperData().interval);
-        shootTime.setImpFunction(shootBoolFunction);
-        shootTime.enabled = false;
 		
+		//
+		
+		StartSupply  StartSupplytemp=SystemObject.GetComponent<StartSupply>();
+		StartSupplytemp.startSupplyPlane(5.0f,160.0f,200.0f,20.0f);
 		
     }
 	
 	private void shootBoolFunction()
 	{
 		shootBool=true;
+		print("111111111");
 		shootTime.enabled=false;
 	}
 	
@@ -114,7 +115,7 @@ public class SniperMode : MonoBehaviour
             }
             reticleSmooth();
         }
-        Debug.DrawLine(ray.origin, ray.origin);
+        //Debug.DrawLine(ray.origin, ray.origin);
     }
 
     private void reticleSmooth()
@@ -132,6 +133,7 @@ public class SniperMode : MonoBehaviour
     {
         if (!sniperBool)
         {
+			print("开");
             sniperBool = true;
             sniperObject = sSniper;
 
@@ -166,6 +168,12 @@ public class SniperMode : MonoBehaviour
             smoothT.local = vReticle;
 
             smoothT.mainCamera = mainCamera;
+			
+			
+			shootTime = gameObject.AddComponent<zzTimer>();
+			shootTime.setInterval(sniperObject.GetComponent<SniperEntrance>().getSniperData().interval);
+			shootTime.setImpFunction(shootBoolFunction);
+			shootTime.enabled = false;
         }
 
     }
@@ -176,7 +184,9 @@ public class SniperMode : MonoBehaviour
 
         cameraFollow.target = targetTemp;
         targetTemp = null;
-
+		
+		
+		print(sniperBool);
         reduceTime.enabled = true;
 
         
@@ -224,13 +234,14 @@ public class SniperMode : MonoBehaviour
         RaycastHit[] hits;
         Vector3 vc3=vReticle;
         vc3.x +=rectWidth / 2;
-        vc3.y +=rectHeight/2;
+		//print(vc3.y);
+        vc3.y =Screen.height-rectHeight/2-vc3.y;
         vc3.z = 0;
         ray = camera.ScreenPointToRay(vc3);
 
 
 
-        mainCamera.transform.position = ray.origin;
+       // mainCamera.transform.position = ray.origin;
 
         hits = Physics.RaycastAll(ray.origin, transform.forward, 100.0F);
         print(ray.origin);
@@ -267,13 +278,14 @@ public class SniperMode : MonoBehaviour
             lList.injure(sniperObject.GetComponent<SniperEntrance>().getSniperData().damage);
         }
 		
+		
 		shootBool=false;
 		shootTime.enabled=true;
     }
 
 	
 	
-	
+
     void OnGUI()
     {
         
@@ -316,6 +328,7 @@ public class SniperMode : MonoBehaviour
     //缩小物体
     private void reduce()
     {
+		print(sniperBool);
         if (cameraT.orthographicSize <= 8 && sniperBool == false)
         {
             cameraT.orthographicSize += distance;

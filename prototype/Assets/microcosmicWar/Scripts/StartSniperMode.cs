@@ -71,6 +71,7 @@ public class StartSniperMode : MonoBehaviour
 
                 if (surveyBool())
                 {
+					//print("0");
                     startSniper();
                 }
             }
@@ -80,6 +81,7 @@ public class StartSniperMode : MonoBehaviour
 
                 if (raycastGameObject()&&lSniperMode.checkSniperObject(sniperObjectT))
                 {
+					//print("1");
                     closeSniper();
                 }
             }
@@ -92,6 +94,7 @@ public class StartSniperMode : MonoBehaviour
     //¿ªÆô¾Ñ»÷
     private void startSniper()
     {
+		print("KAI");
 
         lActionCommandControlTemp = IMainInput.actionCommandControl;
         IMainInput.actionCommandControl = null;
