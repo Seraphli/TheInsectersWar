@@ -1,0 +1,7 @@
+fileFormatVersion: 1
+guid: 94f72b1ae1638254ab1fb593ba9e2da9
+MonoImporter:
+  importerVersion: 1
+  defaultReferences:
+    impactParticle: {fileID: 100004, guid: 24ffe9ddc180fb44e8607c2cd28c74d7, type: 2}
+    waterImpactSound: {fileID: 8300000, guid: cd1d9000e27d7304bae38b9e98d5398d, type: 1}
