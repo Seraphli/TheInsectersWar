@@ -35,16 +35,16 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
 	<Reference Include="Boo.Lang">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityScript">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +123,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemBagControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
@@ -132,11 +133,13 @@
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGunAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AnimationListeners.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BehaviourList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Board.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BoardDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BodyActionClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Bullet.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BulletFaceVelocity.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BulletFollowAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\collisionLayer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DeadZone.cs" />
@@ -148,6 +151,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\EmitterContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\FireSpark.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GameScene.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Grenade.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncher.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherHelp.cs" />
@@ -177,6 +181,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\StartSupply.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2DCameraFollow.cs" />
+     <None Include="Assets\microcosmicWar\t\Board.js" />
      <Compile Include="Assets\microcosmicWar\Water\Scripts\AutoDestroy.cs" />
      <None Include="Assets\microcosmicWar\Water\Scripts\UVScroller_water.js" />
      <Compile Include="Assets\microcosmicWar\Water\Scripts\WaterInteractions.cs" />

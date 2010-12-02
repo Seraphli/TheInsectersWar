@@ -1,0 +1,219 @@
+fileFormatVersion: 1
+guid: 890242bf1e5666549935505c9e44dfdb
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      dead:
+        firstFrame: 0
+        lastFrame: 34
+        loop: 0
+        wrapMode: 1
+  nodeInfo:
+    Box16:
+    - 100000
+    - 400000
+    - 3300000
+    - 2300000
+    Box13:
+    - 100002
+    - 400002
+    - 3300002
+    - 2300002
+    Box11:
+    - 100004
+    - 400004
+    - 3300004
+    - 2300004
+    Bone23:
+    - 100006
+    - 400006
+    Bone22:
+    - 100008
+    - 400008
+    Bone21:
+    - 100010
+    - 400010
+    Bone20:
+    - 100012
+    - 400012
+    Bone19:
+    - 100014
+    - 400014
+    Box02:
+    - 100016
+    - 400016
+    - 3300006
+    - 2300006
+    Box03:
+    - 100018
+    - 400018
+    - 3300008
+    - 2300008
+    Box04:
+    - 100020
+    - 400020
+    - 3300010
+    - 2300010
+    Bone18:
+    - 100022
+    - 400022
+    Bone17:
+    - 100024
+    - 400024
+    Bone16:
+    - 100026
+    - 400026
+    Bone15:
+    - 100028
+    - 400028
+    Bone14:
+    - 100030
+    - 400030
+    Box09:
+    - 100032
+    - 400032
+    - 3300012
+    - 2300012
+    Box05:
+    - 100034
+    - 400034
+    - 3300014
+    - 2300014
+    Box10:
+    - 100036
+    - 400036
+    - 3300016
+    - 2300016
+    Box07:
+    - 100038
+    - 400038
+    - 3300018
+    - 2300018
+    Bone13:
+    - 100040
+    - 400040
+    Bone12:
+    - 100042
+    - 400042
+    Bone11:
+    - 100044
+    - 400044
+    Bone10:
+    - 100046
+    - 400046
+    Box15:
+    - 100048
+    - 400048
+    - 3300020
+    - 2300020
+    Box12:
+    - 100050
+    - 400050
+    - 3300022
+    - 2300022
+    Bone09:
+    - 100052
+    - 400052
+    Bone08:
+    - 100054
+    - 400054
+    Bone07:
+    - 100056
+    - 400056
+    Bone06:
+    - 100058
+    - 400058
+    Bone05:
+    - 100060
+    - 400060
+    Box08:
+    - 100062
+    - 400062
+    - 3300024
+    - 2300024
+    Bone04:
+    - 100064
+    - 400064
+    Bone03:
+    - 100066
+    - 400066
+    Bone02:
+    - 100068
+    - 400068
+    Bone01:
+    - 100070
+    - 400070
+    IK Chain03:
+    - 100072
+    - 400072
+    IK Chain04:
+    - 100074
+    - 400074
+    IK Chain02:
+    - 100076
+    - 400076
+    IK Chain01:
+    - 100078
+    - 400078
+    Plane01:
+    - 100080
+    - 400080
+    - 3300026
+    - 2300026
+    Line01:
+    - 100082
+    - 400082
+    Box14:
+    - 100084
+    - 400084
+    - 3300028
+    - 2300028
+    Box06:
+    - 100086
+    - 400086
+    - 3300030
+    - 2300030
+    //RootNode:
+    - 100088
+    - 400088
+    - 11100000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Box06
+    4300002: Box14
+    4300004: Plane01
+    4300006: Box08
+    4300008: Box12
+    4300010: Box15
+    4300012: Box07
+    4300014: Box10
+    4300016: Box05
+    4300018: Box09
+    4300020: Box04
+    4300022: Box03
+    4300024: Box02
+    4300026: Box11
+    4300028: Box13
+    4300030: Box16
+    7400000: Take 001 //// shrapnelPismire@dead
+    7400002: dead //// shrapnelPismire@dead

@@ -1,0 +1,231 @@
+fileFormatVersion: 1
+guid: 111312d755c0b054fb1fa642123b285b
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      run:
+        firstFrame: 0
+        lastFrame: 24
+        loop: 0
+        wrapMode: 2
+      fire:
+        firstFrame: 25
+        lastFrame: 108
+        loop: 0
+        wrapMode: 2
+      stand:
+        firstFrame: 111
+        lastFrame: 120
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Box16:
+    - 100002
+    - 400002
+    - 3300000
+    - 2300000
+    Box13:
+    - 100004
+    - 400004
+    - 3300002
+    - 2300002
+    Box11:
+    - 100006
+    - 400006
+    - 3300004
+    - 2300004
+    Bone23:
+    - 100008
+    - 400008
+    Bone22:
+    - 100010
+    - 400010
+    Bone21:
+    - 100012
+    - 400012
+    Bone20:
+    - 100014
+    - 400014
+    Bone19:
+    - 100016
+    - 400016
+    Box02:
+    - 100018
+    - 400018
+    - 3300006
+    - 2300006
+    Box03:
+    - 100020
+    - 400020
+    - 3300008
+    - 2300008
+    Box04:
+    - 100022
+    - 400022
+    - 3300010
+    - 2300010
+    Bone18:
+    - 100024
+    - 400024
+    Bone17:
+    - 100026
+    - 400026
+    Bone16:
+    - 100028
+    - 400028
+    Bone15:
+    - 100030
+    - 400030
+    Bone14:
+    - 100032
+    - 400032
+    Box09:
+    - 100034
+    - 400034
+    - 3300012
+    - 2300012
+    Box05:
+    - 100036
+    - 400036
+    - 3300014
+    - 2300014
+    Box10:
+    - 100038
+    - 400038
+    - 3300016
+    - 2300016
+    Box07:
+    - 100040
+    - 400040
+    - 3300018
+    - 2300018
+    Bone13:
+    - 100042
+    - 400042
+    Bone12:
+    - 100044
+    - 400044
+    Bone11:
+    - 100046
+    - 400046
+    Bone10:
+    - 100048
+    - 400048
+    Box15:
+    - 100050
+    - 400050
+    - 3300020
+    - 2300020
+    Box12:
+    - 100052
+    - 400052
+    - 3300022
+    - 2300022
+    Bone09:
+    - 100054
+    - 400054
+    Bone08:
+    - 100056
+    - 400056
+    Bone07:
+    - 100058
+    - 400058
+    Bone06:
+    - 100060
+    - 400060
+    Bone05:
+    - 100062
+    - 400062
+    Box08:
+    - 100064
+    - 400064
+    - 3300024
+    - 2300024
+    Bone04:
+    - 100066
+    - 400066
+    Bone03:
+    - 100068
+    - 400068
+    Bone02:
+    - 100070
+    - 400070
+    Bone01:
+    - 100072
+    - 400072
+    IK Chain03:
+    - 100074
+    - 400074
+    IK Chain04:
+    - 100076
+    - 400076
+    IK Chain02:
+    - 100078
+    - 400078
+    IK Chain01:
+    - 100080
+    - 400080
+    Plane01:
+    - 100082
+    - 400082
+    - 3300026
+    - 2300026
+    Line01:
+    - 100084
+    - 400084
+    Box14:
+    - 100086
+    - 400086
+    - 3300028
+    - 2300028
+    Box06:
+    - 100088
+    - 400088
+    - 3300030
+    - 2300030
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Box06
+    4300002: Box14
+    4300004: Plane01
+    4300006: Box08
+    4300008: Box12
+    4300010: Box15
+    4300012: Box07
+    4300014: Box10
+    4300016: Box05
+    4300018: Box09
+    4300020: Box04
+    4300022: Box03
+    4300024: Box02
+    4300026: Box11
+    4300028: Box13
+    4300030: Box16
+    7400000: Take 001 //// shrapnelPismire@run&fire&stand
+    7400002: run //// shrapnelPismire@run&fire&stand
+    7400004: fire //// shrapnelPismire@run&fire&stand
+    7400006: stand //// shrapnelPismire@run&fire&stand
