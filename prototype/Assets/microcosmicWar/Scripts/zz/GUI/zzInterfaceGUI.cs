@@ -13,6 +13,12 @@ public enum zzGUIDockPos
     custom
 };
 
+public enum zzGUIDirection
+{
+    horizontal,
+    vertical,
+}
+
 //class zzGUIRelativeLength
 //{
 //	FIXME_VAR_TYPE useRelative=false;
@@ -36,6 +42,8 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     public zzGUIRelativeUsedInfo useRelativePosition = new zzGUIRelativeUsedInfo();
 
+
+    //小的,先被渲染,会被深度大的遮住
     public int depth;
     public GUISkin skin;
 

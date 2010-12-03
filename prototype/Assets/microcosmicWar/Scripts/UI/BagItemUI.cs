@@ -20,12 +20,14 @@ public class BagItemUI : MonoBehaviour
 
     void Start()
     {
+        zzSceneObjectMap lSceneObjectMap = GameObject.Find("Main Camera")
+            .transform.Find("UI").GetComponent<zzSceneObjectMap>();
+
         if (!bagControl)
             bagControl = gameObject.GetComponent<zzItemBagControl>();
 
         if (!UIroot)
-            UIroot = GameObject.Find("Main Camera")
-                .transform.Find("UI/ItemInventory").GetComponent<zzInterfaceGUI>();
+            UIroot = lSceneObjectMap.getObject("ItemInventory").GetComponent<zzInterfaceGUI>();
 
         itemListUI = new zzInterfaceGUI[numOfShowItem];
         selectedListUI = new zzInterfaceGUI[numOfShowItem];

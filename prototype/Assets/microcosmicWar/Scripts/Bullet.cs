@@ -76,7 +76,6 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        //print("OnTriggerEnter(Collider collider):"+collider.name);
         if (!collider.isTrigger)
             _touch(collider.transform);
     }

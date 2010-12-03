@@ -95,6 +95,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
@@ -124,6 +125,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />

@@ -12,9 +12,11 @@ public class MoneyUI : MonoBehaviour
 
     void Start()
     {
+        zzSceneObjectMap lSceneObjectMap = GameObject.Find("Main Camera")
+            .transform.Find("UI").GetComponent<zzSceneObjectMap>();
+
         if (!moneyLabel)
-            moneyLabel = GameObject.Find("Main Camera")
-                .transform.Find("UI/portrait/moneyLabel").GetComponent<zzInterfaceGUI>();
+            moneyLabel = lSceneObjectMap.getObject("moneyLabel").GetComponent<zzInterfaceGUI>();
 
         if (!bagControl)
             bagControl = gameObject.GetComponent<zzItemBagControl>();

@@ -12,7 +12,7 @@ public class SphereAreaHarm : MonoBehaviour
     public float harmValueInCentre = 10.0f;
 
     // 符合 此 mask 的物体,执行伤害
-    public int harmLayerMask = -1;
+    public LayerMask harmLayerMask = -1;
 
     //protected Hashtable lInjuredLifeMinDistance = new Hashtable();
 

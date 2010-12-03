@@ -19,4 +19,14 @@ public class MessageRedirect : MonoBehaviour
         //print("@@@@@@@methodName: "+methodName);
         messageReceiver.gameObject.SendMessage(methodName);
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        messageReceiver.gameObject.SendMessage("OnCollisionEnter", collision);
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        messageReceiver.gameObject.SendMessage("OnTriggerEnter", collider);
+    }
 }
