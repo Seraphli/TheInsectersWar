@@ -1,0 +1,87 @@
+fileFormatVersion: 1
+guid: 9fbb6d8b014f3ae449e9a90e7723fa31
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      jia:
+        firstFrame: 0
+        lastFrame: 25
+        loop: 0
+        wrapMode: 1
+      idle:
+        firstFrame: 0
+        lastFrame: 0
+        loop: 0
+        wrapMode: 0
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Line01:
+    - 100002
+    - 400002
+    Box01:
+    - 100004
+    - 400004
+    - 3300000
+    - 2300000
+    Box03:
+    - 100006
+    - 400006
+    - 3300002
+    - 2300002
+    Bone07:
+    - 100008
+    - 400008
+    Bone06:
+    - 100010
+    - 400010
+    Bone05:
+    - 100012
+    - 400012
+    Box02:
+    - 100014
+    - 400014
+    - 3300004
+    - 2300004
+    Bone04:
+    - 100016
+    - 400016
+    Bone03:
+    - 100018
+    - 400018
+    Bone02:
+    - 100020
+    - 400020
+    Bone01:
+    - 100022
+    - 400022
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Box02
+    4300002: Box03
+    4300004: Box01
+    7400000: Take 001 //// supply
+    7400002: jia //// supply
+    7400004: idle //// supply
