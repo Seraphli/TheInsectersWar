@@ -144,6 +144,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\BulletFaceVelocity.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BulletFollowAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\collisionLayer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\CreateObjectWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DeadZone.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\DefenseTowerAim.cs" />

@@ -7,21 +7,20 @@ public class Life : MonoBehaviour
 {
     public delegate void lifeCallFunc(Life life);
 
+    static void nullLifeCallFunc(Life life){}
+
     public int bloodValue = 5;
     public int fullBloodValue = 5;
 
-    protected zzUtilities.voidFunction bloodValueChangeCallback = zzUtilities.nullFunction;
+    protected lifeCallFunc bloodValueChangeCallback = nullLifeCallFunc;
     //FIXME_VAR_TYPE dieCallback=zzUtilities.nullFunction;
     public ArrayList dieCallbackList = new ArrayList();
 
     protected Hashtable injureInfo;
     //搜索有无bloodBar 以便显示血量
-    void Start()
-    {
-        BloodBar lBloodBar = GetComponentInChildren<BloodBar>();
-        if (lBloodBar)
-            lBloodBar.setLife(this);
-    }
+    //void Start()
+    //{
+    //}
     /*
     void  setDieCallback ( call ){
         dieCallback=call;
@@ -32,7 +31,7 @@ public class Life : MonoBehaviour
         dieCallbackList.Add(call);
     }
 
-    public void setBloodValueChangeCallback(zzUtilities.voidFunction call)
+    public void setBloodValueChangeCallback(lifeCallFunc call)
     {
         bloodValueChangeCallback = call;
     }
@@ -65,7 +64,7 @@ public class Life : MonoBehaviour
         if (bloodValue != pValue)
         {
             bloodValue = pValue;
-            bloodValueChangeCallback();
+            bloodValueChangeCallback(this);
             if (bloodValue <= 0)
             {
                 //dieCallback();
@@ -114,6 +113,16 @@ public class Life : MonoBehaviour
     public bool isDead()
     {
         return bloodValue <= 0;
+    }
+
+    public float getRate()
+    {
+        float lFullBloodValue = getFullBloodValue();
+        float lRate = getBloodValue() / lFullBloodValue;
+        if (lRate < 0)
+            return 0.0f;
+        else
+            return lRate;
     }
 
 

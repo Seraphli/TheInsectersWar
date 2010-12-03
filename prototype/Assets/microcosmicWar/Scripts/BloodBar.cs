@@ -22,6 +22,13 @@ public class BloodBar : MonoBehaviour
 
     void Start()
     {
+        if (!life)
+        {
+            Life lLife = transform.parent.GetComponent<Life>();
+            setLife(lLife);
+
+        }
+
         fullWidth = transform.localScale.x;
         localPostion = transform.localPosition;
 
@@ -36,7 +43,7 @@ public class BloodBar : MonoBehaviour
     //void  Update (){
     //}
 
-    public void UpdateBar()
+    public void UpdateBar(Life life)
     {
         float lFullBloodValue = life.getFullBloodValue();
         float lRate = life.getBloodValue() / lFullBloodValue;

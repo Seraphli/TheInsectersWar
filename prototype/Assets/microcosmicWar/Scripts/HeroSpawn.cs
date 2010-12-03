@@ -25,9 +25,19 @@ public class HeroSpawn : MonoBehaviour
     //重生剩余的时间
     protected int rebirthTimeLeave = 0;
     protected zzTimer rebirthTimer;
+    zzSceneObjectMap mUIObjectMap;
+    zzGUIProgressBar mBloodBar;
+
+    void updateBloodBar(Life life)
+    {
+        mBloodBar.rate = life.getRate();
+    }
 
     void Start()
     {
+        mUIObjectMap = GameObject.Find("Main Camera")
+            .transform.Find("UI").GetComponent<zzSceneObjectMap>();
+        mBloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBar>();
         /*
             if( zzCreatorUtility.isHost() )
             {
@@ -235,6 +245,13 @@ public class HeroSpawn : MonoBehaviour
         pHeroObject.AddComponent<BagItemUI>();
         pHeroObject.AddComponent<MoneyUI>();
         pHeroObject.AddComponent<bagItemUIInput>();
+
+        //使用血条UI
+        GameObject.Destroy( pHeroObject.transform.FindChild("bloodBar").gameObject );
+        Life lLife = pHeroObject.GetComponent<Life>();
+        if (mBloodBar)
+            updateBloodBar(lLife);
+        lLife.setBloodValueChangeCallback(updateBloodBar);
 
         //绑定摄像机
         _2DCameraFollow lCameraFollow = GameObject.Find("Main Camera").GetComponent<_2DCameraFollow>();
