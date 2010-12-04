@@ -16,16 +16,14 @@ public class StartSupply:MonoBehaviour{
 	//}
 	public  GameObject plane;
 	private  GameObject planeGame;
-	
-	
-	
-	
+
+
 	
 	public  void startSupplyPlane(float velocity,float startX,float endX,float heightY)
 	{
 		if(create(startX,heightY))
 		{
-			SupplyData data;
+            SupplyAirplane.FlyInfo data = new SupplyAirplane.FlyInfo();
 			data.velocity=velocity;
 			data.startX=startX;
 			data.endX=endX;
@@ -34,7 +32,7 @@ public class StartSupply:MonoBehaviour{
 		}
 		
 	}
-	public  void startSupplyPlane(SupplyData data)
+    public void startSupplyPlane(SupplyAirplane.FlyInfo data)
 	{
 		if(create(data.startX,data.heightY))
 		{
