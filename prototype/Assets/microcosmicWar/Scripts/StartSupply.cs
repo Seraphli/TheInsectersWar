@@ -19,13 +19,14 @@ public class StartSupply:MonoBehaviour{
 
 
 	
-	public  void startSupplyPlane(float velocity,float startX,float endX,float heightY)
+	public  void startSupplyPlane(float velocity,float startX,float putX,float endX,float heightY)
 	{
 		if(create(startX,heightY))
 		{
             SupplyAirplane.FlyInfo data = new SupplyAirplane.FlyInfo();
 			data.velocity=velocity;
 			data.startX=startX;
+			data.putX=putX;
 			data.endX=endX;
 			data.heightY=heightY;
 			planeGame.GetComponent<SupplyAirplane>().startPlane(data);
