@@ -134,8 +134,9 @@ public class Shield : MonoBehaviour
             vector = other.transform.position - transform.position;
 
             //使用将生命值设为0的方式,消除子弹
-            Life lLife = other.gameObject.GetComponent<Life>();
-            lLife.setBloodValue(0);
+            Life lLife = Life.getLifeFromTransform(other.transform);
+
+            lLife.setBloodValue(0); 
 
             //Timerbefore = Time.time;
             if (vector.x >= 0)
