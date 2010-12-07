@@ -3,6 +3,8 @@ using System.Collections;
 
 public class zzRandomPath : MonoBehaviour
 {
+    //todo: 用zzRandomObjectByWeight代替权重随机选择
+
     [System.Serializable]
     public class CheckPointPath
     {

@@ -5,6 +5,7 @@ using System.Collections;
 public class zzItemBagControl : MonoBehaviour
 {
 
+    public const int maxItemNum = 5;
 
     public int bagIndex = 0;
     //若为真 代表是已有的包,未设置就用bagName创建新包
@@ -104,6 +105,26 @@ public class zzItemBagControl : MonoBehaviour
     public void addItem(int index, int number)
     {
         getBagData().addItem(index, number);
+    }
+
+    public bool isFull
+    {
+        get { return itemTotalNum >= maxItemNum; }
+    }
+
+    //得到除了钱以为,所有物品数量
+    public int itemTotalNum
+    {
+        get
+        {
+            int lOut = 0;
+            ItemBagData lItemBagData = getBagData();
+            for (int i = 1; i < lItemBagData.getItemTypeNum(); ++i)
+            {
+                lOut += lItemBagData.getNum(i);
+            }
+            return lOut;
+        }
     }
 
     //得到除索引为0以外的工具数组,以便UI显示

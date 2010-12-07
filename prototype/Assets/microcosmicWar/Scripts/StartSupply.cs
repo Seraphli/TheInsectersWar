@@ -14,14 +14,21 @@ public class StartSupply:MonoBehaviour{
 	//{
 	
 	//}
-	public  GameObject plane;
-	private  GameObject planeGame;
+    public GameObject planeToCreate;
+    //private  GameObject planeGame;
+
+    public delegate void InitSupplyObjectFunc(GameObject pGameObject);
+
+    static void initSupplyObjectNullFunc(GameObject pGameObject)
+    {}
+
+    public InitSupplyObjectFunc initSupplyObjectFunc = initSupplyObjectNullFunc;
 
 
-	
 	public  void startSupplyPlane(float velocity,float startX,float putX,float endX,float heightY)
 	{
-		if(create(startX,heightY))
+        GameObject lPlane = create(startX,heightY);
+        if (lPlane)
 		{
             SupplyAirplane.FlyInfo data = new SupplyAirplane.FlyInfo();
 			data.velocity=velocity;
@@ -29,28 +36,38 @@ public class StartSupply:MonoBehaviour{
 			data.putX=putX;
 			data.endX=endX;
 			data.heightY=heightY;
-			planeGame.GetComponent<SupplyAirplane>().startPlane(data);
+            //lPlane.GetComponent<SupplyAirplane>().startPlane(data);
+            initPlane(lPlane, data);
 		}
 		
 	}
     public void startSupplyPlane(SupplyAirplane.FlyInfo data)
-	{
-		if(create(data.startX,data.heightY))
+    {
+        GameObject lPlane = create(data.startX, data.heightY);
+		if(lPlane)
 		{
-			planeGame.GetComponent<SupplyAirplane>().startPlane(data);
+            initPlane(lPlane, data);
 		}
 		
 	}
-	
-	
-	private  bool create(float x,float y)
+
+    void initPlane(GameObject pPlane, SupplyAirplane.FlyInfo data)
+    {
+        SupplyAirplane lSupplyAirplane = pPlane.GetComponent<SupplyAirplane>();
+        lSupplyAirplane.startPlane(data);
+        initSupplyObjectFunc(lSupplyAirplane.supplyBox);
+    }
+
+
+    private GameObject create(float x, float y)
 	{
-		if(planeGame==null)
-		{
-			planeGame=Instantiate (plane,new Vector3(x,y,0), Quaternion.identity) as GameObject;
-			return true;
-		}
-		return false;
+        GameObject lOut = null;
+        //if(planeGame==null)
+        //{
+            lOut = (GameObject)Instantiate(planeToCreate, new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            //return true;
+        //}
+        return lOut;
 	}
 	
 	

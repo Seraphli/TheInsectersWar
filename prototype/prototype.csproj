@@ -124,6 +124,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemBagControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRandomObjectByWeight.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRandomPath.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
@@ -138,6 +139,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\AnimationListeners.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ArmyBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AutoSupplyAirplane.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AwardItemWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BehaviourList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Board.cs" />

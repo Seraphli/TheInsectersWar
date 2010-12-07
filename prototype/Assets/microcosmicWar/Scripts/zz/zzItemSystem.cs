@@ -203,6 +203,10 @@ public class zzItemSystem : MonoBehaviour
         }
     };
 
+    /// <summary>
+    /// 或者物品类型表
+    /// </summary>
+    /// <returns></returns>
     public zzIndexTable getItemTypeTable()
     {
         return itemTypeTable;
@@ -303,6 +307,10 @@ public class zzItemSystem : MonoBehaviour
         return bagIndex;
     }
 
+    /// <summary>
+    /// 获取存储物品包的表
+    /// </summary>
+    /// <returns></returns>
     public zzIndexTable getBagTable()
     {
         return bagTable;

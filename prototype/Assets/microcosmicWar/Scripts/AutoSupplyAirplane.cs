@@ -11,10 +11,48 @@ class AutoSupplyAirplane:MonoBehaviour
     StartSupply startSupply;
     public GameObject plane;
 
+    public float throwRangeMin;
+    public float throwRangeMax;
+
+    [System.Serializable]
+    class AwardItemInfo
+    {
+        public string nameOfAwardItem;
+        //public int IdOfAwardItem;
+
+        public int weigth;
+
+    }
+
+    zzRandomObjectByWeight<int> randomItemID = new zzRandomObjectByWeight<int>();
+
+    [SerializeField]
+    AwardItemInfo[] awardItemInfoes;
+
+    void initSupplyObject(GameObject pObject)
+    {
+        AwardItemWhenTouch lAwardItemWhenTouch = pObject.GetComponent<AwardItemWhenTouch>();
+        if (!lAwardItemWhenTouch)
+            Debug.LogError("!lAwardItemWhenTouch");
+        int lItemID =  randomItemID.randomObject();
+        lAwardItemWhenTouch.itemID = lItemID;
+    }
+
     void Start()
     {
+        zzIndexTable    lItemTypeTable = zzItemSystem.getSingleton().getItemTypeTable();
+        foreach (var lAwardItemInfo in awardItemInfoes)
+        {
+            randomItemID.addRandomObject(
+                lItemTypeTable.getIndex(lAwardItemInfo.nameOfAwardItem),
+                lAwardItemInfo.weigth);
+        }
+
+        //IDOfAwardItem = .getIndex(nameOfAwardItem);
+
         startSupply = gameObject.AddComponent<StartSupply>();
-        startSupply.plane = plane;
+        startSupply.planeToCreate = plane;
+        startSupply.initSupplyObjectFunc = initSupplyObject;
 
         timer = gameObject.AddComponent<zzCoroutineTimer>();
         timer.setInterval(nextTakeoffTime);
@@ -23,6 +61,7 @@ class AutoSupplyAirplane:MonoBehaviour
 
     void takeoff()
     {
+        supplyInfo.putX = Random.Range(throwRangeMin, throwRangeMax);
         startSupply.startSupplyPlane(supplyInfo);
         timer.setInterval(getNextTime());
     }

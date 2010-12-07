@@ -67,10 +67,12 @@ public class BagItemUI : MonoBehaviour
         int lItemUIIndex = 0;
         zzIndexTable lItemTypeTable = bagControl
                                         .getItemSystem().getItemTypeTable();
+
         foreach (int i in lItemList)
         {
             ItemTypeInfo lItemType = (ItemTypeInfo)lItemTypeTable.getData(i);
             itemListUI[lItemUIIndex].setImage(lItemType.getImage());
+            itemListUI[lItemUIIndex].setVisible(true);
             ++lItemUIIndex;
         }
 

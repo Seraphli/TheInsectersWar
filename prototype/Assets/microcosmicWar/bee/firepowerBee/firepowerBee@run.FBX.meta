@@ -152,6 +152,12 @@ ModelImporter:
     Bone05:
     - 100080
     - 400080
+    Line02:
+    - 100082
+    - 400082
+    Line01:
+    - 100084
+    - 400084
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:
