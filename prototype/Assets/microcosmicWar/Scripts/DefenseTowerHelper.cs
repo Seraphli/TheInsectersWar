@@ -38,6 +38,6 @@ public class DefenseTowerHelper : MonoBehaviour
         //print(gameObject.name);
         //print(lTowerAI==null);
         //print(lTowerObject.layer);
-        lTowerAI.setAdversaryLayer(PlayerInfo.getAdversaryRaceLayer(race));
+        lTowerAI.setAdversaryLayerMask(PlayerInfo.getAdversaryObjectValue(race));
     }
 }

@@ -114,13 +114,13 @@ class AiMachineGun : DefenseTower
     protected AnimationImpInTimeList actionImpDuringFireAnimation = new AnimationImpInTimeList();
 
 
-    public override void setAdversaryLayer(int pLayer)
+    public override void setAdversaryLayerMask(LayerMask pLayer)
     {
 
         if (zzCreatorUtility.isHost())
         {
             AiMachineGunAI lAi = GetComponentInChildren<AiMachineGunAI>();
-            lAi.setAdversaryLayer(pLayer);
+            lAi.setAdversaryLayerMask(pLayer);
         }
     }
 

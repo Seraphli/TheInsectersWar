@@ -8,7 +8,7 @@ public class ArmyBase : MonoBehaviour
 
     public Transform finalAim;
 
-    public int adversaryLayerValue;
+    public LayerMask adversaryLayerMask;
 
     public Transform produceTransform;
 
@@ -18,7 +18,9 @@ public class ArmyBase : MonoBehaviour
     void Start()
     {
 
-        adversaryLayerValue = 1 << LayerMask.NameToLayer(adversaryName);
+        //adversaryLayerValue = 1 << LayerMask.NameToLayer(adversaryName);
+        adversaryLayerMask = PlayerInfo.getRaceObjectValue(
+            PlayerInfo.stringToRace(adversaryName));
 
         if (!produceTransform)
             produceTransform = transform;

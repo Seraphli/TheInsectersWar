@@ -17,22 +17,22 @@ public class AiMachineGunAI : MonoBehaviour
     public DefenseTower aiMachineGun;
 
     public string adversaryName;
-    public int adversaryLayer = -1;
+    public LayerMask adversaryLayerMask = -1;
 
     //敌人还在这个角度时,枪不动
     public float fireDeviation = 4.0f;
 
     //FIXME_VAR_TYPE adversaryNumInFireRange= 0;
 
-    public void setAdversaryLayer(int pLayer)
+    public void setAdversaryLayerMask(LayerMask pLayerMask)
     {
-        adversaryLayer = pLayer;
+        adversaryLayerMask = pLayerMask;
     }
 
     void OnTriggerEnter(Collider other)
     {
         //print("OnTriggerEnter"+other.gameObject.layer);
-        if (other.gameObject.layer == adversaryLayer)
+        if (((1<<other.gameObject.layer) & adversaryLayerMask.value ) !=0 )
         {
             if (!collisionLayer.isAliveFullCheck(fireTarget))
                 fireTarget = other.transform;
@@ -105,8 +105,8 @@ public class AiMachineGunAI : MonoBehaviour
     {
         if (!aiMachineGun)
             aiMachineGun = transform.parent.GetComponentInChildren<DefenseTower>();
-        if (adversaryLayer == -1)
-            adversaryLayer = LayerMask.NameToLayer(adversaryName);
+        if (adversaryLayerMask == -1)
+            adversaryLayerMask = LayerMask.NameToLayer(adversaryName);
         fequencyTimer.setImpFunction(ImpUpdate);
     }
 

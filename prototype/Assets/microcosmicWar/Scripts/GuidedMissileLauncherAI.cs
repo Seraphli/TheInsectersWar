@@ -18,13 +18,13 @@ public class GuidedMissileLauncherAI : MonoBehaviour
     //protected 
     public int targetNowIndex = 0;
     //zzTimer pathTimer;
-    public int adversaryLayer;
+    public LayerMask adversaryLayerMask;
 
     public SphereAreaHarm sphereAreaHarm;
 
-    public void setAdversaryLayer(int pLayer)
+    public void setAdversaryLayerMask(LayerMask pLayerMask)
     {
-        adversaryLayer = pLayer;
+        adversaryLayerMask = pLayerMask;
     }
 
     void Start()
@@ -50,7 +50,7 @@ public class GuidedMissileLauncherAI : MonoBehaviour
     {
         targetNowIndex = 0;
         //线投时,已经根据层 过滤掉了死掉的物体,所以不需设置探测过滤
-        Collider[] lHits = detector.detect(maxRequired, 1 << adversaryLayer);
+        Collider[] lHits = detector.detect(maxRequired, adversaryLayerMask.value);
         targetNum = lHits.Length;
         //print("targetNum:"+targetNum);
         if (targetNum > 0)
@@ -98,7 +98,7 @@ public class GuidedMissileLauncherAI : MonoBehaviour
 
         //SphereAreaHarm lSphereAreaHarm = lAreaHarm.AddComponent<SphereAreaHarm>();
         SphereAreaHarm lSphereAreaHarm = lAreaHarm.GetComponent<SphereAreaHarm>();
-        lSphereAreaHarm.setHarmLayerMask(1 << adversaryLayer);
+        lSphereAreaHarm.setHarmLayerMask(adversaryLayerMask.value);
     }
 
     public void initBullet(Bullet pBullet)

@@ -29,6 +29,6 @@ public class GuidedMissileLauncherHelp : MonoBehaviour
         */
         lTowerObject.layer = PlayerInfo.getRaceLayer(race);
         //print(lTowerObject.layer);
-        lTowerAI.setAdversaryLayer(PlayerInfo.getAdversaryRaceLayer(race));
+        lTowerAI.setAdversaryLayerMask(PlayerInfo.getAdversaryObjectValue(race));
     }
 }

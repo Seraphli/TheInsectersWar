@@ -112,19 +112,23 @@ public class zzAimTranformList
 
         //获取排在最后一个的 可用的 Transform
         //todo:可用性检测
-        while ((lOut==null) && mAimList.Count > 0)
+        if (mAimList.Count > 0)
         {
-            lOut = mAimList[mAimList.Count - 1];
-            mAimList.RemoveAt(mAimList.Count - 1);
-        }
+            while ((lOut == null) && mAimList.Count > 0)
+            {
+                lOut = mAimList[mAimList.Count - 1];
+                mAimList.RemoveAt(mAimList.Count - 1);
+            }
 
-        refreshAimDebugInfo();
+            refreshAimDebugInfo();
+
+        }
         return lOut;
     }
 
     //现在锁定的目标
     [SerializeField]
-    AimInfo nowAim;
+    AimInfo nowAim ;
 
     //移除当前的目标
     public void removeNowAim()
@@ -142,9 +146,13 @@ public class zzAimTranformList
         //if (!collisionLayer.isAliveFullCheck(nowAim) && (mAimList.Count > 0))
         //Debug.Log(activeCheck(nowAim, pSearcher));
         //Debug.Log("mAimList.Count" + mAimList.Count);
-        if (!activeCheck(nowAim, pSearcher) && (mAimList.Count > 0))
+
+        if(!activeCheck(nowAim, pSearcher))
+        {
             nowAim = popAim();
-        return nowAim == null? null: nowAim.aimTransform;
+        }
+
+        return nowAim == null ? null : nowAim.aimTransform;
     }
 
     //增加目标,并设置为当前目标,类型为AimType.aliveAim
@@ -161,10 +169,17 @@ public class zzAimTranformList
         //if (collisionLayer.isAliveFullCheck(pAim) && (nowAim != pAim))
         //Debug.Log(pAim.aimTransform.name);
         //Debug.Log("added before" + mAimList.Count);
-        if (activeCheck(pAim) && (nowAim != pAim))
+        if (activeCheck(pAim))//目标可用可用
         {
-            if (activeCheck(nowAim))
+            //如果原目标与新的不一样,并且可用,则增加到候选表中
+            if (
+                nowAim != null
+                && nowAim.aimTransform != pAim.aimTransform
+                && activeCheck(nowAim)
+                )
                 mAimList.Add(nowAim);
+
+            //新目标
             nowAim = pAim;
         }
         refreshAimDebugInfo();

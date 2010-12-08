@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DefenseTower : MonoBehaviour
 {
-
+    protected Race race;
 
     //是否被限制转角,否则可以任意旋转,为true时, maxUpAngle , maxDownAngle 才有用
     public bool limitedAngle = true;
@@ -79,22 +79,26 @@ public class DefenseTower : MonoBehaviour
     /*
     info["face"]
     info["layer"]
-    info["adversaryLayer"]
+    info["adversaryLayerValue"]
     */
     public virtual void init(Hashtable info)
     {
         //print(info["face"]);
         //print(invert);
         //invert.face = info["face"];
-        gameObject.layer = (int)info["layer"];
+        //gameObject.layer = (int)info["layer"];
+        race = (Race)info["race"];
+        gameObject.layer = PlayerInfo.getBuildingLayer(race);
         //AiMachineGunAI lAi = GetComponentInChildren<AiMachineGunAI>();
 
         //if(zzCreatorUtility.isHost())
-        //	lAi.adversaryLayer=info["adversaryLayer"];
-        setAdversaryLayer((int)info["adversaryLayer"]);
+        //	lAi.adversaryLayer=info["adversaryLayerValue"];
+
+        //setAdversaryLayerMask((int)info["adversaryLayerValue"]);
+        setAdversaryLayerMask(PlayerInfo.getAdversaryObjectValue(race));
     }
 
-    public virtual void setAdversaryLayer(int pLayer)
+    public virtual void setAdversaryLayerMask(LayerMask pLayer)
     {
     }
 

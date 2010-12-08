@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class SoldierAI : MonoBehaviour
 {
     public CharacterController character;
-    public string adversaryName;
+    //public string adversaryName;
 
     //执行频率/每秒执行的次数
     //FIXME_VAR_TYPE frequencyOfImplement=3.0f;
@@ -35,7 +35,7 @@ public class SoldierAI : MonoBehaviour
     //protected Vector3 pAimPos;
     protected UnitActionCommand actionCommand = new UnitActionCommand();
 
-    protected int adversaryLayerValue = -1;
+    public LayerMask adversaryLayerMask = -1;
 
     //public Transform fireTarget;
 
@@ -144,8 +144,10 @@ public class SoldierAI : MonoBehaviour
         //timePos=timeToWait+0.1f;
         //if (finalAim)
         //    pAimPos = finalAim.position;
-        if (adversaryLayerValue == -1)
-            adversaryLayerValue = 1 << LayerMask.NameToLayer(adversaryName);
+
+        //if (adversaryLayerMask == -1)
+        //    adversaryLayerMask = 1 << LayerMask.NameToLayer(adversaryName);
+
         //print(LayerMask.NameToLayer(adversaryName));
         //print(adversaryLayerValue);
         if (!actionCommandControl)
@@ -183,9 +185,9 @@ public class SoldierAI : MonoBehaviour
     //    soldier = pSoldier;
     //}
 
-    public void SetAdversaryLayerValue(int pLayerValue)
+    public void SetAdversaryLayerMask(int pLayerMask)
     {
-        adversaryLayerValue = pLayerValue;
+        adversaryLayerMask = pLayerMask;
     }
 
     //判断前进的方向上是否有可站立的地方
@@ -197,7 +199,7 @@ public class SoldierAI : MonoBehaviour
     {
         if(runtimeAim.getAim(transform)==null)
         {
-            Collider[] lEnemyes = enemyDetector.detect(1, adversaryLayerValue);
+            Collider[] lEnemyes = enemyDetector.detect(1, adversaryLayerMask.value);
             if (lEnemyes.Length > 0)
             {
                 runtimeAim.checkAndAddAim(lEnemyes[0].transform);
@@ -295,8 +297,9 @@ public class SoldierAI : MonoBehaviour
         //print(adversaryLayerValue);
         //FIXME_VAR_TYPE lFaceDirection= 0;
         int lFaceValue = actionCommandControl.getFaceValue();
+
         if (Physics.Raycast(transform.position, new Vector3(lFaceValue, 0, 0),
-            out lHit, Random.Range(fireDistanceMin, fireDistanceMax), adversaryLayerValue))
+            out lHit, Random.Range(fireDistanceMin, fireDistanceMax), adversaryLayerMask.value))
         //if (Physics.Raycast (transform.position, lFwd , lHit, 4.0f,adversaryLayerValue)) 
         {
             //fireTarget = lHit.transform;
@@ -304,7 +307,7 @@ public class SoldierAI : MonoBehaviour
             return lFaceValue;
         }
         if (Physics.Raycast(transform.position, new Vector3(-lFaceValue, 0, 0),
-            out lHit, fireDistanceMin, adversaryLayerValue))
+            out lHit, fireDistanceMin, adversaryLayerMask.value))
         {
             runtimeAim.checkAndAddAim(lHit.transform);
             return -lFaceValue;

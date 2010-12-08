@@ -70,7 +70,7 @@ public class SoldierFactory : MonoBehaviour
             }
 
 
-            soldierAI.SetAdversaryLayerValue(armyBase.adversaryLayerValue);
+            soldierAI.SetAdversaryLayerMask(armyBase.adversaryLayerMask);
             //lClone.GetComponent<SoldierAI>().SetSoldier(lClone.GetComponent<Soldier>());
             //lClone.GetComponent<SoldierAI>().SetAdversaryLayerValue(adversaryLayerValue);
         }

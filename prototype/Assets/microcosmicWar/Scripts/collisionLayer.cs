@@ -14,6 +14,12 @@ public class layers
     public static readonly int beeBullet = LayerMask.NameToLayer("beeBullet");
     public static readonly int beeBulletValue = 1 << beeBullet;
 
+    public static readonly int pismireBuilding = LayerMask.NameToLayer("pismireBuilding");
+    public static readonly int pismireBuildingValue = 1 << pismireBuilding;
+
+    public static readonly int beeBuilding = LayerMask.NameToLayer("beeBuilding");
+    public static readonly int beeBuildingValue = 1 << beeBuilding;
+
     public static readonly int deadObject = LayerMask.NameToLayer("deadObject");
 
     public static readonly int board = LayerMask.NameToLayer("board");

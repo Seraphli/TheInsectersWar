@@ -32,16 +32,17 @@ class GuidedMissileLauncher : DefenseTower
 
     public override int getBulletLayer()
     {
-        return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Missile");
+        return PlayerInfo.getMissileLayer(race);
+        //return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Missile");
     }
 
-    public override void setAdversaryLayer(int pLayer)
+    public override void setAdversaryLayerMask(LayerMask pLayer)
     {
 
         if (zzCreatorUtility.isHost())
         {
             GuidedMissileLauncherAI lAi = GetComponentInChildren<GuidedMissileLauncherAI>();
-            lAi.setAdversaryLayer(pLayer);
+            lAi.setAdversaryLayerMask(pLayer);
         }
     }
 

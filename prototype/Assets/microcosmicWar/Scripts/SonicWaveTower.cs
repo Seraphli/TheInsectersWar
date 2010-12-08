@@ -68,7 +68,7 @@ public class SonicWaveTower : MonoBehaviour
         //AcousticTower lAcousticTower = lTowerObject.GetComponent<AcousticTower>();
         //SonicAttack lSonicAttack = lTowerObject.GetComponent<SonicAttack>();
 
-        lTowerObject.layer = PlayerInfo.getRaceLayer(pRace);
+        lTowerObject.layer = PlayerInfo.getBuildingLayer(race);
         //lSonicAttack.setAdversaryLayer(PlayerInfo.getAdversaryRaceLayer(race));
         //lSonicAttack.setHarmLayerMask(1 << PlayerInfo.getAdversaryRaceLayer(pRace));
         setHarmLayerMask(1 << PlayerInfo.getAdversaryRaceLayer(pRace));
@@ -90,22 +90,22 @@ public class SonicWaveTower : MonoBehaviour
     }
 
     //判断是否可以伤害
-    bool canHarm(Life pLife)
-    {
-        ObjectProperty AcousticTowerTemp = pLife.gameObject.GetComponent<ObjectProperty>();
-        //print(pLife.gameObject.name);
-        if (AcousticTowerTemp
-            && AcousticTowerTemp.identity == Identitys.Structure)
-        {
-            return false;
-        }
-        return true;
+    //bool canHarm(Life pLife)
+    //{
+    //    ObjectProperty AcousticTowerTemp = pLife.gameObject.GetComponent<ObjectProperty>();
+    //    //print(pLife.gameObject.name);
+    //    if (AcousticTowerTemp
+    //        && AcousticTowerTemp.identity == Identitys.Structure)
+    //    {
+    //        return false;
+    //    }
+    //    return true;
 
-    }
+    //}
 
     public void Attack()
     {
-        SphereAreaHarm.impSphereAreaHarm(transform.position, harmRadius, harmValueInCentre, harmLayerMask, canHarm);
+        SphereAreaHarm.impSphereAreaHarm(transform.position, harmRadius, harmValueInCentre, harmLayerMask );
     }
 
 

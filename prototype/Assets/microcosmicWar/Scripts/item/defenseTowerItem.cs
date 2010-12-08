@@ -46,7 +46,7 @@ class defenseTowerItem : IitemObject
         lInfo["face"] = towerFace;
         lInfo["layer"] = useObject.layer;
         lInfo["race"] = (int)PlayerInfo.getRace(useObject.layer);
-        lInfo["adversaryLayer"] = PlayerInfo.getAdversaryRaceLayer(useObject.layer);
+        //lInfo["adversaryLayerValue"] = PlayerInfo.getAdversaryRaceLayer(useObject.layer);
         zzGameObjectCreator.getSingleton().create(lInfo);
         //zzGameObjectCreator.getSingleton().create({
         //    //"creatorName":"AiMachineGun",
