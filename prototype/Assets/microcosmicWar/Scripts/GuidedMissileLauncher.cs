@@ -46,13 +46,18 @@ class GuidedMissileLauncher : DefenseTower
         }
     }
 
+
+    protected override void initWhenHost()
+    {
+        fireTimer = gameObject.AddComponent<zzTimer>();
+        fireTimer.setImpFunction(fireAndSetNextTime);
+        fireTimer.setInterval(getIntervalAndMove());
+    }
+
+
     public override void Start()
     {
         base.Start();
-        if (!fireTimer)
-            fireTimer = gameObject.AddComponent<zzTimer>();
-        fireTimer.setImpFunction(fireAndSetNextTime);
-        fireTimer.setInterval(getIntervalAndMove());
     }
 
     //virtual function Update () 

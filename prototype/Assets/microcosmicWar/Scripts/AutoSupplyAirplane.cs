@@ -40,23 +40,27 @@ class AutoSupplyAirplane:MonoBehaviour
 
     void Start()
     {
-        zzIndexTable    lItemTypeTable = zzItemSystem.getSingleton().getItemTypeTable();
-        foreach (var lAwardItemInfo in awardItemInfoes)
-        {
-            randomItemID.addRandomObject(
-                lItemTypeTable.getIndex(lAwardItemInfo.nameOfAwardItem),
-                lAwardItemInfo.weigth);
-        }
-
-        //IDOfAwardItem = .getIndex(nameOfAwardItem);
 
         startSupply = gameObject.AddComponent<StartSupply>();
         startSupply.planeToCreate = plane;
         startSupply.initSupplyObjectFunc = initSupplyObject;
 
-        timer = gameObject.AddComponent<zzCoroutineTimer>();
-        timer.setInterval(nextTakeoffTime);
-        timer.setImpFunction(takeoff);
+        if(zzCreatorUtility.isHost())
+        {
+            zzIndexTable    lItemTypeTable = zzItemSystem.getSingleton().getItemTypeTable();
+            foreach (var lAwardItemInfo in awardItemInfoes)
+            {
+                randomItemID.addRandomObject(
+                    lItemTypeTable.getIndex(lAwardItemInfo.nameOfAwardItem),
+                    lAwardItemInfo.weigth);
+            }
+
+            //IDOfAwardItem = .getIndex(nameOfAwardItem);
+            timer = gameObject.AddComponent<zzCoroutineTimer>();
+            timer.setInterval(nextTakeoffTime);
+            timer.setImpFunction(takeoff);
+
+        }
     }
 
     void takeoff()

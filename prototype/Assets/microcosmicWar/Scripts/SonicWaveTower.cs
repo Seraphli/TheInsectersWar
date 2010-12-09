@@ -49,10 +49,13 @@ public class SonicWaveTower : MonoBehaviour
 
     void Start()
     {
-        zzTimer lAttackTimer = gameObject.AddComponent<zzTimer>();
-        lAttackTimer.setInterval(attackInterval);
-        //zTimer.setImpFunction(My);
-        lAttackTimer.setImpFunction(Attack);
+        if (zzCreatorUtility.isHost())
+        {
+            zzTimer lAttackTimer = gameObject.AddComponent<zzTimer>();
+            lAttackTimer.setInterval(attackInterval);
+            //zTimer.setImpFunction(My);
+            lAttackTimer.setImpFunction(Attack);
+        }
 
         zzTimer lWaveTimer = gameObject.AddComponent<zzTimer>();
         lWaveTimer.setInterval(waveCreatedInterval);

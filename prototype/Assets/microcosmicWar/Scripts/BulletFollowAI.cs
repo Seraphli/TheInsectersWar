@@ -17,6 +17,19 @@ public class BulletFollowAI : MonoBehaviour
     public void setTarget(Transform pTarget)
     {
         target = pTarget;
+        if(Network.peerType != NetworkPeerType.Disconnected)
+        {
+            NetworkView lNetworkView  = pTarget.networkView;
+            if (lNetworkView)
+                networkView.RPC("RPCSetTarget", RPCMode.Others, lNetworkView.viewID);
+        }
+    }
+
+    [RPC]
+    void RPCSetTarget(NetworkViewID pID)
+    {
+       NetworkView lNetworkView = NetworkView.Find(pID);
+       target = lNetworkView.transform;
     }
 
     void Update()

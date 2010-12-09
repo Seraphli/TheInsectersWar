@@ -106,37 +106,132 @@ public class UnitActionCommand
 
     public UnitActionCommand(UnitActionCommand pOther)
     {
-        FaceLeft = pOther.FaceLeft;//朝向左
-        FaceRight = pOther.FaceRight;//朝向右
-        FaceUp = pOther.FaceUp;
-        FaceDown = pOther.FaceDown;
-        GoForward = pOther.GoForward;//前进
-        Fire = pOther.Fire;//开火
-        Jump = pOther.Jump;//跳跃
+        //FaceLeft = pOther.FaceLeft;//朝向左
+        //FaceRight = pOther.FaceRight;//朝向右
+        //FaceUp = pOther.FaceUp;
+        //FaceDown = pOther.FaceDown;
+        //GoForward = pOther.GoForward;//前进
+        //Fire = pOther.Fire;//开火
+        //Jump = pOther.Jump;//跳跃
+
+        command = pOther.command;
 
     }
+    public int command;
 
-    public bool FaceLeft = false;//朝向左
-    public bool FaceRight = false;//朝向右
-    public bool FaceUp = false;
-    public bool FaceDown = false;
-    public bool GoForward = false;//前进
-    public bool Fire = false;//开火
-    public bool Jump = false;//跳跃
+    const int faceLeftCommand = 1 << 0;
+    const int negFaceLeftCommand = ~faceLeftCommand;
+
+    const int faceRightCommand      = 1 << 1;
+    const int negFaceRightCommand = ~faceRightCommand;
+
+    const int faceUpCommand         = 1 << 2;
+    const int negFaceUpCommand = ~faceUpCommand;
+
+    const int faceDownCommand       = 1 << 3;
+    const int negFaceDownCommand = ~faceDownCommand;
+
+    const int goForwardCommand      = 1 << 4;
+    const int negGoForwardCommand = ~goForwardCommand;
+
+    const int fireCommand           = 1 << 5;
+    const int negFireCommand = ~fireCommand;
+
+    const int jumpCommand           = 1 << 6;
+    const int negJumpCommand = ~jumpCommand;
+
+    //朝向左
+    public bool FaceLeft
+    {
+        get { return (command & faceLeftCommand)!=0; }
+        set 
+        {
+            if (value)
+                command |= faceLeftCommand;
+            else
+                command &= negFaceLeftCommand;
+        }
+    }
+
+    //朝向右
+    public bool FaceRight
+    {
+        get { return (command & faceRightCommand) != 0; }
+        set
+        {
+            if (value)
+                command |= faceRightCommand;
+            else
+                command &= negFaceRightCommand;
+        }
+    }
+
+    public bool FaceUp
+    {
+        get { return (command & faceUpCommand) != 0; }
+        set
+        {
+            if (value)
+                command |= faceUpCommand;
+            else
+                command &= negFaceUpCommand;
+        }
+    }
+
+    public bool FaceDown
+    {
+        get { return (command & faceDownCommand) != 0; }
+        set
+        {
+            if (value)
+                command |= faceDownCommand;
+            else
+                command &= negFaceDownCommand;
+        }
+    }
+
+    //前进
+    public bool GoForward
+    {
+        get { return (command & goForwardCommand) != 0; }
+        set
+        {
+            if (value)
+                command |= goForwardCommand;
+            else
+                command &= negGoForwardCommand;
+        }
+    }
+
+    //开火
+    public bool Fire
+    {
+        get { return (command & fireCommand) != 0; }
+        set
+        {
+            if (value)
+                command |= fireCommand;
+            else
+                command &= negFireCommand;
+        }
+    }
+
+    //跳跃
+    public bool Jump
+    {
+        get { return (command & jumpCommand) != 0; }
+        set
+        {
+            if (value)
+                command |= jumpCommand;
+            else
+                command &= negJumpCommand;
+        }
+    }
 
     public void clear()
     {
-        //MoveLeft=false;
-        //MoveRight=false;
-        FaceLeft = false;
-        FaceRight = false;
-        FaceUp = false;
-        FaceDown = false;
-
-        GoForward = false;
-
-        Fire = false;
-        Jump = false;
+        command = 0;
     }
 
     public override string ToString()
@@ -213,7 +308,7 @@ public class ActionCommandControl : MonoBehaviour
         //stream.Serialize(lFace);
         //face =  lFace;
 
-        //stream.Serialize(unitActionCommand.FaceLeft);
+        stream.Serialize(ref unitActionCommand.command);
         //stream.Serialize(unitActionCommand.FaceRight);
         //stream.Serialize(unitActionCommand.FaceUp);
         //stream.Serialize(unitActionCommand.FaceDown);

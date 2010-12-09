@@ -29,6 +29,12 @@ public class GuidedMissileLauncherAI : MonoBehaviour
 
     void Start()
     {
+        if (!zzCreatorUtility.isHost())
+        {
+            Destroy(this);
+            return;
+        }
+
         targetList = new Transform[maxRequired];
         //pathTimer = AddComponent<zzTimer>();
         emitter.setInitBulletFunc(initBullet);

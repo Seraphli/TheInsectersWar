@@ -34,6 +34,25 @@ public class Bullet : MonoBehaviour
         injureInfo = pInjureInfo;
     }
 
+
+    public void setLayer(int pLayer)
+    {
+        _setLayer(pLayer);
+        if (Network.peerType != NetworkPeerType.Disconnected)
+        {
+            networkView.RPC("_setLayer", RPCMode.Others, pLayer);
+        }
+    }
+
+    [RPC]
+    void _setLayer(int pLayer)
+    {
+        gameObject.layer = pLayer;
+        if (shape)
+            shape.layer = pLayer;
+    }
+
+
     void Start()
     {
         if (shape)
@@ -82,8 +101,9 @@ public class Bullet : MonoBehaviour
 
     void _touch(Transform pOther)
     {
+
         //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
-        if (bulletLife.getBloodValue() <= 0)
+        if (bulletLife.getBloodValue() <= 0 || !zzCreatorUtility.isHost())
             return;
 
         Life lLife = Life.getLifeFromTransform(pOther);

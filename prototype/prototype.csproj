@@ -159,7 +159,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\EmitterContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\FireSpark.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GameScene.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\Grenade.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncher.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\GuidedMissileLauncherHelp.cs" />
@@ -170,10 +169,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Life.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\LifeRecover.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\MessageRedirect.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\NetworkHelpObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ObjectProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlatformerPushBodies.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\playSoundWhenTouch.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\RigidbodyNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Shield.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\smooth.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SniperData.cs" />

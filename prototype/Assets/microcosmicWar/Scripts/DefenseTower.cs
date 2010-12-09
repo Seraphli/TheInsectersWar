@@ -88,7 +88,15 @@ public class DefenseTower : MonoBehaviour
         //invert.face = info["face"];
         //gameObject.layer = (int)info["layer"];
         race = (Race)info["race"];
-        gameObject.layer = PlayerInfo.getBuildingLayer(race);
+
+        int lLayer = PlayerInfo.getBuildingLayer(race);
+        gameObject.layer = lLayer;
+        var lShapes =  transform.FindChild("shape");
+        lShapes.gameObject.layer = lLayer;
+        foreach (Transform lShape in lShapes)
+        {
+            lShape.gameObject.layer = lLayer;
+        }
         //AiMachineGunAI lAi = GetComponentInChildren<AiMachineGunAI>();
 
         //if(zzCreatorUtility.isHost())

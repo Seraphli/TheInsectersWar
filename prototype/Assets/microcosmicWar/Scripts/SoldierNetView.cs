@@ -39,8 +39,8 @@ public class SoldierNetView : MonoBehaviour
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
         life.OnSerializeNetworkView(stream, info);
-        character.OnSerializeNetworkView(stream, info);
         actionCommandControl.OnSerializeNetworkView(stream, info);
+        character.OnSerializeNetworkView(stream, info);
         /*
         FIXME_VAR_TYPE pos=Vector3();
         FIXME_VAR_TYPE rot=Quaternion();

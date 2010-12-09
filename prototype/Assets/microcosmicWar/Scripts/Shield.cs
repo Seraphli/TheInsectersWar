@@ -86,9 +86,15 @@ public class Shield : MonoBehaviour
         {
             shield.renderer.material.color = new Color(1, 1, 1, alpha);
         }
+
+        public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+        {
+            stream.Serialize(ref alpha);
+            stream.Serialize(ref allAppearTimePos);
+        }
     }
 
-    public GameObject shield;
+    //public GameObject shield;
 
     /// <summary>
     /// 完全显示后 持续的时间
@@ -129,6 +135,9 @@ public class Shield : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (!zzCreatorUtility.isHost())
+            return;
+
         if (other.gameObject.layer == adversaryWeaponLayer)
         {
             vector = other.transform.position - transform.position;
@@ -168,10 +177,35 @@ public class Shield : MonoBehaviour
         shieldLeft.shieldTransform = shieldObject.transform.Find("ShieldLeft");
         shieldRight.shieldTransform = shieldObject.transform.Find("ShieldRight");
     }
+
+    public void setOwner(GameObject pOwner)
+    {
+        _setOwner(pOwner);
+        if (Network.peerType != NetworkPeerType.Disconnected)
+            gameObject.networkView.RPC("RPCSetOwner", RPCMode.Others, pOwner.networkView.viewID);
+    }
+
+    void _setOwner(GameObject pOwner)
+    {
+        transform.parent = pOwner.transform;
+        transform.localPosition = Vector3.zero;
+    }
+
+    [RPC]
+    void RPCSetOwner(NetworkViewID pOwner)
+    {
+        _setOwner(NetworkView.Find(pOwner).gameObject);
+    }
+
     //设置颜色,透明度
     //private void SetColor()
     //{
     //    shieldLeft.shieldTransform.renderer.material.color = new Color(1, 1, 1, shieldLeft.alpha);
     //    shieldRight.shieldTransform.renderer.material.color = new Color(1, 1, 1, shieldRight.alpha);
     //}
+    public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    {
+        shieldLeft.OnSerializeNetworkView(stream,info);
+        shieldRight.OnSerializeNetworkView(stream, info);
+    }
 }

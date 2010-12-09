@@ -64,7 +64,7 @@ public class StartSupply:MonoBehaviour{
         GameObject lOut = null;
         //if(planeGame==null)
         //{
-            lOut = (GameObject)Instantiate(planeToCreate, new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            lOut = (GameObject)zzCreatorUtility.Instantiate(planeToCreate, new Vector3(x, y, 0), Quaternion.identity,0) as GameObject;
             //return true;
         //}
         return lOut;

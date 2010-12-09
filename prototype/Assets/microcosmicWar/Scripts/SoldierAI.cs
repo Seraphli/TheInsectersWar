@@ -113,6 +113,12 @@ public class SoldierAI : MonoBehaviour
 
     void Start()
     {
+        //客户端的AI 在 SoldierNetView 中去除
+        if(!zzCreatorUtility.isHost())
+        {
+        	Destroy(this);
+        	return;
+        }
 
         //寻路的计时器
         pathTimer = gameObject.AddComponent<zzCoroutineTimer>();
@@ -132,14 +138,7 @@ public class SoldierAI : MonoBehaviour
         //fixedAim.initAimList();
         //runtimeAim.initAimList();
         //initAimList();
-        //客户端的AI 在 SoldierNetView 中去除
-        //if(!zzCreatorUtility.isHost())
-        //	Debug.LogError("AI not removed in not host");
-        //{
-        //	Destroy(this);
-        //	timeToWait=100.0f;
-        //	return;
-        //}
+
         //timeToWait=1.0f/frequencyOfImplement;
         //timePos=timeToWait+0.1f;
         //if (finalAim)

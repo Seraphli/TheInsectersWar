@@ -104,7 +104,7 @@ public class NetworkMenu : MonoBehaviour
         playerInfo.setPlayerName(playerName);
 
         //Application.LoadLevel("testScene");
-        Application.LoadLevel("netSewer1");
+        Application.LoadLevel("netSewer2");
     }
 
     void OnGUI(){

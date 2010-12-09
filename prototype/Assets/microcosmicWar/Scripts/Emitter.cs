@@ -54,13 +54,14 @@ public class Emitter : MonoBehaviour
         {
             GameObject clone;
             clone = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, new Quaternion(), 0);
-            clone.layer = bulletLayer;
+            //clone.layer = bulletLayer;
 
             //print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
             //Rigidbody lRigidbody = clone.GetComponentInChildren<Rigidbody>();
             //lRigidbody.velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
             //clone.velocity=transform.forward;
             Bullet pBullet = clone.GetComponentInChildren<Bullet>();
+            pBullet.setLayer(bulletLayer);
             pBullet.setAliveTime(bulletAliveTime);
             //pBullet.setForward(getForward());
             //pBullet.setSpeed(bulletSpeed);

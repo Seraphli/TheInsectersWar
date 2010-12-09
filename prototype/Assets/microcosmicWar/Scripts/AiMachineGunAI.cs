@@ -103,6 +103,12 @@ public class AiMachineGunAI : MonoBehaviour
 
     void Start()
     {
+        if (!zzCreatorUtility.isHost())
+        {
+            Destroy(this);
+            return;
+        }
+
         if (!aiMachineGun)
             aiMachineGun = transform.parent.GetComponentInChildren<DefenseTower>();
         if (adversaryLayerMask == -1)
