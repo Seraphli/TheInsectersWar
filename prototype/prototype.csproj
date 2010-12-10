@@ -75,8 +75,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\awakeShooterWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\createObjectWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\destroyWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\dieWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\playAnimationWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\playSoundWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\sendMessageWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1LoseCondition.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
@@ -174,6 +176,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\PlatformerPushBodies.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\playSoundWhenTouch.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\RaceValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\RigidbodyNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Shield.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\smooth.cs" />
@@ -188,6 +191,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\StartSniperMode.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\StartSupply.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Stronghold.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\StrongholdValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SupplyAirplane.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2DCameraFollow.cs" />

@@ -18,4 +18,10 @@ public class TriggerTest : MonoBehaviour
     {
         print("OnTriggerEnter");
     }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Z))
+            rigidbody.WakeUp();
+    }
 }

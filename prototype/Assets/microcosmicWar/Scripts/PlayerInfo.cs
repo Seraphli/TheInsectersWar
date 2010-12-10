@@ -11,7 +11,15 @@ public enum Race
 
 public class PlayerInfo : MonoBehaviour
 {
-
+    public static int getRaceValue(Race race)
+    {
+        switch (race)
+        {
+            case Race.ePismire: return 1;
+            case Race.eBee: return -1;
+        }
+        return 0;
+    }
 
     //保存玩家 选队 等信息,以便场景读取
 
