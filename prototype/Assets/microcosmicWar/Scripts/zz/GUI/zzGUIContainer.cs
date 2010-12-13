@@ -1,20 +1,20 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
 public class zzGUIContainer : zzInterfaceGUI
 {
-    public override void impGUI()
+    public override void impGUI(Rect rect)
     {
         impSubs();
     }
 
-
-    public virtual void impSubs()
+    public List<zzInterfaceGUI> getSubsByDepth()
     {
-        ArrayList lGUIlist = new ArrayList();
+        var lGUIlist = new List<zzInterfaceGUI>();
         foreach (Transform lTransform in transform)
         {
             zzInterfaceGUI impGUI = lTransform.GetComponent<zzInterfaceGUI>();
@@ -35,9 +35,15 @@ public class zzGUIContainer : zzInterfaceGUI
                     lGUIlist.Add(impGUI);
             }
         }
+        return lGUIlist;
+    }
+
+
+    public virtual void impSubs()
+    {
 
         //print("********************");
-        foreach (zzInterfaceGUI imp in lGUIlist)
+        foreach (zzInterfaceGUI imp in getSubsByDepth())
         {
             //print(imp.gameObject.name+" "+imp.getDepth());
             imp.renderGUI();

@@ -62,7 +62,7 @@ public class zzCreatorUtility : MonoBehaviour
         public override void sendMessage(GameObject gameObject, string methodName, object value)
         {
             gameObject.networkView.RPC(methodName,
-                RPCMode.AllBuffered,
+                RPCMode.All,
                 value);
         }
     }
@@ -163,7 +163,7 @@ public class zzCreatorUtility : MonoBehaviour
             gameObject.SendMessage(singleMethodName, value);
         else
             gameObject.networkView.RPC(netMethodName,
-                RPCMode.AllBuffered,
+                RPCMode.All,
                 value);
     }
 

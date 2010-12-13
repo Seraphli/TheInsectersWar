@@ -36,6 +36,13 @@ public class zzGUIRelativeUsedInfo
 
 public abstract class zzInterfaceGUI : MonoBehaviour
 {
+    //[System.Serializable]
+    //public class UIVector2
+    //{
+    //    public int x;
+    //    public int y;
+    //}
+
     //int data;
     public Rect position;
     public Rect relativePosition;
@@ -99,6 +106,31 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     }
 
+    public void renderGUI(Rect rect)
+    {
+        //Rect lRect = getPosition();
+        //lRect.x += ofsetPos.x;
+        //lRect.y += ofsetPos.y;
+        //lRect.width *= scale.x;
+        //lRect.height *= scale.y;
+
+        if (getVisible())
+        {
+            GUISkin lSkin = getSkin();
+            if (lSkin)
+            {
+                //使用 Skin
+                GUISkin lPreSkin = GUI.skin;
+                GUI.skin = lSkin;
+                impGUI(rect);
+                GUI.skin = lPreSkin;
+            }
+            else
+                impGUI(rect);
+        }
+
+    }
+
     public virtual GUISkin getSkin()
     {
         return skin;
@@ -114,7 +146,12 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return visible;
     }
 
-    public abstract void impGUI();
+    public virtual void impGUI()
+    {
+        impGUI(getPosition());
+    }
+
+    public abstract void impGUI(Rect rect);
 
     public virtual void setImage(Texture pImage)
     {

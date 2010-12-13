@@ -20,8 +20,7 @@ public class BagItemUI : MonoBehaviour
 
     void Start()
     {
-        zzSceneObjectMap lSceneObjectMap = GameObject.Find("Main Camera")
-            .transform.Find("UI").GetComponent<zzSceneObjectMap>();
+        zzSceneObjectMap lSceneObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
 
         if (!bagControl)
             bagControl = gameObject.GetComponent<zzItemBagControl>();

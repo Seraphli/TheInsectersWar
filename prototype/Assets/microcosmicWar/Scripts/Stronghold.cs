@@ -36,6 +36,13 @@ class Stronghold:MonoBehaviour
 
     public StrongholdValueShow strongholdValueShow;
 
+    public GameObject soldierFactory;
+
+    public void setSoldierFactory(GameObject pSoldierFactory)
+    {
+        soldierFactory = pSoldierFactory;
+    }
+
     GameObject  getBuilding(Race race)
     {
         switch (race)
@@ -150,6 +157,9 @@ class Stronghold:MonoBehaviour
         strongholdBuilding = null;
         nowOccupiedValue = 0.0f;
         owner = Race.eNone;
+
+        if (soldierFactory)
+            soldierFactory.GetComponent<Life>().makeDead();
     }
 
     /// <summary>

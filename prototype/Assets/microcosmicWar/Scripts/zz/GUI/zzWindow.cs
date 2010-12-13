@@ -18,16 +18,16 @@ class zzWindow : zzGUIContainer
     //zzGUI[] subElements;
 
 
-    public override void impGUI()
+    public override void impGUI(Rect rect)
     {
         if (ContentAndStyle.UseDefaultStyle)
         {
             //print("_useDefaultStyle");
-            position = GUI.Window(ID, getPosition(), DoMyWindow, ContentAndStyle.Content);
+            position = GUI.Window(ID, rect, DoMyWindow, ContentAndStyle.Content);
             return;
         }
         //print("not _useDefaultStyle");
-        position = GUI.Window(ID, getPosition(), DoMyWindow, ContentAndStyle.Content, ContentAndStyle.Style);
+        position = GUI.Window(ID, rect, DoMyWindow, ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
     public virtual void DoMyWindow(int windowID)

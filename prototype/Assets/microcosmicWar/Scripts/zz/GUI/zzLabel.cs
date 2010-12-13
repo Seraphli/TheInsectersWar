@@ -11,9 +11,9 @@ class zzLabel : zzInterfaceGUI
 
     public zzGUIStyle ContentAndStyle = new zzGUIStyle();
 
-    public override void impGUI()
+    public override void impGUI(Rect rect)
     {
-        GUI.Label(getPosition(), ContentAndStyle.Content, ContentAndStyle.Style);
+        GUI.Label(rect, ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
     public override void setText(string pText)

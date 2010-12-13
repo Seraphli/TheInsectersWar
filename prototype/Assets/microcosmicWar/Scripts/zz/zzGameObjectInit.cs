@@ -20,7 +20,7 @@ public class zzGameObjectInit : MonoBehaviour
             {
                 impInit(p);
                 networkView.RPC("initedFromRPC",
-                    RPCMode.OthersBuffered,
+                    RPCMode.Others,
                     zzSerializeString.getSingleton().pack(p));
             }
         }

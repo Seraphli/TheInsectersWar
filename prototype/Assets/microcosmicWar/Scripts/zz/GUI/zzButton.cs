@@ -12,17 +12,17 @@ public class zzButton : zzInterfaceGUI
     public zzGUIStyle ContentAndStyle = new zzGUIStyle();
     public zzInterfaceGUI.GUICallFunc clickCall = nullGUICallback;
 
-    public override void impGUI()
+    public override void impGUI(Rect rect)
     {
-        if (_drawButton())
+        if (_drawButton(rect))
             clickCall(this);
     }
 
-    bool _drawButton()
+    bool _drawButton(Rect rect)
     {
         if (ContentAndStyle.UseDefaultStyle)
-            return GUI.Button(getPosition(), ContentAndStyle.Content);
-        return GUI.Button(getPosition(), ContentAndStyle.Content, ContentAndStyle.Style);
+            return GUI.Button(rect, ContentAndStyle.Content);
+        return GUI.Button(rect, ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
     public override void setText(string pText)

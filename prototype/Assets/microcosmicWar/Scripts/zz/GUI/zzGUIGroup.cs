@@ -14,18 +14,18 @@ public class zzGUIGroup : zzGUIContainer
     //zzGUI[] subElements;
     public zzGUIStyle ContentAndStyle = new zzGUIStyle();
 
-    public override void impGUI()
+    public override void impGUI(Rect rect)
     {
         if (ContentAndStyle.UseDefaultStyle)
         {
             //print("_useDefaultStyle");
-            GUI.BeginGroup(getPosition(), ContentAndStyle.Content);
+            GUI.BeginGroup(rect, ContentAndStyle.Content);
             impSubs();
             GUI.EndGroup();
             return;
         }
         //print("not _useDefaultStyle");
-        GUI.BeginGroup(getPosition(), ContentAndStyle.Content, ContentAndStyle.Style);
+        GUI.BeginGroup(rect, ContentAndStyle.Content, ContentAndStyle.Style);
         impSubs();
         GUI.EndGroup();
     }

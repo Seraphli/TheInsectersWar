@@ -44,7 +44,7 @@ public class ItemBagData
         if (Network.peerType == NetworkPeerType.Disconnected)
             _impSetNum(index, num);
         else
-            networkView.RPC("setBagItemNum", RPCMode.AllBuffered, bagIndex, index, num);
+            networkView.RPC("setBagItemNum", RPCMode.All, bagIndex, index, num);
     }
 
     public void _impSetNum(int index, int num)

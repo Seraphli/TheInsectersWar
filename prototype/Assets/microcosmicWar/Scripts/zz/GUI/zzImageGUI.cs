@@ -11,11 +11,11 @@ public class zzImageGUI : zzInterfaceGUI
     public bool alphaBlend = true;
     public float imageAspect = 0;
 
-    public override void impGUI()
+    public override void impGUI(Rect rect)
     {
         //print("zzImageGUI renderGUI");
         if (image)
-            GUI.DrawTexture(getPosition(), image, scaleMode, alphaBlend, imageAspect);
+            GUI.DrawTexture(rect, image, scaleMode, alphaBlend, imageAspect);
     }
 
     public override void setImage(Texture pImage)

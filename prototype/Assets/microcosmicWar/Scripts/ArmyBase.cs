@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ArmyBase : MonoBehaviour
 {
@@ -13,6 +14,27 @@ public class ArmyBase : MonoBehaviour
     public Transform produceTransform;
 
     public IobjectListener objectListener;
+
+    Dictionary<GameObject, SoldierFactory> armyPrefabToFactory;
+
+    void Awake()
+    {
+        armyPrefabToFactory = new Dictionary<GameObject, SoldierFactory>();
+    }
+
+    public void addFactory(GameObject armyPrefab,float pProduceInterval)
+    {
+        SoldierFactory lSoldierFactory = gameObject.AddComponent<SoldierFactory>();
+        lSoldierFactory.soldierToProduce = armyPrefab;
+        lSoldierFactory.produceInterval = pProduceInterval;
+        armyPrefabToFactory[armyPrefab] = lSoldierFactory;
+    }
+
+    public void removeFactory(GameObject armyPrefab)
+    {
+        Destroy(armyPrefabToFactory[armyPrefab]);
+        armyPrefabToFactory.Remove(armyPrefab);
+    }
 
 
     void Start()

@@ -27,6 +27,12 @@ public class layers
 
     public static readonly int pismireMissile = LayerMask.NameToLayer("pismireMissile");
     public static readonly int beeMissile = LayerMask.NameToLayer("beeMissile");
+
+    public static readonly int stronghold = LayerMask.NameToLayer("stronghold");
+    public static readonly int strongholdValue = 1 << stronghold;
+
+    public static readonly int manor = LayerMask.NameToLayer("manor");
+    public static readonly int manorValue = 1 << manor;
 }
 
 public class collisionLayer : MonoBehaviour

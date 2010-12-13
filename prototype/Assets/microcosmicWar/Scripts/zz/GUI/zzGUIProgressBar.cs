@@ -8,8 +8,8 @@ public class zzGUIProgressBar : zzGUIGroup
     public float rate;
 
     //public override void impSubs()
-    
-    public override void impGUI()
+
+    public override void impGUI(Rect rect)
     {
         zzImageGUI[] lImages = gameObject.GetComponentsInChildren<zzImageGUI>();
         foreach (var lImage in lImages)
@@ -21,6 +21,6 @@ public class zzGUIProgressBar : zzGUIGroup
                 lRelativePosition.height = rate;
             lImage.relativePosition = lRelativePosition;
         }
-        base.impGUI();
+        base.impGUI(rect);
     }
 }

@@ -245,6 +245,10 @@ public class HeroSpawn : MonoBehaviour
         pHeroObject.AddComponent<BagItemUI>();
         pHeroObject.AddComponent<MoneyUI>();
         pHeroObject.AddComponent<bagItemUIInput>();
+        var lSoldierFactoryStateUI = pHeroObject.AddComponent<SoldierFactoryStateUI>();
+        lSoldierFactoryStateUI.race = PlayerInfo.getRace(pHeroObject.layer);
+        lSoldierFactoryStateUI.onwer = pHeroObject;
+        pHeroObject.AddComponent<SoldierFactoryStateUIInput>();
 
         //使用血条UI
         GameObject.Destroy( pHeroObject.transform.FindChild("bloodBar").gameObject );
@@ -264,6 +268,7 @@ public class HeroSpawn : MonoBehaviour
         mainInput lMainInput = SystemObject.GetComponent<mainInput>();
         lMainInput.setToControl(null);
         Destroy(pHeroObject.GetComponent<bagItemUIInput>());
+        Destroy(pHeroObject.GetComponent<SoldierFactoryStateUIInput>());
 
     }
 

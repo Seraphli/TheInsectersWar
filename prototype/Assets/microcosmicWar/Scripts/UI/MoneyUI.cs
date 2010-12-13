@@ -12,8 +12,7 @@ public class MoneyUI : MonoBehaviour
 
     void Start()
     {
-        zzSceneObjectMap lSceneObjectMap = GameObject.Find("Main Camera")
-            .transform.Find("UI").GetComponent<zzSceneObjectMap>();
+        zzSceneObjectMap lSceneObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
 
         if (!moneyLabel)
             moneyLabel = lSceneObjectMap.getObject("moneyLabel").GetComponent<zzInterfaceGUI>();

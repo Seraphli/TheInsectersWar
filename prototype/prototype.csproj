@@ -90,6 +90,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\UI\BagItemUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\bagItemUIInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\MoneyUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\UI\SoldierFactoryStateUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\UI\SoldierFactoryStateUIInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzAnimationEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
@@ -100,6 +102,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITransform.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzInterfaceGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzLabel.cs" />
@@ -126,6 +129,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemBagControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRandomObjectByWeight.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRandomPath.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
@@ -186,6 +190,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactory.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactoryState.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\SoldierFactorySystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SoldierNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SonicWaveTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SphereAreaHarm.cs" />
