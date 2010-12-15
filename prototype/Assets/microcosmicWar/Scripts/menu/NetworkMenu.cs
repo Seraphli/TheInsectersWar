@@ -28,6 +28,21 @@ public class NetworkMenu : MonoBehaviour
     public float hostListRefreshTimeout = 10.0f;
     public float refreshTimePos = 0.0f;
 
+    public ServerList serverList;
+    public GameObject broadcastObjectPrefab;
+    public GameObject broadcastSentObject;
+    public GameObject broadcastRecieverObject;
+
+    void initBroadcastSent()
+    {
+        broadcastSentObject = (GameObject)Object.Instantiate(broadcastObjectPrefab);
+        zzBroadcast lBroadcast = broadcastSentObject.GetComponent<zzBroadcast>();
+        lBroadcast.servertype = zzBroadcast.ServerType.send;
+        lBroadcast.sentedData = playerName;
+        lBroadcast.autoSent = true;
+        lBroadcast.autoInterval = 0.8f;
+    }
+
     //FIXME_VAR_TYPE serverPort= 25002;
     //private FIXME_VAR_TYPE doneTesting= false;
     //private FIXME_VAR_TYPE probingPublicIP= false;
@@ -36,10 +51,10 @@ public class NetworkMenu : MonoBehaviour
     {
         DontDestroyOnLoad(GameObject.Find(savedDataName));
 
-        MasterServer.ClearHostList();
-        MasterServer.RequestHostList(gameTypeName);
-        //Network.useNat = true;
-        Network.useNat = false;
+        //MasterServer.ClearHostList();
+        //MasterServer.RequestHostList(gameTypeName);
+        ////Network.useNat = true;
+        //Network.useNat = false;
     }
     void Update()
     {
@@ -47,7 +62,7 @@ public class NetworkMenu : MonoBehaviour
         if (refreshTimePos > hostListRefreshTimeout)
         {
             //MasterServer.ClearHostList();
-            MasterServer.RequestHostList(gameTypeName);
+            //MasterServer.RequestHostList(gameTypeName);
             refreshTimePos = 0;
         }
     }
@@ -67,7 +82,7 @@ public class NetworkMenu : MonoBehaviour
     {
         //Debug.Log("Could not connect to server: "+ error);
         networkConnectionError = error;
-        Network.useNat = false;
+        //Network.useNat = false;
     }
 
     void OnPlayerConnected(NetworkPlayer player)
@@ -135,8 +150,9 @@ public class NetworkMenu : MonoBehaviour
 			//Network.useNat = false;
 			Network.InitializeServer(32, remotePort);
 			
-			MasterServer.RegisterHost(gameTypeName,
-				gameName, playerName); 
+            //MasterServer.RegisterHost(gameTypeName,
+            //    gameName, playerName); 
+            initBroadcastSent();
 			
 			// Notify our objects that the level and the network is ready
 			//for (var go in FindObjectsOfType(typeof(GameObject)))
@@ -166,38 +182,49 @@ public class NetworkMenu : MonoBehaviour
 		GUILayout.Label(networkConnectionError.ToString());
 		GUILayout.Label(Network.peerType.ToString());
 		
-		if (GUILayout.Button ("Refresh available Servers manually") )
-		{
-			MasterServer.RequestHostList (gameTypeName);
-		}
-		GUILayout.Space(10);
+        //if (GUILayout.Button ("Refresh available Servers manually") )
+        //{
+        //    MasterServer.RequestHostList (gameTypeName);
+        //}
+        //GUILayout.Space(10);
 	
-		HostData[] data = MasterServer.PollHostList();
-		GUILayout.Label(data.Length.ToString());
-        foreach (HostData element in data)
-		{
-			//GUILayout.Label(element.gameType);
-			//GUILayout.Label(element.gameName);
-			GUILayout.Label("player name: "+element.comment);
-			GUILayout.Label("IP:");
-			foreach(string ipElement in element.ip)
-				GUILayout.Label(ipElement);
-			//print(element.ip);
-			//print(element.ip[0]);
-			GUILayout.Label("port: "+element.port.ToString());
+        //HostData[] data = MasterServer.PollHostList();
+        //GUILayout.Label(data.Length.ToString());
+        var lServerList = serverList.serverList;
+        foreach (var lServer in lServerList)
+        {
+            GUILayout.Label("player name: " + lServer.Value);
+            GUILayout.Label("IP:"+lServer.Key);
+            if (GUILayout.Button("Connect"))
+            {
+                Network.Connect(lServer.Key, remotePort);
+            }
+            GUILayout.Space(2);
+        }
+        //foreach (HostData element in data)
+        //{
+        //    //GUILayout.Label(element.gameType);
+        //    //GUILayout.Label(element.gameName);
+        //    GUILayout.Label("player name: "+element.comment);
+        //    GUILayout.Label("IP:");
+        //    foreach(string ipElement in element.ip)
+        //        GUILayout.Label(ipElement);
+        //    //print(element.ip);
+        //    //print(element.ip[0]);
+        //    GUILayout.Label("port: "+element.port.ToString());
 			
-				if (GUILayout.Button("Connect"))
-				{
-					// Enable NAT functionality based on what the hosts if configured to do
-					Network.useNat = element.useNat;
-					//if (Network.useNat)
-					//	print("Using Nat punchthrough to connect");
-					//else
-					//	print("Connecting directly to host");
-					Network.Connect(element.ip, element.port);			
-				}
-			GUILayout.Space(2);
-		}
+        //        if (GUILayout.Button("Connect"))
+        //        {
+        //            // Enable NAT functionality based on what the hosts if configured to do
+        //            Network.useNat = element.useNat;
+        //            //if (Network.useNat)
+        //            //	print("Using Nat punchthrough to connect");
+        //            //else
+        //            //	print("Connecting directly to host");
+        //            Network.Connect(element.ip, element.port);			
+        //        }
+        //    GUILayout.Space(2);
+        //}
 		
 		GUILayout.EndVertical();
 	}
@@ -205,6 +232,7 @@ public class NetworkMenu : MonoBehaviour
 	{
 		if (GUILayout.Button ("Disconnect"))
 		{
+            Destroy(broadcastSentObject);
 			Network.Disconnect(200);
 		}
 		GUILayout.Label("state: "+Network.peerType.ToString());

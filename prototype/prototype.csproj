@@ -84,6 +84,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\MainMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkMenu.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\ServerList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\test\mainInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\test\timerTest.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\test\TriggerTest.cs" />
@@ -92,6 +93,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\UI\MoneyUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\SoldierFactoryStateUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\UI\SoldierFactoryStateUIInput.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcast.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcastReciever.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcastSender.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzNetworkInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzAnimationEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
@@ -137,6 +142,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPoint.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ActionCommandControl.cs" />
