@@ -33,6 +33,8 @@ public class NetworkMenu : MonoBehaviour
     public GameObject broadcastSentObject;
     public GameObject broadcastRecieverObject;
 
+    public float autoSentInterval = 0.43f;
+
     void initBroadcastSent()
     {
         broadcastSentObject = (GameObject)Object.Instantiate(broadcastObjectPrefab);
@@ -40,7 +42,7 @@ public class NetworkMenu : MonoBehaviour
         lBroadcast.servertype = zzBroadcast.ServerType.send;
         lBroadcast.sentedData = playerName;
         lBroadcast.autoSent = true;
-        lBroadcast.autoInterval = 0.8f;
+        lBroadcast.autoInterval = autoSentInterval;
     }
 
     //FIXME_VAR_TYPE serverPort= 25002;

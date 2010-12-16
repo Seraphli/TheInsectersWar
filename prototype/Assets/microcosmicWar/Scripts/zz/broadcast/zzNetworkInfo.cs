@@ -61,10 +61,12 @@ class zzNetworkInfo
                 {
                     //Console.WriteLine("IP地址:" + ip.UnicastAddresses[0].Address.ToString());
                     //Console.WriteLine("子网掩码:" + ip.UnicastAddresses[0].IPv4Mask.ToString());
+                    var lIP = lUnicastAddresses.Address.GetAddressBytes();
+                    if (lIP.Length > 4)
+                        continue;
                     Info lInfo = new Info();
                     lInfo.IP = lUnicastAddresses.Address;
                     var lMask = lUnicastAddresses.IPv4Mask.GetAddressBytes();
-                    var lIP = lUnicastAddresses.Address.GetAddressBytes();
                     var lBroadcast = or(lIP, tilde(lMask));
                     lInfo.broadcastIP = new IPAddress(lBroadcast);
 

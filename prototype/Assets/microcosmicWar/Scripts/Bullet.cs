@@ -149,9 +149,14 @@ public class Bullet : MonoBehaviour
     {
         return transform.rotation * Vector3.right;
     }
-
     //设置子弹飞的方向
     public void setForward(Vector3 pForward)
+    {
+        setForward(pForward, true);
+    }
+
+    //设置子弹飞的方向
+    public void setForward(Vector3 pForward,bool pRPCCall)
     {
         pForward.z = 0;
         Quaternion lRotation = new Quaternion();
@@ -159,19 +164,58 @@ public class Bullet : MonoBehaviour
         //transform.rotation.SetFromToRotation(Vector3.right,pForward);
         transform.rotation = lRotation;
         float lSpeed = bulletRigidbody.velocity.magnitude;
-        bulletRigidbody.velocity = pForward.normalized * lSpeed;
+        Vector3 lVelocity = pForward.normalized * lSpeed;
+        bulletRigidbody.velocity = lVelocity;
+        setBulletForwardVelocity(lVelocity, lRotation, pRPCCall);
+    }
+
+    void setBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation,bool pRPCCall)
+    {
+        if (pRPCCall&&Network.peerType== NetworkPeerType.Server)
+        {
+            networkView.RPC("RPCSetBulletForwardVelocity", RPCMode.Others, pVelocity, pRotation);
+        }
+    }
+
+    [RPC]
+    void RPCSetBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation)
+    {
+        transform.rotation = pRotation;
+        bulletRigidbody.velocity = pVelocity;
+    }
+
+    //设置子弹飞的方向和速度
+    public void setForwardVelocity(Vector3 pVelocity)
+    {
+        setForwardVelocity(pVelocity,true);
     }
 
 
     //设置子弹飞的方向和速度
-    public void setForwardVelocity(Vector3 pVelocity)
+    public void setForwardVelocity(Vector3 pVelocity, bool pRPCCall)
     {
         pVelocity.z = 0;
         var lRotation = new Quaternion();
         lRotation.SetFromToRotation(Vector3.right, pVelocity);
         transform.rotation = lRotation;
         bulletRigidbody.velocity = pVelocity;
+        setBulletForwardVelocity(pVelocity, lRotation, pRPCCall);
     }
+
+    //public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    //{
+    //    if (stream.isWriting)
+    //    {
+    //        Vector3 lVelocity = bulletRigidbody.velocity;
+    //        stream.Serialize(ref lVelocity);
+    //    }
+    //    else//(stream.isReading)
+    //    {
+    //        Vector3 lVelocity = new Vector3();
+    //        stream.Serialize(ref lVelocity);
+    //        bulletRigidbody.velocity = lVelocity;
+    //    }
+    //}
 
     void OnDrawGizmosSelected()
     {

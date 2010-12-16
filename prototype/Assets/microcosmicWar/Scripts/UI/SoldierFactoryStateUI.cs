@@ -12,6 +12,10 @@ public class SoldierFactoryStateUI:MonoBehaviour
     public zzGUITransform[] itemListUI;
     public zzInterfaceGUI[] imgListUI;
     public zzInterfaceGUI[] selectedListUI;
+    public zzGUIAniToTargetScale[] animationList;
+
+    float minIconSize;
+    float maxIconSize;
 
     public Race race;
     public GameObject onwer;
@@ -29,18 +33,29 @@ public class SoldierFactoryStateUI:MonoBehaviour
             UIroot = lSceneObjectMap.getObject("soldierModule")
                 .GetComponent<zzInterfaceGUI>();
 
+        zzValueMap lValueMap = UIroot.GetComponent<zzValueMap>();
+        minIconSize = float.Parse(lValueMap.getValue("minIconSize"));
+        maxIconSize = float.Parse(lValueMap.getValue("maxIconSize"));
+        float lIconScaleSpeed = float.Parse(lValueMap.getValue("iconScaleSpeed"));
+
         itemListUI = new zzGUITransform[numOfShowItem];
         imgListUI = new zzInterfaceGUI[numOfShowItem];
         selectedListUI = new zzInterfaceGUI[numOfShowItem];
+        animationList = new zzGUIAniToTargetScale[numOfShowItem];
 
         zzInterfaceGUI itemList = UIroot.getSubElement("itemList");
         zzInterfaceGUI selectedList = UIroot.getSubElement("selectedList");
 
         for (int i = 1; i <= numOfShowItem; ++i)
         {
-            itemListUI[i - 1] = (zzGUITransform)itemList.getSubElement(i.ToString());
+            zzGUITransform lGUITransform = (zzGUITransform)itemList.getSubElement(i.ToString());
+            itemListUI[i - 1] = lGUITransform;
             imgListUI[i - 1] = itemListUI[i - 1].getSubElement("pic");
             selectedListUI[i - 1] = selectedList.getSubElement(i.ToString());
+            zzGUIAniToTargetScale lGUIAniToTargetScale = lGUITransform.GetComponent<zzGUIAniToTargetScale>();
+            animationList[i - 1] = lGUIAniToTargetScale;
+            lGUIAniToTargetScale.enabled = false;
+            lGUIAniToTargetScale.speed = lIconScaleSpeed;
         }
 
         refreshItemShow();
@@ -71,10 +86,18 @@ public class SoldierFactoryStateUI:MonoBehaviour
     //从1开始, 0为没有选, 比如包中为空
     public void setSelected(int pIndex)
     {
-        foreach (zzInterfaceGUI i in selectedListUI)
-            i.setVisible(false);
+        int i = 0;
+        foreach (zzInterfaceGUI lSelectedUI in selectedListUI)
+        {
+            lSelectedUI.setVisible(false);
+            animationList[i].scaleToTarget(minIconSize);
+            ++i;
+        }
         if (pIndex > 0)
+        {
             selectedListUI[pIndex - 1].setVisible(true);
+            animationList[pIndex - 1].scaleToTarget(maxIconSize);
+        }
 
         selectedIndex = pIndex;
     }

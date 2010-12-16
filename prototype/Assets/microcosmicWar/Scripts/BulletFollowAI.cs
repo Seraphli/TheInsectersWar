@@ -37,7 +37,7 @@ public class BulletFollowAI : MonoBehaviour
         if (target)
         {
             Vector3 lToAim = target.position - bullet.transform.position;
-            bullet.setForward(Vector3.Lerp(bullet.getForward(), lToAim.normalized, 2 * Time.deltaTime));
+            bullet.setForward(Vector3.Lerp(bullet.getForward(), lToAim.normalized, 2 * Time.deltaTime),false);
         }
         //print("getForward"+bullet.getForward());
         //print(lToAim );

@@ -101,6 +101,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
@@ -144,6 +145,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzValueMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPoint.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ActionCommandControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AiMachineGun.cs" />

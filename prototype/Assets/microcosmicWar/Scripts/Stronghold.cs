@@ -57,7 +57,7 @@ class Stronghold:MonoBehaviour
     void OnTriggerEnter(Collider pCollider)
     {
         var lValue = getValue(pCollider);
-        print("OnTriggerEnter:" + lValue.name);
+        //print("OnTriggerEnter:" + lValue.name);
         if (lValue.gameObject.layer == layers.pismire)
             pismireList.Add(lValue);
         else
@@ -68,7 +68,7 @@ class Stronghold:MonoBehaviour
     void OnTriggerExit(Collider pCollider)
     {
         var lValue = getValue(pCollider);
-        print("OnTriggerExit:" + lValue.name);
+        //print("OnTriggerExit:" + lValue.name);
         if (lValue.gameObject.layer == layers.pismire)
             pismireList.Remove(lValue);
         else
