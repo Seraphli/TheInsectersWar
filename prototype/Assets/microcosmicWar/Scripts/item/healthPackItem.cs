@@ -21,7 +21,7 @@ class healthPackItem : IitemObject
     public override void use()
     {
         Life lLife = useObject.GetComponent<Life>();
-        LifeRecover lLifeRecover = useObject.AddComponent<LifeRecover>();
+        LifeRecoverConstValue lLifeRecover = useObject.AddComponent<LifeRecoverConstValue>();
         lLifeRecover.setLife(lLife);
         lLifeRecover.recoverValue = recoverValue;
         lLifeRecover.duration = duration;

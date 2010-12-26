@@ -45,10 +45,31 @@ public class Board : MonoBehaviour
         Physics.IgnoreCollision(gameObject.collider, pGameObject.collider, false);
     }
 
-
-    void Start()
+    public static void addBoardInAllChild(GameObject pGameObject)
     {
-        //用于子弹的穿透
-        collisionLayer.addCollider(gameObject);
+        if (pGameObject.GetComponent<Collider>())
+            pGameObject.AddComponent<Board>();
+        foreach (Transform lChild in pGameObject.transform)
+        {
+            addBoardInAllChild(lChild.gameObject);
+        }
     }
+
+    public static void removeBoardInAllChild(GameObject pGameObject)
+    {
+        Board lBoard = pGameObject.GetComponent<Board>();
+        if (lBoard)
+            Object.DestroyImmediate(lBoard);
+        foreach (Transform lChild in pGameObject.transform)
+        {
+            removeBoardInAllChild(lChild.gameObject);
+        }
+    }
+
+
+    //void Start()
+    //{
+    //    //用于子弹的穿透
+    //    collisionLayer.addCollider(gameObject);
+    //}
 }

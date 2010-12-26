@@ -13,9 +13,10 @@ public class Life : MonoBehaviour
     public int fullBloodValue = 5;
 
     protected lifeCallFunc bloodValueChangeCallback = nullLifeCallFunc;
-    //FIXME_VAR_TYPE dieCallback=zzUtilities.nullFunction;
+
     public ArrayList dieCallbackList = new ArrayList();
 
+    //在死亡或者去血的回调中,读取
     protected Hashtable injureInfo;
     //搜索有无bloodBar 以便显示血量
     //void Start()

@@ -35,8 +35,7 @@ public class HeroSpawn : MonoBehaviour
 
     void Start()
     {
-        mUIObjectMap = GameObject.Find("Main Camera")
-            .transform.Find("UI").GetComponent<zzSceneObjectMap>();
+        mUIObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
         mBloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBar>();
         /*
             if( zzCreatorUtility.isHost() )
@@ -49,10 +48,11 @@ public class HeroSpawn : MonoBehaviour
         if (autoCreatePlayer)
             createHeroFirstTime();
         if (!rebirthClockUI)
-            rebirthClockUI = GameObject.Find("Main Camera/UI/rebirthClock").GetComponent<zzInterfaceGUI>();
+            rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzGUIProgressBar>();
 
         if (!SystemObject)
-            SystemObject = GameObject.Find("System");
+            //SystemObject = GameObject.Find("System");
+            SystemObject = zzObjectMap.getObject("system");
     }
 
     public void setOwer(NetworkPlayer pOwner)

@@ -38,6 +38,8 @@ public class Hero : MonoBehaviour
 
     public BoardDetector boardDetector;
 
+    public zzAutoDetect standDetector;
+
     public bool inFiring;
 
     public BodyActionInfo upBodyActionInfo = new BodyActionInfo();
@@ -117,7 +119,7 @@ public class Hero : MonoBehaviour
         //?
         //characterController .detectCollisions=false;
 
-        collisionLayer.addCollider(gameObject);
+        //collisionLayer.addCollider(gameObject);
 
         if (!reverseObjectTransform)
             reverseObjectTransform = transform;
@@ -163,7 +165,7 @@ public class Hero : MonoBehaviour
         gameObject.layer = layers.deadObject;
         //transform.Find("CubeReact").gameObject.layer = layers.deadObject;
 
-        collisionLayer.updateCollider(gameObject);
+        //collisionLayer.updateCollider(gameObject);
         disappear();
     }
 
@@ -221,7 +223,8 @@ public class Hero : MonoBehaviour
             else
                 upBodyAction.playAction("standby");
 
-            if (character.isGrounded())
+            //if (character.isGrounded())
+            if (character.isGrounded() || standDetector.result.Length!=0)
                 if (lActionCommand.GoForward)
                 {
                     downBodyAction.playAction("run");

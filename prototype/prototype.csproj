@@ -35,19 +35,61 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
 	<Reference Include="Boo.Lang">
-	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity/Editor/Data/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityScript">
-	  <HintPath>E:/Program Files/Unity3.1.0f3/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
+	  <HintPath>E:/Program Files/Unity/Editor/Data/Mono/lib/mono/unity/UnityScript.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Antares\Editor\AI_RangeEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresAddonContEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresAddonEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresBasket.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresCameraLayersDistance.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresComponentEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresConsole.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresCurvedRoadEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresCurveEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresCurvePointEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresCustomEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresEdMainWindow.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresEdWindow.cs" />
+     <Compile Include="Assets\Antares\Editor\AntaresGameObjectCustom.cs" />
+     <Compile Include="Assets\Antares\Editor\CsBipedEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\CurvesTransferer.cs" />
+     <Compile Include="Assets\Antares\Editor\FixedJointEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\HingeJointEditor.cs" />
+     <Compile Include="Assets\Antares\Editor\InterpolatorEditor.cs" />
+     <None Include="Assets\Antares\Editor\TakeOffYourHandEditor.js" />
+     <Compile Include="Assets\Antares\Editor\WizardAntaresAbout.cs" />
+     <Compile Include="Assets\Antares\Editor\WizardAntaresMultiComponentsSetting.cs" />
+     <Compile Include="Assets\Antares\Editor\WizardAntaresSelectFromFolder.cs" />
+     <Compile Include="Assets\Antares\Scripts\Bezier\AntaresCurvePoint.cs" />
+     <Compile Include="Assets\Antares\Scripts\Bezier\Curve.cs" />
+     <Compile Include="Assets\Antares\Scripts\Bezier\CurvedRoad.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\AI_RangeMarker.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\AntaresAddon.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\AntaresAddonController.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\AntaresBezierController.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\AntaresConsoleRuntime.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\AntaresExtender.cs" />
+     <Compile Include="Assets\Antares\Scripts\System\CsBipedBone.cs" />
+     <None Include="Assets\Antares\Scripts\System\TakeYourHandOFF.js" />
+     <None Include="Assets\Antares\Scripts\System\TerrainSetNeighbors.js" />
+     <Compile Include="Assets\Antares\Scripts\AI_Range.cs" />
+     <Compile Include="Assets\Antares\Scripts\AntaresInterpolator.cs" />
+     <Compile Include="Assets\Antares\Scripts\CameraLayersDistance.cs" />
+     <Compile Include="Assets\Antares\Scripts\CombineChildrenExtanded.cs" />
+     <Compile Include="Assets\Antares\Scripts\CsBiped.cs" />
+     <None Include="Assets\Antares\AntaresHistory.txt" />
+     <None Include="Assets\Antares\AntaresVersion.txt" />
      <None Include="Assets\Detonator\Resources\Detonator\Textures\HeatDistort.shader" />
      <None Include="Assets\Detonator\Sample Supporting Emitters\Detonator Spray Helper.js" />
      <Compile Include="Assets\Detonator\System\Detonator.cs" />
@@ -68,12 +110,14 @@
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
      <None Include="Assets\Editor\_2Dphysics.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\awakeShooterWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\createObjectWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\destroyComponentWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\destroyWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\dieWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\playAnimationWhenDie.cs" />
@@ -116,6 +160,22 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Language\Chinese\LangResForCn.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Language\English\LangResForEn.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Language\zzLanguage.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\Editor\zzMeshCombiner.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DBounds.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DConcave.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DConcaveDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DLine.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DPoint.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzFlatMeshUtility.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzFlatModelPainter.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzMapPainter.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzOutlineSweeper.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPainterPoint.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPainterPolygon.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPolygon.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzSimplyPolygon.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzSimplyPolygonDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzAutoDetect.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetector.cs" />
@@ -181,7 +241,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\HeroSpawn.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\IobjectListener.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Life.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\LifeRecover.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\LifeIntervalRecoverByDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\LifeRecoverConstValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\MessageRedirect.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\NetworkHelpObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ObjectProperty.cs" />

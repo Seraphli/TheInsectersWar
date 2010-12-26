@@ -252,7 +252,7 @@ public class SoldierAI : MonoBehaviour
                 character.isGrounded
                 && pAimPos.y >= transform.position.y
                 && !lActionCommand.Jump
-                && forwardBoardDetector.detect(1, layers.boardValue).Length == 0
+                && forwardBoardDetector.detect(1, layers.standPlaceValue).Length == 0
                 )//判断前进的方向上是否有可站立的地方,没有 就跳跃
             {
                 lActionCommand.Jump = true;

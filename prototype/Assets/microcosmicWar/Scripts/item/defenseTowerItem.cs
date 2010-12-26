@@ -30,7 +30,7 @@ class defenseTowerItem : IitemObject
             Physics.Raycast(lPosition,
                 new Vector3(0, -1, 0),
                 out lHit,
-                4, layers.boardValue)
+                4, layers.standPlaceValue)
             )
         {
             position = lHit.point;
@@ -42,7 +42,7 @@ class defenseTowerItem : IitemObject
 
     public static bool haveBoardOverhead(Vector3 position)
     {
-        return Physics.CheckSphere(position + new Vector3(0, 2, 0), 1.8f, layers.boardValue);
+        return Physics.CheckSphere(position + new Vector3(0, 2, 0), 1.8f, layers.standPlaceValue);
     }
 
     public static bool canBuild(GameObject pGameObject,out Vector3 position)

@@ -21,6 +21,11 @@ public class zzObjectMap : MonoBehaviour
 
     public static GameObject getObject(string pName)
     {
-        return mObjectMap[pName] as GameObject;
+        if (mObjectMap.Contains(pName))
+        {
+            return mObjectMap[pName] as GameObject;
+        }
+        return GameObject.FindWithTag(pName);
+
     }
 }

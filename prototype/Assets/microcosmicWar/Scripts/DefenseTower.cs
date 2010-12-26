@@ -121,7 +121,7 @@ public class DefenseTower : MonoBehaviour
         {
             i.gameObject.layer = pLayer;
         }
-        collisionLayer.addCollider(gameObject);
+        //collisionLayer.addCollider(gameObject);
         emitter.setBulletLayer(getBulletLayer());
     }
 

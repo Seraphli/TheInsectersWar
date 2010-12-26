@@ -67,7 +67,7 @@ public class Soldier : MonoBehaviour
         life.addDieCallback(deadAction);
 
 
-        collisionLayer.addCollider(gameObject);
+        //collisionLayer.addCollider(gameObject);
 
         Xscale = transform.localScale.x;
 
@@ -98,7 +98,7 @@ public class Soldier : MonoBehaviour
         gameObject.layer = layers.deadObject;
         //transform.Find("CubeReact").gameObject.layer = layers.deadObject;
 
-        collisionLayer.updateCollider(gameObject);
+        //collisionLayer.updateCollider(gameObject);
 
     }
 

@@ -66,8 +66,8 @@ public class SoldierFactoryStateUI:MonoBehaviour
         int i = 0;
         foreach (var lStateInfo in soldierFactoryState.getFactoryStates(race))
         {
-            if (lStateInfo.building)
-                print(lStateInfo.building.name);
+            //if (lStateInfo.building)
+            //    print(lStateInfo.building.name);
             if (lStateInfo.canBuild())
                 imgListUI[i].setImage(lStateInfo.info.activeImage);
             else

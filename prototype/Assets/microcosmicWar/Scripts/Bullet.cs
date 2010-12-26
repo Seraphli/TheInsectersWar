@@ -57,14 +57,7 @@ public class Bullet : MonoBehaviour
     {
         if (shape)
         {
-            //print("collisionLayer.addCollider(shape)");
             shape.layer = gameObject.layer;
-            collisionLayer.addCollider(shape);
-        }
-        else
-        {
-            //print("collisionLayer.addCollider(gameObject)");
-            collisionLayer.addCollider(gameObject);
         }
         //print(gameObject.layer);
         //if(!zzCreatorUtility.isHost())

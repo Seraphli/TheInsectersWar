@@ -78,7 +78,7 @@ public class SonicWaveTower : MonoBehaviour
 
         foreach(Transform subShape in transform.Find("shape"))
             subShape.gameObject.layer = lTowerObject.layer;
-        collisionLayer.addCollider(gameObject);
+        //collisionLayer.addCollider(gameObject);
 
     }
 

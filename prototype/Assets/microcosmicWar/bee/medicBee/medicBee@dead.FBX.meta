@@ -1,0 +1,144 @@
+fileFormatVersion: 1
+guid: cef56b242aabbd4469e3b33b27a58398
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      dead:
+        firstFrame: 0
+        lastFrame: 55
+        loop: 0
+        wrapMode: 1
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    IK Chain04:
+    - 100002
+    - 400002
+    IK Chain03:
+    - 100004
+    - 400004
+    IK Chain02:
+    - 100006
+    - 400006
+    IK Chain01:
+    - 100008
+    - 400008
+    Bone31:
+    - 100010
+    - 400010
+    Bone30:
+    - 100012
+    - 400012
+    Bone29:
+    - 100014
+    - 400014
+    Bone28:
+    - 100016
+    - 400016
+    Bone27:
+    - 100018
+    - 400018
+    Bone26:
+    - 100020
+    - 400020
+    Bone25:
+    - 100022
+    - 400022
+    Bone24:
+    - 100024
+    - 400024
+    Bone23:
+    - 100026
+    - 400026
+    Bone22:
+    - 100028
+    - 400028
+    Bone21:
+    - 100030
+    - 400030
+    Bone20:
+    - 100032
+    - 400032
+    Bone19:
+    - 100034
+    - 400034
+    Bone18:
+    - 100036
+    - 400036
+    Bone17:
+    - 100038
+    - 400038
+    Bone16:
+    - 100040
+    - 400040
+    Bone15:
+    - 100042
+    - 400042
+    Bone14:
+    - 100044
+    - 400044
+    Bone13:
+    - 100046
+    - 400046
+    Bone12:
+    - 100048
+    - 400048
+    Bone11:
+    - 100050
+    - 400050
+    Bone10:
+    - 100052
+    - 400052
+    Bone09:
+    - 100054
+    - 400054
+    Bone08:
+    - 100056
+    - 400056
+    Bone07:
+    - 100058
+    - 400058
+    Bone06:
+    - 100060
+    - 400060
+    Bone05:
+    - 100062
+    - 400062
+    Bone04:
+    - 100064
+    - 400064
+    Bone03:
+    - 100066
+    - 400066
+    Bone02:
+    - 100068
+    - 400068
+    Bone01:
+    - 100070
+    - 400070
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    7400000: Take 001 //// medicBee@dead
+    7400002: dead //// medicBee@dead

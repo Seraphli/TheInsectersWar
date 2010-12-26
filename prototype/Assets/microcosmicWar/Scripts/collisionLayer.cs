@@ -25,6 +25,11 @@ public class layers
     public static readonly int board = LayerMask.NameToLayer("board");
     public static readonly int boardValue = 1 << board;
 
+    public static readonly int ground = LayerMask.NameToLayer("ground");
+    public static readonly int groundValue = 1 << ground;
+
+    public static readonly int standPlaceValue = boardValue | groundValue;
+
     public static readonly int pismireMissile = LayerMask.NameToLayer("pismireMissile");
     public static readonly int beeMissile = LayerMask.NameToLayer("beeMissile");
 
@@ -104,15 +109,15 @@ public class collisionLayer : MonoBehaviour
     }
 
     //目前只可用于deadObject
-    public static void updateCollider(GameObject gameObject)
-    {
-        //print("@@@@@@@@@@@@@@@@  updateCollider");
-        addCollider(gameObject);
-    }
-    public static void addCollider(GameObject gameObject)
-    {
+    //public static void updateCollider(GameObject gameObject)
+    //{
+    //    //print("@@@@@@@@@@@@@@@@  updateCollider");
+    //    addCollider(gameObject);
+    //}
+    //public static void addCollider(GameObject gameObject)
+    //{
 
-    }
+    //}
 
     //public static void addCollider(GameObject gameObject)
     //{

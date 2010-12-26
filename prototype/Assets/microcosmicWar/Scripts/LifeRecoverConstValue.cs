@@ -2,7 +2,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class LifeRecover : MonoBehaviour
+/// <summary>
+/// 在指定的时间内,恢复指定的血量
+/// </summary>
+public class LifeRecoverConstValue : MonoBehaviour
 {
 
     //总共可以恢复的生命值
