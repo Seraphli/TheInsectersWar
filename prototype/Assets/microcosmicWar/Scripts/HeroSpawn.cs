@@ -48,7 +48,7 @@ public class HeroSpawn : MonoBehaviour
         if (autoCreatePlayer)
             createHeroFirstTime();
         if (!rebirthClockUI)
-            rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzGUIProgressBar>();
+            rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
 
         if (!SystemObject)
             //SystemObject = GameObject.Find("System");

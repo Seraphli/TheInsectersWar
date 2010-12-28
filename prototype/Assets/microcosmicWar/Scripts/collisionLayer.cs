@@ -246,6 +246,8 @@ public class collisionLayer : MonoBehaviour
         {
             IgnoreCollisionBetween(layers.deadObject, i);
         }
+        Physics.IgnoreLayerCollision(layers.deadObject, layers.board, false);
+        Physics.IgnoreLayerCollision(layers.deadObject, layers.ground, false);
     }
 
 }

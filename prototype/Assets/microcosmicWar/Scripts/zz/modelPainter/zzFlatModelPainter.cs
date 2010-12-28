@@ -1,0 +1,323 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+
+
+public class zzFlatModelPainter : MonoBehaviour
+{
+    public Texture2D picture;
+    //Texture2D prePicture;
+    public float ignoreDistanceInSweeping = 1.7f;
+    public float thickness = 10.0f;
+
+    public GameObject polygonDebugers;
+    public GameObject pictureDebuger;
+
+    List<zz2DConcave> concaves;
+    List<zzSimplyPolygon[]> convexesList;
+    //List<GameObject> polygonDebugers;
+
+    enum Step
+    {
+        nothing=1,
+        showPocture,
+        pickPicture,
+        sweepPicture,
+        convexDecompose,
+        draw,
+    }
+
+    public enum SweepMode
+    {
+        ignoreColor,
+        designatedColor,
+        ignoreAlphaZero,
+    }
+
+    [SerializeField]
+    Step step = Step.nothing;
+
+    public int pointNumber = 0;
+
+    public SweepMode sweepMode;
+
+    public Color colorInSweepSetting;
+
+    [ContextMenu("clear")]
+    void clear()
+    {
+        step = Step.nothing;
+        if (polygonDebugers)
+            GameObject.DestroyImmediate(polygonDebugers);
+        if (pictureDebuger)
+            GameObject.DestroyImmediate(pictureDebuger);
+    }
+
+    Renderer    getRenderer(Transform pTransform)
+    {
+        Renderer lOut = null;
+        //pTransform = pTransform.parent;
+        while(!lOut&&pTransform)
+        {
+            lOut = pTransform.GetComponent<Renderer>();
+            pTransform = pTransform.parent;
+        }
+        return lOut;
+    }
+
+    public Color pickedColor;
+
+    bool    pickColor(Ray pRay,out Color pColor)
+    {
+        RaycastHit  lRaycastHit;
+        pColor = Color.clear;
+        if(Physics.Raycast (pRay, out lRaycastHit))
+        {
+            Renderer lRenderer = getRenderer(lRaycastHit.collider.transform);
+            if (
+                lRenderer == null
+                || lRenderer.material == null
+                || lRenderer.material.mainTexture == null
+                )
+            return false;
+
+            Texture2D  lTexture =(Texture2D) lRenderer.material.mainTexture;
+
+            var lPixelUV = lRaycastHit.textureCoord;
+
+            pColor = lTexture
+                .GetPixel((int)(lPixelUV.x * lTexture.width), (int)(lPixelUV.y * lTexture.height));
+            return true;
+        }
+        return false;
+    }
+
+    public Camera painterCamera;
+
+    //void Update()
+    //{
+    //    Color lColor;
+    //    if (
+    //        Input.GetMouseButton (0)
+    //        && pickColor(painterCamera.ScreenPointToRay(Input.mousePosition), out lColor)
+    //        )
+    //        pickedColor = lColor;
+    //}
+
+    void showPicture()
+    {
+        pictureDebuger = deleteOldCreateNewDebuger(pictureDebuger, "pictureDebuger");
+        zzFlatMeshUtility.showPicture(picture, pictureDebuger);
+    }
+
+    void pickPicture()
+    {
+        activeChart = new zzOutlineSweeper.ActiveChart(picture.width, picture.height);
+        if (sweepMode== SweepMode.ignoreColor)
+        {
+            for (int x = 0; x < picture.width; ++x)
+            {
+                for (int y = 0; y < picture.height; ++y)
+                {
+                    activeChart.setActive(x, y, picture.GetPixel(x, y) != colorInSweepSetting);
+                }
+            }
+
+        }
+        else if (sweepMode == SweepMode.designatedColor)
+        {
+            for (int x = 0; x < picture.width; ++x)
+            {
+                for (int y = 0; y < picture.height; ++y)
+                {
+                    activeChart.setActive(x, y, picture.GetPixel(x, y) == colorInSweepSetting);
+                    //Color lColor =picture.GetPixel(x, y);
+                    //if (lColor != Color.clear && lColor!=Color.black)
+                    //    print(lColor);
+                }
+            }
+
+        }
+        else //if (sweepMode == SweepMode.ignoreAlphaZero)
+        {
+            for (int x = 0; x < picture.width; ++x)
+            {
+                for (int y = 0; y < picture.height; ++y)
+                {
+                    activeChart.setActive(x, y, picture.GetPixel(x, y).a!=0);
+                    //Color lColor =picture.GetPixel(x, y);
+                    //if (lColor != Color.clear && lColor!=Color.black)
+                    //    print(lColor);
+                }
+            }
+
+        }
+        zzOutlineSweeper.removeIsolatedPoint(activeChart);
+
+        pictureDebuger = deleteOldCreateNewDebuger(pictureDebuger, "pictureDebuger");
+        zzFlatMeshUtility.showPicture(activeChart.asTexture(), pictureDebuger);
+        //lPicObject.transform.parent = pictureDebuger.transform;
+
+    }
+
+    zzOutlineSweeper.ActiveChart activeChart;
+
+    public int polygonNumber = 0;
+    public int holeNumber = 0;
+
+    void    sweepPicture()
+    {
+        pointNumber = 0;
+        polygonNumber = 0;
+        holeNumber = 0;
+        var lSweeperResults = zzOutlineSweeper.sweeper(activeChart, ignoreDistanceInSweeping);
+        var lDebugerObject = deleteOldCreateNewDebuger();
+        concaves = new List<zz2DConcave>();
+        foreach (var lSweeperResult in lSweeperResults)
+        {
+            //zzSimplyPolygon lPolygon = addSimplyPolygon(lSweeperResult.edge, "Picture" + concaves.Count,
+            //    lDebugerObject.transform);
+
+            //if (lPolygon == null)
+            //    continue;
+            if(lSweeperResult.edge.Length<2)
+                continue;
+            
+            zzSimplyPolygon lPolygon = new zzSimplyPolygon();
+            lPolygon.setShape(lSweeperResult.edge);
+
+            zz2DConcave lConcave = new zz2DConcave();
+            lConcave.setShape(lPolygon);
+            ++polygonNumber;
+
+            foreach (var lHole in lSweeperResult.holes)
+            {
+                if (lHole.Length < 2)
+                    continue;
+                zzSimplyPolygon lHolePolygon = new zzSimplyPolygon();
+                lHolePolygon.setShape(lHole);
+                lConcave.addHole(lHolePolygon);
+                ++holeNumber;
+            }
+            zz2DConcaveDebuger.createDebuger(lConcave,
+                "Picture" + concaves.Count, lDebugerObject.transform);
+            concaves.Add(lConcave);
+        }
+    }
+
+    zzSimplyPolygon addSimplyPolygon(Vector2[] pPoints, string pName, Transform pDebugerObject)
+	{
+		return addSimplyPolygon( pPoints,  pName,  pDebugerObject, Color.red);
+	}
+
+    zzSimplyPolygon addSimplyPolygon(Vector2[] pPoints, string pName, Transform pDebugerObject, Color lDebugLineColor)
+    {
+        if (pPoints.Length < 3)
+            return null;
+
+        zzSimplyPolygon lPolygon = new zzSimplyPolygon();
+        lPolygon.setShape(pPoints);
+
+        zzSimplyPolygonDebuger
+            .createDebuger(lPolygon, pName, pDebugerObject,lDebugLineColor);
+
+        pointNumber += lPolygon.pointNum;
+        return lPolygon;
+    }
+
+    void    convexDecompose()
+    {
+        convexesList = new List<zzSimplyPolygon[]>();
+        var lDebugerObject = deleteOldCreateNewDebuger();
+        int index = 0;
+        foreach (var lConcave in concaves)
+        {
+            string lName = "convex"+(index++)+"Sub";
+            zzSimplyPolygon[] ldecomposed = lConcave.decompose();
+            zzSimplyPolygonDebuger
+                .createDebuger(ldecomposed, lName, lDebugerObject.transform);
+            convexesList.Add(ldecomposed);
+        }
+    }
+
+    void    draw()
+    {
+        int i = 0;
+        foreach (var lConvexs in convexesList)
+        {
+            string lPolygonName = "polygon" + i;
+            GameObject lConvexsObject = new GameObject(lPolygonName);
+            ++i;
+
+            int lSubIndex = 0;
+            string lSubName = lPolygonName + "Sub";
+            foreach (var lConvex in lConvexs)
+            {
+                createFlatMesh(lConvex.getShape(),
+                    lSubName + lSubIndex,
+                    lConvexsObject.transform, thickness );
+                ++lSubIndex;
+            }
+        }
+
+    }
+
+    [ContextMenu("Step")]
+    void    doStep()
+    {
+        int lStepValue = (int)step ;
+        if (lStepValue < (int)Step.draw)
+            step = (Step)(lStepValue + 1);
+        switch(step)
+        {
+            case Step.showPocture:
+                showPicture();
+                break;
+            case Step.pickPicture:
+                pickPicture();
+                break;
+            case Step.sweepPicture:
+                sweepPicture();
+                break;
+            case Step.convexDecompose:
+                convexDecompose();
+                break;
+            case Step.draw:
+                draw();
+                break;
+        }
+    }
+
+
+    GameObject  deleteOldCreateNewDebuger()
+    {
+        if (polygonDebugers)
+            GameObject.DestroyImmediate(polygonDebugers);
+        polygonDebugers = new GameObject("polygonDebugers");
+        return polygonDebugers;
+    }
+
+    GameObject deleteOldCreateNewDebuger(GameObject pObject,string pName)
+    {
+        if (pObject)
+            GameObject.DestroyImmediate(pObject);
+        return new GameObject(pName);
+    }
+
+    static GameObject createFlatMesh(Vector2[] points, string pName, Transform parent, float zThickness)
+    {
+        GameObject lOut = new GameObject(pName);
+        lOut.transform.parent = parent;
+        MeshFilter lMeshFilter = lOut.AddComponent<MeshFilter>();
+        MeshRenderer lMeshRenderer = lOut.AddComponent<MeshRenderer>();
+        MeshCollider lMeshCollider = lOut.AddComponent<MeshCollider>();
+        Mesh lMesh = new Mesh();
+        zzFlatMeshUtility.draw(lMesh, points, zThickness);
+        lMeshFilter.sharedMesh = lMesh;
+        lMeshCollider.sharedMesh = lMesh;
+        lMeshCollider.convex = true;
+        //MeshFilter lMeshFilter = lOut
+        return lOut;
+    }
+}

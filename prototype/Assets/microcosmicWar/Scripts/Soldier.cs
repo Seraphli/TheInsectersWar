@@ -74,7 +74,8 @@ public class Soldier : MonoBehaviour
         turnObjectTransform = transform.Find("turn").transform;
         reverseObjectTransform = transform.Find("reverse").transform;
 
-        emitter.setBulletLayer(getBulletLayer());
+        if (emitter)
+            emitter.setBulletLayer(getBulletLayer());
         UpdateFaceShow();
     }
 

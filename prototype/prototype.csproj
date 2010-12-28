@@ -110,6 +110,8 @@
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
      <None Include="Assets\Editor\_2Dphysics.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AI\ISoldierAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AI\MedicAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />

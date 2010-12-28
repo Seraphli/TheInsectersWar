@@ -50,12 +50,13 @@ public class SoldierFactory : MonoBehaviour
             GameObject lClone = zzCreatorUtility.Instantiate(soldierToProduce, 
                 armyBase.produceTransform.position,new Quaternion(), 0);
             timePos = 0.0f;
-            SoldierAI soldierAI = lClone.GetComponent<SoldierAI>();
+            var soldierAI = lClone.GetComponent<ISoldierAI>();
             //soldierAI.AddFinalAim(finalAim);
 
             //foreach (CheckPointPath lCheckPointPath in checkPointPaths)
             //{
-            soldierAI.AddFinalAim(armyBase.finalAim, zzAimTranformList.AimType.aliveAim);
+            soldierAI.setHome(transform);
+            soldierAI.AddPresetAim(armyBase.finalAim, zzAimTranformList.AimType.aliveAim);
 
             if (randomPath && randomPath.totalWeigth>0)
             {
@@ -64,15 +65,12 @@ public class SoldierFactory : MonoBehaviour
                 for (int i = lCheckPointPath.CheckPointList.Length - 1; i >= 0; --i)
                 {
                     Transform lNowPoint = lCheckPointPath.CheckPointList[i];
-                    soldierAI.AddFinalAim(lNowPoint, zzAimTranformList.AimType.checkPoint);
+                    soldierAI.AddPresetAim(lNowPoint, zzAimTranformList.AimType.checkPoint);
                 }
 
             }
 
-
-            soldierAI.SetAdversaryLayerMask(armyBase.adversaryLayerMask);
-            //lClone.GetComponent<SoldierAI>().SetSoldier(lClone.GetComponent<Soldier>());
-            //lClone.GetComponent<SoldierAI>().SetAdversaryLayerValue(adversaryLayerValue);
+            soldierAI.adversaryLayerMask = armyBase.adversaryLayerMask;
         }
         //}
     }

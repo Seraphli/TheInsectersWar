@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class zzDetectorBase : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public abstract class zzDetectorBase : MonoBehaviour
         lHits = _impDetect(pLayerMask);
         int lOutNum;
         lOutNum = Mathf.Min(pMaxRequired, lHits.Length);
-        Collider[] lOut = new Collider[lOutNum];
+        Collider[] lOut;
 
 
         //执行探测过滤,未测试
@@ -45,19 +46,24 @@ public abstract class zzDetectorBase : MonoBehaviour
         {
             int lHitsIndex = 0;
             int lOutIndex = 0;
-            for (; lOutIndex < lOutNum && lHitsIndex < lHits.Length; )
+            var lColliderList = new List<Collider>(lOutNum);
+            while ( lOutIndex < lOutNum && lHitsIndex < lHits.Length )
             {
                 if (pNeedDetectedFunc(lHits[lOutIndex].collider))
                 {
-                    lOut[lOutIndex] = lHits[lOutIndex].collider;
+                    //lOut[lOutIndex] = lHits[lOutIndex].collider;
+                    lColliderList.Add(lHits[lOutIndex].collider);
                     ++lOutIndex;
                 }
                 ++lHitsIndex;
             }
+            lOut = lColliderList.ToArray();
 
         }
         else
         {
+            lOut = new Collider[lOutNum];
+
             for (int lOutIndex = 0; lOutIndex < lOutNum; ++lOutIndex)
             {
                 lOut[lOutIndex] = lHits[lOutIndex].collider;

@@ -37,4 +37,10 @@ class zzRayDetector : zzDetectorBase
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, _to.position);
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, _to.position);
+    }
 }

@@ -126,6 +126,11 @@ public class Life : MonoBehaviour
             return lRate;
     }
 
+    public bool isFull()
+    {
+        return bloodValue >= fullBloodValue;
+    }
+
 
     public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
