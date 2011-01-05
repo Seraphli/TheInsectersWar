@@ -12,16 +12,17 @@ class zzSimplyPolygonDebuger : MonoBehaviour
         {
             _polygon = value;
             pointNumber = _polygon.pointNum;
-            points = new Vector2[pointNumber];
+            //points = new Vector2[pointNumber];
 
-            int i = 0;
-            var lNode = polygon.getAllPoints().First;
-            while (lNode.Next != null)
-            {
-                points[i] = lNode.Value.position;
-                lNode = lNode.Next;
-                ++i;
-            }
+            //int i = 0;
+            //var lNode = polygon.getAllPoints().First;
+            //while (lNode.Next != null)
+            //{
+            //    points[i] = lNode.Value.position;
+            //    lNode = lNode.Next;
+            //    ++i;
+            //}
+            points = polygon.getShape();
         }
     }
 

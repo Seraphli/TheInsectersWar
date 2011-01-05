@@ -17,6 +17,14 @@ class zzWindow : zzGUIContainer
 
     //zzGUI[] subElements;
 
+    void Awake()
+    {
+        if (ID == 0)
+        {
+            ID = newID();
+        }
+    }
+
 
     public override void impGUI(Rect rect)
     {
@@ -30,12 +38,18 @@ class zzWindow : zzGUIContainer
         position = GUI.Window(ID, rect, DoMyWindow, ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
-    public virtual void DoMyWindow(int windowID)
+    public void DoMyWindow(int windowID)
     {
-        impSubs();
+        impWindow(windowID);
         //print("enableDrag:"+enableDrag);
         if (enableDrag)
             GUI.DragWindow();
+    }
+
+    
+    public virtual void impWindow(int windowID)
+    {
+        impSubs();
     }
 
 

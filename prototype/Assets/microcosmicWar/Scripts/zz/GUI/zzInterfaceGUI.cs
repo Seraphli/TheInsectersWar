@@ -28,6 +28,24 @@ public enum zzGUIDirection
 [System.Serializable]
 public class zzGUIRelativeUsedInfo
 {
+    public zzGUIRelativeUsedInfo()
+    {
+        x = false;
+        y = false;
+        width = false;
+        height = false;
+
+    }
+
+    public zzGUIRelativeUsedInfo(bool pX, bool pY, bool pWidth, bool pHeight)
+    {
+        x = pX;
+        y = pY;
+        width = pWidth;
+        height = pHeight;
+
+    }
+
     public bool x = false;
     public bool y = false;
     public bool width = false;
@@ -36,6 +54,11 @@ public class zzGUIRelativeUsedInfo
 
 public abstract class zzInterfaceGUI : MonoBehaviour
 {
+    static int sID = 0;
+    protected   int newID()
+    {
+        return ++sID;
+    }
     //[System.Serializable]
     //public class UIVector2
     //{

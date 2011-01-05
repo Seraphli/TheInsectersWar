@@ -115,7 +115,7 @@ class zzSimplyPolygon
     /// <param name="pNode"></param>
     /// <param name="copyConcave">复制凹凸的判断,并将自动检测关闭</param>
     /// <returns></returns>
-    public zz2DPoint addOtherPolygonPoint(ref zz2DPoint pNode, bool copyConcave)
+    zz2DPoint addOtherPolygonPoint(ref zz2DPoint pNode, bool copyConcave)
     {
         zz2DPoint lPoint = new zz2DPoint(pNode);
         lPoint.listNode = mAllPoints.AddLast(lPoint);
@@ -134,7 +134,7 @@ class zzSimplyPolygon
         return lPoint;
     }
 
-    public zz2DPoint addOtherPolygonPoint(ref  zz2DPoint pNode)
+    zz2DPoint addOtherPolygonPoint(ref  zz2DPoint pNode)
     {
         return addOtherPolygonPoint(ref pNode, true);
     }
@@ -153,6 +153,9 @@ class zzSimplyPolygon
 
     public Vector2[]   getShape()
     {
+        if(shapePoint!=null)
+            return shapePoint;
+
         Vector2[]   lOut = new Vector2[mAllPoints.Count];
         int i = 0;
         foreach (var lPoint in mAllPoints)
@@ -160,8 +163,11 @@ class zzSimplyPolygon
             lOut[i] = lPoint.position;
             ++i;
         }
+        shapePoint = lOut;
         return lOut;
     }
+
+    Vector2[] shapePoint;
 
     public void setShape(Vector2[] points )
     {
@@ -171,6 +177,8 @@ class zzSimplyPolygon
             Debug.LogError("points.Length < 3");
             return;
         }
+        shapePoint = points;
+
         mConvexPoints = new LinkedList<zz2DPoint>();
         mConcavePoints = new LinkedList<zz2DPoint>();
         mAllPoints = new LinkedList<zz2DPoint>();
@@ -401,7 +409,7 @@ class zzSimplyPolygon
     //    return null;
     //}
 
-    public void addOtherPolygonPoint(zz2DPoint pBeginPoint, zz2DPoint pEndPoint,
+    void addOtherPolygonPoint(zz2DPoint pBeginPoint, zz2DPoint pEndPoint,
         out zz2DPoint pFirstPoint, out zz2DPoint pLastPoint)
     {
         zz2DPoint lNode = pBeginPoint;
