@@ -20,25 +20,26 @@ public class zzToolRuler : MonoBehaviour
     const float imageLength=10.0f;
 
 
-    // The vertices of mesh
-    // 3--2
-    // |  |
-    // 0--1
-    protected Vector3[] vertices = new Vector3[]{
-                new Vector3(0,0,0),
-                new Vector3(1,0,0),
-                new Vector3(1,1,0),
-                new Vector3(0,1,0)
-        };
+    //// The vertices of mesh
+    //// 3--2
+    //// |  |
+    //// 0--1
+    //protected Vector3[] vertices = new Vector3[]{
+    //            new Vector3(0,0,0),
+    //            new Vector3(1,0,0),
+    //            new Vector3(1,1,0),
+    //            new Vector3(0,1,0)
+    //    };
 
-    // Indices into the vertex array
-    protected int[] triIndices = new int[] { 0, 2, 1, 3, 2, 0 };
+    //// Indices into the vertex array
+    //protected int[] triIndices = new int[] { 0, 2, 1, 3, 2, 0 };
 
-    // UV coordinates
-    protected Vector2[] UVs = new Vector2[] { 
-        new Vector2(0, 0), new Vector2(1, 0),
-        new Vector2(1, 1), new Vector2(0, 1) 
-    };
+    //// UV coordinates
+    //protected Vector2[] UVs = new Vector2[] { 
+    //    new Vector2(0, 0), new Vector2(1, 0),
+    //    new Vector2(1, 1), new Vector2(0, 1) 
+    //};
+    zzPlaneMesh planeMesh = new zzPlaneMesh();
 
     MeshRenderer meshRenderer;
     void Start()
@@ -57,14 +58,16 @@ public class zzToolRuler : MonoBehaviour
 
         meshRenderer = lMeshRenderer;
 
+        planeMesh.resize(1.0f, 1.0f, zzPlaneMesh.PivotType.leftBottom);
+        planeMesh.initMesh(mesh);
 
-        mesh.vertices = vertices;
-        mesh.uv = UVs;
-        mesh.triangles = triIndices;
-        mesh.normals = new Vector3[]{
-            new Vector3(0,0,-1),new Vector3(0,0,-1),
-            new Vector3(0,0,-1),new Vector3(0,0,-1)
-        };
+        //mesh.vertices = vertices;
+        //mesh.uv = UVs;
+        //mesh.triangles = triIndices;
+        //mesh.normals = new Vector3[]{
+        //    new Vector3(0,0,-1),new Vector3(0,0,-1),
+        //    new Vector3(0,0,-1),new Vector3(0,0,-1)
+        //};
 
         mRuleDirection = ruleDirection;
         switch (mRuleDirection)
@@ -95,20 +98,20 @@ public class zzToolRuler : MonoBehaviour
                     //UVs[1] = new Vector2(transform.localScale.x , 0.0f);
                     //UVs[2] = new Vector2(transform.localScale.x , 1.0f);
 
-                    UVs[2] = new Vector2(1.0f, transform.lossyScale.y / imageLength);
-                    UVs[3] = new Vector2(0.0f, transform.lossyScale.y / imageLength);
+                    planeMesh.UVs[2] = new Vector2(1.0f, transform.lossyScale.y / imageLength);
+                    planeMesh.UVs[3] = new Vector2(0.0f, transform.lossyScale.y / imageLength);
                     break;
                 }
             case RuleDirection.horizontal:
                 {
-                    UVs[1] = new Vector2(transform.lossyScale.x / imageLength, 0.0f);
-                    UVs[2] = new Vector2(transform.lossyScale.x / imageLength, 1.0f);
+                    planeMesh.UVs[1] = new Vector2(transform.lossyScale.x / imageLength, 0.0f);
+                    planeMesh.UVs[2] = new Vector2(transform.lossyScale.x / imageLength, 1.0f);
 
                     //UVs[2] = new Vector2(1.0f, transform.localScale.y );
                     //UVs[3] = new Vector2(0.0f, transform.localScale.y );
                     break;
                 }
         }
-        mesh.uv = UVs;
+        mesh.uv = planeMesh.UVs;
     }
 }

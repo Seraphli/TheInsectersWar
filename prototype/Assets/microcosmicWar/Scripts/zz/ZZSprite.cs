@@ -129,18 +129,19 @@ public class ZZSprite : MonoBehaviour
     // 3--2
     // |  |
     // 0--1
-    protected Vector3[] vertices;
+    //protected Vector3[] vertices;
 
-    // Indices into the vertex array
-    protected int[] triIndices = new int[] { 0, 2, 1, 3, 2, 0 };
+    //// Indices into the vertex array
+    //protected int[] triIndices = new int[] { 0, 2, 1, 3, 2, 0 };
 
-    // UV coordinates
-    protected Vector2[] UVs = new Vector2[] { 
-        new Vector2(0, 0), new Vector2(1, 0),
-        new Vector2(1, 1), new Vector2(0, 1) 
-    };
+    //// UV coordinates
+    //protected Vector2[] UVs = new Vector2[] { 
+    //    new Vector2(0, 0), new Vector2(1, 0),
+    //    new Vector2(1, 1), new Vector2(0, 1) 
+    //};
 
     //protected MeshFilter meshFilter;
+    zzPlaneMesh planeMesh = new zzPlaneMesh();
     protected MeshRenderer meshRenderer;
     protected Mesh mesh;   // Reference to our mesh (contained in the MeshFilter)
 
@@ -188,12 +189,13 @@ public class ZZSprite : MonoBehaviour
     protected void InitSprite(Mesh pMesh)
     {
 
-        vertices = new Vector3[]{
-                new Vector3(-spriteWidth/2,-spriteHeight/2,0),
-                new Vector3(spriteWidth/2,-spriteHeight/2,0),
-                new Vector3(spriteWidth/2,spriteHeight/2,0),
-                new Vector3(-spriteWidth/2,spriteHeight/2,0)
-        };
+        //vertices = new Vector3[]{
+        //        new Vector3(-spriteWidth/2,-spriteHeight/2,0),
+        //        new Vector3(spriteWidth/2,-spriteHeight/2,0),
+        //        new Vector3(spriteWidth/2,spriteHeight/2,0),
+        //        new Vector3(-spriteWidth/2,spriteHeight/2,0)
+        //};
+        planeMesh.resize(spriteWidth, spriteHeight,zzPlaneMesh.PivotType.center);
 
         animationDatas = new zzGenericIndexTable<string, AnimationData>();
         // iterate through the array
@@ -215,15 +217,16 @@ public class ZZSprite : MonoBehaviour
         //mesh = pMesh;
 
         //meshRenderer.material=nowAnimationData.material;
-        pMesh.vertices = vertices;
-        pMesh.uv = UVs;
-        //mesh.normals = normals;
-        pMesh.triangles = triIndices;
-        pMesh.normals = new Vector3[]{
-            new Vector3(0,0,-1),new Vector3(0,0,-1),
-            new Vector3(0,0,-1),new Vector3(0,0,-1)
-        };
 
+        //pMesh.vertices = vertices;
+        //pMesh.uv = UVs;
+        ////mesh.normals = normals;
+        //pMesh.triangles = triIndices;
+        //pMesh.normals = new Vector3[]{
+        //    new Vector3(0,0,-1),new Vector3(0,0,-1),
+        //    new Vector3(0,0,-1),new Vector3(0,0,-1)
+        //};
+        planeMesh.initMesh(pMesh);
 
         /*
         numOfVerticalPic = material.mainTexture.width/pixelVerticalNum;
@@ -247,7 +250,7 @@ public class ZZSprite : MonoBehaviour
         int lLine = nowPicNum / nowAnimationData.numOfHorizonPic;
         int lColumn = nowPicNum - lLine * nowAnimationData.numOfHorizonPic;
 
-
+        var UVs = new Vector2[4];
         UVs[3].x = lColumn * nowAnimationData.picRateInU;
         UVs[3].y = 1.0f - nowAnimationData.picRateInV * lLine;
 

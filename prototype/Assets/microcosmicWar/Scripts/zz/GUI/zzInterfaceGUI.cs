@@ -59,6 +59,16 @@ public abstract class zzInterfaceGUI : MonoBehaviour
     {
         return ++sID;
     }
+
+    public static bool canChangeLayout
+    {
+        get
+        {
+            return Event.current.type != EventType.Layout
+                        && Event.current.type != EventType.Repaint;
+
+        }
+    }
     //[System.Serializable]
     //public class UIVector2
     //{

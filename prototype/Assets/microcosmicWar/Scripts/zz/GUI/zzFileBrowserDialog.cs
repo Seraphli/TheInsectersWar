@@ -64,7 +64,10 @@ class zzFileBrowserDialog : zzWindow
         string[] lOut = new string[pFileSystem.Length];
         for (int i = 0; i < pFileSystem.Length; ++i)
         {
-            lOut[i] = pFileSystem[i].Name;
+            if (pFileSystem[i] is DirectoryInfo)
+                lOut[i] = "//"+pFileSystem[i].Name;
+            else
+                lOut[i] = pFileSystem[i].Name;
         }
         return lOut;
     }
@@ -115,11 +118,20 @@ class zzFileBrowserDialog : zzWindow
             //创建父路径按钮
             GUILayout.BeginHorizontal();
             {
+                if (directoryInfo.Parent!=null
+                    && GUILayout.Button("up", GUILayout.Width(30.0f))
+                    && canChangeLayout)
+                {
+                    location = directoryInfo.Parent;
+                    lIsChangeDirectory = true;
+                }
+
+                GUILayout.Space(5.0f);
+
                 for (int i = lParentDirectories.Count-1; i >= 0;--i )
                 {
                     if (GUILayout.Button(lParentDirectories[i].Name)
-                        && Event.current.type != EventType.Layout
-                        && Event.current.type != EventType.Repaint )
+                        && canChangeLayout )
                     {
                         location = lParentDirectories[i];
                         lIsChangeDirectory = true;
@@ -136,7 +148,7 @@ class zzFileBrowserDialog : zzWindow
             //    directoryInfo = directoryInfo.Parent;
             //    location = directoryInfo;
             //}
-
+            bool isChoose = false;
             GUILayout.BeginHorizontal();
             {
                 // Handle the directories list
@@ -160,12 +172,11 @@ class zzFileBrowserDialog : zzWindow
                 GUILayout.Space(10);
 
                 var lDirectories = directoryInfo.GetDirectories();
-                var lFiles = directoryInfo.GetFiles();
+                var lFiles = directoryInfo.GetFiles(fileFilterString);
                 var lPathFile = new List<FileSystemInfo>(lDirectories);
                 lPathFile.AddRange(lFiles);
                 pathFiles = lPathFile.ToArray();
                 //pathFiles = (FileSystemInfo[])lDirectories + (FileSystemInfo[])lFiles;
-                bool isChoose;
                 // Handle the files list
                 GUILayout.BeginVertical();
                 {
@@ -179,10 +190,7 @@ class zzFileBrowserDialog : zzWindow
                 GUILayout.EndVertical();
 
 
-                if (
-                    isChoose
-                    && Event.current.type != EventType.Layout
-                    && Event.current.type != EventType.Repaint)
+                if (isChoose && canChangeLayout)
                 // If a file was selected, update our location to it
                 {
                     location = pathFiles[fileSelectedIndex];
@@ -199,8 +207,15 @@ class zzFileBrowserDialog : zzWindow
                 selectedLocation = GUILayout.TextArea(selectedLocation);
 
                 contentWidth = (int)GUI.skin.GetStyle("Button").CalcSize(new GUIContent("Select")).x;
-                if (GUILayout.Button("Select", GUILayout.Width(contentWidth)))
+                if ( (GUILayout.Button("Select", GUILayout.Width(contentWidth)) || isChoose)
+                    && location is FileInfo)
                 {
+                    isSelect = true;
+                    complete = true;
+                }
+                if (GUILayout.Button("Cancel", GUILayout.Width(contentWidth)))
+                {
+                    isSelect = false;
                     complete = true;
                 }
             }
@@ -220,6 +235,8 @@ class zzFileBrowserDialog : zzWindow
     [SerializeField]
     string locationName;
 
+    public bool isSelect = false;
+
     public FileSystemInfo location
     {
         set
@@ -231,11 +248,46 @@ class zzFileBrowserDialog : zzWindow
         get { return _location; }
     }
 
+    class ExtensionFilter
+    {
+        public ExtensionFilter(string pDescribe,string[] pExtensions)
+        {
+            describe = pDescribe;
+            extensions = pExtensions;
+        }
+        public string describe;
+        public string[] extensions;
+    }
+
+    List<ExtensionFilter> extensionFilters = new List<ExtensionFilter>();
+    //ExtensionFilter nowExtensionFilter;
+    int extensionFilteIndex = 0;
+
+    public void addExtensionFilter(string pDescribe,string[] pExtensions)
+    {
+        extensionFilters.Add(new ExtensionFilter(pDescribe, pExtensions));
+    }
+
+    string fileFilterString
+    {
+        get
+        {
+            string lOut = "";
+            string[] lExtensions = extensionFilters[extensionFilteIndex].extensions;
+            lOut += "*." + lExtensions[0];
+            for (int i = 1; i < lExtensions.Length;++i )
+            {
+                lOut += "|*." + lExtensions[i];
+            }
+            return lOut;
+        }
+    }
+
     //public Vector2 directoryScroll;
     public int fileSelectedIndex=-1;
     public Vector2 fileScroll;
 
-    public GUICallFunc endBrowseCallFunc = nullGUICallback;
+    public GUICallFunc fileSelectedCallFunc = nullGUICallback;
 
     public string selectedLocation
     {
@@ -260,7 +312,8 @@ class zzFileBrowserDialog : zzWindow
     {
         if (FileBrowser())
         {
-            endBrowseCallFunc(this);
+            if (isSelect)
+                fileSelectedCallFunc(this);
             Destroy(gameObject);
         }
 
@@ -270,7 +323,9 @@ class zzFileBrowserDialog : zzWindow
     {
         var lObject = new GameObject();
         lObject.transform.parent = pParent;
-        var lOut = lObject.AddComponent<zzFileBrowserDialog>();
+        var lOut = lObject.AddComponent<zzFileBrowserDialog>(); ;
+        lOut.ContentAndStyle.UseDefaultStyle = true;
+        lOut.enableDrag = true;
         return lOut;
     }
 
