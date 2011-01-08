@@ -29,76 +29,51 @@ public class zzSceneImageGUI:MonoBehaviour
 
     void Awake()
     {
-        getMeshFilter().mesh = getMesh();
+        initObject();
     }
 
-    Mesh getMesh()
+    void initObject()
     {
-        initSharedMaterial();
-        Mesh lMesh = new Mesh();
-        initMesh(lMesh);
-        return lMesh;
+        planeMesh.Init(gameObject);
+        //因为尺寸依赖于材质
+        initMaterial();
+        planeMesh.resize(getFitSize(), zzPlaneMesh.PivotType.center);
 
     }
 
     Vector2 getFitSize()
     {
-        Texture2D lImage = gameObject.GetComponent<MeshRenderer>()
-            .material.mainTexture as Texture2D;
+        Texture2D lImage = planeMesh.material.mainTexture as Texture2D;
         if (lImage)
             return getFitSize(_size, lImage);
         return _size;
     }
 
-    static Vector2 getFitSize(Vector2 pSize, Texture2D pImage)
+    static Vector2 getFitSize(Vector2 pMaxSize, Texture2D pImage)
     {
         float lWidth = (float)pImage.width;
         float lHeigth = (float)pImage.height;
 
         float lWidthHeigthRate = lWidth / lHeigth;
 
-        if ((pSize.x / pSize.y) > lWidthHeigthRate)
+        if ((pMaxSize.x / pMaxSize.y) > lWidthHeigthRate)
         {
-            pSize.x = lWidthHeigthRate * pSize.y;
+            pMaxSize.x = lWidthHeigthRate * pMaxSize.y;
         }
         else
         {
-            pSize.y = pSize.x / lWidthHeigthRate;
+            pMaxSize.y = pMaxSize.x / lWidthHeigthRate;
         }
-        return pSize;
+        return pMaxSize;
     }
 
-    void initMesh(Mesh pMesh)
+    Material    initMaterial()
     {
-        planeMesh.resize(getFitSize(), zzPlaneMesh.PivotType.center);
-        planeMesh.initMesh(pMesh);
-    }
-
-    MeshFilter      getMeshFilter()
-    {
-        MeshFilter lMeshFilter = GetComponent<MeshFilter>();
-        if (lMeshFilter == null)
-            lMeshFilter = gameObject.AddComponent<MeshFilter>();
-        return lMeshFilter;
-
-    }
-
-    MeshRenderer    getRenderer()
-    {
-        MeshRenderer lMeshRenderer = GetComponent<MeshRenderer>();
-        if (lMeshRenderer == null)
-            lMeshRenderer = gameObject.AddComponent<MeshRenderer>();
-        return lMeshRenderer;
-    }
-
-    Material    initSharedMaterial()
-    {
-        var lMeshRenderer = getRenderer();
-        Material lMaterial = lMeshRenderer.sharedMaterial;
-        if (lMaterial==null)
+        Material lMaterial = planeMesh.material;
+        if (!lMaterial)
         {
             lMaterial = new Material(Shader.Find("Transparent/Diffuse"));
-            lMeshRenderer.sharedMaterial = lMaterial;
+            planeMesh.material = lMaterial;
         }
 
         return lMaterial;
@@ -112,7 +87,7 @@ public class zzSceneImageGUI:MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            getMeshFilter().sharedMesh = getMesh();
+            initObject();
 
         }
     }

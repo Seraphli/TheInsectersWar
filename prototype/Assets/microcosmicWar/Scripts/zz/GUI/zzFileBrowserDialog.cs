@@ -4,6 +4,11 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+
+/// <summary>
+/// attention: when System.IO, don't forget
+/// change "Player Settings"->"Other Settings"->"API Compatibility Level" to .Net 2.0
+/// </summary>
 class zzFileBrowserDialog : zzWindow
 {
 
@@ -201,10 +206,18 @@ class zzFileBrowserDialog : zzWindow
             }
             GUILayout.EndHorizontal();
 
+            if (lastLocation != location)
+            {
+                locationTextArea = selectedLocation;
+                lastLocationTextArea = locationTextArea;
+            }
+
             // The manual location box and the select button
             GUILayout.BeginHorizontal();
             {
-                selectedLocation = GUILayout.TextArea(selectedLocation);
+                locationTextArea = GUILayout.TextArea(lastLocationTextArea);
+                if (lastLocationTextArea != locationTextArea)
+                    selectedLocation = locationTextArea;
 
                 contentWidth = (int)GUI.skin.GetStyle("Button").CalcSize(new GUIContent("Select")).x;
                 if ( (GUILayout.Button("Select", GUILayout.Width(contentWidth)) || isChoose)
@@ -218,6 +231,8 @@ class zzFileBrowserDialog : zzWindow
                     isSelect = false;
                     complete = true;
                 }
+                lastLocation = location;
+                lastLocationTextArea = locationTextArea;
             }
             GUILayout.EndHorizontal();
 
@@ -230,10 +245,21 @@ class zzFileBrowserDialog : zzWindow
         return complete;
     }
 
+    FileSystemInfo lastLocation;
     FileSystemInfo _location = new DirectoryInfo(System.Environment.CurrentDirectory);
 
     [SerializeField]
     string locationName;
+
+    public string locationTextArea;
+    public string lastLocationTextArea;
+
+    void Start()
+    {
+        lastLocation = _location;
+        locationTextArea = selectedLocation;
+        lastLocationTextArea = locationTextArea;
+    }
 
     public bool isSelect = false;
 

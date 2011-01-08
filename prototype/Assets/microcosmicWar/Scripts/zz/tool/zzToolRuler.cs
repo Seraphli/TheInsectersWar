@@ -44,42 +44,21 @@ public class zzToolRuler : MonoBehaviour
     MeshRenderer meshRenderer;
     void Start()
     {
-        mesh = new Mesh();
-
-        MeshFilter lMeshFilter = GetComponent<MeshFilter>();
-        if (lMeshFilter==null)
-            lMeshFilter = gameObject.AddComponent<MeshFilter>();
-        lMeshFilter.mesh = mesh;
-
-        MeshRenderer lMeshRenderer = GetComponent<MeshRenderer>();
-        if (lMeshRenderer==null)
-            lMeshRenderer = gameObject.AddComponent<MeshRenderer>();
-        //lMeshRenderer.material = verticalRulerMaterial;
-
-        meshRenderer = lMeshRenderer;
-
+        //planeMesh.useSharedDataInEdit = false;
+        planeMesh.Init(gameObject);
         planeMesh.resize(1.0f, 1.0f, zzPlaneMesh.PivotType.leftBottom);
-        planeMesh.initMesh(mesh);
-
-        //mesh.vertices = vertices;
-        //mesh.uv = UVs;
-        //mesh.triangles = triIndices;
-        //mesh.normals = new Vector3[]{
-        //    new Vector3(0,0,-1),new Vector3(0,0,-1),
-        //    new Vector3(0,0,-1),new Vector3(0,0,-1)
-        //};
 
         mRuleDirection = ruleDirection;
         switch (mRuleDirection)
         {
             case RuleDirection.vertical:
                 {
-                    meshRenderer.material = verticalRulerMaterial;
+                    planeMesh.meshRenderer.material = verticalRulerMaterial;
                     break;
                 }
             case RuleDirection.horizontal:
                 {
-                    meshRenderer.material = horizontalRulerMaterial;
+                    planeMesh.meshRenderer.material = horizontalRulerMaterial;
                     break;
                 }
         }
@@ -112,6 +91,6 @@ public class zzToolRuler : MonoBehaviour
                     break;
                 }
         }
-        mesh.uv = planeMesh.UVs;
+        planeMesh.mesh.uv = planeMesh.UVs;
     }
 }

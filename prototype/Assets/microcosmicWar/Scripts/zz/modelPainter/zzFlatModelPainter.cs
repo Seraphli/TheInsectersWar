@@ -27,6 +27,7 @@ public class zzFlatModelPainter : MonoBehaviour
         sweepPicture,
         convexDecompose,
         draw,
+        clear,
     }
 
     public enum SweepMode
@@ -46,7 +47,7 @@ public class zzFlatModelPainter : MonoBehaviour
     public Color colorInSweepSetting;
 
     [ContextMenu("clear")]
-    void clear()
+    public void clear()
     {
         step = Step.nothing;
         if (polygonDebugers)
@@ -96,15 +97,15 @@ public class zzFlatModelPainter : MonoBehaviour
 
     public Camera painterCamera;
 
-    void Update()
-    {
-        Color lColor;
-        if (
-            Input.GetMouseButton (0)
-            && pickColor(painterCamera.ScreenPointToRay(Input.mousePosition), out lColor)
-            )
-            pickedColor = lColor;
-    }
+    //void Update()
+    //{
+    //    Color lColor;
+    //    if (
+    //        Input.GetMouseButton (0)
+    //        && pickColor(painterCamera.ScreenPointToRay(Input.mousePosition), out lColor)
+    //        )
+    //        pickedColor = lColor;
+    //}
 
     void showPicture()
     {
@@ -173,6 +174,7 @@ public class zzFlatModelPainter : MonoBehaviour
         polygonNumber = 0;
         holeNumber = 0;
         var lSweeperResults = zzOutlineSweeper.sweeper(activeChart, ignoreDistanceInSweeping);
+        modelsSize = new Vector2((float)activeChart.width, (float)activeChart.height);
         var lDebugerObject = deleteOldCreateNewDebuger();
         concaves = new List<zz2DConcave>();
         foreach (var lSweeperResult in lSweeperResults)
@@ -244,6 +246,8 @@ public class zzFlatModelPainter : MonoBehaviour
 
     void    draw()
     {
+        models = new GameObject("PaintModel");
+        models.transform.position = new Vector3(modelsSize.x / 2.0f, modelsSize.y / 2.0f, 0.0f);
         int i = 0;
         foreach (var lConvexs in convexesList)
         {
@@ -257,15 +261,20 @@ public class zzFlatModelPainter : MonoBehaviour
 
             string lPolygonName = "polygon" + i;
             GameObject lConvexsObject = new GameObject(lPolygonName);
+            lConvexsObject.transform.parent = models.transform;
 
-            var lRenderObject = createFlatMesh(concaves[i], lSurfaceList, lPolygonName+"Render",
+            var lRenderObject = createFlatMesh(concaves[i], lSurfaceList, "Render",
                 lConvexsObject.transform, thickness);
             lRenderObject.AddComponent<zzFlatMeshEdit>();
+            Vector3 lCenter = lRenderObject.GetComponent<MeshRenderer>().bounds.center;
+            lCenter.z = 0;
+            lConvexsObject.transform.position += lCenter;
+            lRenderObject.transform.position -= lCenter;
 
             ++i;
 
             int lSubIndex = 0;
-            string lSubName = lPolygonName + "Sub";
+            string lSubName = "Collider";
             foreach (var lConvex in lConvexs)
             {
                 //createFlatMesh(lConvex.getShape(),
@@ -273,14 +282,33 @@ public class zzFlatModelPainter : MonoBehaviour
                 //    lConvexsObject.transform, thickness )
                 //        .GetComponent<Renderer>().enabled = false;
                 //print(lSubIndex);
-                createFlatCollider(lConvex.getShape(),
+                var lColliderObject = createFlatCollider(lConvex.getShape(),
                     lSubName + lSubIndex,
                     lConvexsObject.transform, thickness);
+                //因为是先创建,后关联父级的,所以不用移动
+                //lColliderObject.transform.position -= lCenter;
                 ++lSubIndex;
             }
         }
 
     }
+
+    public GameObject models;
+    public Vector2 modelsSize;
+
+    //public static void pivotToCenter(GameObject pObject)
+    //{
+    //    var bounds = pObject.GetComponent<MeshFilter>().sharedMesh.bounds;
+    //    var lPivotToCenter = bounds.center;
+    //    lPivotToCenter.z = 0;
+    //    pObject.transform.position = pObject.transform.position + lPivotToCenter;
+    //    //var lExtent = bounds.extents;
+    //    //lExtent.z = 0;
+    //    foreach (Transform lSub in pObject.transform)
+    //    {
+    //        lSub.position = lSub.position - lPivotToCenter;
+    //    }
+    //}
 
     //int getPointToIndexMap(zz2DConcave pConcave, Dictionary<Vector2, int> pOut,int pBeginIndex)
     //{
@@ -310,10 +338,10 @@ public class zzFlatModelPainter : MonoBehaviour
     //}
 
     [ContextMenu("Step")]
-    void    doStep()
+    public bool    doStep()
     {
         int lStepValue = (int)step ;
-        if (lStepValue < (int)Step.draw)
+        if (lStepValue < (int)Step.clear )
             step = (Step)(lStepValue + 1);
         switch(step)
         {
@@ -332,7 +360,11 @@ public class zzFlatModelPainter : MonoBehaviour
             case Step.draw:
                 draw();
                 break;
+            case Step.clear:
+                clear();
+                return false;
         }
+        return true;
     }
 
 

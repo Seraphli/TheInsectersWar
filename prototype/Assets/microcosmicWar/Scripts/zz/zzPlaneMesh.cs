@@ -24,31 +24,81 @@ public class zzPlaneMesh
         new Vector2(1, 1), new Vector2(0, 1) 
     };
 
-    Mesh mesh;
+    //public bool useSharedDataInEdit = true;
+
+    bool needUseSharedData
+    {
+        get { return !Application.isPlaying ; }
+    }
+
+    public Mesh mesh
+    {
+        get
+        {
+            if (needUseSharedData)
+                return meshFilter.sharedMesh;
+
+            return meshFilter.mesh;
+        }
+
+        set
+        {
+            if (needUseSharedData)
+                meshFilter.sharedMesh = value;
+            else
+                meshFilter.mesh = value;
+        }
+
+    }
 
     public void initMesh(Mesh pMesh)
     {
+        pMesh.Clear();
         mesh = pMesh;
         UpdateMesh();
     }
 
+    public MeshFilter meshFilter;
+    public MeshRenderer meshRenderer;
+
+    public Material material
+    {
+        get
+        {
+            if (needUseSharedData)
+                return meshRenderer.sharedMaterial;
+             return meshRenderer.material;
+
+        }
+
+        set
+        {
+            if (needUseSharedData)
+                meshRenderer.sharedMaterial = value;
+            else
+                meshRenderer.material = value;
+        }
+    }
+
     public void Init(GameObject pObject)
     {
-        mesh = new Mesh();
+        //mesh = new Mesh();
 
         MeshFilter lMeshFilter = pObject.GetComponent<MeshFilter>();
-        if (lMeshFilter == null)
+        if (!lMeshFilter)
             lMeshFilter = pObject.AddComponent<MeshFilter>();
-        lMeshFilter.mesh = mesh;
+        meshFilter = lMeshFilter;
 
         MeshRenderer lMeshRenderer = pObject.GetComponent<MeshRenderer>();
-        if (lMeshRenderer == null)
+        if (!lMeshRenderer)
             lMeshRenderer = pObject.AddComponent<MeshRenderer>();
-        //lMeshRenderer.material = verticalRulerMaterial;
+        meshRenderer = lMeshRenderer;
 
-        //meshRenderer = lMeshRenderer;
+        if (!mesh)
+            mesh = new Mesh();
 
-        UpdateMesh();
+
+        initMesh(mesh);
 
     }
 
@@ -72,7 +122,9 @@ public class zzPlaneMesh
 
     public Vector3[] resize(Vector2 pSize, PivotType pPivotType)
     {
-        return resize(pSize.x, pSize.y, pPivotType);
+        vertices = resize(pSize.x, pSize.y, pPivotType);
+        mesh.vertices = vertices;
+        return vertices;
     }
 
     public Vector3[] resize(float pWidth, float pHeigth, PivotType pPivotType)

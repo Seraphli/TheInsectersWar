@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class zzFlatMeshEdit:MonoBehaviour
+public class zzFlatMeshEdit:MonoBehaviour
 {
     public float UvUnitLength = 10.0f;
 
     [ContextMenu("calculate and set UV")]
-    void resetUV()
+    public void resetUV()
     {
         Mesh lMesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
 

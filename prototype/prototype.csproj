@@ -115,7 +115,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\item\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\awakeShooterWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\lifeAction\createObjectWhenDie.cs" />
@@ -148,7 +147,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneImageGUI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneObjectClick.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzFileBrowserDialog.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBar.cs" />
@@ -168,6 +170,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DConcaveDebuger.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DLine.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DPoint.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzFlatMeshEdit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzFlatMeshUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzFlatModelPainter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzMapPainter.cs" />
@@ -186,7 +189,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\tool\zzToolRuler.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAimTranformList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
@@ -194,10 +197,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectCreator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectInit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIndexTableClass.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemBagControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectMap.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzPlaneMesh.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRandomObjectByWeight.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRandomPath.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
@@ -271,6 +274,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Stronghold.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\StrongholdValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SupplyAirplane.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zzAimTranformList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zzItemBagControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2d.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\_2DCameraFollow.cs" />
      <None Include="Assets\microcosmicWar\t\Board.js" />

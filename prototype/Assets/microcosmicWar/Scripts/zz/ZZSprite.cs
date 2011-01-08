@@ -123,24 +123,7 @@ public class ZZSprite : MonoBehaviour
     //现在播放到的帧,从0开始
     protected int nowPicNum = 0;
 
-    //protected:
 
-    // The vertices of mesh
-    // 3--2
-    // |  |
-    // 0--1
-    //protected Vector3[] vertices;
-
-    //// Indices into the vertex array
-    //protected int[] triIndices = new int[] { 0, 2, 1, 3, 2, 0 };
-
-    //// UV coordinates
-    //protected Vector2[] UVs = new Vector2[] { 
-    //    new Vector2(0, 0), new Vector2(1, 0),
-    //    new Vector2(1, 1), new Vector2(0, 1) 
-    //};
-
-    //protected MeshFilter meshFilter;
     zzPlaneMesh planeMesh = new zzPlaneMesh();
     protected MeshRenderer meshRenderer;
     protected Mesh mesh;   // Reference to our mesh (contained in the MeshFilter)
@@ -186,15 +169,9 @@ public class ZZSprite : MonoBehaviour
     }
 
     //初始化,并指定默认动画
-    protected void InitSprite(Mesh pMesh)
+    protected void InitSprite()
     {
-
-        //vertices = new Vector3[]{
-        //        new Vector3(-spriteWidth/2,-spriteHeight/2,0),
-        //        new Vector3(spriteWidth/2,-spriteHeight/2,0),
-        //        new Vector3(spriteWidth/2,spriteHeight/2,0),
-        //        new Vector3(-spriteWidth/2,spriteHeight/2,0)
-        //};
+        planeMesh.Init(gameObject);
         planeMesh.resize(spriteWidth, spriteHeight,zzPlaneMesh.PivotType.center);
 
         animationDatas = new zzGenericIndexTable<string, AnimationData>();
@@ -207,45 +184,12 @@ public class ZZSprite : MonoBehaviour
             lAnimationData.index = animationDatas.addData(value.animationName, lAnimationData);
         }
         animationListeners = new AnimationListener[animationDatas.Count];
-        //nowAnimationData = animationDatas[defaultAnimation];
-        //print(nowAnimationData.animationName);
-
-        //meshFilter = GetComponent<MeshFilter>();
-        //meshRenderer = GetComponent<MeshRenderer>();
-        //mesh = meshFilter.mesh;
-        //mesh = meshFilter.sharedMesh;
-        //mesh = pMesh;
-
-        //meshRenderer.material=nowAnimationData.material;
-
-        //pMesh.vertices = vertices;
-        //pMesh.uv = UVs;
-        ////mesh.normals = normals;
-        //pMesh.triangles = triIndices;
-        //pMesh.normals = new Vector3[]{
-        //    new Vector3(0,0,-1),new Vector3(0,0,-1),
-        //    new Vector3(0,0,-1),new Vector3(0,0,-1)
-        //};
-        planeMesh.initMesh(pMesh);
-
-        /*
-        numOfVerticalPic = material.mainTexture.width/pixelVerticalNum;
-        numOfHorizonPic = material.mainTexture.height/pixelHorizonNum;
-	
-        nowPicNum = beginPicNum;
-	
-        picRateInU = 1.0f/numOfHorizonPic;
-        picRateInV = 1.0f/numOfVerticalPic;
-        //numOfPic = numOfVerticaPic * numOfHorizonPic;
-        numOfPic=endPicNum-beginPicNum+1;
-        timeInOnePic = AnimationLength / numOfPic;
-        */
+      
+        
     }
 
     protected void updateMesh(Mesh pMesh)
     {
-        //FIXME_VAR_TYPE lTextureHeight= material.mainTexture.height;
-        //FIXME_VAR_TYPE lTextureWidth= material.mainTexture.width;
 
         int lLine = nowPicNum / nowAnimationData.numOfHorizonPic;
         int lColumn = nowPicNum - lLine * nowAnimationData.numOfHorizonPic;
@@ -278,10 +222,8 @@ public class ZZSprite : MonoBehaviour
     {
         if( !Application.isPlaying )
         {
-            Mesh lMesh = new Mesh();
-            GetComponent<MeshFilter>().sharedMesh = lMesh;
-            meshRenderer = GetComponent<MeshRenderer>();
-            InitSprite(lMesh);
+            InitSprite();
+            Mesh lMesh = planeMesh.mesh;
 
             playAnimation(defaultAnimation, lMesh);
 
@@ -290,13 +232,11 @@ public class ZZSprite : MonoBehaviour
 
     void Awake()
     {
-        Mesh lMesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = lMesh;
-        meshRenderer = GetComponent<MeshRenderer>();
         //初始化,并使用默认动画
-        InitSprite(lMesh);
+        InitSprite();
+        meshRenderer = planeMesh.meshRenderer;
 
-        mesh = lMesh;
+        mesh = planeMesh.mesh;
         playAnimation(defaultAnimation);
 
         //updateShow();
@@ -336,19 +276,6 @@ public class ZZSprite : MonoBehaviour
 
     public void playAnimation(string animationName,Mesh pMesh)
     {
-        ////print(animationName);
-        //if (nowAnimationData.animationName == animationName)
-        //    return;
-        ////nowListener.endTheAnimationCallback();
-        ////nowAnimationData = animationDatas[animationName] as AnimationData;
-        //nowAnimationData = animationDatas.getDataByKey(animationName);
-        //nowListener = animationListeners[animationName] as AnimationListener;
-        //if (nowListener == null)
-        //    nowListener = new AnimationListener();
-        //nowListener.beginTheAnimationCallback();
-        //meshRenderer.material = nowAnimationData.material;
-        //playTime = 0;
-        //updateMesh(pMesh);
         playAnimation(animationDatas.getIndex(animationName), pMesh);
     }
 
