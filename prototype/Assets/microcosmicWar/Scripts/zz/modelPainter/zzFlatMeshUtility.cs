@@ -64,7 +64,7 @@ public class zzFlatMeshUtility
 
     public static void draw(Mesh pMesh, 
         List<Vector2[]> pSurfaceList, List<Vector2[]> pEdgeList,
-         float zThickness)
+         float zThickness,Vector2 pUvScale)
     {
         //考虑到边缘有重复的点的情况,所以点到加进地图中后,在指定索引
         var lPointToIndex = new Dictionary<Vector2, int>();
@@ -110,7 +110,8 @@ public class zzFlatMeshUtility
         Vector3[] lNormals;
         Vector2[] lUVs;
 
-        toMeshPoint(lPoints.ToArray(), zThickness, out lVertices, out lNormals, out lUVs);
+        toMeshPoint(lPoints.ToArray(), zThickness,
+            out lVertices, out lNormals, out lUVs, pUvScale);
         int lPointNum = lPoints.Count * 2;
         int lFlatTriangleNum = lPoints.Count - 2;
         int lFlatIndexNum = lFlatTriangleNum * 3;
@@ -323,9 +324,15 @@ public class zzFlatMeshUtility
         pMesh.uv = lUVs;
         pMesh.normals = lNormals;
     }
+    private static void toMeshPoint(Vector2[] points, float zThickness,
+        out Vector3[] lVertices, out Vector3[] lNormals, out Vector2[] lUVs)
+    {
+        toMeshPoint(points, zThickness,
+            out  lVertices, out  lNormals, out lUVs, new Vector2(1.0f, 1.0f));
+    }
 
     private static void toMeshPoint(Vector2[] points, float zThickness,
-        out Vector3[] lVertices,out Vector3[] lNormals,out Vector2[] lUVs)
+        out Vector3[] lVertices,out Vector3[] lNormals,out Vector2[] lUVs,Vector2 pUVScale)
     {
         lVertices = new Vector3[points.Length * 2];
         lNormals = new Vector3[points.Length * 2];
@@ -335,17 +342,20 @@ public class zzFlatMeshUtility
         for (int i = 0; i < points.Length; ++i)
         {
             Vector2 lPoint = points[i];
+            Vector2 lUV = lPoint;
+            lUV.Scale(pUVScale);
+
             lVertices[i].x = lPoint.x;
             lVertices[i].y = lPoint.y;
             lVertices[i].z = -lHalfThickness;
-            lUVs[i] = lPoint;
+            lUVs[i] = lUV;
             lNormals[i] = new Vector3(0, 0, -1);
 
 
             lVertices[points.Length + i].x = lPoint.x;
             lVertices[points.Length + i].y = lPoint.y;
             lVertices[points.Length + i].z = lHalfThickness;
-            lUVs[points.Length + i] = lPoint;
+            lUVs[points.Length + i] = lUV;
             lNormals[points.Length + i] = new Vector3(0, 0, 1);
         }
     }

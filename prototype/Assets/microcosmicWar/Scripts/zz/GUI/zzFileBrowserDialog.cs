@@ -364,12 +364,12 @@ class zzFileBrowserDialog : zzWindow
 
     void UpdateIsDoubleClick()
     {
-        if ((Time.time - lastDoubleClickTime) > 0.3 )
+        if ((Time.realtimeSinceStartup - lastDoubleClickTime) > 0.3)
         {
             if (Event.current.clickCount ==2)
             {
                 doubleClick = true;
-                lastDoubleClickTime = Time.time;
+                lastDoubleClickTime = Time.realtimeSinceStartup;
 
             }
             else
