@@ -39,6 +39,40 @@ class zzVector3Serialize : IzzUserDataSerializeString
 
 //----------------------------------------------------------------------------------------------
 
+class zzVector2Serialize : IzzUserDataSerializeString
+{
+
+    public zzVector2Serialize()
+        : base(typeof(Vector2), "v2")
+    {
+    }
+
+    public override string userPack(object pData)
+    {
+        Vector2 lV2 = (Vector2)pData;
+        //Debug.Log( pack(lV2.x) );
+        return getUserDataDefineStr() +
+             zzSerializeString.getSingleton().pack(lV2.x) +
+              zzSerializeString.getSingleton().pack(lV2.y);
+    }
+
+    public override int userUnpack(ArrayList pSerializePackList, int pPos, DataWrap pOut)//out end postion
+    {
+        //FIXME_VAR_TYPE t= pSerializePackList[pPos] as SerializePackData;
+        //Debug.Log(t);
+        //Debug.Log(zzSerializeString.getSingleton().unpack(t));
+        Vector2 lV2 = new Vector2();
+        lV2.x = (float)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ++pPos;
+        lV2.y = (float)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ++pPos;
+        pOut.data = lV2;
+        return pPos;
+    }
+};
+
+
+//----------------------------------------------------------------------------------------------
 
 class zzQuaternionSerialize : IzzUserDataSerializeString
 {
@@ -84,7 +118,8 @@ class zzQuaternionSerialize : IzzUserDataSerializeString
 class zzPairSerialize : IzzUserDataSerializeString
 {
 	
-	public  zzPairSerialize ():base(typeof(zzPair),"zzPair")
+    //public  zzPairSerialize ():base(typeof(zzPair),"zzPair")
+	public  zzPairSerialize ():base(typeof(zzPair),"zp")
     {
 		
 	}
@@ -121,10 +156,11 @@ class zzPairSerialize : IzzUserDataSerializeString
 //----------------------------------------------------------------------------------------------
 
 
-class zzArraySerialize : IzzUserDataSerializeString
+class zzArrayListSerialize : IzzUserDataSerializeString
 {
-	
-	public  zzArraySerialize ():base(typeof(ArrayList),"Array")
+
+    public zzArrayListSerialize()
+        : base(typeof(ArrayList), "ArrayList")
     {
 		
 	}
@@ -149,12 +185,12 @@ class zzArraySerialize : IzzUserDataSerializeString
 		//FIXME_VAR_TYPE t= pSerializePackList[pPos] as SerializePackData;
 		//Debug.Log(t);
 		//Debug.Log(zzSerializeString.getSingleton().unpack(t));
-		ArrayList ldata =new  ArrayList();
 		
 		zzSerializeString zzSerialize = zzSerializeString.getSingleton();
 
         //读取出数组的大小
         int lremained = (int)zzSerialize.unpack(pSerializePackList[pPos] as SerializePackData);
+        ArrayList ldata = new ArrayList(lremained);
 		++pPos;
 		
 		while(lremained!=0)
@@ -171,14 +207,66 @@ class zzArraySerialize : IzzUserDataSerializeString
 		return pPos;
 	}
 };
+//----------------------------------------------------------------------------------------------
+
+
+class zzArraySerialize<T> : IzzUserDataSerializeString
+{
+
+    public zzArraySerialize(string pName)
+        : base(typeof(T[]), pName)
+    {
+
+    }
+
+    public override string userPack(object pData)
+    {
+        T[] ldata = (T[])pData;
+        string lOut = getUserDataDefineStr();
+        zzSerializeString zzSerialize = zzSerializeString.getSingleton();
+        lOut += zzSerialize.pack(ldata.Length);
+        foreach (object v in ldata)
+        {
+            lOut += zzSerialize.pack(v);
+        }
+        return lOut;
+    }
+
+    public override int userUnpack(ArrayList pSerializePackList, int pPos, DataWrap pOut)//out end postion
+    {
+
+        zzSerializeString zzSerialize = zzSerializeString.getSingleton();
+
+        //读取出数组的大小
+        int lremained = (int)zzSerialize.unpack(pSerializePackList[pPos] as SerializePackData);
+        T[] ldata = new T[lremained];
+        ++pPos;
+
+        int i = 0;
+        //while (lremained != 0)
+        while (lremained != i)
+        {
+            DataWrap lData = new DataWrap();
+
+            pPos = zzSerialize.unpack(pSerializePackList, pPos, lData);
+            ldata[i] = (T)lData.data;
+            ++i;
+            //--lremained;
+        }
+
+        pOut.data = ldata;
+        return pPos;
+    }
+};
 
 //----------------------------------------------------------------------------------------------
 
 
 class zzTableSerialize : IzzUserDataSerializeString
 {
-	
-	public   zzTableSerialize ():base(typeof(Hashtable),"table")
+
+    public zzTableSerialize()
+        : base(typeof(Hashtable), "Hashtable")
     {
 	}
 
@@ -230,10 +318,18 @@ public class zzMySerializeString : MonoBehaviour
     public static void registerMySerialize()
     {
         zzSerializeString zzSerialize = zzSerializeString.getSingleton();
+        zzSerialize.registerUserSerialize(new zzArraySerialize<int>("iArray"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<float>("fArray"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<bool>("bArray"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<string>("sArray"));
         zzSerialize.registerUserSerialize(new zzVector3Serialize());
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Vector3>("v3Array"));
+        zzSerialize.registerUserSerialize(new zzVector2Serialize()); ;
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Vector2>("v2Array"));
         zzSerialize.registerUserSerialize(new zzQuaternionSerialize());
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Quaternion>("q4Array"));
         zzSerialize.registerUserSerialize(new zzPairSerialize());
-        zzSerialize.registerUserSerialize(new zzArraySerialize());
+        zzSerialize.registerUserSerialize(new zzArrayListSerialize());
         zzSerialize.registerUserSerialize(new zzTableSerialize());
         //zzSerialize.registerUserSerialize(new zzTableSerialize2());
     }

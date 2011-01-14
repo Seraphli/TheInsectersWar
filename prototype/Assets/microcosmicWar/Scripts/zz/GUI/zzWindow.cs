@@ -25,6 +25,14 @@ class zzWindow : zzGUIContainer
         }
     }
 
+    /// <summary>
+    /// 父UI有Groud 或 Window时,将返回错误信息
+    /// </summary>
+    public override bool isCursorOver
+    {
+        get { return position.Contains(Input.mousePosition); }
+    }
+
 
     public override void impGUI(Rect rect)
     {

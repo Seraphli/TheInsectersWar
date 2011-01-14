@@ -13,6 +13,23 @@ public class zzGUIContainer : zzInterfaceGUI
         impSubs();
     }
 
+    /// <summary>
+    /// 鼠标指针是否在此UI上的判断
+    /// </summary>
+    public virtual bool isCursorOver
+    {
+        get
+        {
+            foreach (Transform lTransform in transform)
+            {
+                zzGUIContainer lContainer = lTransform.GetComponent<zzGUIContainer>();
+                if (lContainer && lContainer.isCursorOver)
+                    return true;
+            }
+            return false;
+        }
+    }
+
     public List<zzInterfaceGUI> getSubsByDepth()
     {
         var lGUIlist = new List<zzInterfaceGUI>();

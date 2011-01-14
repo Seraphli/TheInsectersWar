@@ -274,24 +274,24 @@ class zzFileBrowserDialog : zzWindow
         get { return _location; }
     }
 
-    class ExtensionFilter
+    class FileFilter
     {
-        public ExtensionFilter(string pDescribe,string[] pExtensions)
+        public FileFilter(string pDescribe,string[] pFilters)
         {
             describe = pDescribe;
-            extensions = pExtensions;
+            filters = pFilters;
         }
         public string describe;
-        public string[] extensions;
+        public string[] filters;
     }
 
-    List<ExtensionFilter> extensionFilters = new List<ExtensionFilter>();
+    List<FileFilter> extensionFilters = new List<FileFilter>();
     //ExtensionFilter nowExtensionFilter;
     int extensionFilteIndex = 0;
 
-    public void addExtensionFilter(string pDescribe,string[] pExtensions)
+    public void addFileFilter(string pDescribe,string[] pFilters)
     {
-        extensionFilters.Add(new ExtensionFilter(pDescribe, pExtensions));
+        extensionFilters.Add(new FileFilter(pDescribe, pFilters));
     }
 
     string fileFilterString
@@ -299,11 +299,11 @@ class zzFileBrowserDialog : zzWindow
         get
         {
             string lOut = "";
-            string[] lExtensions = extensionFilters[extensionFilteIndex].extensions;
-            lOut += "*." + lExtensions[0];
-            for (int i = 1; i < lExtensions.Length;++i )
+            string[] lFilters = extensionFilters[extensionFilteIndex].filters;
+            lOut += lFilters[0];
+            for (int i = 1; i < lFilters.Length;++i )
             {
-                lOut += "|*." + lExtensions[i];
+                lOut += "|" + lFilters[i];
             }
             return lOut;
         }

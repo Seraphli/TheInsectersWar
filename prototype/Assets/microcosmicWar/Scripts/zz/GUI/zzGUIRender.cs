@@ -7,6 +7,11 @@ using System.Collections;
 [ExecuteInEditMode]
 public class zzGUIRender : zzGUIContainer
 {
+    void Start()
+    {
+        zzGUI._setRoot(this);
+    }
+
     void OnGUI()
     {
         //impSubs();

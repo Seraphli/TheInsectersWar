@@ -270,6 +270,7 @@ public class zzFlatModelPainter : MonoBehaviour
             lRenderObject.AddComponent<zzFlatMeshEdit>();
             Vector3 lCenter = lRenderObject.GetComponent<MeshRenderer>().bounds.center;
             lCenter.z = 0;
+            //lConvexsObject是lRenderObject的父物体
             lConvexsObject.transform.position += lCenter;
             lRenderObject.transform.position -= lCenter;
 
@@ -397,13 +398,13 @@ public class zzFlatModelPainter : MonoBehaviour
         if (Application.isPlaying)
         {
             lMeshFilter.mesh = lMesh;
-            lMeshCollider.mesh = lMesh;
         }
         else
         {
             lMeshFilter.sharedMesh = lMesh;
-            lMeshCollider.sharedMesh = lMesh;
         }
+
+        lMeshCollider.sharedMesh = lMesh;
 
         lMeshCollider.convex = true;
         //MeshFilter lMeshFilter = lOut
@@ -418,14 +419,12 @@ public class zzFlatModelPainter : MonoBehaviour
         MeshCollider lMeshCollider = lOut.AddComponent<MeshCollider>();
         Mesh lMesh = new Mesh();
         zzFlatMeshUtility.draw(lMesh, points, zThickness);
+        lMeshCollider.convex = true;
         //print("zzFlatMeshUtility.draw(lMesh, points, zThickness)");
-        if (Application.isPlaying)
-            lMeshCollider.mesh = lMesh;
-        else
-            lMeshCollider.sharedMesh = lMesh;
+        
+        lMeshCollider.sharedMesh = lMesh;
 
         //print("lMeshCollider.sharedMesh = lMesh");
-        lMeshCollider.convex = true;
         //print("lMeshCollider.convex = true");
         //MeshFilter lMeshFilter = lOut
         return lOut;

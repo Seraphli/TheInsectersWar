@@ -5,6 +5,21 @@ using System.Collections;
 
 //@RequireComponent(zzGUI)
 
+public class zzGUI
+{
+    static zzInterfaceGUI _root;
+
+    public static void _setRoot(zzInterfaceGUI pRoot)
+    {
+        _root = pRoot;
+    }
+
+    public static zzInterfaceGUI root
+    {
+        get { return _root; }
+    }
+}
+
 public enum zzGUIDockPos
 {
     min,

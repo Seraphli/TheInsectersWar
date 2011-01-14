@@ -360,6 +360,21 @@ public class zzFlatMeshUtility
         }
     }
 
+    public static Vector3[] getNormals(int pVerticesLength)
+    {
+        Vector3[] lNormals = new Vector3[pVerticesLength];
+        int lHalfLength = pVerticesLength / 2;
+        for (int i = 0; i < lHalfLength;++i )
+        {
+            lNormals[i] = new Vector3(0, 0, -1);
+        }
+        for (int i = lHalfLength; i < pVerticesLength; ++i)
+        {
+            lNormals[i] = new Vector3(0, 0, 1);
+        }
+        return lNormals;
+    }
+
     public static Vector2[] verticesCoordToUV(Vector3[] pVertices, Vector2 pScale)
     {
         Vector2[] lOut = new Vector2[pVertices.Length];
@@ -369,5 +384,10 @@ public class zzFlatMeshUtility
             lOut[i] = new Vector2(lCoord.x * pScale.x, lCoord.y * pScale.y);
         }
         return lOut;
+    }
+
+    public static Vector2 getUvScaleFromImgSize(Vector2 ImgSize)
+    {
+        return new Vector2(1.0f/ImgSize.x,1.0f/ ImgSize.y);
     }
 }

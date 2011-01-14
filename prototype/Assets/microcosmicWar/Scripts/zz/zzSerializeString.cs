@@ -68,6 +68,11 @@ public class zzSerializeString : MonoBehaviour
         return singletonInstance;
     }
 
+    public static zzSerializeString Singleton
+    {
+        get { return singletonInstance; }
+    }
+
     //public zzSerializeString (){
     //    if(singletonInstance)
     //        Debug.LogError("have singletonInstance");
@@ -79,7 +84,12 @@ public class zzSerializeString : MonoBehaviour
 
     public void registerUserSerialize(IzzUserDataSerializeString pI)
     {
+        if (typeToSerializeMap.Contains(pI.type))
+            Debug.LogError("typeToSerializeMap.Contains(pI.type)==true");
         typeToSerializeMap[pI.type] = pI;
+
+        if (typeNameToSerializeMap.Contains(pI.typeName))
+            Debug.LogError("typeNameToSerializeMap.Contains(pI.typeName)==true");
         typeNameToSerializeMap[pI.typeName] = pI;
     }
 
@@ -115,7 +125,8 @@ public class zzSerializeString : MonoBehaviour
 
     public string pack(bool pData)
     {
-        return pack(System.Convert.ToString(pData), "b");
+        //return pack(System.Convert.ToString(pData), "b");
+        return pack(pData ? "1" : "0", "b");
     }
 
     public string packUserData(string pStr)
@@ -161,7 +172,8 @@ public class zzSerializeString : MonoBehaviour
             case SerializePackType.stringType: return pSerializePackData.data;
             case SerializePackType.intType: return System.Convert.ToInt32(pSerializePackData.data);
             case SerializePackType.floatType: return System.Convert.ToSingle(pSerializePackData.data);
-            case SerializePackType.boolType: return System.Convert.ToBoolean(pSerializePackData.data);
+            //case SerializePackType.boolType: return System.Convert.ToBoolean(pSerializePackData.data);
+            case SerializePackType.boolType: return (pSerializePackData.data=="0" ? false : true);
             case SerializePackType.userdata: return pSerializePackData.data;
         };
         Debug.LogError("SerializePackTypeToString error type:" + pSerializePackData.type);

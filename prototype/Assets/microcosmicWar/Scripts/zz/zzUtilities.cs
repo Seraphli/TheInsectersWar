@@ -173,3 +173,46 @@ public class zzPair
     public object left;
     public object right;
 }
+
+public class zzTransform
+{
+    public Vector3 position;
+    public Quaternion rotation;
+    public Vector3 scale;
+
+    public zzTransform()
+    {
+        position = Vector3.zero;
+        rotation = Quaternion.identity;
+        scale = Vector3.one;
+    }
+
+    public zzTransform(Transform pTransform)
+    {
+        setTransform(pTransform);
+    }
+
+    public void setTransform(Transform pTransform)
+    {
+        position = pTransform.position;
+        rotation = pTransform.rotation;
+        scale = pTransform.lossyScale;
+    }
+
+    public void setToTransform(Transform pTransform)
+    {
+        pTransform.position = position;
+        pTransform.rotation = rotation;
+        var lLossyScale = pTransform.lossyScale;
+        var lLocalScale = pTransform.localScale;
+        Vector3 lWorldLocalRate =
+            new Vector3(
+                lLossyScale.x / lLocalScale.x,
+                lLossyScale.y / lLocalScale.y,
+                lLossyScale.z / lLocalScale.z
+            );
+        Vector3 lScale = scale;
+        lScale.Scale(lWorldLocalRate);
+        pTransform.localScale = lScale;
+    }
+}
