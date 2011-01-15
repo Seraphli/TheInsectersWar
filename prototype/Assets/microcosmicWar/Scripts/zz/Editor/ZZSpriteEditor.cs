@@ -6,18 +6,6 @@ using System.Collections;
 public class ZZSpriteEditor : Editor
 {
 
-    //// Use this for initialization
-    //void Start () {
-	
-    //}
-	
-    //// Update is called once per frame
-    //void Update () {
-	
-    //}
-
-    bool mBool = true;
-
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
