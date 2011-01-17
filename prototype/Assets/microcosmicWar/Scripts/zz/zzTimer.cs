@@ -10,6 +10,12 @@ public class zzTimer : MonoBehaviour
 
     public zzFrequencyTimer frequencyTimer = new zzFrequencyTimer();
 
+    public float timePos
+    {
+        get { return frequencyTimer.timePos; }
+        set { frequencyTimer.timePos = value; }
+    }
+
     void Start()
     {
         setInterval(interval);

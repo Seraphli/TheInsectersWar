@@ -17,6 +17,8 @@ public class SoldierFactory : MonoBehaviour
 
     public GameObject soldierToProduce;
 
+    public float firstTimeOffset = 0f;
+
     protected float timePos = 0.0f;
 
     //Component.SendMessage ("dieCallFunction")
@@ -32,6 +34,8 @@ public class SoldierFactory : MonoBehaviour
     {
         randomPath = gameObject.GetComponent<zzRandomPath>();
         armyBase = gameObject.GetComponent<ArmyBase>();
+
+        timePos = firstTimeOffset;
 
         if (!zzCreatorUtility.isHost())
             Destroy(this);

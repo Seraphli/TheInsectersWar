@@ -143,7 +143,7 @@ public class Soldier : MonoBehaviour
         //设置动画 动作
         if (lActionCommand.Fire)
         {
-            characterAnimation.CrossFade("fire", 0.1f);
+            characterAnimation.CrossFade("fire", 0.2f);
         }
         else
         {
@@ -155,7 +155,7 @@ public class Soldier : MonoBehaviour
             }
             else
             {
-                characterAnimation.CrossFade("stand", 0.1f);
+                characterAnimation.CrossFade("stand", 0.2f);
                 //print(gameObject.name);
                 //print("stand");
                 //print(lActionCommand);

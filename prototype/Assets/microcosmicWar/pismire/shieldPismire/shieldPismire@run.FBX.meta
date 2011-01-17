@@ -1,0 +1,135 @@
+fileFormatVersion: 1
+guid: a1597e5ef4f9fa34c8329f2734c8479d
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      run:
+        firstFrame: 0
+        lastFrame: 49
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    Bone10:
+    - 100000
+    - 400000
+    Bone21:
+    - 100002
+    - 400002
+    Bone07:
+    - 100004
+    - 400004
+    Bone02:
+    - 100006
+    - 400006
+    Bone20:
+    - 100008
+    - 400008
+    Bone17:
+    - 100010
+    - 400010
+    Bone13:
+    - 100012
+    - 400012
+    Bone26:
+    - 100014
+    - 400014
+    Bone09:
+    - 100016
+    - 400016
+    Bone04:
+    - 100018
+    - 400018
+    Bone24:
+    - 100020
+    - 400020
+    Bone25:
+    - 100022
+    - 400022
+    Bone06:
+    - 100024
+    - 400024
+    Bone19:
+    - 100026
+    - 400026
+    Bone16:
+    - 100028
+    - 400028
+    Bone15:
+    - 100030
+    - 400030
+    Bone12:
+    - 100032
+    - 400032
+    Bone11:
+    - 100034
+    - 400034
+    Bone18:
+    - 100036
+    - 400036
+    Bone05:
+    - 100038
+    - 400038
+    Bone23:
+    - 100040
+    - 400040
+    Bone28:
+    - 100042
+    - 400042
+    Bone14:
+    - 100044
+    - 400044
+    Bone08:
+    - 100046
+    - 400046
+    Bone27:
+    - 100048
+    - 400048
+    Bone03:
+    - 100050
+    - 400050
+    Bone01:
+    - 100052
+    - 400052
+    Bone22:
+    - 100054
+    - 400054
+    //RootNode:
+    - 100056
+    - 400056
+    - 11100000
+    IK Chain04:
+    - 100058
+    - 400058
+    IK Chain03:
+    - 100060
+    - 400060
+    IK Chain02:
+    - 100062
+    - 400062
+    IK Chain01:
+    - 100064
+    - 400064
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    7400000: Take 001 //// shieldPismire@run
+    7400002: run //// shieldPismire@run

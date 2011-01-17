@@ -38,6 +38,9 @@ public class layers
 
     public static readonly int manor = LayerMask.NameToLayer("manor");
     public static readonly int manorValue = 1 << manor;
+
+    public static readonly int moveableObject = LayerMask.NameToLayer("moveableObject");
+    public static readonly int moveableObjectValue = 1 << moveableObject;
 }
 
 public class collisionLayer : MonoBehaviour

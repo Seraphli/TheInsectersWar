@@ -118,6 +118,7 @@ public class SoldierAI : ISoldierAI
     //    }
     //}
 
+
     //判断是否需要射击,并返回要射击的x轴上的朝向.不需射击则返回0
     public int needFire()
     {
@@ -250,8 +251,32 @@ public class SoldierAI : ISoldierAI
 
     //}
 
+    [SerializeField]
+    bool _moveLock = false;
+    zzTimer moveLockTimer;
+    public void lockMove(float pTime)
+    {
+        if (!_moveLock)
+        {
+            moveLockTimer = gameObject.AddComponent<zzTimer>();
+            _moveLock = true;
+        }
+        moveLockTimer.timePos = 0;
+        moveLockTimer.setInterval(pTime);
+        moveLockTimer.setImpFunction(unlockMove);
+    }
+
+    public void unlockMove()
+    {
+        if (moveLockTimer)
+            Destroy(moveLockTimer);
+        moveLockTimer = null;
+        _moveLock = false;
+    }
+
     protected override void actionCommandUpdate()
     {
+
         Transform lAim = getNowAimTransform();
         if (enable && lAim)
         {
@@ -264,6 +289,11 @@ public class SoldierAI : ISoldierAI
             }
             else
                 actionCommand = moveToAim(aimPosition);
+
+            if (_moveLock)
+            {
+                getCommand().GoForward = false;
+            }
 
             actionCommandControl.setCommand(getCommand());
         }

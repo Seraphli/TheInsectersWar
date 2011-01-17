@@ -255,7 +255,7 @@ public class HeroSpawn : MonoBehaviour
         Life lLife = pHeroObject.GetComponent<Life>();
         if (mBloodBar)
             updateBloodBar(lLife);
-        lLife.setBloodValueChangeCallback(updateBloodBar);
+        lLife.addBloodValueChangeCallback(updateBloodBar);
 
         //绑定摄像机
         _2DCameraFollow lCameraFollow = GameObject.Find("Main Camera").GetComponent<_2DCameraFollow>();

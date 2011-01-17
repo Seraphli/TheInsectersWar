@@ -93,6 +93,7 @@ public abstract class ISoldierAI:MonoBehaviour
     public float pathSearchInterval = 2.0f;
     public float actionCommandUpdateInterval = 0.25f;
     public float followDetectIterval = 0.5f;
+    public float barrierDetectInterval = 2f;
 
     void Start()
     {
@@ -117,6 +118,11 @@ public abstract class ISoldierAI:MonoBehaviour
         zzCoroutineTimer lFollowDetectorTimer = gameObject.AddComponent<zzCoroutineTimer>();
         lFollowDetectorTimer.setInterval(followDetectIterval);
         lFollowDetectorTimer.setImpFunction(this.detectFollowed);
+
+        //障碍探测
+        barrierDetectTimer = gameObject.AddComponent<zzCoroutineTimer>();
+        barrierDetectTimer.setInterval(barrierDetectInterval);
+        barrierDetectTimer.setImpFunction(detectBarrier);
 
         if (!actionCommandControl)
             actionCommandControl = gameObject.GetComponentInChildren<ActionCommandControl>();
@@ -170,6 +176,25 @@ public abstract class ISoldierAI:MonoBehaviour
         }
     }
 
+    //探测前方是否有障碍物
+    public zzDetectorBase barrierDetector;
+    zzCoroutineTimer barrierDetectTimer;
+
+    protected bool haveBarrier = false;
+    protected void detectBarrier()
+    {
+        if (barrierDetector.detect(1, layers.moveableObjectValue).Length > 0)
+        {
+            haveBarrier = true;
+            barrierDetectTimer.setInterval(actionCommandUpdateInterval);
+        }
+        else
+        {
+            haveBarrier = false;
+            barrierDetectTimer.setInterval(barrierDetectInterval);
+        }
+    }
+
     //public UnitActionCommand moveToAim(Transform pAim)
     public UnitActionCommand moveToAim(Vector3 pAimPos)
     {
@@ -203,10 +228,17 @@ public abstract class ISoldierAI:MonoBehaviour
             lActionCommand.GoForward = false;
         else if (
             character.isGrounded
-            && pAimPos.y >= transform.position.y
             && !lActionCommand.Jump
-            && forwardBoardDetector.detect(1, layers.standPlaceValue).Length == 0
-            )//判断前进的方向上是否有可站立的地方,没有 就跳跃
+
+            && 
+                (
+                    haveBarrier//前方是否有障碍
+                    || (//判断前进的方向上是否有可站立的地方,没有 就跳跃
+                        pAimPos.y >= transform.position.y
+                        && forwardBoardDetector.detect(1, layers.standPlaceValue).Length == 0
+                    )
+                )
+            )
         {
             lActionCommand.Jump = true;
             //Debug.Log("jump2");

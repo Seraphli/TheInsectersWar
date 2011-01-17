@@ -99,10 +99,7 @@ public class GuidedMissileLauncherAI : MonoBehaviour
     public void createSphereAreaHarm(Life pLife)
     {
         GameObject lAreaHarm = (GameObject)GameObject.Instantiate(sphereAreaHarm.gameObject, pLife.transform.position, pLife.transform.rotation);
-        //print("createSphereAreaHarm:"+pLife.transform.position);
-        //GameObject lAreaHarm = new GameObject("MissileSphereAreaHarm");
 
-        //SphereAreaHarm lSphereAreaHarm = lAreaHarm.AddComponent<SphereAreaHarm>();
         SphereAreaHarm lSphereAreaHarm = lAreaHarm.GetComponent<SphereAreaHarm>();
         lSphereAreaHarm.setHarmLayerMask(adversaryLayerMask.value);
     }

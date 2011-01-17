@@ -5,6 +5,12 @@ using System.Collections;
 
 public class Life : MonoBehaviour
 {
+    public const string harmTypeName = "harmType";
+    public enum harmType
+    {
+        explode,
+    }
+
     public delegate void lifeCallFunc(Life life);
 
     static void nullLifeCallFunc(Life life){}
@@ -12,7 +18,7 @@ public class Life : MonoBehaviour
     public int bloodValue = 5;
     public int fullBloodValue = 5;
 
-    protected lifeCallFunc bloodValueChangeCallback = nullLifeCallFunc;
+    protected event lifeCallFunc bloodValueChangeCallback = nullLifeCallFunc;
 
     public ArrayList dieCallbackList = new ArrayList();
 
@@ -32,9 +38,10 @@ public class Life : MonoBehaviour
         dieCallbackList.Add(call);
     }
 
-    public void setBloodValueChangeCallback(lifeCallFunc call)
+    public void addBloodValueChangeCallback(lifeCallFunc call)
     {
-        bloodValueChangeCallback = call;
+        bloodValueChangeCallback -= nullLifeCallFunc;
+        bloodValueChangeCallback += call;
     }
 
     public void injure(int value, Hashtable pInjureInfo)

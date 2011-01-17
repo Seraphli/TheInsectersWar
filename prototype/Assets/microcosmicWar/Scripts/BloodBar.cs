@@ -81,6 +81,6 @@ public class BloodBar : MonoBehaviour
     public void setLife(Life pLife)
     {
         life = pLife;
-        life.setBloodValueChangeCallback(UpdateBar);
+        life.addBloodValueChangeCallback(UpdateBar);
     }
 }

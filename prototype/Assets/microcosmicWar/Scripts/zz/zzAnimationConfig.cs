@@ -14,6 +14,7 @@ public class zzAnimationConfig : MonoBehaviour
         public string stringParameter;
         public string functionName = "messageRedirectReceiver";
         public float time;
+        public bool overEnd = false;
     }
 
     [System.Serializable]
@@ -58,7 +59,16 @@ public class zzAnimationConfig : MonoBehaviour
                         AnimationEvent lAnimationEvent = new AnimationEvent();
                         lAnimationEvent.functionName = lEventInfo.functionName;
                         lAnimationEvent.stringParameter = lEventInfo.stringParameter;
-                        lAnimationEvent.time = lEventInfo.time;
+                        float lEventTime;
+                        if (lEventInfo.overEnd)
+                        {
+                            lEventTime = lAnimationClip.length - 0.01f;
+                        }
+                        else
+                        {
+                            lEventTime = lEventInfo.time;
+                        }
+                        lAnimationEvent.time = lEventTime;
                         lAnimationClip.AddEvent(lAnimationEvent);
                     }
                     haveAddedEvent[lAnimationClip] = true;

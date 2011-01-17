@@ -143,8 +143,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcastSender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzNetworkInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzAnimationEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzColorMaterialEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzSignalSlotEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneImageGUI.cs" />
@@ -206,6 +208,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSignalSlot.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
@@ -257,6 +260,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\RaceValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\RigidbodyNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Shield.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\ShieldPismireLifeChanged.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\smooth.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SniperData.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SniperEntrance.cs" />

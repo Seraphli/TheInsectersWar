@@ -101,7 +101,7 @@ public class Bullet : MonoBehaviour
 
         Life lLife = Life.getLifeFromTransform(pOther);
 
-        if (lLife)
+        if (lLife && harmVale!=0)
             lLife.injure(harmVale, injureInfo);
 
         //if(zzCreatorUtility.isHost())
