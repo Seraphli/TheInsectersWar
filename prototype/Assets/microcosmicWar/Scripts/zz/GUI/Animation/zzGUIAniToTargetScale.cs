@@ -40,9 +40,9 @@ public class zzGUIAniToTargetScale:MonoBehaviour
     {
         Vector2 lNowScale = GUITransform.scale;
         float lNewScaleValue = lNowScale.x;
-        lNewScaleValue += mNowSpeed;
+        lNewScaleValue += mNowSpeed*Time.deltaTime;
         Vector2 lNewScale = new Vector2(lNewScaleValue, lNewScaleValue);
-        if(mNowSpeed>0)
+        if(mNowSpeed>0)//放大
         {
             if (lNewScaleValue > mTargetScale)
             {
@@ -50,7 +50,7 @@ public class zzGUIAniToTargetScale:MonoBehaviour
                 this.enabled = false;
             }
         }
-        else
+        else//缩小
         {
             if (lNewScaleValue < mTargetScale)
             {

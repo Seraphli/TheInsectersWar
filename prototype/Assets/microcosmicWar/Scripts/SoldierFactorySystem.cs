@@ -11,6 +11,7 @@ public class SoldierFactorySystem:MonoBehaviour
         public string name;
         public GameObject soldierPrefab;
         public float produceInterval;
+        public float firstTimeOffset;
         public Texture activeImage;
         public Texture inactivityImage;
         public GameObject signPrefab;
