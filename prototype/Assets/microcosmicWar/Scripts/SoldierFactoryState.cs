@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-class SoldierFactoryState : MonoBehaviour
+public class SoldierFactoryState : MonoBehaviour
 {
     SoldierFactorySystem soldierFactorySystem;
 
@@ -46,8 +46,11 @@ class SoldierFactoryState : MonoBehaviour
         lState.building = pBuilding;
     }
 
+    Dictionary<string, int> soldierNameToStateIndex = new Dictionary<string, int>();
+
     void addSoldierFactory(Race race, string pSoldierName)
     {
+        soldierNameToStateIndex[pSoldierName] = RaceFactoryState[race].Count;
         RaceFactoryState[race].Add(
             new State(soldierFactorySystem.getSoldierInfos(race)
                 .getDataByKey(pSoldierName)
@@ -112,17 +115,12 @@ class SoldierFactoryState : MonoBehaviour
         Stronghold lStronghold = null;
         if (defenseTowerItem.canBuild(pGameObject, out position))
         {
-            //FIXME_VAR_TYPE lRange= Vector2(0,2,0);
-            //Debug.Log(""+(lHit.point+Vector3(0,4,0))+(lHit.point+Vector3(0,0.1f,0)));
-            //if(!Physics.CheckCapsule  (lHit.point+Vector3(0,3,0), lHit.point+Vector3(0,-1,0), 0.25f ) )
-
-            Collider[] lIsInSelfZone = Physics.OverlapSphere(position + new Vector3(0, 2, 0),
-                0.1f, layers.manorValue);
+            Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
             if(lIsInSelfZone.Length!=0)
             {
                 lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
             }
-            print(lIsInSelfZone.Length);
+            //print(lIsInSelfZone.Length);
 
             if(
                 !lStronghold
@@ -155,27 +153,40 @@ class SoldierFactoryState : MonoBehaviour
 
         if (lStronghold)
         {
-            GameObject lBuilding = zzCreatorUtility.Instantiate(
-                soldierFactorySystem.getFactoryPrefab(race), lPosition, Quaternion.identity, 0);
-            lBuilding.GetComponent<Life>().addDieCallback(buildingDeadCall);
-
-            GameObject lSign = (GameObject)Instantiate(
-                lState.info.signPrefab, lPosition, Quaternion.identity );
-            lSign.transform.parent = lBuilding.transform;
-            lState.building = lBuilding;
-            buildToState[lBuilding] = lState;
-
-            var lFactoryInfo = lState.info;
-            zzObjectMap.getObject(lFactoryInfo.armyBaseName)
-                .GetComponent<ArmyBase>()
-                .addFactory(lFactoryInfo.soldierPrefab, lFactoryInfo.produceInterval);
-
-            lStronghold.setSoldierFactory(lBuilding);
-
-            changedCall();
+            createFactory(race, lPosition, lState, lStronghold);
         }
         else
             Debug.Log("can't createFactory");
+    }
+
+    public void createFactory(Race race, Vector3 lPosition, string lSoldierName, Stronghold lStronghold)
+    {
+        createFactory(race, lPosition,
+            RaceFactoryState[race][soldierNameToStateIndex[lSoldierName]],
+            lStronghold);
+    }
+
+    public void createFactory(Race race, Vector3 lPosition, State lState, Stronghold lStronghold)
+    {
+        GameObject lBuilding = zzCreatorUtility.Instantiate(
+            soldierFactorySystem.getFactoryPrefab(race), lPosition, Quaternion.identity, 0);
+        lBuilding.GetComponent<Life>().addDieCallback(buildingDeadCall);
+
+        GameObject lSign = (GameObject)Instantiate(
+            lState.info.signPrefab, lPosition, Quaternion.identity);
+        lSign.transform.parent = lBuilding.transform;
+        lState.building = lBuilding;
+        buildToState[lBuilding] = lState;
+
+        var lFactoryInfo = lState.info;
+        zzObjectMap.getObject(lFactoryInfo.armyBaseName)
+            .GetComponent<ArmyBase>()
+            .addFactory(lFactoryInfo.soldierPrefab,lFactoryInfo.produceInterval,
+                lFactoryInfo.firstTimeOffset);
+
+        lStronghold.setSoldierFactory(lBuilding);
+
+        changedCall();
     }
 
     void buildingDeadCall(Life life)

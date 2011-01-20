@@ -189,6 +189,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzOnceExecute.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\tool\zzToolRuler.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
@@ -276,6 +277,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\StartSniperMode.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\StartSupply.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Stronghold.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\StrongholdOffLineSetting.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\StrongholdValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\SupplyAirplane.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zzAimTranformList.cs" />
@@ -292,6 +294,10 @@
      <Compile Include="Assets\Pathfinding\AstarMath.cs" />
      <Compile Include="Assets\Pathfinding\AstarPath.cs" />
      <Compile Include="Assets\Pathfinding\Seeker.cs" />
+     <None Include="Assets\Radar\Script\Radar.js" />
+     <Compile Include="Assets\Radar\Script\Radar2.cs" />
+     <None Include="Assets\Radar\Script\Radar2.js" />
+     <Compile Include="Assets\Radar\Script\RadarTest.cs" />
      <Compile Include="Assets\Standard Assets\Camera Scripts\MouseLook.cs" />
      <None Include="Assets\Standard Assets\Camera Scripts\MouseOrbit.js" />
      <None Include="Assets\Standard Assets\Camera Scripts\SmoothFollow.js" />

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class StrongholdValueShow:MonoBehaviour
+public class StrongholdValueShow:MonoBehaviour
 {
     //public Stronghold stronghold;
 

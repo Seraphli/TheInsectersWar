@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-class zzWindow : zzGUIContainer
+public class zzWindow : zzGUIContainer
 {
 
     //FIXME_VAR_TYPE windowRect= new Rect(20, 20, 120, 50);

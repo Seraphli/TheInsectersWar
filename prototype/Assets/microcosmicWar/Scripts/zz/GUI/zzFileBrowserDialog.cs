@@ -13,7 +13,6 @@ class zzFileBrowserDialog : zzWindow
 {
 
     /// <summary>
-    /// from http://www.unifycommunity.com/wiki/index.php?title=SelectList
     /// </summary>
     /// <param name="list"></param>
     /// <param name="selected"></param>

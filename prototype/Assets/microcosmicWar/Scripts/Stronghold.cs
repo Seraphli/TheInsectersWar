@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class Stronghold:MonoBehaviour
+public class Stronghold:MonoBehaviour
 {
 
     public HashSet<Transform> beeList = new HashSet<Transform>();
@@ -37,6 +37,14 @@ class Stronghold:MonoBehaviour
     public StrongholdValueShow strongholdValueShow;
 
     public GameObject soldierFactory;
+
+    void Start()
+    {
+        if (owner!=Race.eNone)
+        {
+            buildRace(owner);
+        }
+    }
 
     public void setSoldierFactory(GameObject pSoldierFactory)
     {
@@ -99,7 +107,7 @@ class Stronghold:MonoBehaviour
         //    &&beeList.Count==0
         //    &&pismireList.Count==0)
         //    return;
-        if (strongholdBuilding)
+        if (occupied)
             return;
 
         if (owner == Race.eNone)
@@ -141,15 +149,32 @@ class Stronghold:MonoBehaviour
         }
         else if (nowOccupiedValue > fullOccupiedValue)
         {
-            strongholdBuilding = zzCreatorUtility
-                .Instantiate(getBuilding(owner), transform.position, transform.rotation, 0);
-            sendMessageWhenDie lSendMessageWhenDie
-                = strongholdBuilding.GetComponent<sendMessageWhenDie>();
-            lSendMessageWhenDie.messageReceiver = gameObject;
-            strongholdValueShow.showRace(Race.eNone);
+            buildRace(owner);
         }
         else
             strongholdValueShow.rate = nowOccupiedValue/fullOccupiedValue;
+    }
+
+    public bool occupied
+    {
+        get { return strongholdBuilding; }
+    }
+
+    public void buildRace(Race pRace)
+    {
+        if (occupied)
+        {
+            Debug.LogError("buildRace occupied");
+            return;
+        }
+        strongholdBuilding = zzCreatorUtility
+            .Instantiate(getBuilding(pRace), transform.position, transform.rotation, 0);
+        sendMessageWhenDie lSendMessageWhenDie
+            = strongholdBuilding.GetComponent<sendMessageWhenDie>();
+        lSendMessageWhenDie.messageReceiver = gameObject;
+        strongholdValueShow.showRace(Race.eNone);
+        owner = pRace;
+
     }
 
     void buildingDestroied()

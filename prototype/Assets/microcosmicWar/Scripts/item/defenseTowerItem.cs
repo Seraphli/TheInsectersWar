@@ -42,12 +42,32 @@ class defenseTowerItem : IitemObject
 
     public static bool haveBoardOverhead(Vector3 position)
     {
+        //2m 高度内 不能有 站立处
         return Physics.CheckSphere(position + new Vector3(0, 2, 0), 1.8f, layers.standPlaceValue);
     }
 
     public static bool canBuild(GameObject pGameObject,out Vector3 position)
     {
         return getBuildPosition(pGameObject, out position) && (!haveBoardOverhead(position));
+    }
+
+    //附加检测是否在自己领地内
+    public static bool canBuildCheckManor(GameObject pGameObject, out Vector3 position)
+    {
+        if (canBuild(pGameObject, out position) )
+        {
+
+            Stronghold lStronghold = null;
+            Collider[] lIsInSelfZone = Physics.OverlapSphere(position,0.1f, layers.manorValue);
+            if (lIsInSelfZone.Length != 0)
+            {
+                lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
+            }
+
+            if (lStronghold && lStronghold.owner == PlayerInfo.getRace(pGameObject.layer))
+                return true;
+        }
+        return false;
     }
 
     public override bool canUse(GameObject pGameObject)
@@ -62,7 +82,7 @@ class defenseTowerItem : IitemObject
         //position.y += 2;
         //RaycastHit lHit;
         //if (Physics.Raycast(position, new Vector3(0, -1, 0), out lHit, 4, layers.boardValue))
-        if (canBuild(pGameObject, out towerPosition))
+        if (canBuildCheckManor(pGameObject, out towerPosition))
         {
             //FIXME_VAR_TYPE lRange= Vector2(0,2,0);
             //Debug.Log(""+(lHit.point+Vector3(0,4,0))+(lHit.point+Vector3(0,0.1f,0)));

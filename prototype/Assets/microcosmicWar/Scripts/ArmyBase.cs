@@ -22,11 +22,12 @@ public class ArmyBase : MonoBehaviour
         armyPrefabToFactory = new Dictionary<GameObject, SoldierFactory>();
     }
 
-    public void addFactory(GameObject armyPrefab,float pProduceInterval)
+    public void addFactory(GameObject armyPrefab,float pProduceInterval,float pfirstTimeOffset)
     {
         SoldierFactory lSoldierFactory = gameObject.AddComponent<SoldierFactory>();
         lSoldierFactory.soldierToProduce = armyPrefab;
         lSoldierFactory.produceInterval = pProduceInterval;
+        lSoldierFactory.firstTimeOffset = pfirstTimeOffset;
         armyPrefabToFactory[armyPrefab] = lSoldierFactory;
     }
 

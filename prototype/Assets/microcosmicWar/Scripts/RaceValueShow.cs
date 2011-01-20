@@ -62,7 +62,7 @@ using System.Collections.Generic;
 //}
 
 
-class RaceValueShow:MonoBehaviour
+public class RaceValueShow:MonoBehaviour
 {
     zzPlaneMesh planeMesh = new zzPlaneMesh();
     public Material image;

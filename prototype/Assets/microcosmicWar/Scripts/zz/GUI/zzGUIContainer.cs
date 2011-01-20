@@ -30,6 +30,14 @@ public class zzGUIContainer : zzInterfaceGUI
         }
     }
 
+    /// <summary>
+    /// 鼠标指针是否不在在此UI上的判断
+    /// </summary>
+    public virtual bool isCursorOff
+    {
+        get { return !isCursorOver; }
+    }
+
     public List<zzInterfaceGUI> getSubsByDepth()
     {
         var lGUIlist = new List<zzInterfaceGUI>();

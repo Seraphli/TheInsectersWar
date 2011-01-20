@@ -50,9 +50,11 @@ public class zzSignalSlot : MonoBehaviour
         System.Delegate pSlotDelegate)
     {
         if (pSignalMemberInfo is PropertyInfo)
-            ((PropertyInfo)pSignalMemberInfo).SetValue(pSignalObject, pSlotDelegate,null);
+            ((PropertyInfo)pSignalMemberInfo).SetValue(pSignalObject, pSlotDelegate, null);
         else if (pSignalMemberInfo is FieldInfo)
             ((FieldInfo)pSignalMemberInfo).SetValue(pSignalObject, pSlotDelegate);
+        else if (pSignalMemberInfo is MethodInfo)
+            ((MethodInfo)pSignalMemberInfo).Invoke(pSignalObject, new object[]{pSlotDelegate});
         else
             Debug.LogError("linkSignalToSlot");
 
@@ -60,12 +62,36 @@ public class zzSignalSlot : MonoBehaviour
 
     public static MemberInfo getSignalMember(object pSignalObject, string pMethodName)
     {
-        var lProperty = pSignalObject.GetType().GetProperty(pMethodName);
+        var lType = pSignalObject.GetType();
+
+        var lProperty = lType.GetProperty(pMethodName);
         if (lProperty != null && lProperty.PropertyType.BaseType == typeof(MulticastDelegate))
             return lProperty;
-        var lField = pSignalObject.GetType().GetField(pMethodName);
+
+        var lField = lType.GetField(pMethodName);
         if (lField != null && lField.FieldType.BaseType == typeof(MulticastDelegate))
             return lField;
+        //print("----------begin--------------");
+        //print("type:" + lType.Name);
+        //MethodInfo[] pMethodInfoList = lType.GetMethods();
+        //foreach (var pMethodInfo in pMethodInfoList)
+        //{
+        //    string lFunction = pMethodInfo.Name+"(";
+        //    foreach (var lParam in pMethodInfo.GetParameters())
+        //    {
+        //        lFunction = lFunction + ", " + lParam.Name + ":" + lParam.ParameterType;
+        //    }
+        //    lFunction = lFunction + "):" + pMethodInfo.ReturnType.Name;
+        //    print(lFunction);
+        //}
+        //print("-----------end---------------");
+        var lMethod = lType.GetMethod(pMethodName);
+
+        if (lMethod != null
+            && lMethod.GetParameters().Length == 1
+            && lMethod.GetParameters()[0].ParameterType.BaseType == typeof(MulticastDelegate))
+            return lMethod;
+
         return null;
     }
 
@@ -75,8 +101,11 @@ public class zzSignalSlot : MonoBehaviour
         if(pMemberInfo is PropertyInfo)
             return ((PropertyInfo)pMemberInfo).PropertyType;
 
-        if(pMemberInfo is FieldInfo)
+        else if(pMemberInfo is FieldInfo)
             return ((FieldInfo)pMemberInfo).FieldType;
+
+        else if (pMemberInfo is MethodInfo)
+            return ((MethodInfo)pMemberInfo).GetParameters()[0].ParameterType;
 
         return null;
     }
@@ -85,6 +114,16 @@ public class zzSignalSlot : MonoBehaviour
     {
         ParameterTypes = GetDelegateParameterTypes(pDelegate);
         ReturnType = GetDelegateReturnType(pDelegate);
+    }
+
+    public static Type[] toTypeArray(ParameterInfo[] parameters)
+    {
+        Type[] typeParameters = new Type[parameters.Length];
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            typeParameters[i] = parameters[i].ParameterType;
+        }
+        return typeParameters;
     }
 
     private static Type[] GetDelegateParameterTypes(Type d)
@@ -100,14 +139,7 @@ public class zzSignalSlot : MonoBehaviour
             throw new InvalidOperationException("Not a delegate.");
         }
 
-        ParameterInfo[] parameters = invoke.GetParameters();
-        Type[] typeParameters = new Type[parameters.Length];
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            typeParameters[i] = parameters[i].ParameterType;
-        }
-
-        return typeParameters;
+        return toTypeArray(invoke.GetParameters());
     }
 
 

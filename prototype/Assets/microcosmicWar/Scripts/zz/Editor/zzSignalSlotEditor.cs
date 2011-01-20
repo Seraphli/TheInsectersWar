@@ -18,6 +18,8 @@ public class zzSignalSlotEditor : Editor
                 GUILayout.Label("signal", GUILayout.Width(35));
                 lSignalSlot.signalComponent
                     = (Component)EditorGUILayout.ObjectField(lSignalSlot.signalComponent, typeof(Component));
+                if (lSignalSlot.signalComponent)
+                    GUILayout.Label(lSignalSlot.signalComponent.GetType().ToString());
                 lSignalSlot.signalMethodName = EditorGUILayout.TextField(lSignalSlot.signalMethodName);
             }
             EditorGUILayout.EndHorizontal();
@@ -34,6 +36,8 @@ public class zzSignalSlotEditor : Editor
                     GUILayout.Label("slot", GUILayout.Width(35));
                     lSignalSlot.slotComponent = (Component)EditorGUILayout
                         .ObjectField(lSignalSlot.slotComponent, typeof(Component));
+                    if (lSignalSlot.slotComponent)
+                        GUILayout.Label( lSignalSlot.slotComponent.GetType().ToString());
 
                     if (lSignalSlot.slotComponent)
                     {
@@ -72,7 +76,9 @@ public class zzSignalSlotEditor : Editor
             //Debug.Log(pReturnType.ToString());
             //Debug.Log("pMethodInfo.ReturnType == pReturnType:" + (pMethodInfo.ReturnType == pReturnType));
             if (pMethodInfo.ReturnType == pReturnType
-                && isEquals(pMethodInfo.GetGenericArguments(), pParameterTypes))
+                && isEquals(
+                        zzSignalSlot.toTypeArray(pMethodInfo.GetParameters()),
+                        pParameterTypes))
                 lOut.Add(pMethodInfo.Name);
         }
         return lOut;
