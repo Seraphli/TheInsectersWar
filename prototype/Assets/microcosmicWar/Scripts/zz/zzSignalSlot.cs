@@ -44,6 +44,8 @@ public class zzSignalSlot : MonoBehaviour
              lSignalDelegateType, slotComponent, lSlotMethod);
 
         linkSignalToSlot(signalComponent, lSignalMemberInfo, lSlotDelegate);
+
+        Destroy(this);
     }
 
     static void linkSignalToSlot(object pSignalObject, MemberInfo pSignalMemberInfo,

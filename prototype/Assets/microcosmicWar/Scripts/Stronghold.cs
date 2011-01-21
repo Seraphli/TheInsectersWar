@@ -70,7 +70,6 @@ public class Stronghold:MonoBehaviour
             pismireList.Add(lValue);
         else
             beeList.Add(lValue);
-        refreshDebugInfo();
     }
 
     void OnTriggerExit(Collider pCollider)
@@ -81,6 +80,26 @@ public class Stronghold:MonoBehaviour
             pismireList.Remove(lValue);
         else
             beeList.Remove(lValue);
+    }
+
+    void refreshTriggerInfo(HashSet<Transform>  pList)
+    {
+        var lRemoveList = new List<Transform>();
+        foreach (var lTransform in pList)
+        {
+            if(!collisionLayer.isAliveFullCheck(lTransform))
+                lRemoveList.Add(lTransform);
+        }
+        foreach (var lTransform in lRemoveList)
+        {
+            pList.Remove(lTransform);
+        }
+    }
+
+    void refreshTriggerInfo()
+    {
+        refreshTriggerInfo(pismireList);
+        refreshTriggerInfo(beeList);
         refreshDebugInfo();
     }
 
@@ -109,6 +128,8 @@ public class Stronghold:MonoBehaviour
         //    return;
         if (occupied)
             return;
+
+        refreshTriggerInfo();
 
         if (owner == Race.eNone)
         {

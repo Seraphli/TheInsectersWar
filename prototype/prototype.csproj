@@ -158,6 +158,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUISwitchButton.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIToolbar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITransform.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzInterfaceGUI.cs" />

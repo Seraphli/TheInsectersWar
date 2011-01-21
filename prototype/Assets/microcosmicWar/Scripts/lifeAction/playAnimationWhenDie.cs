@@ -21,6 +21,6 @@ public class playAnimationWhenDie : MonoBehaviour
     //在死亡的回调中使用
     void deadAction(Life p)
     {
-        animationToPlay.Play(animationName);
+        animationToPlay.CrossFade(animationName,0.3f);
     }
 }
