@@ -64,7 +64,9 @@ class defenseTowerItem : IitemObject
                 lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
             }
 
-            if (lStronghold && lStronghold.owner == PlayerInfo.getRace(pGameObject.layer))
+            if (lStronghold
+                && lStronghold.occupied == true
+                && lStronghold.owner == PlayerInfo.getRace(pGameObject.layer))
                 return true;
         }
         return false;

@@ -3,18 +3,30 @@ using System.Collections;
 
 class zzGUISwitchButton : zzInterfaceGUI
 {
-    public bool isDown = false;
+    public bool isOn = false;
 
-    public GUIContent buttonDownContent = new GUIContent();
-    public GUIContent buttonUpContent = new GUIContent();
+    public GUIContent buttonOnContent = new GUIContent();
+    public GUIContent buttonOffContent = new GUIContent();
 
     public bool useDefaultStyle = true;
     public GUIStyle style;
 
+    public delegate void SwitchEvent(bool lIsOn);
+
+    SwitchEvent switchEvent;
+
+    public void addSwitchEventReceiver(SwitchEvent pReceiver)
+    {
+        switchEvent += pReceiver;
+    }
+
     public override void impGUI(Rect rect)
     {
         if (_drawButton(rect))
-            isDown = !isDown;
+        {
+            isOn = !isOn;
+            switchEvent(isOn);
+        }
     }
 
     bool _drawButton(Rect rect)
@@ -27,8 +39,8 @@ class zzGUISwitchButton : zzInterfaceGUI
 
     GUIContent  getNowContent()
     {
-        if (isDown)
-            return buttonDownContent;
-        return buttonUpContent;
+        if (isOn)
+            return buttonOnContent;
+        return buttonOffContent;
     }
 }

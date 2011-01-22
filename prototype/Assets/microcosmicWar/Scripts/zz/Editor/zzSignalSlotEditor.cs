@@ -15,6 +15,13 @@ public class zzSignalSlotEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             {
+                GUILayout.Label("说明:", GUILayout.ExpandWidth(false));
+                lSignalSlot.describe = GUILayout.TextField(lSignalSlot.describe);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            {
                 GUILayout.Label("signal", GUILayout.Width(35));
                 lSignalSlot.signalComponent
                     = (Component)EditorGUILayout.ObjectField(lSignalSlot.signalComponent, typeof(Component));

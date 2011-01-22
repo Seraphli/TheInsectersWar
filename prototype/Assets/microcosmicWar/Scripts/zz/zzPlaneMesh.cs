@@ -102,6 +102,20 @@ public class zzPlaneMesh
 
     }
 
+    public void clear()
+    {
+        if (mesh)
+        {
+            Object.Destroy(mesh);
+            mesh = null;
+        }
+    }
+
+    ~zzPlaneMesh()
+    {
+        clear();
+    }
+
     public void UpdateMesh()
     {
         mesh.vertices = vertices;

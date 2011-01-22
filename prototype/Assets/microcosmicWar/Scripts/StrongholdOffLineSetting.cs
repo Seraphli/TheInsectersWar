@@ -21,9 +21,8 @@ public class StrongholdOffLineSetting : MonoBehaviour
 
     public OffLineData[] setting;
 
-    void Update()
+    void createSetting()
     {
-        //因为要在所需的系统初始化后执行
         Race lPlayerChoose = GameScene.getSingleton().getPlayerInfo().race;
         foreach (var lData in setting)
         {
@@ -34,7 +33,7 @@ public class StrongholdOffLineSetting : MonoBehaviour
                 {
                     lStrongholdData.stronghold.buildRace(lStrongholdData.race);
                     if (lStrongholdData.soldierFactoryPosition
-                        &&lStrongholdData.soldierName.Length != 0)
+                        && lStrongholdData.soldierName.Length != 0)
                         lSoldierFactoryState.createFactory(
                             lStrongholdData.race,
                             lStrongholdData.soldierFactoryPosition.position,
@@ -44,6 +43,17 @@ public class StrongholdOffLineSetting : MonoBehaviour
                 break;
             }
         }
+    }
+
+    void Update()
+    {
+        //因为要在所需的系统初始化后执行
+
+        if(Network.peerType==NetworkPeerType.Disconnected)
+        {
+            createSetting();
+        }
+        
         enabled = false;
     }
 }

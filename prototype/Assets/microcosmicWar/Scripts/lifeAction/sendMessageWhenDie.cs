@@ -20,11 +20,15 @@ class sendMessageWhenDie:MonoBehaviour
     //在死亡的回调中使用
     void deadAction(Life p)
     {
+        if (messageReceiver)
+        {
+            if (sendSelf)
+                messageReceiver.SendMessage(methodName, this, SendMessageOptions.RequireReceiver);
+            else
+                messageReceiver.SendMessage(methodName, SendMessageOptions.RequireReceiver);
 
-        if (sendSelf)
-            messageReceiver.SendMessage(methodName,this,SendMessageOptions.RequireReceiver);
-        else
-            messageReceiver.SendMessage(methodName, SendMessageOptions.RequireReceiver);
+        }
+
     }
 
 }

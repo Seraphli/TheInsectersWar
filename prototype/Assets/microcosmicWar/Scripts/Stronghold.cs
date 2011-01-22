@@ -22,8 +22,8 @@ public class Stronghold:MonoBehaviour
 
     public Race owner = Race.eNone;
 
-    public int beeNum = 0;
-    public int pismireNum = 0;
+    public int beeCount = 0;
+    public int pismireCount = 0;
 
     /// <summary>
     /// 被占领时,生成的建筑
@@ -64,22 +64,28 @@ public class Stronghold:MonoBehaviour
 
     void OnTriggerEnter(Collider pCollider)
     {
-        var lValue = getValue(pCollider);
-        //print("OnTriggerEnter:" + lValue.name);
-        if (lValue.gameObject.layer == layers.pismire)
-            pismireList.Add(lValue);
-        else
-            beeList.Add(lValue);
+        if(zzCreatorUtility.isHost())
+        {
+            var lValue = getValue(pCollider);
+            //print("OnTriggerEnter:" + lValue.name);
+            if (lValue.gameObject.layer == layers.pismire)
+                pismireList.Add(lValue);
+            else
+                beeList.Add(lValue);
+        }
     }
 
     void OnTriggerExit(Collider pCollider)
     {
-        var lValue = getValue(pCollider);
-        //print("OnTriggerExit:" + lValue.name);
-        if (lValue.gameObject.layer == layers.pismire)
-            pismireList.Remove(lValue);
-        else
-            beeList.Remove(lValue);
+        if (zzCreatorUtility.isHost())
+        {
+            var lValue = getValue(pCollider);
+            //print("OnTriggerExit:" + lValue.name);
+            if (lValue.gameObject.layer == layers.pismire)
+                pismireList.Remove(lValue);
+            else
+                beeList.Remove(lValue);
+        }
     }
 
     void refreshTriggerInfo(HashSet<Transform>  pList)
@@ -98,9 +104,12 @@ public class Stronghold:MonoBehaviour
 
     void refreshTriggerInfo()
     {
-        refreshTriggerInfo(pismireList);
-        refreshTriggerInfo(beeList);
-        refreshDebugInfo();
+        if (zzCreatorUtility.isHost())
+        {
+            refreshTriggerInfo(pismireList);
+            refreshTriggerInfo(beeList);
+            refreshDebugInfo();
+        }
     }
 
     Transform   getValue(Collider pCollider)
@@ -108,15 +117,15 @@ public class Stronghold:MonoBehaviour
         return pCollider.transform;
     }
 
-    HashSet<Transform> getList(Race race)
+    int getSoldierCount(Race race)
     {
         switch(race)
         {
-            case Race.ePismire: return pismireList;
-            case Race.eBee: return beeList;
+            case Race.ePismire: return pismireCount;
+            case Race.eBee: return beeCount;
         }
         Debug.LogError("getList(Race race)");
-        return null;
+        return 0;
     }
 
     void Update()
@@ -131,6 +140,7 @@ public class Stronghold:MonoBehaviour
 
         refreshTriggerInfo();
 
+        //更新占领所属哪方的图标,从none变为占领
         if (owner == Race.eNone)
         {
             owner = judgeOwner();
@@ -141,9 +151,9 @@ public class Stronghold:MonoBehaviour
 
         float lOccupiedValueDelta;
 
-        int lSelfOccupantNum = getList(owner).Count;
+        int lSelfOccupantNum = getSoldierCount(owner);
         var lAdversaryRace = PlayerInfo.getAdversaryRace(owner);
-        int lEnemyOccupantNum = getList(lAdversaryRace).Count;
+        int lEnemyOccupantNum = getSoldierCount(lAdversaryRace);
 
         int lDeltaOccupantNum = lSelfOccupantNum - lEnemyOccupantNum;
         if (lDeltaOccupantNum <= 0)
@@ -153,6 +163,7 @@ public class Stronghold:MonoBehaviour
 
         nowOccupiedValue += lOccupiedValueDelta;
 
+        //被扭转
         if (nowOccupiedValue < 0)
         {
             nowOccupiedValue = 0.0f;
@@ -183,19 +194,38 @@ public class Stronghold:MonoBehaviour
 
     public void buildRace(Race pRace)
     {
-        if (occupied)
+        if (zzCreatorUtility.isHost())
         {
-            Debug.LogError("buildRace occupied");
-            return;
-        }
-        strongholdBuilding = zzCreatorUtility
-            .Instantiate(getBuilding(pRace), transform.position, transform.rotation, 0);
-        sendMessageWhenDie lSendMessageWhenDie
-            = strongholdBuilding.GetComponent<sendMessageWhenDie>();
-        lSendMessageWhenDie.messageReceiver = gameObject;
-        strongholdValueShow.showRace(Race.eNone);
-        owner = pRace;
+            if (occupied)
+            {
+                Debug.LogError("buildRace occupied");
+                return;
+            }
+            strongholdBuilding = zzCreatorUtility
+                .Instantiate(getBuilding(pRace), transform.position, transform.rotation, 0);
+            sendMessageWhenDie lSendMessageWhenDie
+                = strongholdBuilding.GetComponent<sendMessageWhenDie>();
+            lSendMessageWhenDie.messageReceiver = gameObject;
+            strongholdValueShow.showRace(Race.eNone);
+            owner = pRace;
 
+            if (Network.peerType != NetworkPeerType.Disconnected)
+                networkView.RPC("RPCBuildRace", RPCMode.Others,
+                    strongholdBuilding.networkView.viewID);
+        }
+
+    }
+
+    [RPC]
+    public void RPCBuildRace(NetworkViewID pID)
+    {
+        strongholdBuilding = NetworkView.Find(pID).gameObject;
+    }
+
+    [RPC]
+    public void RPCBuildingDestroied()
+    {
+        strongholdBuilding = null;
     }
 
     void buildingDestroied()
@@ -206,6 +236,9 @@ public class Stronghold:MonoBehaviour
 
         if (soldierFactory)
             soldierFactory.GetComponent<Life>().makeDead();
+
+        if (Network.peerType != NetworkPeerType.Disconnected)
+            networkView.RPC("RPCBuildingDestroied", RPCMode.Others);
     }
 
     /// <summary>
@@ -213,16 +246,37 @@ public class Stronghold:MonoBehaviour
     /// </summary>
     Race judgeOwner()
     {
-        if (pismireList.Count > beeList.Count)
+        if (pismireCount > beeCount)
             return Race.ePismire;
-        else if (pismireList.Count < beeList.Count)
+        else if (pismireCount < beeCount)
             return Race.eBee;
         return Race.eNone;
     }
 
     void refreshDebugInfo()
     {
-        pismireNum = pismireList.Count;
-        beeNum = beeList.Count;
+        pismireCount = pismireList.Count;
+        beeCount = beeList.Count;
+    }
+
+    void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    {
+        int lOwner = 0;
+        //---------------------------------------------------
+        if (stream.isWriting)
+        {
+            lOwner = (int)owner;
+        }
+        //---------------------------------------------------
+        stream.Serialize(ref lOwner);
+        stream.Serialize(ref nowOccupiedValue);
+        stream.Serialize(ref pismireCount); ;
+        stream.Serialize(ref beeCount);
+        //---------------------------------------------------
+        if (stream.isReading)
+        {
+            owner = (Race)lOwner;
+            strongholdValueShow.showRace(owner);
+        }
     }
 }

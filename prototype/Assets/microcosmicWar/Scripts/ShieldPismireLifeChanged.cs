@@ -32,12 +32,14 @@ class ShieldPismireLifeChanged:MonoBehaviour
             && (Life.harmType)lInjureInfo[Life.harmTypeName] == Life.harmType.explode)
         {
             myAnimation.CrossFade("fire2", 0.2f);
-            Ai.lockMove(fire2AnimationState.length);
+            if (Ai)
+                Ai.lockMove(fire2AnimationState.length);
         }
         else if (!fire2AnimationState.enabled )
         {
             myAnimation.CrossFade("fire1", 0.1f);
-            Ai.lockMove(fire1AnimationState.length);
+            if (Ai)
+                Ai.lockMove(fire1AnimationState.length);
         }
     }
 

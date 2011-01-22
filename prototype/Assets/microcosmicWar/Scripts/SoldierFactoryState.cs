@@ -101,43 +101,43 @@ public class SoldierFactoryState : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// 是否可以创建兵工厂
+    /// </summary>
+    /// <param name="pGameObject">英雄</param>
+    /// <param name="race"></param>
+    /// <param name="position">创建位置</param>
+    /// <returns></returns>
     public Stronghold canCreate(GameObject pGameObject, Race race, out Vector3 position)
     {
-        //Hero hero = pGameObject.GetComponentInChildren<Hero>();
-        //int face = (int)hero.getFace();
-        //Vector3 position = pGameObject.transform.position;
-
-        //position.x += hero.getFaceDirection() * 3;
-        //position.y += 2;
-        //RaycastHit lHit;
-        //Vector3 position;
         Stronghold lStronghold = null;
         if (defenseTowerItem.canBuild(pGameObject, out position))
         {
+            //区域内是否有阵地
             Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
             if(lIsInSelfZone.Length!=0)
             {
                 lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
             }
-            //print(lIsInSelfZone.Length);
 
-            if(
-                !lStronghold
-                || lStronghold.owner != race
+            if (
+                lStronghold
+                && lStronghold.occupied == true//被占领
+                && lStronghold.owner == race//属于自己的种族
+                && !lStronghold.soldierFactory//还未建造兵工厂
+                )
+                return lStronghold;
 
-                || lStronghold.soldierFactory
-               )
-                return null;
-            //print(lStronghold.owner);
+            //if(
+            //    !lStronghold
+            //    || lStronghold.owner != race
 
-            //if (!defenseTowerItem.haveBoardOverhead(towerPosition))
-            //    return true;
-            //return true;
+            //    || lStronghold.soldierFactory
+            //   )
+            //    return null;
 
         }
-        //Debug.Log(""+position+","+lHit.point);
-        return lStronghold;
+        return null;
     }
 
     public void createFactory(Race race,int index,GameObject onwer)

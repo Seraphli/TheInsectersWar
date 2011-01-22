@@ -6,6 +6,9 @@ using System.Reflection.Emit;
 
 public class zzSignalSlot : MonoBehaviour
 {
+    //用于注释 便于观看
+    public string describe;
+
     public Component signalComponent;
 
     //delegate or event

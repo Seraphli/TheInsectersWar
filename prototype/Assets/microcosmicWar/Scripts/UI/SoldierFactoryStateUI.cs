@@ -5,6 +5,7 @@ using System.Collections;
 public class SoldierFactoryStateUI:MonoBehaviour
 {
     //0为未选中任何图标
+    [SerializeField]
     int selectedIndex = 0;
     public int itemNum = 0;
     public zzInterfaceGUI UIroot;
