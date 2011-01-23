@@ -69,10 +69,10 @@ public class Soldier : MonoBehaviour
 
         //collisionLayer.addCollider(gameObject);
 
-        Xscale = transform.localScale.x;
-
         turnObjectTransform = transform.Find("turn").transform;
         reverseObjectTransform = transform.Find("reverse").transform;
+
+        Xscale = reverseObjectTransform.localScale.x;
 
         if (emitter)
             emitter.setBulletLayer(getBulletLayer());

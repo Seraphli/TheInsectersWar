@@ -277,6 +277,7 @@ public class Stronghold:MonoBehaviour
         {
             owner = (Race)lOwner;
             strongholdValueShow.showRace(owner);
+            strongholdValueShow.rate = nowOccupiedValue / fullOccupiedValue;
         }
     }
 }

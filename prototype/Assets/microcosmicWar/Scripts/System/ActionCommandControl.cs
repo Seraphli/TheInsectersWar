@@ -33,6 +33,9 @@ public class zzCharacter
         }
         else
             moveV.y -= gravity * Time.deltaTime;
+        if (moveV.y > 0
+            && (characterController.collisionFlags & CollisionFlags.Above)>0)
+            moveV.y = 0;
 
         // Move the controller
         Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);

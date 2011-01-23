@@ -16,11 +16,22 @@ public class SoldierFactoryState : MonoBehaviour
         }
 
         public SoldierFactorySystem.SoldierInfo info;
-        public GameObject building;
+        private GameObject _building;
+
+        public bool netCanBuild;
+
+        public GameObject building
+        {
+            get { return _building; }
+            set 
+            { 
+                _building = value;
+            }
+        }
 
         public bool canBuild()
         {
-            return !building;
+            return !_building;
         }
     }
 
@@ -33,6 +44,31 @@ public class SoldierFactoryState : MonoBehaviour
 
     Dictionary<Race, List<State>> RaceFactoryState = new Dictionary<Race,List<State>>();
     Dictionary<GameObject, State> buildToState;
+
+    void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    {
+        //if (stream.isWriting)
+        //{
+            foreach (var lRaceFactory in RaceFactoryState)
+            {
+                foreach (var lState in lRaceFactory.Value)
+                {
+                    stream.Serialize(ref lState.netCanBuild);
+                }
+            }
+        //}
+        ////---------------------------------------------------
+        //stream.Serialize(ref lOwner);
+        //stream.Serialize(ref nowOccupiedValue);
+        //stream.Serialize(ref pismireCount); ;
+        //stream.Serialize(ref beeCount);
+        ////---------------------------------------------------
+        //if (stream.isReading)
+        //{
+        //    owner = (Race)lOwner;
+        //    strongholdValueShow.showRace(owner);
+        //}
+    }
 
     public System.Collections.ObjectModel.ReadOnlyCollection<State>
         getFactoryStates(Race race)
@@ -140,7 +176,22 @@ public class SoldierFactoryState : MonoBehaviour
         return null;
     }
 
-    public void createFactory(Race race,int index,GameObject onwer)
+    public void tryCreateFactory(Race race,int index,GameObject onwer)
+    {
+        if (zzCreatorUtility.isHost())
+            _tryCreateFactory(race, index, onwer);
+        else
+            networkView.RPC("_RPCTryCreateFactory", RPCMode.Others,
+                (int)race,index,onwer.networkView.viewID);
+    }
+
+    [RPC]
+    void _RPCTryCreateFactory(int race,int index,NetworkViewID owner)
+    {
+        _tryCreateFactory((Race)race, index, NetworkView.Find(owner).gameObject);
+    }
+
+    void _tryCreateFactory(Race race,int index,GameObject owner)
     {
         Vector3 lPosition;
         var lState = RaceFactoryState[race][index];
@@ -149,11 +200,11 @@ public class SoldierFactoryState : MonoBehaviour
             Debug.LogError("!lStates[index].canBuild()");
             return;
         }
-        Stronghold lStronghold = canCreate(onwer, race, out lPosition);
+        Stronghold lStronghold = canCreate(owner, race, out lPosition);
 
         if (lStronghold)
         {
-            createFactory(race, lPosition, lState, lStronghold);
+            createFactory(race, lPosition, index, lStronghold);
         }
         else
             Debug.Log("can't createFactory");
@@ -162,21 +213,16 @@ public class SoldierFactoryState : MonoBehaviour
     public void createFactory(Race race, Vector3 lPosition, string lSoldierName, Stronghold lStronghold)
     {
         createFactory(race, lPosition,
-            RaceFactoryState[race][soldierNameToStateIndex[lSoldierName]],
+            soldierNameToStateIndex[lSoldierName],
             lStronghold);
     }
 
-    public void createFactory(Race race, Vector3 lPosition, State lState, Stronghold lStronghold)
+    public void createFactory(Race race, Vector3 lPosition, int lStateIndex, Stronghold lStronghold)
     {
+        State lState = RaceFactoryState[race][lStateIndex];
         GameObject lBuilding = zzCreatorUtility.Instantiate(
             soldierFactorySystem.getFactoryPrefab(race), lPosition, Quaternion.identity, 0);
-        lBuilding.GetComponent<Life>().addDieCallback(buildingDeadCall);
 
-        GameObject lSign = (GameObject)Instantiate(
-            lState.info.signPrefab, lPosition, Quaternion.identity);
-        lSign.transform.parent = lBuilding.transform;
-        lState.building = lBuilding;
-        buildToState[lBuilding] = lState;
 
         var lFactoryInfo = lState.info;
         zzObjectMap.getObject(lFactoryInfo.armyBaseName)
@@ -186,6 +232,34 @@ public class SoldierFactoryState : MonoBehaviour
 
         lStronghold.setSoldierFactory(lBuilding);
 
+        decorateFactoryBuild(lBuilding, race, lStateIndex);
+    }
+
+    void decorateFactoryBuild(GameObject pBuild, Race race, int lStateIndex)
+    {
+        _decorateFactoryBuild(pBuild, race, lStateIndex);
+        if (Network.peerType != NetworkPeerType.Disconnected)
+            networkView.RPC("_RPCDecorateFactoryBuild", RPCMode.Others,
+                pBuild.networkView.viewID, (int)race, lStateIndex);
+    }
+
+    [RPC]
+    void _RPCDecorateFactoryBuild(NetworkViewID pBuildID, int race,int lStateIndex)
+    {
+        _decorateFactoryBuild(NetworkView.Find(pBuildID).gameObject,
+            (Race)race, lStateIndex);
+    }
+
+    void _decorateFactoryBuild(GameObject lBuilding, Race race, int lStateIndex)
+    {
+        lBuilding.GetComponent<Life>().addDieCallback(buildingDeadCall);
+        State lState = RaceFactoryState[race][lStateIndex];
+        lState.building = lBuilding;
+        buildToState[lBuilding] = lState;
+        GameObject lSign = (GameObject)Instantiate(
+            lState.info.signPrefab, lBuilding.transform.position, Quaternion.identity);
+        lSign.transform.parent = lBuilding.transform;
+        lSign.transform.localPosition = Vector3.zero;
         changedCall();
     }
 
@@ -194,11 +268,13 @@ public class SoldierFactoryState : MonoBehaviour
         var lState = buildToState[life.gameObject];
         lState.building = null;
 
-
-        var lFactoryInfo = lState.info;
-        zzObjectMap.getObject(lFactoryInfo.armyBaseName)
-            .GetComponent<ArmyBase>()
-            .removeFactory(lFactoryInfo.soldierPrefab);
+        if (zzCreatorUtility.isHost())
+        {
+            var lFactoryInfo = lState.info;
+            zzObjectMap.getObject(lFactoryInfo.armyBaseName)
+                .GetComponent<ArmyBase>()
+                .removeFactory(lFactoryInfo.soldierPrefab);
+        }
 
         changedCall();
     }

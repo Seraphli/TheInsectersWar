@@ -18,6 +18,8 @@ public class BagItemUI : MonoBehaviour
     //显示的工具的索引
     public ArrayList itemIndexList = new ArrayList();
 
+    public bool showSelected = true;
+
     void Start()
     {
         zzSceneObjectMap lSceneObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
@@ -39,7 +41,10 @@ public class BagItemUI : MonoBehaviour
             itemListUI[i - 1] = itemList.getSubElement(i.ToString());
             selectedListUI[i - 1] = selectedList.getSubElement(i.ToString());
         }
-        setSelected(1);
+        if (showSelected)
+            setSelected(1);
+        else
+            setSelected(0);
 
         //print(gameObject.name+bagControl+(bagControl==null));
         bagControl.addCallAfterStart(afterBagStartCall);
@@ -79,7 +84,7 @@ public class BagItemUI : MonoBehaviour
 
         //Debug.Log(lItemUIIndex);
         //更新选择的位置
-        if (lItemUIIndex < selectedIndex)
+        if (showSelected && lItemUIIndex < selectedIndex)
             setSelected(lItemUIIndex);
 
         //将剩余的图标空间清空
@@ -142,6 +147,22 @@ public class BagItemUI : MonoBehaviour
         if (selectedIndex > 0)
         {
             int lIndex =(int) itemIndexList[selectedIndex - 1];
+            bagControl.useItemOne(lIndex);
+        }
+    }
+
+    /// <summary>
+    /// 从0开始
+    /// </summary>
+    /// <param name="index"></param>
+    public void useByIndex(int index)
+    {
+        print(index);
+        print(itemNum);
+        print(itemIndexList.Count);
+        if (index < itemIndexList.Count)
+        {
+            int lIndex = (int)itemIndexList[index];
             bagControl.useItemOne(lIndex);
         }
     }

@@ -21,7 +21,7 @@ public class DefenseTower : MonoBehaviour
     //float wantToTurn;
 
 
-    static float NULL_aimAngular = 1000.0f;
+    const float NULL_aimAngular = 1000.0f;
     //设置一个不会用到的值,作为不是用时的值
     public float aimAngular = NULL_aimAngular;
 
@@ -127,7 +127,6 @@ public class DefenseTower : MonoBehaviour
 
     public void deadAction(Life p)
     {
-        //zzCreatorUtility.Destroy(gameObject);
         Destroy(gameObject);
     }
 
@@ -140,16 +139,10 @@ public class DefenseTower : MonoBehaviour
 
     public virtual void Update()
     {
-        //print(gunSprite);
-        //if(fire)
-        //	gunSprite.playAnimation("fire");
-        //else
-        //	gunSprite.playAnimation("wait");
 
         //执行平滑旋转,计算 nowAngular
         impSmoothTurn(Time.deltaTime);
         setAngle(nowAngular);
-        //print(nowAngular);
     }
 
     public void EmitBullet()
@@ -271,31 +264,16 @@ public class DefenseTower : MonoBehaviour
             smoothTurnToAngle(NULL_aimAngular);
     }
 
-    //public function setTowards()
-    //{
-    //}
 
     public void setAngle(float pAngle)
     {
         gunPivot.localEulerAngles = new Vector3(0, 0, pAngle);
     }
 
-    //function getAngle()
-    //{
-    //	return gunPivot.localEulerAngles.z;
-    //}
-
-    //virtual function setFaceDirection( int pFace  )
-    //{
-    //print(gunSprite);
-    //gunSprite=invert.setFace(pFace);
-    //}
 
 
     public virtual UnitFaceDirection getFaceDirection()
     {
-        //return invert.getFace();
-        //return face;
         return UnitFaceDirection.left;
     }
 
@@ -306,7 +284,10 @@ public class DefenseTower : MonoBehaviour
         return nowAngular;
     }
 
-    //function getTowards()
-    //{
-    //}
+    void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    {
+        stream.Serialize(ref nowAngular);
+        stream.Serialize(ref aimAngular);
+    }
+
 }

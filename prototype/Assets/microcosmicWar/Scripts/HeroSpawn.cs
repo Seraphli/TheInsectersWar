@@ -242,7 +242,7 @@ public class HeroSpawn : MonoBehaviour
         //print(pHeroObject.GetInstanceID());
 
         //绑定UI
-        pHeroObject.AddComponent<BagItemUI>();
+        pHeroObject.AddComponent<BagItemUI>().showSelected = false;
         pHeroObject.AddComponent<MoneyUI>();
         pHeroObject.AddComponent<bagItemUIInput>();
         var lSoldierFactoryStateUI = pHeroObject.AddComponent<SoldierFactoryStateUI>();
