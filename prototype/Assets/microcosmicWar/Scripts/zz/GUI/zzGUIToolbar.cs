@@ -8,11 +8,30 @@ public class zzGUIToolbar : zzInterfaceGUI
     public bool useDefaultStyle = true;
     public GUIStyle style;
 
+    public delegate void SelectedChangeEvent(int pSelected);
+    SelectedChangeEvent selectedChangeEvent;
+
+    public void addSelectedChangeReceiver(SelectedChangeEvent pReceiver)
+    {
+        selectedChangeEvent += pReceiver;
+    }
+
     public override void impGUI(Rect rect)
     {
+        int lNewSelected = _drawToolbar(rect);
+        if(lNewSelected!=selected)
+        {
+            selected = lNewSelected;
+            selectedChangeEvent(selected);
+        }
+    }
+
+    public int _drawToolbar(Rect rect)
+    {
         if (useDefaultStyle)
-            selected = GUI.Toolbar(rect, selected, contents);
-        else
-            selected = GUI.Toolbar(rect, selected, contents, style);
+            return GUI.Toolbar(rect, selected, contents);
+
+        return GUI.Toolbar(rect, selected, contents, style);
+
     }
 }

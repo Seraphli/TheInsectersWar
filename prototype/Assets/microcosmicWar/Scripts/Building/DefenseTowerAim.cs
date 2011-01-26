@@ -2,6 +2,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 让机枪自动转向目标
+/// </summary>
 public class DefenseTowerAim : MonoBehaviour
 {
     //判断目标是否可用

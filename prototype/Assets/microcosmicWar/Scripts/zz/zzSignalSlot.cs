@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 public class zzSignalSlot : MonoBehaviour
 {
     //用于注释 便于观看
-    public string describe;
+    public string describe = "";
 
     public Component signalComponent;
 
@@ -23,7 +23,7 @@ public class zzSignalSlot : MonoBehaviour
         MemberInfo lSignalMemberInfo = getSignalMember(signalComponent, signalMethodName);
         if (lSignalMemberInfo == null)
         {
-            Debug.LogError("There is not name in method,or it is not public");
+            Debug.LogError(gameObject.name+":There is not name in method,or it is not public");
             return;
         }
         Type lSignalDelegateType = getSignalDelegate(lSignalMemberInfo);

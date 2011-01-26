@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 ///AudioSource fireSound;
@@ -22,16 +23,18 @@ public class EmitterContainer : Emitter
     //void  Start (){
     //}
 
-    public override void EmitBullet()
+    public override GameObject[] EmitBullet()
     {
+        List<GameObject> lOut = new List<GameObject>();
         foreach (Emitter iEmit in emitList)
         {
-            iEmit.EmitBullet();
+            lOut.AddRange(iEmit.EmitBullet());
         }
         if (fireSound)
         {
             fireSound.Play();
         }
+        return lOut.ToArray();
     }
 
     public override void setBulletLayer(int pBulletLayer)

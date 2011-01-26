@@ -37,8 +37,9 @@ public class GuidedMissileLauncherAI : MonoBehaviour
 
         targetList = new Transform[maxRequired];
         //pathTimer = AddComponent<zzTimer>();
-        emitter.setInitBulletFunc(initBullet);
+        //emitter.setInitBulletFunc(initBullet);
         defenseTowerAim.setAimIsActiveFunc(aimIsActive);
+        GetComponent<GuidedMissileLauncher>().getTargetFunc = getTargetAndMove;
     }
 
     bool aimIsActive(Transform pTarget)
@@ -96,24 +97,24 @@ public class GuidedMissileLauncherAI : MonoBehaviour
         return null;
     }
 
-    public void createSphereAreaHarm(Life pLife)
-    {
-        GameObject lAreaHarm = (GameObject)GameObject.Instantiate(sphereAreaHarm.gameObject, pLife.transform.position, pLife.transform.rotation);
+    //public void createSphereAreaHarm(Life pLife)
+    //{
+    //    GameObject lAreaHarm = (GameObject)GameObject.Instantiate(sphereAreaHarm.gameObject, pLife.transform.position, pLife.transform.rotation);
 
-        SphereAreaHarm lSphereAreaHarm = lAreaHarm.GetComponent<SphereAreaHarm>();
-        lSphereAreaHarm.setHarmLayerMask(adversaryLayerMask.value);
-    }
+    //    SphereAreaHarm lSphereAreaHarm = lAreaHarm.GetComponent<SphereAreaHarm>();
+    //    lSphereAreaHarm.setHarmLayerMask(adversaryLayerMask.value);
+    //}
 
-    public void initBullet(Bullet pBullet)
-    {
-        Transform lTaget = getTargetAndMove();
-        if (lTaget)
-        {
-            BulletFollowAI lBulletFollowAI = pBullet.GetComponent<BulletFollowAI>();
-            lBulletFollowAI.setTarget(lTaget);
-        }
+    //public void initBullet(Bullet pBullet)
+    //{
+    //    Transform lTaget = getTargetAndMove();
+    //    if (lTaget)
+    //    {
+    //        BulletFollowAI lBulletFollowAI = pBullet.GetComponent<BulletFollowAI>();
+    //        lBulletFollowAI.setTarget(lTaget);
+    //    }
 
-        Life lBulletLife = pBullet.gameObject.GetComponent<Life>();
-        lBulletLife.addDieCallback(createSphereAreaHarm);
-    }
+    //    Life lBulletLife = pBullet.gameObject.GetComponent<Life>();
+    //    lBulletLife.addDieCallback(createSphereAreaHarm);
+    //}
 }

@@ -3,6 +3,14 @@ using System.Collections;
 
 class GuidedMissileLauncher : DefenseTower
 {
+    public delegate Transform GetTargetFunc();
+    public GetTargetFunc getTargetFunc = nullGetTargetFunc;
+
+    static Transform nullGetTargetFunc()
+    {
+        return null;
+    }
+
     public float[] fireInterval = new float[]{};
 
     public zzTimer fireTimer;
@@ -24,9 +32,29 @@ class GuidedMissileLauncher : DefenseTower
         return fireInterval[lIndex];
     }
 
+    public SphereAreaHarm sphereAreaHarm;
+
+    public void createSphereAreaHarm(Life pLife)
+    {
+        GameObject lAreaHarm = (GameObject)GameObject.Instantiate(sphereAreaHarm.gameObject, pLife.transform.position, pLife.transform.rotation);
+
+        SphereAreaHarm lSphereAreaHarm = lAreaHarm.GetComponent<SphereAreaHarm>();
+        lSphereAreaHarm.setHarmLayerMask(adversaryLayerMask.value);
+    }
+
     protected void fireAndSetNextTime()
     {
-        emitter.EmitBullet();
+        var lTarget = getTargetFunc();
+        if (lTarget)
+        {
+            var lBulletObject = emitter.EmitBullet();
+            BulletFollowAI lBulletFollowAI = lBulletObject[0].GetComponent<BulletFollowAI>();
+            lBulletFollowAI.setTarget(lTarget);
+
+            Life lBulletLife = lBulletObject[0].gameObject.GetComponent<Life>();
+            lBulletLife.addDieCallback(createSphereAreaHarm);
+
+        }
         fireTimer.setInterval(getIntervalAndMove());
     }
 
@@ -36,11 +64,14 @@ class GuidedMissileLauncher : DefenseTower
         //return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Missile");
     }
 
+    public LayerMask adversaryLayerMask;
+
     public override void setAdversaryLayerMask(LayerMask pLayer)
     {
 
         if (zzCreatorUtility.isHost())
         {
+            adversaryLayerMask = pLayer;
             GuidedMissileLauncherAI lAi = GetComponentInChildren<GuidedMissileLauncherAI>();
             lAi.setAdversaryLayerMask(pLayer);
         }

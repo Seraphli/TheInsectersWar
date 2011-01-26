@@ -79,9 +79,7 @@ class zzFileBrowserDialog : zzWindow
     public bool FileBrowser()
     {
         UpdateIsDoubleClick();
-        //print(Event.current.type);
-        //if (Event.current.clickCount>1)
-        // print(Event.current.clickCount);
+
         bool complete;
         DirectoryInfo directoryInfo;
         //DirectoryInfo directorySelection;
@@ -147,31 +145,9 @@ class zzFileBrowserDialog : zzWindow
             if (lIsChangeDirectory)
                 return false;
 
-            //if (directoryInfo.Parent!=null && GUILayout.Button("Up one level"))
-            //{
-            //    directoryInfo = directoryInfo.Parent;
-            //    location = directoryInfo;
-            //}
             bool isChoose = false;
             GUILayout.BeginHorizontal();
             {
-                // Handle the directories list
-                //GUILayout.BeginArea(new Rect(10, 40, 200, 300));
-                //GUILayout.BeginVertical();
-                //{
-                //    GUILayout.Label("Directories:");
-                //    directoryScroll = GUILayout.BeginScrollView(directoryScroll);
-                //    directorySelection = SelectList(directoryInfo.GetDirectories(), null) as DirectoryInfo;
-                //    GUILayout.EndScrollView();
-
-                //}
-                //GUILayout.EndVertical();
-
-                //if (directorySelection != null)
-                //// If a directory was selected, jump there
-                //{
-                //    location = directorySelection.FullName;
-                //}
 
                 GUILayout.Space(10);
 

@@ -20,18 +20,18 @@ public class Emitter : MonoBehaviour
     protected Hashtable injureInfo;
     protected float bulletAliveTime;
 
-    public delegate void initBulletNullFunc(Bullet pBullet);
+    //public delegate void initBulletNullFunc(Bullet pBullet);
 
-    static void nullInitBulletNullFunc(Bullet pBullet){}
+    //static void nullInitBulletNullFunc(Bullet pBullet){}
     //protected void  initBulletNullFunc ( Bullet pBullet  ){
     //}
 
-    protected initBulletNullFunc initBulletFunc = nullInitBulletNullFunc;
+    //protected initBulletNullFunc initBulletFunc = nullInitBulletNullFunc;
 
-    public void setInitBulletFunc(initBulletNullFunc pFunc)
-    {
-        initBulletFunc = pFunc;
-    }
+    //public void setInitBulletFunc(initBulletNullFunc pFunc)
+    //{
+    //    initBulletFunc = pFunc;
+    //}
 
     public virtual void setInjureInfo(Hashtable pInjureInfo)
     {
@@ -48,19 +48,19 @@ public class Emitter : MonoBehaviour
     {
     }
 
-    public virtual void EmitBullet()
+    public virtual GameObject[] EmitBullet()
     {
+        GameObject lOut = null;
         if (zzCreatorUtility.isHost())
         {
-            GameObject clone;
-            clone = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, new Quaternion(), 0);
+            lOut = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, new Quaternion(), 0);
             //clone.layer = bulletLayer;
 
             //print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
             //Rigidbody lRigidbody = clone.GetComponentInChildren<Rigidbody>();
             //lRigidbody.velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
             //clone.velocity=transform.forward;
-            Bullet pBullet = clone.GetComponentInChildren<Bullet>();
+            Bullet pBullet = lOut.GetComponentInChildren<Bullet>();
             pBullet.setLayer(bulletLayer);
             pBullet.setAliveTime(bulletAliveTime);
             //pBullet.setForward(getForward());
@@ -72,7 +72,7 @@ public class Emitter : MonoBehaviour
             }
 
             //执行外部的初始化子弹的函数
-            initBulletFunc(pBullet);
+            //initBulletFunc(pBullet);
         }
         if (fireSound)
         {
@@ -86,6 +86,7 @@ public class Emitter : MonoBehaviour
             FireSpark lFireSpark = clone.GetComponent<FireSpark>();
             lFireSpark.setForward(getForward());
         }
+        return new GameObject[]{lOut};
     }
 
     public virtual void setBulletLayer(int pBulletLayer)

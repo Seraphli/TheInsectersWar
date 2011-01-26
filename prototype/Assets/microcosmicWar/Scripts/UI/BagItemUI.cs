@@ -157,9 +157,6 @@ public class BagItemUI : MonoBehaviour
     /// <param name="index"></param>
     public void useByIndex(int index)
     {
-        print(index);
-        print(itemNum);
-        print(itemIndexList.Count);
         if (index < itemIndexList.Count)
         {
             int lIndex = (int)itemIndexList[index];

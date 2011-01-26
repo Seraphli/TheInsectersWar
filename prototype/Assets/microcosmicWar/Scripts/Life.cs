@@ -75,11 +75,10 @@ public class Life : MonoBehaviour
             bloodValueChangeCallback(this);
             if (bloodValue <= 0)
             {
-                //dieCallback();
-                //foreach(var dieCallback in dieCallbackList)
-                //	dieCallback();
-                //zzCreatorUtility.Destroy (gameObject);
-                zzCreatorUtility.sendMessage(gameObject, "Life_die");
+                //zzCreatorUtility.sendMessage(gameObject, "Life_die");
+                Life_die();
+                if (Network.peerType != NetworkPeerType.Disconnected)
+                    networkView.RPC("Life_die", RPCMode.Others);
             }
         }
     }
