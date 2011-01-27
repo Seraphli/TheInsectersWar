@@ -129,21 +129,20 @@ public class SoldierAI : ISoldierAI
         //print(adversaryLayerValue);
         //FIXME_VAR_TYPE lFaceDirection= 0;
         int lFaceValue = actionCommandControl.getFaceValue();
-
-        if (Physics.Raycast(transform.position, new Vector3(lFaceValue, 0, 0),
-            out lHit, Random.Range(fireDistanceMin, fireDistanceMax), adversaryLayerMask.value))
-        //if (Physics.Raycast (transform.position, lFwd , lHit, 4.0f,adversaryLayerValue)) 
+        var lFireHit = forwardFireDetector.detect(1, adversaryLayerMask);
+        if (lFireHit.Length > 0)
         {
-            //fireTarget = lHit.transform;
-            runtimeAim.checkAndAddAim(lHit.transform);
+            runtimeAim.checkAndAddAim(lFireHit[0].transform);
             return lFaceValue;
         }
-        if (Physics.Raycast(transform.position, new Vector3(-lFaceValue, 0, 0),
-            out lHit, fireDistanceMin, adversaryLayerMask.value))
+
+        lFireHit = backwardFireDetector.detect(1, adversaryLayerMask);
+        if (lFireHit.Length > 0)
         {
-            runtimeAim.checkAndAddAim(lHit.transform);
+            runtimeAim.checkAndAddAim(lFireHit[0].transform);
             return -lFaceValue;
         }
+        
         return 0;
     }
 
@@ -288,7 +287,7 @@ public class SoldierAI : ISoldierAI
                 setFaceCommand(actionCommand, lFireTaget);
             }
             else
-                actionCommand = moveToAim(aimPosition);
+                actionCommand = moveToAim(aimPosition, lAim.position);
 
             if (_moveLock)
             {

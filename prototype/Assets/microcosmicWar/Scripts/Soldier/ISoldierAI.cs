@@ -157,6 +157,14 @@ public abstract class ISoldierAI:MonoBehaviour
         adversaryLayerMask = pLayerMask;
     }
 
+    public float tooCloseDistance = 0.5f;
+
+    //探测前方是否有敌人,是则开火
+    public zzDetectorBase forwardFireDetector;
+
+    //探测后方是否有敌人,是则开火
+    public zzDetectorBase backwardFireDetector;
+
     //判断前进的方向上是否有可站立的地方
     public zzDetectorBase forwardBoardDetector;
 
@@ -195,26 +203,44 @@ public abstract class ISoldierAI:MonoBehaviour
         }
     }
 
-    //public UnitActionCommand moveToAim(Transform pAim)
-    public UnitActionCommand moveToAim(Vector3 pAimPos)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pAimPos">路途点</param>
+    /// <param name="pFinalPos">最终点</param>
+    /// <returns></returns>
+    public UnitActionCommand moveToAim(Vector3 pAimPos,Vector3 pFinalPos)
     {
         UnitActionCommand lActionCommand = new UnitActionCommand();
+        Vector3 lPosition = transform.position;
+        int lFaceValue;
 
-        float lT = pAimPos.x - transform.position.x;
+        bool lTooCloseToFinalPos;
+        if (Mathf.Abs(lPosition.y - pFinalPos.y) < 0.5f
+            && Mathf.Abs(pFinalPos.x - lPosition.x) < tooCloseDistance)
+            lTooCloseToFinalPos = true;
+        else
+            lTooCloseToFinalPos = false;
+
+        //离目标太近时,不改变方向
+        if (lTooCloseToFinalPos)
+            lFaceValue = actionCommandControl.getFaceValue();
+        else
+            lFaceValue = (int)(pAimPos.x - lPosition.x);
 
         lActionCommand.GoForward = true;
 
         if (character.isGrounded)
         {
             //目标x值 在一定范围内时,可跳跃
-            if (Mathf.Abs(pAimPos.x - transform.position.x) < 1.0f)
+            if (Mathf.Abs(pAimPos.x - lPosition.x) < 1.0f)
             {
-                if (pAimPos.y > transform.position.y + 0.8f)
+                if (pAimPos.y > lPosition.y + 0.8f)
                 {
                     lActionCommand.Jump = true;
                     //Debug.Log("jump1");
                 }
-                else if (pAimPos.y < transform.position.y - 0.5f)
+                else if (pAimPos.y < lPosition.y - 0.5f)
                 {
                     lActionCommand.Jump = true;
                     lActionCommand.FaceDown = true;
@@ -224,7 +250,10 @@ public abstract class ISoldierAI:MonoBehaviour
         }
 
         //目标x值 在一定范围内时,停止前进
-        if (Mathf.Abs(pAimPos.x - transform.position.x) < 0.3)
+        if (
+            Mathf.Abs(pAimPos.x - lPosition.x) < 0.3f
+            && !lTooCloseToFinalPos //不能离最终位置太近
+            )
             lActionCommand.GoForward = false;
         else if (
             character.isGrounded
@@ -234,7 +263,7 @@ public abstract class ISoldierAI:MonoBehaviour
                 (
                     haveBarrier//前方是否有障碍
                     || (//判断前进的方向上是否有可站立的地方,没有 就跳跃
-                        pAimPos.y >= transform.position.y
+                        pAimPos.y >= lPosition.y
                         && forwardBoardDetector.detect(1, layers.standPlaceValue).Length == 0
                     )
                 )
@@ -244,10 +273,23 @@ public abstract class ISoldierAI:MonoBehaviour
             //Debug.Log("jump2");
         }
 
-        setFaceCommand(lActionCommand, (int)lT);
+        setFaceCommand(lActionCommand, lFaceValue);
         return lActionCommand;
         //}
         //return lActionCommand;
+    }
+
+    public int getFaceValue(UnitActionCommand pActionCommand)
+    {
+        if (pActionCommand.FaceLeft)
+        {
+            return -1;
+        }
+        else if (pActionCommand.FaceRight)
+        {
+            return 1;
+        }
+        return 0;
     }
 
     public void setFaceCommand(UnitActionCommand pActionCommand, int face)

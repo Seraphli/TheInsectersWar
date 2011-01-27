@@ -97,24 +97,4 @@ public class GuidedMissileLauncherAI : MonoBehaviour
         return null;
     }
 
-    //public void createSphereAreaHarm(Life pLife)
-    //{
-    //    GameObject lAreaHarm = (GameObject)GameObject.Instantiate(sphereAreaHarm.gameObject, pLife.transform.position, pLife.transform.rotation);
-
-    //    SphereAreaHarm lSphereAreaHarm = lAreaHarm.GetComponent<SphereAreaHarm>();
-    //    lSphereAreaHarm.setHarmLayerMask(adversaryLayerMask.value);
-    //}
-
-    //public void initBullet(Bullet pBullet)
-    //{
-    //    Transform lTaget = getTargetAndMove();
-    //    if (lTaget)
-    //    {
-    //        BulletFollowAI lBulletFollowAI = pBullet.GetComponent<BulletFollowAI>();
-    //        lBulletFollowAI.setTarget(lTaget);
-    //    }
-
-    //    Life lBulletLife = pBullet.gameObject.GetComponent<Life>();
-    //    lBulletLife.addDieCallback(createSphereAreaHarm);
-    //}
 }

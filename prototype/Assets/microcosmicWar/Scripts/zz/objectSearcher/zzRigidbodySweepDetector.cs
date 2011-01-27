@@ -37,16 +37,6 @@ public class zzRigidbodySweepDetector : zzDetectorBase
 
     }
 
-    [ContextMenu("SweepTest")]
-    void test()
-    {
-        RaycastHit[] lHits = SweetTest();
-        foreach (var lHit in lHits)
-        {
-            print(lHit.transform.name);
-        }
-    }
-
     void OnDrawGizmos()
     {
         Gizmos.DrawLine(beginPositon, beginPositon + worldDirection.normalized * distance);

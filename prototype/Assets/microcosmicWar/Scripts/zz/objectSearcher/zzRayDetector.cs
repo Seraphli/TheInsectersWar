@@ -43,4 +43,5 @@ class zzRayDetector : zzDetectorBase
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, _to.position);
     }
+
 }

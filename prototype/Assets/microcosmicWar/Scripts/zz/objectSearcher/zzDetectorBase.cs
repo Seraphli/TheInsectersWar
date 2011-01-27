@@ -78,6 +78,14 @@ public abstract class zzDetectorBase : MonoBehaviour
         return priority;
     }
 
+    [ContextMenu("test")]
+    public void test()
+    {
+        foreach (var lHit in detect(10,-1))
+        {
+            print(lHit.collider.name);
+        }
+    }
 
     //void Reset()
     //{

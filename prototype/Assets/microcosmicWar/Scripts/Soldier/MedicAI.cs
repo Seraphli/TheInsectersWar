@@ -7,8 +7,8 @@ class MedicAI:ISoldierAI
     //public zzDetectorBase treatedDetector;
     public zzDetectorBase treatDirectionDetector;
     public zzDetectorBase needTreatDetector;
-    public zzDetectorBase frontEnemyDetector;
-    public zzDetectorBase backEnemyDetector;
+    //public zzDetectorBase frontEnemyDetector;
+    //public zzDetectorBase backEnemyDetector;
     public bool needRunAway = false;
     public Life treatAimLife;
 
@@ -51,22 +51,39 @@ class MedicAI:ISoldierAI
         return base.getNowAimTransform();
     }
 
-    int treatDirectionDetect(int pTreatedLayerValue)
+    //int treatDirectionDetect(int pTreatedLayerValue)
+    //{
+    //    Collider[] lColliders = treatDirectionDetector.detect(1, pTreatedLayerValue, detectorFilter);
+    //    if(lColliders.Length==0)
+    //    {
+    //        return 0;
+    //    }
+
+    //    var lAimX = lColliders[0].transform.position.x;
+    //    if (lAimX < transform.position.x)
+    //        return -1;
+
+    //    return 1;
+
+    //}
+
+    Transform treatDetect(int pTreatedLayerValue)
     {
         Collider[] lColliders = treatDirectionDetector.detect(1, pTreatedLayerValue, detectorFilter);
-        if(lColliders.Length==0)
+        if (lColliders.Length == 0)
         {
-            return 0;
+            return null;
         }
-
-        var lAimX = lColliders[0].transform.position.x;
-        if (lAimX < transform.position.x)
-            return -1;
-
-        return 1;
+        return lColliders[0].transform;
 
     }
 
+    /// <summary>
+    /// 判断前方第一个兵,是不是敌人
+    /// </summary>
+    /// <param name="pCompanionLayerValue"></param>
+    /// <param name="pDetector"></param>
+    /// <returns></returns>
     bool isFaceEnemy(int pCompanionLayerValue,zzDetectorBase pDetector)
     {
         int lDetectLayerValue = pCompanionLayerValue | adversaryLayerMask.value;
@@ -75,10 +92,15 @@ class MedicAI:ISoldierAI
         return ldetected.Length != 0 && isEnemy(ldetected[0]);
     }
 
+    /// <summary>
+    /// 判断前方第一个兵,是不是敌人
+    /// </summary>
+    /// <param name="pCompanionLayerValue"></param>
+    /// <returns></returns>
     bool isFaceEnemy(int pCompanionLayerValue)
     {
-        return isFaceEnemy(pCompanionLayerValue, frontEnemyDetector)
-            || isFaceEnemy(pCompanionLayerValue, backEnemyDetector);
+        return isFaceEnemy(pCompanionLayerValue, forwardFireDetector)
+            || isFaceEnemy(pCompanionLayerValue, backwardFireDetector);
     }
 
     bool isEnemy(Collider pCollider)
@@ -101,39 +123,41 @@ class MedicAI:ISoldierAI
 
     protected override void actionCommandUpdate()
     {
-        bool lPreNeedRunAway = needRunAway;
-        needRunAway = false;
-        actionCommand.clear();
-        //bool lMoveToAim = false;
-        if (isFaceEnemy(treatedLayerValue))
+        Transform lAim = getNowAimTransform();
+        if (enable && lAim)
         {
-            //print("isFaceEnemy(treatedLayerValue");
-            if (!lPreNeedRunAway)
+            bool lPreNeedRunAway = needRunAway;
+            needRunAway = false;
+            actionCommand.clear();
+            //bool lMoveToAim = false;
+            if (isFaceEnemy(treatedLayerValue))
             {
-                pathUpdate();
+                //print("isFaceEnemy(treatedLayerValue");
+                if (!lPreNeedRunAway)
+                {
+                    pathUpdate();
+                }
+                needRunAway = true;
+                actionCommand = moveToAim(aimPosition, lAim.position);
             }
-            needRunAway = true;
-            actionCommand = moveToAim(aimPosition);
-        }
-        else if (needTreat(treatedLayerValue))
-        {
-            //print("needTreat(treatedLayerValue)");
-            actionCommand.Fire = true;
-        }
-        else
-        {
-            int lTreatDirection = treatDirectionDetect(treatedLayerValue);
-
-            if (lTreatDirection == 0)
-                actionCommand = moveToAim(aimPosition);
+            else if (needTreat(treatedLayerValue))
+            {
+                //print("needTreat(treatedLayerValue)");
+                actionCommand.Fire = true;
+            }
             else
             {
-                actionCommand.GoForward = true;
-                setFaceCommand(actionCommand, lTreatDirection);
-            }
-        }
+                //探测需救助者
+                var lTreat = treatDetect(treatedLayerValue);
 
-        actionCommandControl.setCommand(getCommand());
+                if (lTreat)
+                    actionCommand = moveToAim(aimPosition, lTreat.position);
+
+                actionCommand = moveToAim(aimPosition, lAim.position);
+            }
+
+            actionCommandControl.setCommand(getCommand());
+        }
     }
 
 }
