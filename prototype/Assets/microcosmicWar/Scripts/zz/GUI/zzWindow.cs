@@ -19,10 +19,7 @@ public class zzWindow : zzGUIContainer
 
     void Awake()
     {
-        if (ID == 0)
-        {
-            ID = newID();
-        }
+        ID = newID();
     }
 
     /// <summary>

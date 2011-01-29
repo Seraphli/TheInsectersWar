@@ -23,7 +23,7 @@ public class zzGUIContainer : zzInterfaceGUI
             foreach (Transform lTransform in transform)
             {
                 zzGUIContainer lContainer = lTransform.GetComponent<zzGUIContainer>();
-                if (lContainer && lContainer.isCursorOver)
+                if (lContainer && lContainer.visible && lContainer.isCursorOver)
                     return true;
             }
             return false;

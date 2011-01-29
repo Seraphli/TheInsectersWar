@@ -1,0 +1,105 @@
+fileFormatVersion: 1
+guid: 38fbfe9d0a496834bb82974e5815495b
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      jump:
+        firstFrame: 1
+        lastFrame: 25
+        loop: 0
+        wrapMode: 0
+  nodeInfo:
+    Bone10:
+    - 100000
+    - 400000
+    Bone09:
+    - 100002
+    - 400002
+    Bone08:
+    - 100004
+    - 400004
+    Bone07:
+    - 100006
+    - 400006
+    IK Chain01:
+    - 100008
+    - 400008
+    Bone18:
+    - 100010
+    - 400010
+    Bone16:
+    - 100012
+    - 400012
+    Bone17:
+    - 100014
+    - 400014
+    Bone14:
+    - 100016
+    - 400016
+    Bone15:
+    - 100018
+    - 400018
+    Bone12:
+    - 100020
+    - 400020
+    Bone13:
+    - 100022
+    - 400022
+    IK Chain03:
+    - 100024
+    - 400024
+    IK Chain02:
+    - 100026
+    - 400026
+    IK Chain04:
+    - 100028
+    - 400028
+    Bone11:
+    - 100030
+    - 400030
+    Bone06:
+    - 100032
+    - 400032
+    Bone05:
+    - 100034
+    - 400034
+    Bone04:
+    - 100036
+    - 400036
+    Bone03:
+    - 100038
+    - 400038
+    Bone02:
+    - 100040
+    - 400040
+    Bone01:
+    - 100042
+    - 400042
+    //RootNode:
+    - 100044
+    - 400044
+    - 11100000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    7400000: Take 001 //// armouredPismire@jump(1-25)
+    7400002: jump //// armouredPismire@jump(1-25)

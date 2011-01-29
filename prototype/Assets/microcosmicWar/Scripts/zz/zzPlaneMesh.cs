@@ -138,7 +138,6 @@ public class zzPlaneMesh
     public Vector3[] resize(Vector2 pSize, PivotType pPivotType)
     {
         vertices = resize(pSize.x, pSize.y, pPivotType);
-        mesh.vertices = vertices;
         return vertices;
     }
 
@@ -163,6 +162,7 @@ public class zzPlaneMesh
                 };
                 break;
         }
+        mesh.vertices = vertices;
 
         return vertices;
     }

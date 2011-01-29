@@ -33,6 +33,8 @@ public class DefenseTower : MonoBehaviour
 
     public bool fire = false;
 
+    public bool initDefenseTower = true;
+
     public void setFire(bool pNeedFire)
     {
         fire = pNeedFire;
@@ -43,8 +45,6 @@ public class DefenseTower : MonoBehaviour
         return fire;
     }
 
-    protected Life life;
-
     public virtual void Start()
     {
         if (!limitedAngle)
@@ -53,17 +53,13 @@ public class DefenseTower : MonoBehaviour
             maxDownAngle = 360;
         }
 
-        life = GetComponentInChildren<Life>();
-        //life.setDieCallback(deadAction);
-        life.addDieCallback(deadAction);
-
         if (!gunPivot)
             gunPivot = transform.Find("turn/gunPivot");
 
         maxDownAngle = -maxDownAngle;
 
 
-        if (zzCreatorUtility.isHost())
+        if (initDefenseTower&&zzCreatorUtility.isHost())
         {
             zzCreatorUtility.sendMessage(gameObject, "initLayer", gameObject.layer );
             //int lIntType = invert.getFace();
@@ -123,11 +119,6 @@ public class DefenseTower : MonoBehaviour
         }
         //collisionLayer.addCollider(gameObject);
         emitter.setBulletLayer(getBulletLayer());
-    }
-
-    public void deadAction(Life p)
-    {
-        Destroy(gameObject);
     }
 
     public virtual int getBulletLayer()

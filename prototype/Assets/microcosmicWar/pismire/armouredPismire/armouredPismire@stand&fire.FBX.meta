@@ -1,0 +1,181 @@
+fileFormatVersion: 1
+guid: 2dcc8ca32bdceca4c8c94d4113ba5fa4
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      stand:
+        firstFrame: 0
+        lastFrame: 48
+        loop: 0
+        wrapMode: 2
+      fire:
+        firstFrame: 0
+        lastFrame: 50
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    Bone14:
+    - 100000
+    - 400000
+    Bone17:
+    - 100002
+    - 400002
+    Bone16:
+    - 100004
+    - 400004
+    Bone05:
+    - 100006
+    - 400006
+    Box03:
+    - 100008
+    - 400008
+    - 3300000
+    - 2300000
+    Bone12:
+    - 100010
+    - 400010
+    Box01:
+    - 100012
+    - 400012
+    - 3300002
+    - 2300002
+    Bone10:
+    - 100014
+    - 400014
+    Box05:
+    - 100016
+    - 400016
+    - 3300004
+    - 2300004
+    Bone11:
+    - 100018
+    - 400018
+    Bone07:
+    - 100020
+    - 400020
+    ______:
+    - 100022
+    - 400022
+    - 3300006
+    - 2300006
+    Box10:
+    - 100024
+    - 400024
+    - 3300008
+    - 2300008
+    Box04:
+    - 100026
+    - 400026
+    - 3300010
+    - 2300010
+    Box02:
+    - 100028
+    - 400028
+    - 3300012
+    - 2300012
+    Box11:
+    - 100030
+    - 400030
+    - 3300014
+    - 2300014
+    Bone04:
+    - 100032
+    - 400032
+    Bone13:
+    - 100034
+    - 400034
+    ______:
+    - 100036
+    - 400036
+    - 3300016
+    - 2300016
+    Bone06:
+    - 100038
+    - 400038
+    IK Chain02:
+    - 100040
+    - 400040
+    Bone02:
+    - 100042
+    - 400042
+    IK Chain03:
+    - 100044
+    - 400044
+    Bone15:
+    - 100046
+    - 400046
+    Line01:
+    - 100048
+    - 400048
+    Bone09:
+    - 100050
+    - 400050
+    Bone08:
+    - 100052
+    - 400052
+    Box09:
+    - 100054
+    - 400054
+    - 3300018
+    - 2300018
+    IK Chain01:
+    - 100056
+    - 400056
+    Box08:
+    - 100058
+    - 400058
+    - 3300020
+    - 2300020
+    Bone18:
+    - 100060
+    - 400060
+    Bone01:
+    - 100062
+    - 400062
+    IK Chain04:
+    - 100064
+    - 400064
+    Bone03:
+    - 100066
+    - 400066
+    //RootNode:
+    - 100070
+    - 400070
+    - 11100000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Plane01
+    4300002: Box05
+    4300004: ______
+    4300006: ______
+    4300008: Box01
+    4300010: Box02
+    4300012: Box03
+    4300014: Box04
+    4300016: Box08
+    4300018: Box09
+    4300020: Box10
+    4300022: Box11
+    7400000: Take 001 //// armouredPismire@stand&fire
+    7400002: stand //// armouredPismire@stand&fire
+    7400004: fire //// armouredPismire@stand&fire

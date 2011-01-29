@@ -34,6 +34,7 @@ public class AiMachineGunAI : MonoBehaviour
         //print("OnTriggerEnter"+other.gameObject.layer);
         if (((1<<other.gameObject.layer) & adversaryLayerMask.value ) !=0 )
         {
+            //如果之前的目标作废,则使用新的
             if (!collisionLayer.isAliveFullCheck(fireTarget))
                 fireTarget = other.transform;
             enemyList[other.transform] = true;

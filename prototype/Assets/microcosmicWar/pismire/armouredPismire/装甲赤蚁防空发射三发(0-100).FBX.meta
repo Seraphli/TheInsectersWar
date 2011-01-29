@@ -1,0 +1,117 @@
+fileFormatVersion: 1
+guid: d7b9b712d41b0154792757d4bd83da48
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      airFire1:
+        firstFrame: 0
+        lastFrame: 100
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    IK Chain02:
+    - 100000
+    - 400000
+    IK Chain01:
+    - 100002
+    - 400002
+    Bone14:
+    - 100004
+    - 400004
+    Bone13:
+    - 100006
+    - 400006
+    Bone16:
+    - 100008
+    - 400008
+    Bone15:
+    - 100010
+    - 400010
+    Bone18:
+    - 100012
+    - 400012
+    Bone17:
+    - 100014
+    - 400014
+    IK Chain04:
+    - 100016
+    - 400016
+    IK Chain03:
+    - 100018
+    - 400018
+    Line02:
+    - 100020
+    - 400020
+    Line01:
+    - 100022
+    - 400022
+    Line04:
+    - 100024
+    - 400024
+    Line03:
+    - 100026
+    - 400026
+    Bone12:
+    - 100028
+    - 400028
+    Bone11:
+    - 100030
+    - 400030
+    Bone10:
+    - 100032
+    - 400032
+    Bone09:
+    - 100034
+    - 400034
+    Bone08:
+    - 100036
+    - 400036
+    Bone07:
+    - 100038
+    - 400038
+    Bone06:
+    - 100040
+    - 400040
+    Bone05:
+    - 100042
+    - 400042
+    Bone04:
+    - 100044
+    - 400044
+    Bone03:
+    - 100046
+    - 400046
+    Bone02:
+    - 100048
+    - 400048
+    Bone01:
+    - 100050
+    - 400050
+    //RootNode:
+    - 100052
+    - 400052
+    - 11100000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    7400000: "Take 001 //// \u88C5\u7532\u8D64\u8681\u9632\u7A7A\u53D1\u5C04\u4E09\u53D1(0-100)"
+    7400002: "airFire1 //// \u88C5\u7532\u8D64\u8681\u9632\u7A7A\u53D1\u5C04\u4E09\u53D1(0-100)"

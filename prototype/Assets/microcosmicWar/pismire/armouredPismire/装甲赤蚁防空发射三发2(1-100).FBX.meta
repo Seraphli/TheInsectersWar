@@ -1,0 +1,106 @@
+fileFormatVersion: 1
+guid: 44a0d490b5857234e802398cd9f876ff
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      airFire2:
+        firstFrame: 0
+        lastFrame: 100
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    Bone18:
+    - 100000
+    - 400000
+    Bone17:
+    - 100002
+    - 400002
+    Bone08:
+    - 100004
+    - 400004
+    Bone07:
+    - 100006
+    - 400006
+    Bone06:
+    - 100008
+    - 400008
+    Bone05:
+    - 100010
+    - 400010
+    Bone10:
+    - 100012
+    - 400012
+    Bone09:
+    - 100014
+    - 400014
+    Bone12:
+    - 100016
+    - 400016
+    Bone11:
+    - 100018
+    - 400018
+    Bone14:
+    - 100020
+    - 400020
+    Bone13:
+    - 100022
+    - 400022
+    Bone16:
+    - 100024
+    - 400024
+    Bone15:
+    - 100026
+    - 400026
+    IK Chain02:
+    - 100028
+    - 400028
+    IK Chain01:
+    - 100030
+    - 400030
+    IK Chain04:
+    - 100032
+    - 400032
+    IK Chain03:
+    - 100034
+    - 400034
+    Bone01:
+    - 100036
+    - 400036
+    Bone02:
+    - 100038
+    - 400038
+    Bone03:
+    - 100040
+    - 400040
+    Bone04:
+    - 100042
+    - 400042
+    //RootNode:
+    - 100044
+    - 400044
+    - 11100000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    7400000: "Take 001 //// \u88C5\u7532\u8D64\u8681\u9632\u7A7A\u53D1\u5C04\u4E09\u53D12(1-100)"
+    7400002: "airFire1 //// \u88C5\u7532\u8D64\u8681\u9632\u7A7A\u53D1\u5C04\u4E09\u53D12(1-100)"
+    7400004: "airFire2 //// \u88C5\u7532\u8D64\u8681\u9632\u7A7A\u53D1\u5C04\u4E09\u53D12(1-100)"
