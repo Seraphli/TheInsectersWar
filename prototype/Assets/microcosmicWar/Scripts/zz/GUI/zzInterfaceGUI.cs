@@ -134,6 +134,10 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     public delegate void GUICallFunc(zzInterfaceGUI pGUI);
 
+    public delegate void VoidCallFunc();
+
+    protected static void nullVoidCallFunc() { }
+
     public void renderGUI()
     {
 
@@ -313,20 +317,6 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return depth;
     }
 
-    //void Reset()
-    //{
-    //    //添加
-    //    /*
-    //    if(! gameObject.GetComponent<zzGUI>() )
-    //    {
-    //        zzGUI lzzGUI = gameObject.AddComponent<zzGUI>();
-    //        lzzGUI.setGUI(this);
-    //    }
-    //    */
-    //    zzGUI lzzGUI = (zzGUI)zzUtilities.needComponent(gameObject, typeof(zzGUI) );
-    //    lzzGUI.setGUI(this);
-    //}
-
     void OnDrawGizmosSelected()
     {
         DrawGizmos(Color.white);
@@ -344,21 +334,15 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
         Gizmos.matrix = transform.localToWorldMatrix;
 
-        Rect lPosition = getPosition();
+        //OnDrawGizmos 使用不同的摄像机,所以避免改变UI位置,直接获取值
+        //Rect lPosition = getPosition();
+        Rect lPosition = position;
         Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.y, 0), new Vector3(lPosition.xMax, -lPosition.y, 0));
         Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.y, 0), new Vector3(lPosition.x, -lPosition.yMax, 0));
 
 
         Gizmos.DrawLine(new Vector3(lPosition.xMax, -lPosition.y, 0), new Vector3(lPosition.xMax, -lPosition.yMax, 0));
         Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.yMax, 0), new Vector3(lPosition.xMax, -lPosition.yMax, 0));
-        /*
-			
-        Gizmos.DrawLine (Vector3(position.x,-position.y,0), Vector3(position.xMax-position.width/2,-position.y,0));
-        Gizmos.DrawLine (Vector3(position.x,-position.y,0), Vector3(position.x,-position.yMax+position.height/2,0));
-		
-		
-        Gizmos.DrawLine (Vector3(position.xMax-position.width/2,-position.y,0), Vector3(position.xMax-position.width/2,-position.yMax+position.height/2,0));
-        Gizmos.DrawLine (Vector3(position.x,-position.yMax+position.height/2,0), Vector3(position.xMax-position.width/2,-position.yMax+position.height/2,0));
-        */
+
     }
 }

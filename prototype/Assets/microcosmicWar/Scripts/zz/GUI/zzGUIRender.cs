@@ -14,8 +14,6 @@ public class zzGUIRender : zzGUIContainer
 
     void OnGUI()
     {
-        //impSubs();
-        //zzGUI.renderGUI(this);
         renderGUI();
     }
 

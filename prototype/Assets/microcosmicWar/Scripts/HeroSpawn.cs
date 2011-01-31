@@ -267,8 +267,11 @@ public class HeroSpawn : MonoBehaviour
     {
         mainInput lMainInput = SystemObject.GetComponent<mainInput>();
         lMainInput.setToControl(null);
-        Destroy(pHeroObject.GetComponent<bagItemUIInput>());
-        Destroy(pHeroObject.GetComponent<SoldierFactoryStateUIInput>());
+        if(pHeroObject)
+        {
+            Destroy(pHeroObject.GetComponent<bagItemUIInput>());
+            Destroy(pHeroObject.GetComponent<SoldierFactoryStateUIInput>());
+        }
 
     }
 

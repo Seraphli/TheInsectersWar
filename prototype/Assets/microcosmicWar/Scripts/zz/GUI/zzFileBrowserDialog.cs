@@ -319,6 +319,10 @@ class zzFileBrowserDialog : zzWindow
         }
 
     }
+    public static zzFileBrowserDialog createDialog()
+    {
+        return createDialog(zzGUI.root.transform);
+    }
 
     public static zzFileBrowserDialog createDialog(Transform pParent)
     {
@@ -327,6 +331,7 @@ class zzFileBrowserDialog : zzWindow
         var lOut = lObject.AddComponent<zzFileBrowserDialog>(); ;
         lOut.ContentAndStyle.UseDefaultStyle = true;
         lOut.enableDrag = true;
+        lObject.AddComponent<zzGUIUseCustomPos>();
         return lOut;
     }
 

@@ -4,7 +4,7 @@ using System.Collections;
 public class ArmouredPismire:MonoBehaviour
 {
     public DefenseTower defenseTower;
-    public LifeTriggerDetector lifeTriggerDetector;
+    public LifeTriggerDetector[] lifeTriggerDetectors;
     //敌人还在这个角度时,枪不动
     public float fireDeviation = 4.0f;
 
@@ -21,9 +21,19 @@ public class ArmouredPismire:MonoBehaviour
 
     void Update()
     {
-        Transform lAim = lifeTriggerDetector.lockedTarget;
+        Transform lAim = null;
+        foreach (var lDetector in lifeTriggerDetectors)
+        {
+            if(lDetector.lockedTarget)
+            {
+                lAim = lDetector.lockedTarget;
+                break;
+            }
+        }
+
         if (lAim)
             defenseTower.takeAim(lAim.position, fireDeviation);
+
         if (character.isGrounded())
             character.runSpeed = speedOnGround;
         else

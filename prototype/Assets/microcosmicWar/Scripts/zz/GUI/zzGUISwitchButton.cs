@@ -11,6 +11,18 @@ class zzGUISwitchButton : zzInterfaceGUI
     public bool useDefaultStyle = true;
     public GUIStyle style;
 
+    public void setOn()
+    {
+        if (!isOn)
+            switchButton();
+    }
+
+    public void setOff()
+    {
+        if (isOn)
+            switchButton();
+    }
+
     public delegate void SwitchEvent(bool lIsOn);
 
     SwitchEvent switchEvent;
@@ -24,9 +36,14 @@ class zzGUISwitchButton : zzInterfaceGUI
     {
         if (_drawButton(rect))
         {
-            isOn = !isOn;
-            switchEvent(isOn);
+            switchButton();
         }
+    }
+
+    public void switchButton()
+    {
+        isOn = !isOn;
+        switchEvent(isOn);
     }
 
     bool _drawButton(Rect rect)

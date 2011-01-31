@@ -5,7 +5,6 @@ public class zzRayRandomLengthDetector : zzDetectorBase
 {
 
     public Vector3 direction;
-    public float distance;
 
     public Vector3 worldDirection
     {
@@ -24,7 +23,7 @@ public class zzRayRandomLengthDetector : zzDetectorBase
     public float lengthMaxRandomMax = 10.0f;
 
 
-    void Start()
+    void Awake()
     {
         lengthMin = Random.Range(lengthMinRandomMin, lengthMinRandomMax);
         lengthMax = Random.Range(lengthMaxRandomMin, lengthMaxRandomMax);

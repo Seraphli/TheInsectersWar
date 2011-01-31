@@ -12,6 +12,49 @@ public abstract class ISoldierAI:MonoBehaviour
 
     public CharacterController character;
 
+    public Transform gun;
+
+    bool isOverGun(Transform pAim)
+    {
+        if (pAim.GetComponent<CharacterController>())
+            return isOverGun(pAim.GetComponent<CharacterController>());
+        return false;
+    }
+
+    bool isOverGun(CharacterController pAim)
+    {
+        var lPosition = transform.position;
+        var lCharacterBound = character.bounds;
+        var lGunPosition = gun.position;
+        var lMirrorGunPosition
+            = new Vector3(2 * lPosition.x - lGunPosition.x,
+                lGunPosition.y, lGunPosition.z);
+
+        lCharacterBound.Encapsulate(lGunPosition);
+        lCharacterBound.Encapsulate(lMirrorGunPosition);
+
+        return lCharacterBound.Contains(pAim.transform.position);
+        //if (lCharacterBound.Contains(pAim.transform.position))
+        //{
+        //    var lAimBound = pAim.bounds;
+        //    var lAimBoundCenter = lAimBound.center;
+        //    //var lMirrorAimBoundCenter
+        //    //    = new Vector3(2 * lPosition.x - lAimBoundCenter.x,
+        //    //        lAimBoundCenter.y, lAimBoundCenter.z);
+
+        //    //var lMirrorAimBound = new Bounds(lMirrorAimBoundCenter, lAimBound.size);
+        //    if (!lAimBound.Contains(lGunPosition)
+        //        && !lAimBound.Contains(lMirrorGunPosition))
+        //    {
+        //        print("lAimBound:" + lAimBound);
+        //        print("OverGun");
+        //        return true;
+        //    }
+        //}
+
+        //return false;
+    }
+
 
     //寻路计时器,在这些时间后执行寻路命令
     zzCoroutineTimer pathTimer;
@@ -28,6 +71,7 @@ public abstract class ISoldierAI:MonoBehaviour
     protected UnitActionCommand actionCommand = new UnitActionCommand();
 
     public LayerMask adversaryLayerMask = -1;
+
 
 
     ////射击的检测距离将在介于与以下值
@@ -158,6 +202,7 @@ public abstract class ISoldierAI:MonoBehaviour
     }
 
     public float tooCloseDistance = 0.5f;
+    public float tooCloseVerticalDistance = 0.5f;
 
     //探测前方是否有敌人,是则开火
     public zzDetectorBase forwardFireDetector;
@@ -209,18 +254,18 @@ public abstract class ISoldierAI:MonoBehaviour
     /// <param name="pAimPos">路途点</param>
     /// <param name="pFinalPos">最终点</param>
     /// <returns></returns>
-    public UnitActionCommand moveToAim(Vector3 pAimPos,Vector3 pFinalPos)
+    public UnitActionCommand moveToAim(Vector3 pAimPos,Transform pFinalAim)
     {
         UnitActionCommand lActionCommand = new UnitActionCommand();
         Vector3 lPosition = transform.position;
         int lFaceValue;
 
-        bool lTooCloseToFinalPos;
-        if (Mathf.Abs(lPosition.y - pFinalPos.y) < 0.5f
-            && Mathf.Abs(pFinalPos.x - lPosition.x) < tooCloseDistance)
-            lTooCloseToFinalPos = true;
-        else
-            lTooCloseToFinalPos = false;
+        bool lTooCloseToFinalPos = isOverGun(pFinalAim);
+        //if (Mathf.Abs(lPosition.y - pFinalPos.y) < 0.5f
+        //    && Mathf.Abs(pFinalPos.x - lPosition.x) < tooCloseDistance)
+        //    lTooCloseToFinalPos = true;
+        //else
+        //    lTooCloseToFinalPos = false;
 
         //离目标太近时,不改变方向
         if (lTooCloseToFinalPos)
@@ -275,8 +320,6 @@ public abstract class ISoldierAI:MonoBehaviour
 
         setFaceCommand(lActionCommand, lFaceValue);
         return lActionCommand;
-        //}
-        //return lActionCommand;
     }
 
     public int getFaceValue(UnitActionCommand pActionCommand)

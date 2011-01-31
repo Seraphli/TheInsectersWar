@@ -138,7 +138,7 @@ class MedicAI:ISoldierAI
                     pathUpdate();
                 }
                 needRunAway = true;
-                actionCommand = moveToAim(aimPosition, lAim.position);
+                actionCommand = moveToAim(aimPosition, lAim);
             }
             else if (needTreat(treatedLayerValue))
             {
@@ -151,9 +151,9 @@ class MedicAI:ISoldierAI
                 var lTreat = treatDetect(treatedLayerValue);
 
                 if (lTreat)
-                    actionCommand = moveToAim(aimPosition, lTreat.position);
+                    actionCommand = moveToAim(aimPosition, lTreat);
 
-                actionCommand = moveToAim(aimPosition, lAim.position);
+                actionCommand = moveToAim(aimPosition, lAim);
             }
 
             actionCommandControl.setCommand(getCommand());

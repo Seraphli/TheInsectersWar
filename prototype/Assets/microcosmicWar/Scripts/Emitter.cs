@@ -110,4 +110,12 @@ public class Emitter : MonoBehaviour
     {
         Gizmos.DrawLine(transform.position, transform.position + getForward() * shootRange);
     }
+
+    public bool showGizmo = false;
+
+    void OnDrawGizmos()
+    {
+        if (showGizmo)
+            Gizmos.DrawLine(transform.position, transform.position + getForward() * shootRange);
+    }
 }

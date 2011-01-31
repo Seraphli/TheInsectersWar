@@ -86,12 +86,9 @@ public class zzObjectPicker:MonoBehaviour
 
     void Update()
     {
-        if (ableDownPickJudgeFunc())
-        {
-            if (checkButton && Input.GetKeyDown(button))
-                buttonDownEvent(pickWhenDown ? check() : null);
 
-        }
+        if (checkButton && Input.GetKeyDown(button) && ableDownPickJudgeFunc())
+            buttonDownEvent(pickWhenDown ? check() : null);
 
         if (checkButton && Input.GetKeyUp(button))
             buttonUpEvent(pickWhenUp ? check() : null);

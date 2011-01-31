@@ -10,7 +10,13 @@ public class zzButton : zzInterfaceGUI
     //public bool _useDefaultStyle = false;
     //public GUIStyle _style = new GUIStyle();
     public zzGUIStyle ContentAndStyle = new zzGUIStyle();
-    public zzInterfaceGUI.GUICallFunc clickCall = nullGUICallback;
+    public zzInterfaceGUI.GUICallFunc clickCall;
+
+    void Start()
+    {
+        if (clickCall == null)
+            clickCall = nullGUICallback;
+    }
 
     public override void impGUI(Rect rect)
     {
@@ -30,8 +36,13 @@ public class zzButton : zzInterfaceGUI
         ContentAndStyle.Content.text = pText;
     }
 
-    public virtual void setClickCall(zzInterfaceGUI.GUICallFunc pCall)
+    public virtual void addClickEventGUIReceiver(zzInterfaceGUI.GUICallFunc pCall)
     {
-        clickCall = pCall;
+        clickCall += pCall;
+    }
+
+    public void addClickEventReceiver(VoidCallFunc pReceiver)
+    {
+        clickCall += (x) => pReceiver();
     }
 }

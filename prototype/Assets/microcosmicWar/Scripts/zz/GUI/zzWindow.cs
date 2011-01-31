@@ -23,11 +23,16 @@ public class zzWindow : zzGUIContainer
     }
 
     /// <summary>
-    /// 父UI有Groud 或 Window时,将返回错误信息
+    /// 父UI有Group 时,将返回错误的信息
     /// </summary>
     public override bool isCursorOver
     {
-        get { return position.Contains(Input.mousePosition); }
+        get 
+        {
+            var lMousePosition = Input.mousePosition;
+            lMousePosition.y = Screen.height - lMousePosition.y;
+            return position.Contains(lMousePosition); 
+        }
     }
 
 
@@ -35,7 +40,6 @@ public class zzWindow : zzGUIContainer
     {
         if (ContentAndStyle.UseDefaultStyle)
         {
-            //print("_useDefaultStyle");
             position = GUI.Window(ID, rect, DoMyWindow, ContentAndStyle.Content);
             return;
         }

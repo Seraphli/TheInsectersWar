@@ -287,7 +287,7 @@ public class SoldierAI : ISoldierAI
                 setFaceCommand(actionCommand, lFireTaget);
             }
             else
-                actionCommand = moveToAim(aimPosition, lAim.position);
+                actionCommand = moveToAim(aimPosition, lAim);
 
             if (_moveLock)
             {

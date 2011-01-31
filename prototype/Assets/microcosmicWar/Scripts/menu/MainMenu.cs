@@ -54,7 +54,7 @@ public class MainMenu : MonoBehaviour
     void bindButtonCall(zzInterfaceGUI pButtonContain, string pButtonName, zzInterfaceGUI.GUICallFunc pCall)
     {
         zzButton lButton = (zzButton)pButtonContain.getSubElement(pButtonName);
-        lButton.setClickCall(pCall);
+        lButton.addClickEventGUIReceiver(pCall);
     }
 
     void bindGUI()
