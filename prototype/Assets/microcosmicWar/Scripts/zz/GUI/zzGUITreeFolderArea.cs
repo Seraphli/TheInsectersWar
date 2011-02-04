@@ -57,7 +57,13 @@ public class zzGUITreeFolderArea : zzGUIContainer
         if (Application.isPlaying)
         {
             fileScroll = GUILayout.BeginScrollView(fileScroll);
-            rootTreeFolderDraw.drawGUI(ref selectedName);
+            string lNewSelectedName = selectedName;
+            rootTreeFolderDraw.drawGUI(ref lNewSelectedName);
+            if (selectedName != lNewSelectedName)
+            {
+                selectedName = lNewSelectedName;
+                selectChangedEvent(selectedName);
+            }
             GUILayout.EndScrollView();
         }
     }

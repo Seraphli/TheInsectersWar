@@ -172,9 +172,9 @@ class zzSimplyPolygon
     public void setShape(Vector2[] points )
     {
         //Debug.Log(points.Length);
-        if (points.Length < 3)
+        if (points.Length < 2)
         {
-            Debug.LogError("points.Length < 3");
+            Debug.LogError("points.Length < 2");
             return;
         }
         shapePoint = points;

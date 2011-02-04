@@ -56,12 +56,12 @@ public abstract class IzzUserDataSerializeString
 };
 
 
-public class zzSerializeString : MonoBehaviour
+public class zzSerializeString
 {
 
 
 
-    static protected zzSerializeString singletonInstance;
+    static protected zzSerializeString singletonInstance = new zzSerializeString();
 
     public static zzSerializeString getSingleton()
     {
@@ -93,7 +93,7 @@ public class zzSerializeString : MonoBehaviour
         typeNameToSerializeMap[pI.typeName] = pI;
     }
 
-    public IzzUserDataSerializeString getrUserSerializeFromType(System.Type type)
+    public IzzUserDataSerializeString getUserSerializeFromType(System.Type type)
     {
         return typeToSerializeMap[type] as IzzUserDataSerializeString;
     }
@@ -131,7 +131,7 @@ public class zzSerializeString : MonoBehaviour
 
     public string packUserData(string pStr)
     {
-        return pack(pStr, "u");
+        return pack(pStr, "\n");
     }
 
     public SerializePackType stringToSerializePackType(string pStr)
@@ -144,26 +144,26 @@ public class zzSerializeString : MonoBehaviour
             return SerializePackType.floatType;
         else if (pStr == "b")
             return SerializePackType.boolType;
-        else if (pStr == "u")
+        else if (pStr == "\n")
             return SerializePackType.userdata;
         else
             Debug.LogError("stringToSerializePackType error type:" + pStr);
         return 0;
     }
 
-    public string SerializePackTypeToString(SerializePackType pType)
-    {
-        switch (pType)
-        {
-            case SerializePackType.stringType: return "s";
-            case SerializePackType.intType: return "i";
-            case SerializePackType.floatType: return "f";
-            case SerializePackType.boolType: return "b";
-            case SerializePackType.userdata: return "u";
-        };
-        Debug.LogError("SerializePackTypeToString error type:" + pType);
-        return "";
-    }
+    //public string SerializePackTypeToString(SerializePackType pType)
+    //{
+    //    switch (pType)
+    //    {
+    //        case SerializePackType.stringType: return "s";
+    //        case SerializePackType.intType: return "i";
+    //        case SerializePackType.floatType: return "f";
+    //        case SerializePackType.boolType: return "b";
+    //        case SerializePackType.userdata: return "u";
+    //    };
+    //    Debug.LogError("SerializePackTypeToString error type:" + pType);
+    //    return "";
+    //}
 
     public object unpack(SerializePackData pSerializePackData)
     {
@@ -245,7 +245,18 @@ public class zzSerializeString : MonoBehaviour
         else if (lType == typeof(bool)) return pack(System.Convert.ToBoolean(pData));
 
         //Debug.Log(getrUserSerializeFromType(typeof(pData)));
-        return getrUserSerializeFromType(pData.GetType()).userPack(pData);
+        return getUserSerializeFromType(pData.GetType()).userPack(pData);
+    }
+
+    public bool isSupportedType(System.Type lType)
+    {
+        if (lType != typeof(string)
+            && lType != typeof(int)
+            && lType != typeof(float)
+            && lType != typeof(bool)
+            && !typeToSerializeMap.Contains(lType))
+            return false;
+        return true;
     }
 
     //返回第一个数据 一般用以 Hashtable ,Array
@@ -262,9 +273,10 @@ public class zzSerializeString : MonoBehaviour
         return lOut.data;
     }
 
-    void Awake()
+    //void Awake()
+    zzSerializeString()
     {
-        if (singletonInstance)
+        if (singletonInstance!=null)
             Debug.LogError("have singletonInstance");
         singletonInstance = this;
         zzMySerializeString.registerMySerialize();

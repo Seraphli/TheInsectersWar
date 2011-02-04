@@ -138,6 +138,10 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     protected static void nullVoidCallFunc() { }
 
+    public delegate void StringCallFunc(string text);
+
+    protected void nullStringCallFunc(string text) { }
+
     public void renderGUI()
     {
 

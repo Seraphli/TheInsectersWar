@@ -5,9 +5,7 @@ public class zzGUIUseCustomPos:MonoBehaviour
 {
     IEnumerator Start()
     {
-        print("Start()");
         yield return new WaitForSeconds(0.1f);
-        print("yield return new WaitForSeconds(0.1f)");
 
         var lGUI = GetComponent<zzInterfaceGUI>();
         lGUI.verticalDockPosition = zzGUIDockPos.custom;

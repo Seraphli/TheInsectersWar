@@ -114,8 +114,8 @@ public class zzFlatMeshUtility
             out lVertices, out lNormals, out lUVs, pUvScale);
         int lPointNum = lPoints.Count * 2;
         int lFlatTriangleNum = lPoints.Count - 2;
-        int lFlatIndexNum = lFlatTriangleNum * 3;
-        int lTriangleNum = lFlatTriangleNum * 2 + lPointNum;
+        //int lFlatIndexNum = lFlatTriangleNum * 3;
+        //int lTriangleNum = lFlatTriangleNum * 2 + lPointNum;
 
         //前面 背面 边
         int[] lTriIndices = new int[lSurfaceTriIndexNum + lEdgeTriIndexNum];
@@ -132,7 +132,7 @@ public class zzFlatMeshUtility
         List<Vector2[]> pSurfaceList, List<Vector2[]> pEdgeList,
         Dictionary<Vector2, int> pPointToIndex, int pFlatPointNum)
     {
-        int lFlatTriangleIndexNum = 0;
+        //int lFlatTriangleIndexNum = 0;
         int lSurfaceIndex = pBeginIndex;
         foreach (var lSurfacePoints in pSurfaceList)
         {

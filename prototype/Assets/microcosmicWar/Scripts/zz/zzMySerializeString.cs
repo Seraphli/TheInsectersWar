@@ -160,7 +160,7 @@ class zzArrayListSerialize : IzzUserDataSerializeString
 {
 
     public zzArrayListSerialize()
-        : base(typeof(ArrayList), "ArrayList")
+        : base(typeof(ArrayList), "list")
     {
 		
 	}
@@ -266,7 +266,7 @@ class zzTableSerialize : IzzUserDataSerializeString
 {
 
     public zzTableSerialize()
-        : base(typeof(Hashtable), "Hashtable")
+        : base(typeof(Hashtable), "table")
     {
 	}
 
@@ -312,22 +312,22 @@ class zzTableSerialize : IzzUserDataSerializeString
 
 //----------------------------------------------------------------------------------------------
 
-public class zzMySerializeString : MonoBehaviour
+public class zzMySerializeString
 {
 
     public static void registerMySerialize()
     {
         zzSerializeString zzSerialize = zzSerializeString.getSingleton();
-        zzSerialize.registerUserSerialize(new zzArraySerialize<int>("iArray"));
-        zzSerialize.registerUserSerialize(new zzArraySerialize<float>("fArray"));
-        zzSerialize.registerUserSerialize(new zzArraySerialize<bool>("bArray"));
-        zzSerialize.registerUserSerialize(new zzArraySerialize<string>("sArray"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<int>("iAr"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<float>("fAr"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<bool>("bAr"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<string>("sAr"));
         zzSerialize.registerUserSerialize(new zzVector3Serialize());
-        zzSerialize.registerUserSerialize(new zzArraySerialize<Vector3>("v3Array"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Vector3>("v3Ar"));
         zzSerialize.registerUserSerialize(new zzVector2Serialize()); ;
-        zzSerialize.registerUserSerialize(new zzArraySerialize<Vector2>("v2Array"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Vector2>("v2Ar"));
         zzSerialize.registerUserSerialize(new zzQuaternionSerialize());
-        zzSerialize.registerUserSerialize(new zzArraySerialize<Quaternion>("q4Array"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Quaternion>("q4Ar"));
         zzSerialize.registerUserSerialize(new zzPairSerialize());
         zzSerialize.registerUserSerialize(new zzArrayListSerialize());
         zzSerialize.registerUserSerialize(new zzTableSerialize());
