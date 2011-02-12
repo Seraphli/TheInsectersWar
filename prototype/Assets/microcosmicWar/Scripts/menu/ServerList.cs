@@ -11,6 +11,7 @@ public class ServerList:MonoBehaviour
     {
         serverList.Clear();
     }
+
     public void OnReceive(string data, string IP)
     {
         serverList[IP] = data;

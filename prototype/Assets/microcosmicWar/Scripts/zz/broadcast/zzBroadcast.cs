@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 
-class zzBroadcast:MonoBehaviour
+public class zzBroadcast:MonoBehaviour
 {
     public enum ServerType
     {
@@ -23,14 +23,25 @@ class zzBroadcast:MonoBehaviour
     public string sentedData;
 
     public float autoInterval = 0.5f;
-    public Component recieverComponent;
+    //public Component recieverComponent;
     //void (string data,string IP)
-    public string beginRecieverFunctionName;
-    public string recieverFunctionName;
+    //public string beginRecieverFunctionName;
+    //public string recieverFunctionName;
 
-    delegate void RecieverFunc(string data, string IP);
+    public delegate void RecieverFunc(string data, string IP);
     RecieverFunc recieverFunc;
-    zzUtilities.voidFunction beginRecieverFunc = zzUtilities.nullFunction;
+
+    public void addReciever(RecieverFunc pRecieverFunc)
+    {
+        recieverFunc += pRecieverFunc;
+    }
+
+    zzUtilities.voidFunction beginRecieverFunc;
+
+    public void addBeginRecieverFunc(zzUtilities.voidFunction pFunc)
+    {
+        beginRecieverFunc += pFunc;
+    }
 
 
     zzBroadcastSender   broadcastSender;
@@ -40,6 +51,8 @@ class zzBroadcast:MonoBehaviour
 
     void Start()
     {
+        if (beginRecieverFunc==null)
+            beginRecieverFunc = zzUtilities.nullFunction;
         mServertype = servertype;
         //if (mServertype == ServerType.receive || autoSent)
         //{
@@ -116,19 +129,19 @@ class zzBroadcast:MonoBehaviour
 
     void initReciever()
     {
-        MethodInfo lRecieverMethodInfo = recieverComponent.GetType()
-            .GetMethod(recieverFunctionName);
-        recieverFunc = (RecieverFunc)System.Delegate.CreateDelegate(
-            typeof(RecieverFunc),recieverComponent, lRecieverMethodInfo);
+        //MethodInfo lRecieverMethodInfo = recieverComponent.GetType()
+        //    .GetMethod(recieverFunctionName);
+        //recieverFunc = (RecieverFunc)System.Delegate.CreateDelegate(
+        //    typeof(RecieverFunc),recieverComponent, lRecieverMethodInfo);
 
-        if (beginRecieverFunctionName.Length!=0)
-        {
-            MethodInfo lBeginMethodInfo = recieverComponent.GetType()
-                .GetMethod(beginRecieverFunctionName);
-            beginRecieverFunc = (zzUtilities.voidFunction)System.Delegate.CreateDelegate(
-                typeof(zzUtilities.voidFunction),recieverComponent, lBeginMethodInfo);
+        //if (beginRecieverFunctionName.Length!=0)
+        //{
+        //    MethodInfo lBeginMethodInfo = recieverComponent.GetType()
+        //        .GetMethod(beginRecieverFunctionName);
+        //    beginRecieverFunc = (zzUtilities.voidFunction)System.Delegate.CreateDelegate(
+        //        typeof(zzUtilities.voidFunction),recieverComponent, lBeginMethodInfo);
 
-        }
+        //}
 
         broadcastReciever = new zzBroadcastReciever();
         broadcastReciever.port = port;

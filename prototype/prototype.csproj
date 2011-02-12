@@ -18,9 +18,10 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_3_1_0;UNITY_3_1;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_2_0;UNITY_3_2;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 	<DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
 	<DefineConstants>TRACE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
 	<Reference Include="System" />
@@ -188,6 +190,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\UI\SoldierFactoryStateUIInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcast.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcastReciever.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcastRegisterHost.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzBroadcastSender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\broadcast\zzNetworkInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzAnimationEditor.cs" />
@@ -208,10 +211,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUISwitchButton.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITextField.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIToolbar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITransform.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITreeFolder.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITreeFolderArea.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIUseCustomPos.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzInterfaceGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzLabel.cs" />
@@ -219,6 +224,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Language\Chinese\LangResForCn.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Language\English\LangResForEn.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Language\zzLanguage.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\masterServer\zzMasterServerGameHost.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\masterServer\zzMasterServerRequester.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\Editor\zzMeshCombiner.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DBounds.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zz2DConcave.cs" />
@@ -235,6 +242,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPolygon.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzSimplyPolygon.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzSimplyPolygonDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\network\zzNetworkHost.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzAutoDetect.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
@@ -255,6 +263,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectInit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIndexTableClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLayerMaskSwitch.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMasterServer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectPicker.cs" />
@@ -269,6 +279,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerCoroutine.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzValueMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPoint.cs" />
@@ -309,6 +320,8 @@
      <Compile Include="Assets\Radar\Script\Radar2.cs" />
      <None Include="Assets\Radar\Script\Radar2.js" />
      <Compile Include="Assets\Radar\Script\RadarTest.cs" />
+     <None Include="Assets\Radar Pro\Shaders\Alpha-Cancel.shader" />
+     <Compile Include="Assets\RadarTest\Script\Radar.cs" />
      <Compile Include="Assets\Standard Assets\Camera Scripts\MouseLook.cs" />
      <None Include="Assets\Standard Assets\Camera Scripts\MouseOrbit.js" />
      <None Include="Assets\Standard Assets\Camera Scripts\SmoothFollow.js" />

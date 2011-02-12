@@ -16,9 +16,9 @@ public class MainMenu : MonoBehaviour
         //断开网络, 以免回到主菜单后, 影响后面的行为
         Network.Disconnect();
         bindGUI();
-        zzLanguage.GetInstance().pGUI = GUIRoot.getSubElement("window");
-        //zzLanguage.GetInstance().Language = "English";
-        zzLanguage.GetInstance().Language = "Chinese";
+        //zzLanguage.GetInstance().pGUI = GUIRoot.getSubElement("window");
+        ////zzLanguage.GetInstance().Language = "English";
+        //zzLanguage.GetInstance().Language = "Chinese";
     }
 
     void sewer1ButtonCall(zzInterfaceGUI pGUI)
@@ -34,6 +34,11 @@ public class MainMenu : MonoBehaviour
     void NetworkMenuButtonCall(zzInterfaceGUI pGUI)
     {
         Application.LoadLevel("NetworkMenu");
+    }
+
+    void LanNetworkMenuButtonCall(zzInterfaceGUI pGUI)
+    {
+        Application.LoadLevel("LanNetworkMenu");
     }
 
     void QuitButtonCall(zzInterfaceGUI pGUI)
@@ -63,6 +68,7 @@ public class MainMenu : MonoBehaviour
         bindButtonCall(buttonParentGUI, "sewer1", sewer1ButtonCall);
         bindButtonCall(buttonParentGUI, "SinglePlayer", ChooseRaceButtonCall);
         bindButtonCall(buttonParentGUI, "NetworkPlayer", NetworkMenuButtonCall);
+        bindButtonCall(buttonParentGUI, "LanNetworkPlayer", LanNetworkMenuButtonCall);
         bindButtonCall(buttonParentGUI, "Quit", QuitButtonCall);
         bindButtonCall(buttonParentGUI, "Language", LanguageButtonCall);
         

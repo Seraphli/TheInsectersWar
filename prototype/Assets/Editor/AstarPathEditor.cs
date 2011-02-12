@@ -382,7 +382,7 @@ public class AstarPathEditor : Editor {
 		if (singletonWarning) {
 			co = new GUIContent ("There are more than one instance of the AstarPath script in the scene\n\nYou should never have more than one AstarPath script in the scene");
 			GUI.color = Color.red;//(GUILayoutUtility.GetRect (co,EditorStyles.toolbarButton,GUILayout.Height(60))
-			GUILayout.Button (co,EditorStyles.notificationBackground);
+            GUILayout.Button(co, EditorStyles.wordWrappedLabel);
 			GUI.color = Color.white;
 			return;
 		}

@@ -8,7 +8,7 @@ class BoardEditor: MonoBehaviour
     [MenuItem("zz/Add Board InChild")]
     static void addBoardInAllChild()
     {
-        Board.addBoardInAllChild(Selection.activeTransform.gameObject);
+        //Board.addBoardInAllChild(Selection.activeTransform.gameObject);
     }
 
     [MenuItem("zz/Add Board InChild", true)]
@@ -20,7 +20,7 @@ class BoardEditor: MonoBehaviour
     [MenuItem("zz/Remove Board InChild")]
     static void removeBoardInAllChild()
     {
-        Board.removeBoardInAllChild(Selection.activeTransform.gameObject);
+        //Board.removeBoardInAllChild(Selection.activeTransform.gameObject);
     }
 
     [MenuItem("zz/Remove Board InChild", true)]

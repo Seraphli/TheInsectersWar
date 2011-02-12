@@ -29,21 +29,25 @@ public class NetworkMenu : MonoBehaviour
     public float refreshTimePos = 0.0f;
 
     public ServerList serverList;
-    public GameObject broadcastObjectPrefab;
-    public GameObject broadcastSentObject;
+    //public GameObject broadcastObjectPrefab;
+    //public GameObject broadcastSentObject;
+    public zzNetworkHost networkHost;
+
     public GameObject broadcastRecieverObject;
 
     public float autoSentInterval = 0.43f;
 
-    void initBroadcastSent()
-    {
-        broadcastSentObject = (GameObject)Object.Instantiate(broadcastObjectPrefab);
-        zzBroadcast lBroadcast = broadcastSentObject.GetComponent<zzBroadcast>();
-        lBroadcast.servertype = zzBroadcast.ServerType.send;
-        lBroadcast.sentedData = playerName;
-        lBroadcast.autoSent = true;
-        lBroadcast.autoInterval = autoSentInterval;
-    }
+    public bool useNat = false;
+
+    //void initBroadcastSent()
+    //{
+    //    broadcastSentObject = (GameObject)Object.Instantiate(broadcastObjectPrefab);
+    //    zzBroadcast lBroadcast = broadcastSentObject.GetComponent<zzBroadcast>();
+    //    lBroadcast.servertype = zzBroadcast.ServerType.send;
+    //    lBroadcast.sentedData = playerName;
+    //    lBroadcast.autoSent = true;
+    //    lBroadcast.autoInterval = autoSentInterval;
+    //}
 
     //FIXME_VAR_TYPE serverPort= 25002;
     //private FIXME_VAR_TYPE doneTesting= false;
@@ -105,6 +109,8 @@ public class NetworkMenu : MonoBehaviour
         }
         networkView.RPC("LoadMyLevel", RPCMode.Others, lIntRace);
         LoadMyLevel((int)lServerRace);
+
+        networkHost.UnregisterHost();
     }
 
     //@RPC
@@ -146,19 +152,14 @@ public class NetworkMenu : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button ("Start Server:"))
 		{
-			//Network.useNat = useNAT;
-			// Use NAT punchthrough if no public IP present
-			//Network.useNat = !Network.HavePublicAddress();
-			//Network.useNat = false;
-			Network.InitializeServer(32, remotePort);
-			
-            //MasterServer.RegisterHost(gameTypeName,
-            //    gameName, playerName); 
-            initBroadcastSent();
-			
-			// Notify our objects that the level and the network is ready
-			//for (var go in FindObjectsOfType(typeof(GameObject)))
-			//	go.SendMessage("OnNetworkLoadedLevel", SendMessageOptions.DontRequireReceiver);		
+            Network.InitializeServer(32, remotePort, useNat);
+
+            var lHostInfo = new zzHostInfo();
+            lHostInfo.gameType = gameTypeName;
+            lHostInfo.gameName = gameName;
+            lHostInfo.comment = playerName;
+            networkHost.RegisterHost(lHostInfo);
+					
 		}
 		remotePort = int.Parse(GUILayout.TextField(remotePort.ToString()));
 		GUILayout.EndHorizontal();
@@ -234,7 +235,7 @@ public class NetworkMenu : MonoBehaviour
 	{
 		if (GUILayout.Button ("Disconnect"))
 		{
-            Destroy(broadcastSentObject);
+            networkHost.UnregisterHost();
 			Network.Disconnect(200);
 		}
 		GUILayout.Label("state: "+Network.peerType.ToString());
