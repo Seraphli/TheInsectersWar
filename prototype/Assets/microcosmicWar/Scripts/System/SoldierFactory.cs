@@ -53,6 +53,9 @@ public class SoldierFactory : MonoBehaviour
             //FIXME_VAR_TYPE lClone= Network.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5f,0), Quaternion(), 0);
             GameObject lClone = zzCreatorUtility.Instantiate(soldierToProduce, 
                 armyBase.produceTransform.position,new Quaternion(), 0);
+
+            GameSceneManager.Singleton.addSoldier(lClone);
+
             timePos = 0.0f;
             var soldierAI = lClone.GetComponent<ISoldierAI>();
             //soldierAI.AddFinalAim(finalAim);

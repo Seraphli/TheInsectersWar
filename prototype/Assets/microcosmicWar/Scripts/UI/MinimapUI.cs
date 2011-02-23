@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
-[ExecuteInEditMode]
+
 public class MinimapUI : zzInterfaceGUI
 {
     public float textureAlpha = 0.6f;
-    public MinimapImage Map;
+    public zzInterfaceGUI Map;
     public Vector2 heroDefaultPos;
     public Vector2 MapSize;         //大地图尺寸
     public Vector2 MapPos;          //大地图位置(left,top)
@@ -48,12 +48,16 @@ public class MinimapUI : zzInterfaceGUI
             DrawGizmos(allyGizmos[2], PositionTransform2(basePos));
         //}
     }
+
+    //把英雄的位置转换成地图的位置
     public Vector2 PositionTransform1(Vector2 pos)
     {
         float x = (pos.x - MapPos.x) / MapSize.x * position.width;
         float y = (pos.y - MapPos.y) / MapSize.y * position.height;
         return new Vector2(x, y);
     }
+
+    //把各个图标的位置转换成地图上的位置
     public Vector2 PositionTransform2(Vector2 pos)
     {
         float x = (pos.x - MapPos.x) / MapSize.x * position.width + Map.position.x;

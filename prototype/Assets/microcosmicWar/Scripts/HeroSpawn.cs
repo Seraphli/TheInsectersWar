@@ -194,6 +194,7 @@ public class HeroSpawn : MonoBehaviour
     {
         GameObject lHeroObject = zzCreatorUtility.Instantiate(heroPrefab, transform.position, new Quaternion(), 0);
 
+        GameSceneManager.Singleton.addHero(lHeroObject);
         //print(lHeroObject==null);
         //print(lHeroObject.GetInstanceID());
         //print(owner);
