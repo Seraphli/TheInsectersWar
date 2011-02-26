@@ -21,6 +21,28 @@ public class zzToolRuler : MonoBehaviour
 
     zzPlaneMesh planeMesh = new zzPlaneMesh();
 
+    float preRulerRange;
+
+    float rulerRange
+    {
+        get
+        {
+            switch (mRuleDirection)
+            {
+                case RuleDirection.vertical:
+                    {
+                        return transform.lossyScale.y;
+                    }
+                case RuleDirection.horizontal:
+                    {
+                        return transform.lossyScale.x ;
+                    }
+            }
+            return 0f;
+
+        }
+    }
+
     void Start()
     {
         //planeMesh.useSharedDataInEdit = false;
@@ -41,12 +63,29 @@ public class zzToolRuler : MonoBehaviour
                     break;
                 }
         }
+        changeRange();
+        preRulerRange = rulerRange;
+    }
+
+    void OnDestroy()
+    {
+        planeMesh.clear();
     }
 
     void Update()
     {
         if (!gameObject.GetComponent<MeshFilter>())
             Start();
+        float lNowRulerRange = rulerRange;
+        if (preRulerRange != lNowRulerRange)
+        {
+            changeRange();
+            preRulerRange = lNowRulerRange;
+        }
+    }
+
+    private void changeRange()
+    {
         switch (mRuleDirection)
         {
             case RuleDirection.vertical:

@@ -27,27 +27,29 @@ public class zzPlaneMesh
 
     //public bool useSharedDataInEdit = true;
 
-    bool needUseSharedData
-    {
-        get { return !Application.isPlaying ; }
-    }
+    //bool needUseSharedData
+    //{
+    //    get { return !Application.isPlaying ; }
+    //}
+
+    public Vector2 planeNormals = new Vector3(0, 0, -1);
 
     public Mesh mesh
     {
         get
         {
-            if (needUseSharedData)
+            //if (needUseSharedData)
                 return meshFilter.sharedMesh;
 
-            return meshFilter.mesh;
+            //return meshFilter.mesh;
         }
 
         set
         {
-            if (needUseSharedData)
+            //if (needUseSharedData)
                 meshFilter.sharedMesh = value;
-            else
-                meshFilter.mesh = value;
+            //else
+            //    meshFilter.mesh = value;
         }
 
     }
@@ -66,18 +68,18 @@ public class zzPlaneMesh
     {
         get
         {
-            if (needUseSharedData)
+            //if (needUseSharedData)
                 return meshRenderer.sharedMaterial;
-             return meshRenderer.material;
+             //return meshRenderer.material;
 
         }
 
         set
         {
-            if (needUseSharedData)
+            //if (needUseSharedData)
                 meshRenderer.sharedMaterial = value;
-            else
-                meshRenderer.material = value;
+            //else
+            //    meshRenderer.material = value;
         }
     }
 
@@ -86,8 +88,14 @@ public class zzPlaneMesh
         //mesh = new Mesh();
 
         MeshFilter lMeshFilter = pObject.GetComponent<MeshFilter>();
-        if (!lMeshFilter)
-            lMeshFilter = pObject.AddComponent<MeshFilter>();
+
+        //防止因duplicate而共享Mesh
+        if (lMeshFilter)
+        {
+            Object.DestroyImmediate(lMeshFilter);
+        }
+
+        lMeshFilter = pObject.AddComponent<MeshFilter>();
         meshFilter = lMeshFilter;
 
         MeshRenderer lMeshRenderer = pObject.GetComponent<MeshRenderer>();
@@ -95,7 +103,7 @@ public class zzPlaneMesh
             lMeshRenderer = pObject.AddComponent<MeshRenderer>();
         meshRenderer = lMeshRenderer;
 
-        if (!mesh)
+        //if (!mesh)
             mesh = new Mesh();
 
 
@@ -107,14 +115,9 @@ public class zzPlaneMesh
     {
         if (mesh)
         {
-            Object.Destroy(mesh);
+            Object.DestroyImmediate(mesh);
             mesh = null;
         }
-    }
-
-    ~zzPlaneMesh()
-    {
-        clear();
     }
 
     public void UpdateMesh()
