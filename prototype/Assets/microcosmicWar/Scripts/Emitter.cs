@@ -18,7 +18,24 @@ public class Emitter : MonoBehaviour
     public GameObject fireSpark;
 
     protected Hashtable injureInfo;
-    protected float bulletAliveTime;
+
+    public float bulletAliveTime
+    {
+        get { return _bulletAliveTime; }
+        set 
+        {
+            //_bulletAliveTime = value;
+            zzCreatorUtility.sendMessage(gameObject, "_SetBulletAliveTime", value);
+        }
+    }
+
+    [RPC]
+    void _SetBulletAliveTime(float pBulletAliveTime)
+    {
+        _bulletAliveTime = pBulletAliveTime;
+    }
+
+    protected float _bulletAliveTime;
 
     //public delegate void initBulletNullFunc(Bullet pBullet);
 
@@ -40,7 +57,7 @@ public class Emitter : MonoBehaviour
 
     void Start()
     {
-        bulletAliveTime = shootRange / bulletSpeed;
+        _bulletAliveTime = shootRange / bulletSpeed;
         //print(""+bulletAliveTime+"="+shootRange"//"+bulletSpeed);
     }
 
@@ -62,7 +79,7 @@ public class Emitter : MonoBehaviour
             //clone.velocity=transform.forward;
             Bullet pBullet = lOut.GetComponentInChildren<Bullet>();
             pBullet.setLayer(bulletLayer);
-            pBullet.setAliveTime(bulletAliveTime);
+            pBullet.setAliveTime(_bulletAliveTime);
             //pBullet.setForward(getForward());
             //pBullet.setSpeed(bulletSpeed);
             pBullet.setForwardVelocity(getForward() * bulletSpeed);

@@ -36,8 +36,10 @@ public class Airplane:MonoBehaviour
             speed * actionCommandControl.getFaceValue() * Time.deltaTime,
             0f, 0f);
 
-        if (actionCommandControl.getCommand().Fire)
+        var lCommand = actionCommandControl.getCommand();
+        if (lCommand.Fire)
         {
+            print("lCommand.Fire");
             EmitBullet();
         }
     }
