@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 
-public class zzFlatModelPainter : MonoBehaviour
+public class zz2DModelPainter : MonoBehaviour
 {
     public Texture2D picture;
     //Texture2D prePicture;
@@ -21,7 +21,7 @@ public class zzFlatModelPainter : MonoBehaviour
 
     enum Step
     {
-        nothing=1,
+        nothing = 1,
         showPocture,
         pickPicture,
         sweepPicture,
@@ -56,11 +56,11 @@ public class zzFlatModelPainter : MonoBehaviour
             GameObject.DestroyImmediate(pictureDebuger);
     }
 
-    Renderer    getRenderer(Transform pTransform)
+    Renderer getRenderer(Transform pTransform)
     {
         Renderer lOut = null;
         //pTransform = pTransform.parent;
-        while(!lOut&&pTransform)
+        while (!lOut && pTransform)
         {
             lOut = pTransform.GetComponent<Renderer>();
             pTransform = pTransform.parent;
@@ -70,11 +70,11 @@ public class zzFlatModelPainter : MonoBehaviour
 
     public Color pickedColor;
 
-    bool    pickColor(Ray pRay,out Color pColor)
+    bool pickColor(Ray pRay, out Color pColor)
     {
-        RaycastHit  lRaycastHit;
+        RaycastHit lRaycastHit;
         pColor = Color.clear;
-        if(Physics.Raycast (pRay, out lRaycastHit))
+        if (Physics.Raycast(pRay, out lRaycastHit))
         {
             Renderer lRenderer = getRenderer(lRaycastHit.collider.transform);
             if (
@@ -82,9 +82,9 @@ public class zzFlatModelPainter : MonoBehaviour
                 || lRenderer.material == null
                 || lRenderer.material.mainTexture == null
                 )
-            return false;
+                return false;
 
-            Texture2D  lTexture =(Texture2D) lRenderer.material.mainTexture;
+            Texture2D lTexture = (Texture2D)lRenderer.material.mainTexture;
 
             var lPixelUV = lRaycastHit.textureCoord;
 
@@ -97,16 +97,6 @@ public class zzFlatModelPainter : MonoBehaviour
 
     public Camera painterCamera;
 
-    //void Update()
-    //{
-    //    Color lColor;
-    //    if (
-    //        Input.GetMouseButton (0)
-    //        && pickColor(painterCamera.ScreenPointToRay(Input.mousePosition), out lColor)
-    //        )
-    //        pickedColor = lColor;
-    //}
-
     void showPicture()
     {
         pictureDebuger = deleteOldCreateNewDebuger(pictureDebuger, "pictureDebuger");
@@ -116,7 +106,7 @@ public class zzFlatModelPainter : MonoBehaviour
     void pickPicture()
     {
         activeChart = new zzActiveChart(picture.width, picture.height);
-        if (sweepMode== SweepMode.ignoreColor)
+        if (sweepMode == SweepMode.ignoreColor)
         {
             for (int x = 0; x < picture.width; ++x)
             {
@@ -134,9 +124,7 @@ public class zzFlatModelPainter : MonoBehaviour
                 for (int y = 0; y < picture.height; ++y)
                 {
                     activeChart.setActive(x, y, picture.GetPixel(x, y) == colorInSweepSetting);
-                    //Color lColor =picture.GetPixel(x, y);
-                    //if (lColor != Color.clear && lColor!=Color.black)
-                    //    print(lColor);
+
                 }
             }
 
@@ -147,10 +135,8 @@ public class zzFlatModelPainter : MonoBehaviour
             {
                 for (int y = 0; y < picture.height; ++y)
                 {
-                    activeChart.setActive(x, y, picture.GetPixel(x, y).a!=0);
-                    //Color lColor =picture.GetPixel(x, y);
-                    //if (lColor != Color.clear && lColor!=Color.black)
-                    //    print(lColor);
+                    activeChart.setActive(x, y, picture.GetPixel(x, y).a != 0);
+
                 }
             }
 
@@ -168,12 +154,34 @@ public class zzFlatModelPainter : MonoBehaviour
     public int polygonNumber = 0;
     public int holeNumber = 0;
 
-    void    sweepPicture()
+    public Texture2D[] imagePatterns;
+
+    public MeshRenderer imagePatternShow;
+    public int imagePatternShowIndex;
+    void sweepPicture()
     {
         pointNumber = 0;
         polygonNumber = 0;
         holeNumber = 0;
-        var lSweeperResults = zzOutlineSweeper.sweeper(activeChart, ignoreDistanceInSweeping);
+        var lPatternResult = zzOutlineSweeper.sweeper(activeChart);
+        imagePatterns = new Texture2D[lPatternResult.Count];
+        for (int i = 0; i < lPatternResult.Count;++i )
+        {
+            var lEdge = lPatternResult.sweeperPointResults[i].edge;
+            zzPointBounds lBounds = new zzPointBounds(lEdge);
+            var lBoundMin = lBounds.min;
+            var lBoundMax = lBounds.max;
+            zzPoint lPatternSize = new zzPoint(
+                Mathf.NextPowerOfTwo(lBoundMax.x-lBoundMin.x+1),
+                Mathf.NextPowerOfTwo(lBoundMax.y-lBoundMin.y+1)
+                );
+            imagePatterns[i] = zzImagePatternPicker.pick(lPatternResult.patternMark,i+1, 
+                picture, lBounds, lPatternSize );
+        }
+        imagePatternShow.sharedMaterial.mainTexture = imagePatterns[imagePatternShowIndex];
+        //var lSweeperResults = zzOutlineSweeper.sweeper(activeChart, ignoreDistanceInSweeping);
+        var lSweeperResults = zzOutlineSweeper
+            .simplifySweeperResult(lPatternResult.sweeperPointResults, ignoreDistanceInSweeping);
         modelsSize = new Vector2((float)activeChart.width, (float)activeChart.height);
         var lDebugerObject = deleteOldCreateNewDebuger();
         concaves = new List<zz2DConcave>();
@@ -184,9 +192,9 @@ public class zzFlatModelPainter : MonoBehaviour
 
             //if (lPolygon == null)
             //    continue;
-            if(lSweeperResult.edge.Length<2)
+            if (lSweeperResult.edge.Length < 2)
                 continue;
-            
+
             zzSimplyPolygon lPolygon = new zzSimplyPolygon();
             lPolygon.setShape(lSweeperResult.edge);
 
@@ -210,9 +218,9 @@ public class zzFlatModelPainter : MonoBehaviour
     }
 
     zzSimplyPolygon addSimplyPolygon(Vector2[] pPoints, string pName, Transform pDebugerObject)
-	{
-		return addSimplyPolygon( pPoints,  pName,  pDebugerObject, Color.red);
-	}
+    {
+        return addSimplyPolygon(pPoints, pName, pDebugerObject, Color.red);
+    }
 
     zzSimplyPolygon addSimplyPolygon(Vector2[] pPoints, string pName, Transform pDebugerObject, Color lDebugLineColor)
     {
@@ -223,20 +231,20 @@ public class zzFlatModelPainter : MonoBehaviour
         lPolygon.setShape(pPoints);
 
         zzSimplyPolygonDebuger
-            .createDebuger(lPolygon, pName, pDebugerObject,lDebugLineColor);
+            .createDebuger(lPolygon, pName, pDebugerObject, lDebugLineColor);
 
         pointNumber += lPolygon.pointNum;
         return lPolygon;
     }
 
-    void    convexDecompose()
+    void convexDecompose()
     {
         convexesList = new List<zzSimplyPolygon[]>();
         var lDebugerObject = deleteOldCreateNewDebuger();
         int index = 0;
         foreach (var lConcave in concaves)
         {
-            string lName = "convex"+(index++)+"Sub";
+            string lName = "convex" + (index++) + "Sub";
             zzSimplyPolygon[] ldecomposed = lConcave.decompose();
             zzSimplyPolygonDebuger
                 .createDebuger(ldecomposed, lName, lDebugerObject.transform);
@@ -244,7 +252,7 @@ public class zzFlatModelPainter : MonoBehaviour
         }
     }
 
-    void    draw()
+    void draw()
     {
         models = new GameObject("PaintModel");
         models.transform.position = new Vector3(modelsSize.x / 2.0f, modelsSize.y / 2.0f, 0.0f);
@@ -280,11 +288,6 @@ public class zzFlatModelPainter : MonoBehaviour
             string lSubName = "Collider";
             foreach (var lConvex in lConvexs)
             {
-                //createFlatMesh(lConvex.getShape(),
-                //    lSubName + lSubIndex,
-                //    lConvexsObject.transform, thickness )
-                //        .GetComponent<Renderer>().enabled = false;
-                //print(lSubIndex);
                 var lColliderObject = createFlatCollider(lConvex.getShape(),
                     lSubName + lSubIndex,
                     lConvexsObject.transform, thickness);
@@ -299,54 +302,14 @@ public class zzFlatModelPainter : MonoBehaviour
     public GameObject models;
     public Vector2 modelsSize;
 
-    //public static void pivotToCenter(GameObject pObject)
-    //{
-    //    var bounds = pObject.GetComponent<MeshFilter>().sharedMesh.bounds;
-    //    var lPivotToCenter = bounds.center;
-    //    lPivotToCenter.z = 0;
-    //    pObject.transform.position = pObject.transform.position + lPivotToCenter;
-    //    //var lExtent = bounds.extents;
-    //    //lExtent.z = 0;
-    //    foreach (Transform lSub in pObject.transform)
-    //    {
-    //        lSub.position = lSub.position - lPivotToCenter;
-    //    }
-    //}
-
-    //int getPointToIndexMap(zz2DConcave pConcave, Dictionary<Vector2, int> pOut,int pBeginIndex)
-    //{
-    //    pBeginIndex = getPointToIndexMap(pConcave.getOutSidePolygon().getShape(), pOut, pBeginIndex);
-    //    foreach (var lHoles in pConcave.getHole())
-    //    {
-    //        pBeginIndex = getPointToIndexMap(lHoles.getShape(), pOut, pBeginIndex);
-    //    }
-    //    return pBeginIndex;
-    //}
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="pPoints"></param>
-    /// <param name="pOut"></param>
-    /// <param name="pBeginIndex"></param>
-    /// <returns>返回结束的未被使用的索引</returns>
-    //int getPointToIndexMap(Vector2[] pPoints, Dictionary<Vector2, int> pOut, int pBeginIndex)
-    //{
-    //    foreach (var lPoint in pPoints)
-    //    {
-    //        pOut[lPoint] = pBeginIndex;
-    //        ++pBeginIndex;
-    //    }
-    //    return pBeginIndex;
-    //}
 
     [ContextMenu("Step")]
-    public bool    doStep()
+    public bool doStep()
     {
-        int lStepValue = (int)step ;
-        if (lStepValue < (int)Step.clear )
+        int lStepValue = (int)step;
+        if (lStepValue < (int)Step.clear)
             step = (Step)(lStepValue + 1);
-        switch(step)
+        switch (step)
         {
             case Step.showPocture:
                 showPicture();
@@ -371,7 +334,7 @@ public class zzFlatModelPainter : MonoBehaviour
     }
 
 
-    GameObject  deleteOldCreateNewDebuger()
+    GameObject deleteOldCreateNewDebuger()
     {
         if (polygonDebugers)
             GameObject.DestroyImmediate(polygonDebugers);
@@ -379,7 +342,7 @@ public class zzFlatModelPainter : MonoBehaviour
         return polygonDebugers;
     }
 
-    GameObject deleteOldCreateNewDebuger(GameObject pObject,string pName)
+    GameObject deleteOldCreateNewDebuger(GameObject pObject, string pName)
     {
         if (pObject)
             GameObject.DestroyImmediate(pObject);
@@ -421,12 +384,9 @@ public class zzFlatModelPainter : MonoBehaviour
         zzFlatMeshUtility.draw(lMesh, points, zThickness);
         lMeshCollider.convex = true;
         //print("zzFlatMeshUtility.draw(lMesh, points, zThickness)");
-        
+
         lMeshCollider.sharedMesh = lMesh;
 
-        //print("lMeshCollider.sharedMesh = lMesh");
-        //print("lMeshCollider.convex = true");
-        //MeshFilter lMeshFilter = lOut
         return lOut;
     }
 
@@ -444,7 +404,7 @@ public class zzFlatModelPainter : MonoBehaviour
         else
             lMeshFilter.sharedMesh = lMesh;
 
-        var lEdgeList = new List<Vector2[]>(pConcave.getHoleNum()+1);
+        var lEdgeList = new List<Vector2[]>(pConcave.getHoleNum() + 1);
         lEdgeList.Add(pConcave.getOutSidePolygon().getShape());
         foreach (var lHole in pConcave.getHole())
         {

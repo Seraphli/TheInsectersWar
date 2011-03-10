@@ -2,194 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//class zzOutlineSweeper
-//{
-//    UnityEngine.Texture2D picture;
-//    //int mWidth;
-//    //int mHeight;
-//    PiexlData[,] mPiexlDatas;
-
-//    class  PiexlData
-//    {
-//        int polygonID;
-//    }
-
-//    void    setPicture(UnityEngine.Texture2D pPicture)
-//    {
-//        picture = pPicture;
-//        mPiexlDatas = new PiexlData[lHeight, lWidth];
-//    }
-
-//    public Vector2[] Sweeper()
-//    {
-//        int lWidth = picture.width;
-//        int lHeight = picture.height;
-
-//        for (int lHeightIndex = 0; lHeightIndex < lHeight; ++lHeightIndex)
-//        {
-//            bool lPreActive = false;
-//            for (int lWidthIndex = 0; lWidthIndex < lWidth; ++lWidthIndex)
-//            {
-//                bool lActive = isActivePiexl(pPicture.GetPixel(lWidthIndex,lHeightIndex));
-//                if (!lPreActive && lActive)
-//                {
-//                    if(mPiexlDatas[lHeightIndex,lWidthIndex]!=null)
-//                    {
-
-//                    }
-//                }
-//                lPreActive = lActive;
-//            }
-//        }
-
-//    }
-
-//    public Vector2[]   sweeperOutline(int x,int y,int ID)
-//    {
-
-//    }
-
-//    public  Vector2 UVToPostion(int x,int y)
-//    {
-//        return new Vector2(x,-y);
-//    }
-
-//    public Vector2[] Sweeper(UnityEngine.Texture2D pPicture)
-//    {
-//        int lWidth = pPicture.width;
-//        int lHeight = pPicture.height;
-
-//        return null;
-//    }
-
-//    public  bool    isActivePiexl(UnityEngine.Color pColor)
-//    {
-//        return pColor.a != 0;
-//    }
-//}
-public struct zzPoint
+public class zzOutlineSweeper
 {
-    public zzPoint(int pX,int pY)
-    {
-        x = pX;
-        y = pY;
-    }
-
-    public int x, y;
-
-    public static zzPoint operator +(zzPoint p1, zzPoint p2)
-    {
-        zzPoint lPoint = new zzPoint(p1.x + p2.x, p1.y + p2.y);
-        return lPoint;
-    }
-
-    public static zzPoint operator -(zzPoint p1, zzPoint p2)
-    {
-        zzPoint lPoint = new zzPoint(p1.x - p2.x, p1.y - p2.y);
-        return lPoint;
-    }
-
-    public override string ToString()
-    {
-        return x.ToString()+" "+y;
-    }
-	
-	public static bool operator==(zzPoint pLeft,zzPoint pRight)
-	{
-		return pLeft.x == pRight.x && pLeft.y == pRight.y;
-	}
-	
-	public static bool operator!=(zzPoint pLeft,zzPoint pRight)
-	{
-		return !(pLeft==pRight);
-	}
-
-}
-
-class zzOutlineSweeper
-{
-    public class ActiveChart
-    {
-        //public ActiveChart(Texture2D pTex)
-        //{
-
-        //}
-
-        public ActiveChart(int pWidth, int pHeight)
-        {
-            _width = pWidth;
-            _height = pHeight;
-            mImage = new bool[pWidth, pHeight];
-        }
-
-        bool[,]    mImage;
-
-        int _width;
-        public int width
-        {
-            get { return _width; }
-        }
-
-        int _height;
-        public int height
-        {
-            get { return _height; }
-        }
-
-        public void setActive(zzPoint pPoint, bool pActive)
-        {
-            setActive(pPoint.x, pPoint.y, pActive);
-        }
-
-        public void setActive(int x,int y,bool pActive)
-        {
-            mImage[x, y] = pActive;
-        }
-
-        public bool isActive(zzPoint pPoint)
-        {
-            return isActive(pPoint.x, pPoint.y);
-        }
-
-        public bool isActive(int x,int y)
-        {
-            return mImage[x, y];
-        }
-
-        public bool isInside(zzPoint pPoint)
-        {
-            return isInside(pPoint.x, pPoint.y);
-        }
-
-        public bool isInside(int x, int y)
-        {
-            return x >= 0
-                    && x < width
-                    && y >= 0
-                    && y < height;
-        }
-
-        public Texture2D asTexture()
-        {
-            Texture2D lOut = new Texture2D(_width, _height, TextureFormat.ARGB32, false);
-            for (int x = 0; x < _width;++x )
-            {
-                for(int y=0;y<_height;++y)
-                {
-                    if (isActive(x,y))
-                    {
-                        lOut.SetPixel(x,y,Color.black);
-                    }
-                    else
-                    {
-                        lOut.SetPixel(x, y, Color.clear);
-                    }
-                }
-            }
-            lOut.Apply();
-            return lOut;
-        }
-    }
 
     class DetectDirection
     {
@@ -247,7 +61,7 @@ class zzOutlineSweeper
 		}
     }
 
-    public static void removeIsolatedPoint(ActiveChart tex)
+    public static void removeIsolatedPoint(zzActiveChart tex)
     {
         for (int y = 0; y < tex.height; ++y)
         {
@@ -261,76 +75,62 @@ class zzOutlineSweeper
         }
     }
 
-    public class SweeperResult
+    public class SweeperPointResult
     {
-        public Vector2[] edge;
-        public List<Vector2[]> holes = new List<Vector2[]>();
+        public zzPoint[] edge;
+        public List<zzPoint[]> holes = new List<zzPoint[]>();
     }
 
-    //public static List<Vector2[]> getEdge(ActiveChart tex, float ignoreDistance)
-    //{
-    //    List<Vector2[]> lOut = new List<Vector2[]>();
-    //    bool[,] lProgressdMark = new bool[tex.width, tex.height];
-    //    //removeIsolatedPoint(tex);
-    //    for (int y = 0; y < tex.height;++y )
-    //    {
-    //        bool lPreIsActive = false;
-    //        for(int x=0;x<tex.width;++x)
-    //        {
-    //            //bool lNowIsActive = isActivePiexl(tex.GetPixel(x, y));
-    //            bool lNowIsActive = tex.isActive(x, y);
-    //            if (!lPreIsActive && lNowIsActive && !lProgressdMark[x,y]
-    //                //&& !isIsolatedPoint(new zzPoint(x, y), tex)
-    //                )
-    //            {
-    //                lOut.Add(
-    //                    getFloatSimplifyLine(beginEdge(tex, x, y, lProgressdMark),ignoreDistance)
-    //                    );
-    //            }
-
-    //            lPreIsActive = lNowIsActive;
-    //        }
-    //    }
-    //    return lOut;
-    //}
-
-    public static List<SweeperResult> sweeper(ActiveChart tex, float ignoreDistance)
+    public class SweeperPointPatternResult
     {
-        List<SweeperResult> lOut = new List<SweeperResult>();
+        public List<SweeperPointResult> sweeperPointResults;
+        public int Count { get { return sweeperPointResults.Count; } }
+        public int[,] patternMark;
+    }
+
+    public static SweeperPointPatternResult sweeper(zzActiveChart tex)
+    {
+        List<SweeperPointResult> lPointResults = new List<SweeperPointResult>();
         int[,] lProgressdMark = new int[tex.width, tex.height];
+        int[,] lPatternMark = new int[tex.width, tex.height];
+        var lOut = new SweeperPointPatternResult();
+        lOut.sweeperPointResults = lPointResults;
+        lOut.patternMark = lPatternMark;
         //removeIsolatedPoint(tex);
         int lPolygonMark = 1;
-        for (int y = 0; y < tex.height;++y )
+        for (int y = 0; y < tex.height; ++y)
         {
             bool lPreIsActive = false;
-            int lPreMark = 0;
-            for(int x=0;x<tex.width;++x)
+            int lMark = 0;
+            for (int x = 0; x < tex.width; ++x)
             {
                 //bool lNowIsActive = isActivePiexl(tex.GetPixel(x, y));
                 bool lNowIsActive = tex.isActive(x, y);
-                if (!lPreIsActive && lNowIsActive && lProgressdMark[x,y]==0)
+                if (!lPreIsActive && lNowIsActive )
                 {
                     //为外边
-                    SweeperResult lSweeperResult = new SweeperResult();
-                    lSweeperResult.edge
-                        = getFloatSimplifyLine(
-                            beginEdge(tex, x, y, lProgressdMark, lPolygonMark++), ignoreDistance
-                            );
-                    lOut.Add(lSweeperResult);
-                        
+                    if(lProgressdMark[x, y] == 0)
+                    {
+                        SweeperPointResult lSweeperResult = new SweeperPointResult();
+                        lSweeperResult.edge
+                            =beginEdge(tex, x, y, lProgressdMark, lPolygonMark++);
+                        lPointResults.Add(lSweeperResult);
+                    }
+                    lMark = lProgressdMark[x, y];
+
                 }
-                else if( lPreIsActive && !lNowIsActive && lProgressdMark[x-1, y] == 0)
+                else if (lPreIsActive && !lNowIsActive && lProgressdMark[x - 1, y] == 0)
                 {
                     //为孔
-                    lOut[lPreMark - 1].holes.Add(
-                        getFloatSimplifyLine(
-                            beginEdge(tex, x-1, y, lProgressdMark, lPreMark), ignoreDistance
-                            )
-                        );
+                    lPointResults[lMark - 1].holes.Add(
+                        beginEdge(tex, x - 1, y, lProgressdMark, lMark)
+                         );
+                    lMark = 0;
                 }
+                else if (lPreIsActive && !lNowIsActive)
+                    lMark = 0;
 
-                if (lProgressdMark[x, y] != 0)
-                    lPreMark = lProgressdMark[x, y];
+                lPatternMark[x, y] = lMark;
 
                 lPreIsActive = lNowIsActive;
             }
@@ -338,7 +138,36 @@ class zzOutlineSweeper
         return lOut;
     }
 
-    public static bool isIsolatedPoint(zzPoint pPoint,ActiveChart tex)
+    public static List<SweeperResult> simplifySweeperResult(List<SweeperPointResult> pResults, float ignoreDistance)
+    {
+        List<SweeperResult> lOut = new List<SweeperResult>(pResults.Count);
+        foreach (var lResult in pResults)
+        {
+            SweeperResult lSweeperResult = new SweeperResult();
+            lSweeperResult.edge
+                        = getFloatSimplifyLine(lResult.edge, ignoreDistance);
+            lSweeperResult.holes.Capacity=lResult.holes.Count;
+            foreach (var lHole in lResult.holes)
+            {
+                lSweeperResult.holes.Add(getFloatSimplifyLine(lHole, ignoreDistance));
+            }
+            lOut.Add(lSweeperResult);
+        }
+        return lOut;
+    }
+
+    public class SweeperResult
+    {
+        public Vector2[] edge;
+        public List<Vector2[]> holes = new List<Vector2[]>();
+    }
+
+    public static List<SweeperResult> sweeper(zzActiveChart tex, float ignoreDistance)
+    {
+        return simplifySweeperResult(sweeper(tex).sweeperPointResults, ignoreDistance);
+    }
+
+    public static bool isIsolatedPoint(zzPoint pPoint,zzActiveChart tex)
     {
         var lDetectDirection = new DetectDirection();
 		
@@ -432,7 +261,7 @@ class zzOutlineSweeper
         return true;
     }
 
-    static zzPoint[] beginEdge(ActiveChart tex, int beginX, int beginY, int[,] pProgressdMark, int pMark)
+    static zzPoint[] beginEdge(zzActiveChart tex, int beginX, int beginY, int[,] pProgressdMark, int pMark)
 	{
         return beginEdge(tex, new zzPoint(beginX, beginY), pProgressdMark, pMark);
 	}
@@ -445,7 +274,7 @@ class zzOutlineSweeper
     //            && pPoint.y < tex.height;
     //}
 
-    static zzPoint[] beginEdge(ActiveChart tex, zzPoint beginPosition, int[,] pProgressdMark, int pMark)
+    static zzPoint[] beginEdge(zzActiveChart tex, zzPoint beginPosition, int[,] pProgressdMark, int pMark)
     {
         List<zzPoint> lOut = new List<zzPoint>();
         lOut.Add(beginPosition);

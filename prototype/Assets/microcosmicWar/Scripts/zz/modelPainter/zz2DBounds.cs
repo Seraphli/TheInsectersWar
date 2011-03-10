@@ -61,10 +61,6 @@ public class zz2DBounds
 
     public bool Contains(Vector2 point)
     {
-        //return mMin.x <= point.x
-        //        && point.x <= mMax.x
-        //        && mMin.y <= point.y
-        //        && point.y <= mMax.y;
         return XContains(point.x) && YContains(point.y);
     }
 
@@ -72,11 +68,6 @@ public class zz2DBounds
     {
         return Contains(pBound.mMax) && Contains(pBound.mMin);
     }
-
-    //public bool intersect( zz2DBounds otherBounds)
-    //{
-
-    //}
 
     public bool intersect(Vector2 pointBegin, Vector2 pointEnd)
     {
@@ -98,19 +89,4 @@ public class zz2DBounds
         return false;
     }
 
-    //bool _intersectLine(Vector2 pointBegin, Vector2 pointEnd)
-    //{
-    //    float t1, t2, t3, t4;
-
-    //    t1 = (pointEnd.y - pointBegin.y) * (rec.p1.x - pointBegin.x) - (pointEnd.x - pointBegin.x) * (rec.p1.y - pointBegin.y);
-    //    t2 = (pointEnd.y - pointBegin.y) * (rec.p1.x - pointBegin.x) - (pointEnd.x - pointBegin.x) * (rec.p2.y - pointBegin.y);
-    //    t3 = (pointEnd.y - pointBegin.y) * (rec.p2.x - pointBegin.x) - (pointEnd.x - pointBegin.x) * (rec.p1.y - pointBegin.y);
-    //    t4 = (pointEnd.y - pointBegin.y) * (rec.p2.x - pointBegin.x) - (pointEnd.x - pointBegin.x) * (rec.p2.y - pointBegin.y);
-
-    //    if (t1 > 0 && t2 > 0 && t3 > 0 && t4 > 0)
-    //        return 0;
-    //    if (t1 < 0 && t2 < 0 && t3 < 0 && t4 < 0)
-    //        return 0;
-    //    return 1;
-    //}
 }
