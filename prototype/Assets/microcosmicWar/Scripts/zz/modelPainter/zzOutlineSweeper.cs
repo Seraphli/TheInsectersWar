@@ -79,6 +79,18 @@ public class zzOutlineSweeper
     {
         public zzPoint[] edge;
         public List<zzPoint[]> holes = new List<zzPoint[]>();
+        public zzPointBounds Bounds
+        {
+            get
+            {
+                if (mBounds==null)
+                {
+                    mBounds = new zzPointBounds(edge);
+                }
+                return mBounds;
+            }
+        }
+        zzPointBounds mBounds;
     }
 
     public class SweeperPointPatternResult
