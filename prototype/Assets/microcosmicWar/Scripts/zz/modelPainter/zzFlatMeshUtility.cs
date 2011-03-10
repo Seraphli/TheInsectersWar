@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-
 public class zzFlatMeshUtility
 {
     public static GameObject showPicture(Texture2D pTex,string pName)
@@ -62,31 +61,49 @@ public class zzFlatMeshUtility
 
     }
 
-    public static void draw(Mesh pMesh, 
-        List<Vector2[]> pSurfaceList, List<Vector2[]> pEdgeList,
-         float zThickness,Vector2 pUvScale)
+    public static void getPointAndMap(List<Vector2[]> pEdgeList,
+        out Dictionary<Vector2, int> pPointToIndex, out List<Vector2> pPoints)
     {
-        //考虑到边缘有重复的点的情况,所以点到加进地图中后,在指定索引
-        var lPointToIndex = new Dictionary<Vector2, int>();
+        pPointToIndex = new Dictionary<Vector2, int>();
         int lEdgePointNum = 0;
         foreach (var lEdge in pEdgeList)
         {
             lEdgePointNum += lEdge.Length;
         }
-        var lPoints = new List<Vector2>(lEdgePointNum);
+        pPoints = new List<Vector2>(lEdgePointNum);
 
         foreach (var lEdge in pEdgeList)
         {
             foreach (var lPoint in lEdge)
             {
-                if (!lPointToIndex.ContainsKey(lPoint))
+                if (!pPointToIndex.ContainsKey(lPoint))
                 {
-                    lPointToIndex[lPoint] = lPoints.Count;
-                    lPoints.Add(lPoint);
+                    pPointToIndex[lPoint] = pPoints.Count;
+                    pPoints.Add(lPoint);
                 }
             }
         }
 
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pMesh"></param>
+    /// <param name="pSurfaceList"></param>
+    /// <param name="pEdgeList">边缘,包括孔的</param>
+    /// <param name="zThickness"></param>
+    /// <param name="pUvScale"></param>
+    public static void draw(Mesh pMesh, 
+        List<Vector2[]> pSurfaceList, List<Vector2[]> pEdgeList,
+         float zThickness,Vector2 pUvScale)
+    {
+        //考虑到边缘有重复的点的情况,所以点到加进地图中后,在指定索引
+        Dictionary<Vector2, int> lPointToIndex;
+        List<Vector2> lPoints;
+        getPointAndMap(pEdgeList, out lPointToIndex, out lPoints);
+        
         int lSurfaceTriIndexNum = 0;
         foreach ( var lSurface in pSurfaceList)
         {

@@ -227,44 +227,6 @@ public class zz2DModelPainter : MonoBehaviour
         }
     }
 
-    static Mesh _planeMesh;
-
-    static Mesh planeMesh
-    {
-        get
-        {
-            if (!_planeMesh)
-            {
-                _planeMesh = new Mesh();
-                // The vertices of mesh
-                // 3--2
-                // |  |
-                // 0--1
-                _planeMesh.vertices = new Vector3[]{
-                    new Vector3(0,0,0),
-                    new Vector3(1,0,0),
-                    new Vector3(1,1,0),
-                    new Vector3(0,1,0),
-                };
-                _planeMesh.uv = new Vector2[]{ 
-                    new Vector2(0, 0f), 
-                    new Vector2(1, 0),
-                    new Vector2(1, 1f), 
-                    new Vector2(0, 1f),
-                };
-                _planeMesh.triangles = new int[] { 0, 2, 1, 3, 2, 0, };
-                _planeMesh.normals = new Vector3[]{
-                    new Vector3(0,0,-1),
-                    new Vector3(0,0,-1),
-                    new Vector3(0,0,-1),
-                    new Vector3(0,0,-1),
-                };
-            }
-
-            return _planeMesh;
-        }
-    }
-
     void draw()
     {
         models = new GameObject("PaintModel");
@@ -284,33 +246,16 @@ public class zz2DModelPainter : MonoBehaviour
             GameObject lConvexsObject = new GameObject(lPolygonName);
             lConvexsObject.transform.parent = models.transform;
 
-            var lRenderObject = new GameObject("Render");
-            MeshFilter lMeshFilter = lRenderObject.AddComponent<MeshFilter>();
-            lMeshFilter.sharedMesh = planeMesh;
-            MeshRenderer lMeshRenderer = lRenderObject.AddComponent<MeshRenderer>();
-            var lMaterial = new Material(Shader.Find("Transparent/Diffuse"));
-            var lImage = imagePatterns[i];
-            lMaterial.mainTexture = lImage;
-            lMeshRenderer.sharedMaterial = lMaterial;
+            var lRenderObject = createFlatMesh(concaves[i], lSurfaceList, "Render",
+                    lConvexsObject.transform, thickness,
+                    new Vector2(1.0f / modelsSize.x, 1.0f / modelsSize.y));
 
-            var lBounds = imagePatternBounds[i];
-            var lMin = lBounds.min;
-            var lMax = lBounds.max;
-
-            //lRenderObject.AddComponent<zzFlatMeshEdit>();
-            Vector3 lCenter = new Vector3(
-                ((float)lMin.x + (float)lMax.x) / 2f,
-                ((float)lMin.y + (float)lMax.y) / 2f,
-                0f
-            );
+            lRenderObject.AddComponent<zzFlatMeshEdit>();
+            Vector3 lCenter = lRenderObject.GetComponent<MeshRenderer>().bounds.center;
+            lCenter.z = 0;
             //lConvexsObject是lRenderObject的父物体
             lConvexsObject.transform.position += lCenter;
-            lRenderObject.transform.localScale = new Vector3(
-                lImage.width,
-                lImage.height,
-                1f);
-            lRenderObject.transform.position = 
-                new Vector3(lMin.x - 0.5f, lMin.y - 0.5f, 0.5f);
+            lRenderObject.transform.position -= lCenter;
 
             ++i;
 
@@ -318,6 +263,11 @@ public class zz2DModelPainter : MonoBehaviour
             string lSubName = "Collider";
             foreach (var lConvex in lConvexs)
             {
+                //createFlatMesh(lConvex.getShape(),
+                //    lSubName + lSubIndex,
+                //    lConvexsObject.transform, thickness )
+                //        .GetComponent<Renderer>().enabled = false;
+                //print(lSubIndex);
                 var lColliderObject = createFlatCollider(lConvex.getShape(),
                     lSubName + lSubIndex,
                     lConvexsObject.transform, thickness);
@@ -325,7 +275,6 @@ public class zz2DModelPainter : MonoBehaviour
                 //lColliderObject.transform.position -= lCenter;
                 ++lSubIndex;
             }
-            lRenderObject.transform.parent = lConvexsObject.transform;
         }
 
     }
@@ -333,6 +282,46 @@ public class zz2DModelPainter : MonoBehaviour
     public GameObject models;
     public Vector2 modelsSize;
 
+    //public static void pivotToCenter(GameObject pObject)
+    //{
+    //    var bounds = pObject.GetComponent<MeshFilter>().sharedMesh.bounds;
+    //    var lPivotToCenter = bounds.center;
+    //    lPivotToCenter.z = 0;
+    //    pObject.transform.position = pObject.transform.position + lPivotToCenter;
+    //    //var lExtent = bounds.extents;
+    //    //lExtent.z = 0;
+    //    foreach (Transform lSub in pObject.transform)
+    //    {
+    //        lSub.position = lSub.position - lPivotToCenter;
+    //    }
+    //}
+
+    //int getPointToIndexMap(zz2DConcave pConcave, Dictionary<Vector2, int> pOut,int pBeginIndex)
+    //{
+    //    pBeginIndex = getPointToIndexMap(pConcave.getOutSidePolygon().getShape(), pOut, pBeginIndex);
+    //    foreach (var lHoles in pConcave.getHole())
+    //    {
+    //        pBeginIndex = getPointToIndexMap(lHoles.getShape(), pOut, pBeginIndex);
+    //    }
+    //    return pBeginIndex;
+    //}
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pPoints"></param>
+    /// <param name="pOut"></param>
+    /// <param name="pBeginIndex"></param>
+    /// <returns>返回结束的未被使用的索引</returns>
+    //int getPointToIndexMap(Vector2[] pPoints, Dictionary<Vector2, int> pOut, int pBeginIndex)
+    //{
+    //    foreach (var lPoint in pPoints)
+    //    {
+    //        pOut[lPoint] = pBeginIndex;
+    //        ++pBeginIndex;
+    //    }
+    //    return pBeginIndex;
+    //}
 
     [ContextMenu("Step")]
     public bool doStep()
@@ -380,6 +369,32 @@ public class zz2DModelPainter : MonoBehaviour
         return new GameObject(pName);
     }
 
+    static GameObject createFlatMesh(Vector2[] points, string pName, Transform parent, float zThickness)
+    {
+        GameObject lOut = new GameObject(pName);
+        lOut.transform.parent = parent;
+        MeshFilter lMeshFilter = lOut.AddComponent<MeshFilter>();
+        MeshRenderer lMeshRenderer = lOut.AddComponent<MeshRenderer>();
+        MeshCollider lMeshCollider = lOut.AddComponent<MeshCollider>();
+        Mesh lMesh = new Mesh();
+        zzFlatMeshUtility.draw(lMesh, points, zThickness);
+        if (Application.isPlaying)
+        {
+            lMeshFilter.mesh = lMesh;
+        }
+        else
+        {
+            lMeshFilter.sharedMesh = lMesh;
+        }
+
+        lMeshCollider.sharedMesh = lMesh;
+
+        lMeshCollider.convex = true;
+        //MeshFilter lMeshFilter = lOut
+        return lOut;
+    }
+
+
     static GameObject createFlatCollider(Vector2[] points, string pName, Transform parent, float zThickness)
     {
         GameObject lOut = new GameObject(pName);
@@ -392,6 +407,33 @@ public class zz2DModelPainter : MonoBehaviour
 
         lMeshCollider.sharedMesh = lMesh;
 
+        //print("lMeshCollider.sharedMesh = lMesh");
+        //print("lMeshCollider.convex = true");
+        //MeshFilter lMeshFilter = lOut
+        return lOut;
+    }
+
+    static GameObject createFlatMesh(zz2DConcave pConcave, List<Vector2[]> pSurfaceList,
+        string pName, Transform parent, float zThickness, Vector2 pUvScale)
+    {
+        GameObject lOut = new GameObject(pName);
+        lOut.transform.parent = parent;
+        MeshFilter lMeshFilter = lOut.AddComponent<MeshFilter>();
+        MeshRenderer lMeshRenderer = lOut.AddComponent<MeshRenderer>();
+        Mesh lMesh = new Mesh();
+
+        if (Application.isPlaying)
+            lMeshFilter.mesh = lMesh;
+        else
+            lMeshFilter.sharedMesh = lMesh;
+
+        var lEdgeList = new List<Vector2[]>(pConcave.getHoleNum() + 1);
+        lEdgeList.Add(pConcave.getOutSidePolygon().getShape());
+        foreach (var lHole in pConcave.getHole())
+        {
+            lEdgeList.Add(lHole.getShape());
+        }
+        zzFlatMeshUtility.draw(lMesh, pSurfaceList, lEdgeList, zThickness, pUvScale);
         return lOut;
     }
 
