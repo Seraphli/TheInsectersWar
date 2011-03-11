@@ -8,6 +8,105 @@ using System.Reflection.Emit;
 [CustomEditor(typeof(zzSignalSlot))]
 public class zzSignalSlotEditor : Editor
 {
+    static Component selectComponents(Component pSelected)
+    {
+        var lComponents = pSelected.GetComponents<Component>();
+        int lIndex = 0;
+        string[] lComponentNames = new string[lComponents.Length];
+        for (int i = 0; i < lComponents.Length;++i )
+        {
+            lComponentNames[i] = lComponents[i].GetType().ToString();
+            if (lComponents[i] == pSelected)
+                lIndex = i;
+        }
+        int lNewIndex = EditorGUILayout.Popup(lIndex, lComponentNames);
+        //if(lNewIndex!=lIndex)
+        return lComponents[lNewIndex];
+        //return null;
+    }
+
+    void componentChange(string pComponentType, ref Component pSelected,
+        Component pNewSelected)
+    {
+        if (pSelected != pNewSelected)
+        {
+            Undo.RegisterUndo(target, pComponentType + " Component Change");
+            pSelected = pNewSelected;
+        }
+    }
+
+    void componentChange(string pComponentType, ref Component pSelected)
+    {
+        GUILayout.Label(pComponentType, GUILayout.Width(35));
+
+        componentChange(pComponentType, ref  pSelected,
+            (Component)EditorGUILayout.ObjectField(pSelected, typeof(Component)));
+
+        if (pSelected)
+            componentChange(pComponentType, ref pSelected,
+                selectComponents(pSelected));
+
+    }
+
+    //void componentChange(string pComponentType)
+    //{
+    //    Undo.RegisterUndo(target, pComponentType + " Component Change");
+    //}
+
+    //void selectComponents(string pComponentType, ref Component pSelected)
+    //{
+    //    var lNew = selectComponents(pSelected);
+    //    if (lNew)
+    //    {
+    //        componentChange(pComponentType);
+    //        pSelected = lNew;
+    //    }
+    //}
+
+    //void fieldComponents(string pComponentType, ref Component pSelected)
+    //{
+    //    var lNew = (Component)EditorGUILayout
+    //        .ObjectField(lSignalSlot.signalComponent, typeof(Component));
+    //    if(lNewComponent!=pSelected)
+    //    {
+
+    //    }
+    //}
+
+    static List<String> getAllSignalMethod(Type pType)
+    {
+        var lOut = new List<String>();
+        var lMembers = pType.GetMembers();
+        foreach (var llMember in lMembers)
+        {
+            if(llMember is MethodInfo)
+            {
+                var lMethodInfo = (MethodInfo)llMember;
+                if (lMethodInfo.GetParameters().Length == 1
+                    && lMethodInfo.GetParameters()[0]
+                        .ParameterType.BaseType == typeof(MulticastDelegate))
+                    lOut.Add(lMethodInfo.Name);
+            }
+            else if(llMember is PropertyInfo
+                && ((PropertyInfo)llMember)
+                    .PropertyType.BaseType == typeof(MulticastDelegate))
+            {
+                lOut.Add(llMember.Name);
+            }
+            else if(llMember is FieldInfo
+                && ((FieldInfo)llMember)
+                    .FieldType.BaseType == typeof(MulticastDelegate))
+            {
+                lOut.Add(llMember.Name);
+            }
+            else if (llMember is EventInfo)
+            {
+                lOut.Add(llMember.Name);
+            }
+        }
+        return lOut;
+    }
+
     public override void OnInspectorGUI()
     {
         zzSignalSlot lSignalSlot = (zzSignalSlot)target;
@@ -15,18 +114,21 @@ public class zzSignalSlotEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             {
-                GUILayout.Label("说明:", GUILayout.ExpandWidth(false));
+                GUILayout.Label("description:", GUILayout.ExpandWidth(false));
                 lSignalSlot.describe = GUILayout.TextField(lSignalSlot.describe);
             }
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             {
-                GUILayout.Label("signal", GUILayout.Width(35));
-                lSignalSlot.signalComponent
-                    = (Component)EditorGUILayout.ObjectField(lSignalSlot.signalComponent, typeof(Component));
-                if (lSignalSlot.signalComponent)
-                    GUILayout.Label(lSignalSlot.signalComponent.GetType().ToString());
+                //GUILayout.Label("signal", GUILayout.Width(35));
+                //lSignalSlot.signalComponent
+                //    = (Component)EditorGUILayout.ObjectField(lSignalSlot.signalComponent, typeof(Component));
+                //if (lSignalSlot.signalComponent)
+                componentChange("Signal", ref lSignalSlot.signalComponent);//,
+                        //selectComponents(lSignalSlot.signalComponent));
+                    //selectComponents(ref lSignalSlot.signalComponent, lSignalSlot);
+                    //GUILayout.Label(lSignalSlot.signalComponent.GetType().ToString());
                 lSignalSlot.signalMethodName = EditorGUILayout.TextField(lSignalSlot.signalMethodName);
             }
             EditorGUILayout.EndHorizontal();
@@ -40,11 +142,12 @@ public class zzSignalSlotEditor : Editor
                 else
                 {
                     EditorGUILayout.BeginHorizontal();
-                    GUILayout.Label("slot", GUILayout.Width(35));
-                    lSignalSlot.slotComponent = (Component)EditorGUILayout
-                        .ObjectField(lSignalSlot.slotComponent, typeof(Component));
-                    if (lSignalSlot.slotComponent)
-                        GUILayout.Label( lSignalSlot.slotComponent.GetType().ToString());
+                    //GUILayout.Label("slot", GUILayout.Width(35));
+                    //lSignalSlot.slotComponent = (Component)EditorGUILayout
+                    //    .ObjectField(lSignalSlot.slotComponent, typeof(Component));
+                    //if (lSignalSlot.slotComponent)
+                    componentChange("Slot", ref lSignalSlot.slotComponent);//,
+                            //selectComponents(lSignalSlot.slotComponent));
 
                     if (lSignalSlot.slotComponent)
                     {
