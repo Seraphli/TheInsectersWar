@@ -9,7 +9,7 @@ public class zzImagePatternPicker
         Texture2D lOut = new Texture2D(pOutSize.x, pOutSize.y, TextureFormat.ARGB32, false);
         var lMin = pBounds.min;
         var lMax = pBounds.max;
-        var lDrawOffset = zzPoint.zero - lMin;
+        var lDrawOffset = -lMin;
         for (int lY = lMin.y; lY < lMax.y; ++lY)
         {
             var lDrawedPointY = lY + lDrawOffset.y;

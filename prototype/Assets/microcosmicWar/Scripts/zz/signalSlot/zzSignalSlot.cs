@@ -6,8 +6,9 @@ using System.Reflection.Emit;
 
 public class zzSignalSlot : MonoBehaviour
 {
+
     //用于注释 便于观看
-    public string describe = "";
+    public string description = "";
 
     public Component signalComponent;
 
@@ -17,8 +18,16 @@ public class zzSignalSlot : MonoBehaviour
     public Component slotComponent;
     public string slotMethodName = "slotMethodName";
 
+    //just for show "enabled" in editor
+    void Start(){}
+
     void Awake()
     {
+        if(!enabled)
+        {
+            Destroy(this);
+            return;
+        }
 
         MemberInfo lSignalMemberInfo = getSignalMember(signalComponent, signalMethodName);
         if (lSignalMemberInfo == null)
@@ -59,7 +68,9 @@ public class zzSignalSlot : MonoBehaviour
         else if (pSignalMemberInfo is FieldInfo)
             ((FieldInfo)pSignalMemberInfo).SetValue(pSignalObject, pSlotDelegate);
         else if (pSignalMemberInfo is MethodInfo)
-            ((MethodInfo)pSignalMemberInfo).Invoke(pSignalObject, new object[]{pSlotDelegate});
+            ((MethodInfo)pSignalMemberInfo).Invoke(pSignalObject, new object[] { pSlotDelegate });
+        else if (pSignalMemberInfo is EventInfo)
+            ((EventInfo)pSignalMemberInfo).AddEventHandler(pSignalObject, pSlotDelegate );
         else
             Debug.LogError("linkSignalToSlot");
 
@@ -76,6 +87,10 @@ public class zzSignalSlot : MonoBehaviour
         var lField = lType.GetField(pMethodName);
         if (lField != null && lField.FieldType.BaseType == typeof(MulticastDelegate))
             return lField;
+
+        var lEvent = lType.GetEvent(pMethodName);
+        if (lEvent != null )
+            return lEvent;
         //print("----------begin--------------");
         //print("type:" + lType.Name);
         //MethodInfo[] pMethodInfoList = lType.GetMethods();
@@ -111,6 +126,9 @@ public class zzSignalSlot : MonoBehaviour
 
         else if (pMemberInfo is MethodInfo)
             return ((MethodInfo)pMemberInfo).GetParameters()[0].ParameterType;
+
+        else if (pMemberInfo is EventInfo)
+            return ((EventInfo)pMemberInfo).EventHandlerType;
 
         return null;
     }

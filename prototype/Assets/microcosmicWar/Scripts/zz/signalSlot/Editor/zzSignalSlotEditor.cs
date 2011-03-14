@@ -8,6 +8,19 @@ using System.Reflection.Emit;
 [CustomEditor(typeof(zzSignalSlot))]
 public class zzSignalSlotEditor : Editor
 {
+
+    [MenuItem("zz/Add SignalSlot")]
+    static void addSignalSlot()
+    {
+        Selection.activeGameObject.AddComponent<zzSignalSlot>();
+    }
+
+    [MenuItem("zz/Add SignalSlot", true)]
+    static bool validateAddSignalSlot()
+    {
+        return Selection.activeTransform != null;
+    }
+
     static Component selectComponents(Component pSelected)
     {
         var lComponents = pSelected.GetComponents<Component>();
@@ -48,30 +61,6 @@ public class zzSignalSlotEditor : Editor
 
     }
 
-    //void componentChange(string pComponentType)
-    //{
-    //    Undo.RegisterUndo(target, pComponentType + " Component Change");
-    //}
-
-    //void selectComponents(string pComponentType, ref Component pSelected)
-    //{
-    //    var lNew = selectComponents(pSelected);
-    //    if (lNew)
-    //    {
-    //        componentChange(pComponentType);
-    //        pSelected = lNew;
-    //    }
-    //}
-
-    //void fieldComponents(string pComponentType, ref Component pSelected)
-    //{
-    //    var lNew = (Component)EditorGUILayout
-    //        .ObjectField(lSignalSlot.signalComponent, typeof(Component));
-    //    if(lNewComponent!=pSelected)
-    //    {
-
-    //    }
-    //}
 
     static List<String> getAllSignalMethod(Type pType)
     {
@@ -107,6 +96,28 @@ public class zzSignalSlotEditor : Editor
         return lOut;
     }
 
+    void signalChange(ref string pSignalName)
+    {
+        zzSignalSlot lSignalSlot = (zzSignalSlot)target;
+        var lSignalMethods = getAllSignalMethod(lSignalSlot.signalComponent.GetType());
+        lSignalMethods.Add(pSignalName);
+
+        int lSelected = EditorGUILayout.Popup(lSignalMethods.Count - 1, lSignalMethods.ToArray());
+        if(lSignalMethods[lSelected]!=pSignalName)
+        {
+            Undo.RegisterUndo(target, "Signal Method Change");
+            pSignalName = lSignalMethods[lSelected];
+        }
+    }
+
+    void outError(string pInfo)
+    {
+        var lPreColor = GUI.color;
+        GUI.color = Color.red;
+        GUILayout.Label(pInfo);
+        GUI.color = lPreColor;
+    }
+
     public override void OnInspectorGUI()
     {
         zzSignalSlot lSignalSlot = (zzSignalSlot)target;
@@ -114,22 +125,17 @@ public class zzSignalSlotEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             {
-                GUILayout.Label("description:", GUILayout.ExpandWidth(false));
-                lSignalSlot.describe = GUILayout.TextField(lSignalSlot.describe);
+                GUILayout.Label("Description:", GUILayout.ExpandWidth(false));
+                lSignalSlot.description = EditorGUILayout.TextField(lSignalSlot.description);
             }
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             {
-                //GUILayout.Label("signal", GUILayout.Width(35));
-                //lSignalSlot.signalComponent
-                //    = (Component)EditorGUILayout.ObjectField(lSignalSlot.signalComponent, typeof(Component));
-                //if (lSignalSlot.signalComponent)
-                componentChange("Signal", ref lSignalSlot.signalComponent);//,
-                        //selectComponents(lSignalSlot.signalComponent));
-                    //selectComponents(ref lSignalSlot.signalComponent, lSignalSlot);
-                    //GUILayout.Label(lSignalSlot.signalComponent.GetType().ToString());
-                lSignalSlot.signalMethodName = EditorGUILayout.TextField(lSignalSlot.signalMethodName);
+                componentChange("Signal", ref lSignalSlot.signalComponent);
+                //lSignalSlot.signalMethodName = EditorGUILayout.TextField(lSignalSlot.signalMethodName);
+                if (lSignalSlot.signalComponent)
+                    signalChange(ref lSignalSlot.signalMethodName);
             }
             EditorGUILayout.EndHorizontal();
 
@@ -138,16 +144,13 @@ public class zzSignalSlotEditor : Editor
                 MemberInfo lSignalMemberInfo = zzSignalSlot
                     .getSignalMember(lSignalSlot.signalComponent, lSignalSlot.signalMethodName);
                 if (lSignalMemberInfo == null)
-                    GUILayout.Label("error in signal");
+                    outError("error in signal");
                 else
                 {
+                    int lSignaMethodlSelectIndex=0;
                     EditorGUILayout.BeginHorizontal();
-                    //GUILayout.Label("slot", GUILayout.Width(35));
-                    //lSignalSlot.slotComponent = (Component)EditorGUILayout
-                    //    .ObjectField(lSignalSlot.slotComponent, typeof(Component));
-                    //if (lSignalSlot.slotComponent)
-                    componentChange("Slot", ref lSignalSlot.slotComponent);//,
-                            //selectComponents(lSignalSlot.slotComponent));
+
+                    componentChange("Slot", ref lSignalSlot.slotComponent);
 
                     if (lSignalSlot.slotComponent)
                     {
@@ -157,14 +160,23 @@ public class zzSignalSlotEditor : Editor
                         zzSignalSlot.getSignalMethod(lSignalDelegateType,
                             out ReturnType, out ParameterTypes);
 
-                        //lSignalSlot.slotComponent.GetType().GetMethods()
-                        var lMethodNames = findMethodNames(lSignalSlot.slotComponent, ParameterTypes, ReturnType);
+                        var lMethodNames = findMethodNames(lSignalSlot.slotComponent, ParameterTypes, ReturnType,
+                            lSignalSlot.slotMethodName,out lSignaMethodlSelectIndex);
+                        
                         lMethodNames.Add(lSignalSlot.slotMethodName);
 
                         int lSelected = EditorGUILayout.Popup(lMethodNames.Count - 1, lMethodNames.ToArray());
-                        lSignalSlot.slotMethodName = lMethodNames[lSelected];
+                        if(lSignalSlot.slotMethodName != lMethodNames[lSelected])
+                        {
+                            lSignalSlot.slotMethodName = lMethodNames[lSelected];
+
+                            Undo.RegisterUndo(target, "Slot Method Change");
+                        }
                     }
                     EditorGUILayout.EndHorizontal();
+
+                    if (lSignaMethodlSelectIndex == -1)
+                        outError("can not find the function in signal");
                 }
             }
 
@@ -173,13 +185,16 @@ public class zzSignalSlotEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    List<string>    findMethodNames(object pObject,Type[] pParameterTypes,Type pReturnType)
+    List<string>    findMethodNames(object pObject,Type[] pParameterTypes,Type pReturnType,
+        string pSelectedName, out int pSelected)
     {
+        pSelected = -1;
         List<string> lOut = new List<string>();
         //Debug.Log("pObject:" + pObject.ToString());
         MethodInfo[] pMethodInfoList = pObject.GetType().GetMethods();
 
         //Debug.Log("pMethodInfoList:" + pMethodInfoList.Length);
+        int i=0;
         foreach (var pMethodInfo in pMethodInfoList)
         {
             //Debug.Log(pMethodInfo.ReturnType.ToString());
@@ -189,7 +204,12 @@ public class zzSignalSlotEditor : Editor
                 && isEquals(
                         zzSignalSlot.toTypeArray(pMethodInfo.GetParameters()),
                         pParameterTypes))
+            {
                 lOut.Add(pMethodInfo.Name);
+                if (pSelectedName == pMethodInfo.Name)
+                    pSelected = i;
+            }
+            ++i;
         }
         return lOut;
     }

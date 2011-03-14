@@ -23,6 +23,11 @@ public struct zzPoint
         return lPoint;
     }
 
+    public static zzPoint operator -(zzPoint p1)
+    {
+        return new zzPoint(-p1.x, -p1.y);
+    }
+
     public override string ToString()
     {
         return x.ToString() + " " + y;

@@ -8,7 +8,7 @@ public class zzPlaneMeshUtility
     public static void draw(Mesh pMesh, List<Vector2[]> pSurfaceList,
         List<Vector2[]> pEdgeList,Vector2 pUvScale, Vector2 pPointOffset)
     {
-
+        Debug.Log(pUvScale);
         Dictionary<Vector2, int> lPointToIndex;
         List<Vector2> lPoints;
         zzFlatMeshUtility.getPointAndMap(pEdgeList, out lPointToIndex, out lPoints);
@@ -101,12 +101,12 @@ public class zzPlaneMeshUtility
 
         for (int i = 0; i < points.Length; ++i)
         {
-            Vector2 lPoint = points[i];
+            Vector2 lPoint = points[i] + pPointOffset;
             Vector2 lUV = lPoint;
             lUV.Scale(pUVScale);
 
-            lVertices[i].x = lPoint.x + pPointOffset.x;
-            lVertices[i].y = lPoint.y + pPointOffset.y;
+            lVertices[i].x = lPoint.x ;
+            lVertices[i].y = lPoint.y ;
             lUVs[i] = lUV;
             lNormals[i] = new Vector3(0, 0, -1);
 
