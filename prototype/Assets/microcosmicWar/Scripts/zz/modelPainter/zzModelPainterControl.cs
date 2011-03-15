@@ -63,6 +63,18 @@ public abstract class zzIModelPainterProcessor : MonoBehaviour
         set { modelPainterData.modelsSize = value; }
     }
 
+    public Texture2D[] imagePatterns
+    {
+        get { return modelPainterData.imagePatterns; }
+        set { modelPainterData.imagePatterns = value; }
+    }
+
+    public zzPointBounds[] imagePatternBounds
+    {
+        get { return modelPainterData.imagePatternBounds; }
+        set { modelPainterData.imagePatternBounds = value; }
+    }
+
     public abstract void showPicture();
     public abstract void pickPicture();
     public abstract void sweepPicture();

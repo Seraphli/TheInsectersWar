@@ -19,4 +19,8 @@ public class zzModelPainterData:MonoBehaviour
     public GameObject models;
     public Vector2 modelsSize;
 
+    public Texture2D[] imagePatterns;
+
+    public zzPointBounds[] imagePatternBounds;
+
 }

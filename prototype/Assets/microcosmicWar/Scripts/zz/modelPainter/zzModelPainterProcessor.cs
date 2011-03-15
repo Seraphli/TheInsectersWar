@@ -20,8 +20,63 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
 
     public Color colorInSweepSetting;
 
+    public override void showPicture() { }
 
-    public override void showPicture(){}
+    public override void sweepPicture()
+    {
+        pointNumber = 0;
+        polygonNumber = 0;
+        holeNumber = 0;
+        var lPatternResult = zzOutlineSweeper.sweeper(activeChart);
+        imagePatterns = new Texture2D[lPatternResult.Count];
+        imagePatternBounds = new zzPointBounds[lPatternResult.Count];
+
+        //拾取图块
+        for (int i = 0; i < lPatternResult.Count; ++i)
+        {
+            zzPointBounds lBounds = lPatternResult.sweeperPointResults[i].Bounds;
+            imagePatternBounds[i] = lBounds;
+            var lBoundMin = lBounds.min;
+            var lBoundMax = lBounds.max;
+            zzPoint lPatternSize = new zzPoint(
+                Mathf.NextPowerOfTwo(lBoundMax.x - lBoundMin.x + 1),
+                Mathf.NextPowerOfTwo(lBoundMax.y - lBoundMin.y + 1)
+                );
+            imagePatterns[i] = zzImagePatternPicker.pick(lPatternResult.patternMark, i + 1,
+                picture, lBounds, lPatternSize);
+        }
+        //var lSweeperResults = zzOutlineSweeper.sweeper(activeChart, ignoreDistanceInSweeping);
+        var lSweeperResults = zzOutlineSweeper
+            .simplifySweeperResult(lPatternResult.sweeperPointResults, ignoreDistanceInSweeping);
+        modelsSize = new Vector2((float)activeChart.width, (float)activeChart.height);
+
+        //存储结果
+        concaves = new List<zz2DConcave>();
+        foreach (var lSweeperResult in lSweeperResults)
+        {
+            if (lSweeperResult.edge.Length < 2)
+                continue;
+
+            zzSimplyPolygon lPolygon = new zzSimplyPolygon();
+            lPolygon.setShape(lSweeperResult.edge);
+
+            zz2DConcave lConcave = new zz2DConcave();
+            lConcave.setShape(lPolygon);
+            ++polygonNumber;
+
+            foreach (var lHole in lSweeperResult.holes)
+            {
+                if (lHole.Length < 2)
+                    continue;
+                zzSimplyPolygon lHolePolygon = new zzSimplyPolygon();
+                lHolePolygon.setShape(lHole);
+                lConcave.addHole(lHolePolygon);
+                ++holeNumber;
+            }
+
+            concaves.Add(lConcave);
+        }
+    }
 
     public override void pickPicture()
     {
@@ -64,6 +119,11 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
     }
 
 
+    public override void clear()
+    {
+        DestroyImmediate(models);
+    }
+
     zzSimplyPolygon addSimplyPolygon(Vector2[] pPoints, string pName, Transform pDebugerObject)
     {
         return addSimplyPolygon(pPoints, pName, pDebugerObject, Color.red);
@@ -77,20 +137,120 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
         zzSimplyPolygon lPolygon = new zzSimplyPolygon();
         lPolygon.setShape(pPoints);
 
-        modelPainterData.pointNumber += lPolygon.pointNum;
+        pointNumber += lPolygon.pointNum;
         return lPolygon;
     }
 
     public override void convexDecompose()
     {
-        modelPainterData.convexesList = new List<zzSimplyPolygon[]>();
+        convexesList = new List<zzSimplyPolygon[]>();
         int index = 0;
         foreach (var lConcave in concaves)
         {
             zzSimplyPolygon[] ldecomposed = lConcave.decompose();
-            modelPainterData.convexesList.Add(ldecomposed);
+            convexesList.Add(ldecomposed);
         }
     }
 
+    public override void draw()
+    {
+        models = new GameObject("PaintModel");
+        models.transform.position = new Vector3(modelsSize.x / 2.0f, modelsSize.y / 2.0f, 0.0f);
+        int i = 0;
+        foreach (var lConvexs in convexesList)
+        {
+            var lSurfaceList = new List<Vector2[]>(lConvexs.Length);
+            var lImage = imagePatterns[i];
+            foreach (var lConvex in lConvexs)
+            {
+                lSurfaceList.Add(lConvex.getShape());
+            }
+
+            string lPolygonName = "polygon" + i;
+            GameObject lConvexsObject = new GameObject(lPolygonName);
+            lConvexsObject.transform.parent = models.transform;
+            var lMin = imagePatternBounds[i].min;
+            Vector2 lPointOffset = new Vector2(-lMin.x, -lMin.y);
+            var lPlanePos = new Vector3(lMin.x, lMin.y, 0f);
+            var lRenderObject = createFlatMesh(concaves[i], lSurfaceList, "Render",
+                    lPointOffset,
+                    thickness,
+                    new Vector2(1.0f / (float)(lImage.width - 1),
+                        1.0f / (float)(lImage.height - 1))
+                    );
+
+            MeshRenderer lMeshRenderer = lRenderObject.GetComponent<MeshRenderer>();
+            var lMaterial = new Material(Shader.Find("Transparent/Diffuse"));
+            lMaterial.mainTexture = lImage;
+            lMeshRenderer.sharedMaterial = lMaterial;
+            Vector3 lCenter = lMeshRenderer.bounds.center;
+            lCenter.z = 0;
+            //lConvexsObject是lRenderObject的父物体
+            lConvexsObject.transform.position += (lCenter + lPlanePos);
+            //lPlanePos.z = thickness / 2f;
+            lRenderObject.transform.position = lPlanePos;
+
+            ++i;
+
+            int lSubIndex = 0;
+            string lSubName = "Collider";
+            foreach (var lConvex in lConvexs)
+            {
+
+                var lColliderObject = createFlatCollider(lConvex.getShape(),
+                    lSubName + lSubIndex,
+                    lConvexsObject.transform, thickness);
+                ++lSubIndex;
+            }
+            lRenderObject.transform.parent = lConvexsObject.transform;
+        }
+
+    }
+
+
+    static GameObject createFlatCollider(Vector2[] points, string pName, Transform parent, float zThickness)
+    {
+        GameObject lOut = new GameObject(pName);
+        //lOut.active = false;
+        lOut.transform.parent = parent;
+        MeshCollider lMeshCollider = lOut.AddComponent<MeshCollider>();
+        Mesh lMesh = new Mesh();
+        zzFlatMeshUtility.draw(lMesh, points, zThickness);
+        //lMeshCollider.convex = true;
+
+        lMeshCollider.sharedMesh = lMesh;
+
+        return lOut;
+    }
+
+    //创建的模型位移 -pBounds.min
+    GameObject createFlatMesh(zz2DConcave pConcave, List<Vector2[]> pSurfaceList,
+        string pName, Vector2 pPointOffset, float zThickness, Vector2 pUvScale)
+    {
+        Debug.Log(pUvScale);
+        GameObject lOut = new GameObject(pName);
+        MeshFilter lMeshFilter = lOut.AddComponent<MeshFilter>();
+        MeshRenderer lMeshRenderer = lOut.AddComponent<MeshRenderer>();
+        Mesh lMesh = new Mesh();
+
+        if (Application.isPlaying)
+            lMeshFilter.mesh = lMesh;
+        else
+            lMeshFilter.sharedMesh = lMesh;
+
+        var lEdgeList = new List<Vector2[]>(pConcave.getHoleNum() + 1);
+        lEdgeList.Add(pConcave.getOutSidePolygon().getShape());
+        foreach (var lHole in pConcave.getHole())
+        {
+            lEdgeList.Add(lHole.getShape());
+        }
+
+        draw(lMesh, pSurfaceList, lEdgeList, zThickness, pUvScale, pPointOffset);
+        return lOut;
+    }
+
+    protected abstract void draw(Mesh pMesh, List<Vector2[]> pSurfaceList,
+        List<Vector2[]> pEdgeList, float zThickness, Vector2 pUvScale,
+        Vector2 pPointOffset);
 
 }
