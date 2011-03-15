@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class zz2DConcave
+public class zz2DConcave
 {
     class PointDate
     {

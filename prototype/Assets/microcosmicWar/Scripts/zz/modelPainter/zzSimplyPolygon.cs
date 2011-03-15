@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-class zzSimplyPolygon
+public class zzSimplyPolygon
 {
     LinkedList<zz2DPoint> mConcavePoints = new LinkedList<zz2DPoint>();
     LinkedList<zz2DPoint> mConvexPoints = new LinkedList<zz2DPoint>();

@@ -56,20 +56,6 @@ public class zz2DModelPainter : MonoBehaviour
             GameObject.DestroyImmediate(pictureDebuger);
     }
 
-    Renderer getRenderer(Transform pTransform)
-    {
-        Renderer lOut = null;
-        //pTransform = pTransform.parent;
-        while (!lOut && pTransform)
-        {
-            lOut = pTransform.GetComponent<Renderer>();
-            pTransform = pTransform.parent;
-        }
-        return lOut;
-    }
-
-    public Camera painterCamera;
-
     void showPicture()
     {
         pictureDebuger = deleteOldCreateNewDebuger(pictureDebuger, "pictureDebuger");
