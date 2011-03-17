@@ -8,7 +8,6 @@ public class zzPlaneMeshUtility
     public static void draw(Mesh pMesh, List<Vector2[]> pSurfaceList,
         List<Vector2[]> pEdgeList,Vector2 pUvScale, Vector2 pPointOffset)
     {
-        Debug.Log(pUvScale);
         Dictionary<Vector2, int> lPointToIndex;
         List<Vector2> lPoints;
         zzFlatMeshUtility.getPointAndMap(pEdgeList, out lPointToIndex, out lPoints);
