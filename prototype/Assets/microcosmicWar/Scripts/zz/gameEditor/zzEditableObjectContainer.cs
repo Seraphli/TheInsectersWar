@@ -64,10 +64,10 @@ public class zzEditableObjectContainer:MonoBehaviour
     void Start()
     {
         editableObjectList = GetComponents<zzEditableObject>();
-        foreach (var lObject in editableObjectList)
-        {
-            lObject.objectContainer = this;
-        }
+        //foreach (var lObject in editableObjectList)
+        //{
+        //    lObject.objectContainer = this;
+        //}
     }
 
     [SerializeField]

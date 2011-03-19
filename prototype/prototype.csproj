@@ -110,7 +110,6 @@
      <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
      <Compile Include="Assets\Editor\AstarPathEditor.cs" />
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
-     <None Include="Assets\Editor\_2Dphysics.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\AiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\AiMachineGunAI.cs" />
@@ -178,6 +177,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactoryState.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactorySystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\StrongholdOffLineSetting.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\WMGameObjectType.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\WMPlayStateManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\zzItemBagControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\_2d.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\_2DCameraFollow.cs" />
@@ -200,10 +201,15 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzColorMaterialEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzSignalSlotEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzMake2DRigidbody.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObjectContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeFolderDraw.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneObjectClick.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
@@ -220,6 +226,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITransform.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITreeFolder.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITreeFolderArea.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITreeViewArea.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIUseCustomPos.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzInterfaceGUI.cs" />
@@ -243,9 +250,14 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzFlatModelPainter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzImagePatternPicker.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzMapPainter.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzModelPainterControl.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzModelPainterData.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzModelPainterDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzModelPainterProcessor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzOutlineSweeper.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPainterPoint.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPainterPolygon.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPlaneMeshUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPoint.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPointBounds.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPolygon.cs" />
@@ -259,6 +271,9 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRigidbodySweepDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\Editor\zzSignalSlotEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\example\zzSignalSlotExample.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlot.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
@@ -287,7 +302,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSetObjectValue.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSignalSlot.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
@@ -331,6 +345,7 @@
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\ButtonUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\FieldUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\ImageUIAttribute.cs" />
+     <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\LabelUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\UIAttributeBase.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\AddObjectToManager.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\GameConfig.cs" />
@@ -360,8 +375,6 @@
      <Compile Include="Assets\modelPainter\Scripts\UI\ObjectPropertySettingGUI.cs" />
      <Compile Include="Assets\modelPainter\Scripts\UI\ObjectPropertyWindow.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ControlPointLine.cs" />
-     <Compile Include="Assets\modelPainter\Scripts\CreateModel.cs" />
-     <Compile Include="Assets\modelPainter\Scripts\FlatModelCreator.cs" />
      <Compile Include="Assets\modelPainter\Scripts\GlWireframeRender.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ImageModelCreator.cs" />
      <Compile Include="Assets\modelPainter\Scripts\InPoint.cs" />
@@ -373,8 +386,6 @@
      <Compile Include="Assets\modelPainter\Scripts\SweetTest.cs" />
      <Compile Include="Assets\modelPainter\Scripts\test.cs" />
      <Compile Include="Assets\modelPainter\Scripts\TriggerTest.cs" />
-     <Compile Include="Assets\modelPainter\Scripts\zzEditableObject.cs" />
-     <Compile Include="Assets\modelPainter\Scripts\zzObjectElement.cs" />
      <Compile Include="Assets\Pathfinding\AstarClasses.cs" />
      <Compile Include="Assets\Pathfinding\AstarMath.cs" />
      <Compile Include="Assets\Pathfinding\AstarPath.cs" />

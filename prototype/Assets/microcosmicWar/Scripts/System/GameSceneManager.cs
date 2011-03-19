@@ -4,9 +4,9 @@ using System.Collections;
 public class GameSceneManager:MonoBehaviour
 {
     //此变量只是为了让ManagerInfo类中的managerType以枚举UI显示
-    public ManagerType managerType;
+    public UnitManagerType managerType;
 
-    public enum ManagerType
+    public enum UnitManagerType
     {
         none = 0,
         soldier,
@@ -17,10 +17,67 @@ public class GameSceneManager:MonoBehaviour
         typeCount,
     }
 
-    [System.Serializable]
-    public class ManagerInfo
+    public enum MapManagerType
     {
-        public ManagerType managerType;
+        none = 0,
+        board,
+        ground,
+        moveableObject,
+        background,
+        typeCount,
+    }
+
+    public void clearAllObject()
+    {
+        foreach (var lUnitSceneManagers in unitSceneManagersList)
+        {
+            if (lUnitSceneManagers!=null)
+                foreach (var lUnitSceneManager in lUnitSceneManagers)
+                {
+                    if (lUnitSceneManager)
+                        lUnitSceneManager.clearObject();
+                }
+        }
+        foreach (var lMapManager in mapManagerList)
+        {
+            if (lMapManager)
+                lMapManager.clearObject();
+        }
+    }
+
+
+    [System.Serializable]
+    public class MapManagerInfo
+    {
+        public MapManagerType managerType;
+        public zzSceneManager sceneManager;
+    }
+
+    public MapManagerInfo[] mapManagerInfos;
+
+    [SerializeField]
+    zzSceneManager[] mapManagerList;
+
+    void createMapManagerList()
+    {
+        //var lMapManagerInfos = new MapManagerInfo[(int)MapManagerType.typeCount];
+        var lMapManagerData = new zzSceneManager[(int)MapManagerType.typeCount];
+        foreach (var lMapManagerInfo in mapManagerInfos)
+        {
+            lMapManagerData[(int)lMapManagerInfo.managerType] = lMapManagerInfo.sceneManager;
+        }
+        mapManagerList = lMapManagerData;
+    }
+
+    public void addObject(MapManagerType pManagerName, GameObject pObject)
+    {
+        mapManagerList[(int)pManagerName].addObject(pObject);
+    }
+
+    [System.Serializable]
+    public class UnitManagerInfo
+    {
+        public UnitManagerType managerType;
         public zzSceneManager sceneManager;
     }
 
@@ -28,12 +85,12 @@ public class GameSceneManager:MonoBehaviour
     public class ObjectRaceManagerInfo
     {
         public Race race;
-        public ManagerInfo[] managerInfos;
+        public UnitManagerInfo[] managerInfos;
     }
 
     public ObjectRaceManagerInfo[] objectRaceManagerInfo;
 
-    public zzSceneManager[][] sceneManagersList;
+    public zzSceneManager[][] unitSceneManagersList;
 
     static protected GameSceneManager singletonInstance;
 
@@ -52,25 +109,31 @@ public class GameSceneManager:MonoBehaviour
         if (singletonInstance != null)
             Debug.LogError("have singletonInstance");
         singletonInstance = this;
+        createUnitSceneManagerList();
+        createMapManagerList();
+    }
 
-        sceneManagersList = new zzSceneManager[3][];
+    private void createUnitSceneManagerList()
+    {
+
+        unitSceneManagersList = new zzSceneManager[3][];
         foreach (var lRaceManagersInfo in objectRaceManagerInfo)
         {
-            var lSceneManagersList = new zzSceneManager[(int)ManagerType.typeCount];
+            var lSceneManagersList = new zzSceneManager[(int)UnitManagerType.typeCount];
             foreach (var lManagersInfo in lRaceManagersInfo.managerInfos)
             {
                 lSceneManagersList[(int)lManagersInfo.managerType] = lManagersInfo.sceneManager;
             }
-            sceneManagersList[(int)lRaceManagersInfo.race] = lSceneManagersList;
+            unitSceneManagersList[(int)lRaceManagersInfo.race] = lSceneManagersList;
         }
     }
 
-    public zzSceneManager getManager(Race pRace,ManagerType pManagerName)
+    public zzSceneManager getManager(Race pRace,UnitManagerType pManagerName)
     {
-        return sceneManagersList[(int)pRace][(int)pManagerName];
+        return unitSceneManagersList[(int)pRace][(int)pManagerName];
     }
 
-    public void addObject(Race pRace, ManagerType pManagerName, GameObject pObject)
+    public void addObject(Race pRace, UnitManagerType pManagerName, GameObject pObject)
     {
         getManager(pRace, pManagerName).addObject(pObject);
     }
@@ -79,7 +142,7 @@ public class GameSceneManager:MonoBehaviour
     {
         addObject(
                 PlayerInfo.getRace(pObject.layer),
-                GameSceneManager.ManagerType.soldier,
+                GameSceneManager.UnitManagerType.soldier,
                 pObject);
     }
 
@@ -87,7 +150,7 @@ public class GameSceneManager:MonoBehaviour
     {
         addObject(
                 PlayerInfo.getRace(pObject.layer),
-                GameSceneManager.ManagerType.hero,
+                GameSceneManager.UnitManagerType.hero,
                 pObject);
     }
 }

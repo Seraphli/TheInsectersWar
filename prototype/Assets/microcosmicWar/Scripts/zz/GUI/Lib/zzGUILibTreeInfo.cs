@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class zzGUILibTreeInfo:MonoBehaviour
+public class zzGUILibTreeInfo : MonoBehaviour
 {
     public zzGUILibTreeNode treeInfo;
 }
@@ -14,7 +14,7 @@ public class zzGUILibTreeElement
     public Texture2D image;
 
     //用以保存自定义数据
-    public object objectData;
+    public string stringData;
     public Component componentData;
 
     GUIContent _content;
@@ -38,6 +38,19 @@ public class zzGUILibTreeNode : zzGUILibTreeElement
     public zzGUILibTreeElement[] elements = new zzGUILibTreeElement[0];
     public zzGUILibTreeNode[] nodes = new zzGUILibTreeNode[0];
 
+    public bool changed = false;
+
+    public void applyChange() 
+    { 
+        changed = true; 
+    }
+
+    public void setData(zzGUILibTreeNode pData)
+    {
+        elements = pData.elements;
+        nodes = pData.nodes;
+        applyChange();
+    }
 }
 
 public class zzGUILibTreeView
@@ -47,7 +60,8 @@ public class zzGUILibTreeView
     //public Rect imageSize = new Rect(0, 0, 30, 30);
     public int imageSize = 30;
 
-    int TreeDepth = 0;
+    //为-1时是根节点,不显示
+    int TreeDepth = -1;
     bool expanded = false;
     zzGUILibTreeNode treeNode;
 
@@ -65,6 +79,7 @@ public class zzGUILibTreeView
             lGUITreeView.setTreeNode(lSubTreeNode[i]);
             subViews.Add(lGUITreeView);
         }
+        pTreeNode.changed = false;
     }
 
     GUIStyle getStyle(object pSelected,object pShowed)
@@ -76,49 +91,64 @@ public class zzGUILibTreeView
 
     List<zzGUILibTreeView> subViews = new List<zzGUILibTreeView>();
 
-    public void drawGUI(ref zzGUILibTreeElement pSelected)
+    void drawSelfNode(ref zzGUILibTreeElement pSelected)
     {
-        zzGUILibTreeElement lNewSelected = null;
-        bool lNewExpanded;
-        //print("TreeDepth:" + TreeDepth);
-        //print(directoryInfo.Name+Folders.Count);
-        GUILayout.BeginVertical();
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Space(imageSize * TreeDepth);
-            lNewExpanded = GUILayout.Toggle(expanded, treeNode.content,
-                getStyle(pSelected, treeNode), GUILayout.Height(imageSize));
-            GUILayout.EndHorizontal();
-            if (expanded)
-            {
-                foreach (var lView in subViews)
-                {
-                    lView.imageSize = imageSize;
-                    lView.drawGUI(ref pSelected);
-                }
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(imageSize * TreeDepth);
+        bool lNewExpanded = GUILayout.Toggle(expanded, treeNode.content,
+            getStyle(pSelected, treeNode), GUILayout.Height(imageSize));
+        GUILayout.EndHorizontal();
 
-                foreach (var lElement in treeNode.elements)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Space(imageSize * (TreeDepth + 1));
-                    if (GUILayout.Button(lElement.content,
-                            getStyle(pSelected, lElement),
-                            GUILayout.Height(imageSize))
-                        )
-                        lNewSelected = lElement;
-                    GUILayout.EndHorizontal();
-                }
-            }
-
-        }
-        GUILayout.EndVertical();
-
-        if (lNewSelected != null)
-            pSelected = lNewSelected;
-        if(expanded != lNewExpanded)
+        if (expanded != lNewExpanded)
         {
             pSelected = treeNode;
             expanded = lNewExpanded;
         }
+    }
+
+    void drawSubElement(ref zzGUILibTreeElement pSelected)
+    {
+        zzGUILibTreeElement lNewSelected = null;
+        foreach (var lElement in treeNode.elements)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(imageSize * (TreeDepth + 1));
+            if (GUILayout.Button(lElement.content,
+                    getStyle(pSelected, lElement),
+                    GUILayout.Height(imageSize))
+                )
+                lNewSelected = lElement;
+            GUILayout.EndHorizontal();
+        }
+
+        if (lNewSelected != null)
+            pSelected = lNewSelected;
+
+    }
+
+    public void drawGUI(ref zzGUILibTreeElement pSelected)
+    {
+
+        if (treeNode.changed)
+            setTreeNode(treeNode);
+
+        zzGUILibTreeElement lNewSelected = null;
+        ;
+        //print("TreeDepth:" + TreeDepth);
+        //print(directoryInfo.Name+Folders.Count);
+        GUILayout.BeginVertical();
+        {
+            foreach (var lView in subViews)
+            {
+                //执行drawSelfNode时会改变expanded,所以先将其保存
+                bool lPreExpanded = lView.expanded;
+                lView.imageSize = imageSize;
+                lView.drawSelfNode(ref pSelected);
+                if (lPreExpanded)
+                    lView.drawGUI(ref pSelected);
+            }
+            drawSubElement(ref pSelected);
+        }
+        GUILayout.EndVertical();
     }
 }

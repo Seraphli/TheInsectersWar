@@ -3,6 +3,19 @@ using System.Collections;
 
 public class zzGUITreeViewArea: zzGUIContainer
 {
+    StringCallFunc elementSelectEvent;
+    StringCallFunc nodeSelectEvent;
+
+    public void addElementSelectEvent(StringCallFunc pReceiver)
+    {
+        elementSelectEvent += pReceiver;
+    }
+
+    public void addNodeSelectEvent(StringCallFunc pReceiver)
+    {
+        nodeSelectEvent += pReceiver;
+    }
+
     public zzGUILibTreeInfo treeInfo;
 
     zzGUILibTreeView rootTreeView;
@@ -15,6 +28,10 @@ public class zzGUITreeViewArea: zzGUIContainer
 
     void Start()
     {
+        if (elementSelectEvent == null)
+            elementSelectEvent = nullStringCallFunc;
+        if (nodeSelectEvent == null)
+            nodeSelectEvent = nullStringCallFunc;
         rootTreeView = new zzGUILibTreeView();
         rootTreeView.selectedStyle = selectedStyle;
         rootTreeView.notSelectedStyle = notSelectedStyle;
@@ -33,7 +50,10 @@ public class zzGUITreeViewArea: zzGUIContainer
             if (selectedElement != lNewSelected)
             {
                 selectedElement = lNewSelected;
-                //selectChangedEvent(selectedName);
+                if (lNewSelected is zzGUILibTreeNode)
+                    nodeSelectEvent(selectedElement.stringData);
+                else// (lNewSelected is zzGUILibTreeElement)
+                    elementSelectEvent(selectedElement.stringData);
             }
             GUILayout.EndScrollView();
         }

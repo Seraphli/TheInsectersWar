@@ -7,7 +7,7 @@ public class zzEditableObject : MonoBehaviour
 
     public bool inPlaying
     {
-        get { return objectContainer.inPlaying; }
+        get { return GetComponent<zzEditableObjectContainer>().inPlaying; }
     }
 
     public virtual void applyPlayState()
