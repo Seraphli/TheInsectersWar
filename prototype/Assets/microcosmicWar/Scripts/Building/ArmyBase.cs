@@ -8,6 +8,7 @@ public class ArmyBase : MonoBehaviour
     public string adversaryName = "";
 
     public Transform finalAim;
+    public Transform[] finalAims;
 
     public LayerMask adversaryLayerMask;
 
@@ -16,6 +17,20 @@ public class ArmyBase : MonoBehaviour
     public IobjectListener objectListener;
 
     Dictionary<GameObject, SoldierFactory> armyPrefabToFactory;
+
+    public static Transform[] getArmyBase(Race pRace)
+    {
+        var lManager = GameSceneManager.Singleton.getManager(pRace,
+            GameSceneManager.UnitManagerType.raceBase);
+        var lOut = new Transform[lManager.objectCount];
+        int i = 0;
+        foreach (Transform lObject in lManager)
+        {
+            lOut[i] = lObject;
+            ++i;
+        }
+        return lOut;
+    }
 
     void Awake()
     {
@@ -47,6 +62,9 @@ public class ArmyBase : MonoBehaviour
 
         if (!produceTransform)
             produceTransform = transform;
+
+        if (finalAims == null || finalAims.Length == 0)
+            finalAims = getArmyBase(PlayerInfo.stringToRace(adversaryName));
 
         Life lLife = gameObject.GetComponent<Life>();
         //lLife.setDieCallback(dieCall);

@@ -4,7 +4,7 @@ using System.Collections;
 public class zzEditableObjectContainer:MonoBehaviour
 {
     [SerializeField]
-    bool _inPlaying;
+    bool _inPlaying = false;
 
     public bool inPlaying
     {
@@ -61,7 +61,7 @@ public class zzEditableObjectContainer:MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         editableObjectList = GetComponents<zzEditableObject>();
         //foreach (var lObject in editableObjectList)

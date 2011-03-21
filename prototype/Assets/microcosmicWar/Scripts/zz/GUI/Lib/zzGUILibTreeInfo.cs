@@ -91,7 +91,12 @@ public class zzGUILibTreeView
 
     List<zzGUILibTreeView> subViews = new List<zzGUILibTreeView>();
 
-    void drawSelfNode(ref zzGUILibTreeElement pSelected)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pSelected"></param>
+    /// <returns>是否点击</returns>
+    bool drawSelfNode(ref zzGUILibTreeElement pSelected)
     {
         GUILayout.BeginHorizontal();
         GUILayout.Space(imageSize * TreeDepth);
@@ -103,10 +108,17 @@ public class zzGUILibTreeView
         {
             pSelected = treeNode;
             expanded = lNewExpanded;
+            return true;
         }
+        return false;
     }
 
-    void drawSubElement(ref zzGUILibTreeElement pSelected)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pSelected"></param>
+    /// <returns>是否点击</returns>
+    bool drawSubElement(ref zzGUILibTreeElement pSelected)
     {
         zzGUILibTreeElement lNewSelected = null;
         foreach (var lElement in treeNode.elements)
@@ -122,11 +134,20 @@ public class zzGUILibTreeView
         }
 
         if (lNewSelected != null)
+        {
             pSelected = lNewSelected;
+            return true;
+        }
+        return false;
 
     }
 
-    public void drawGUI(ref zzGUILibTreeElement pSelected)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pSelected"></param>
+    /// <returns>是否点击</returns>
+    public bool drawGUI(ref zzGUILibTreeElement pSelected)
     {
 
         if (treeNode.changed)
@@ -136,6 +157,7 @@ public class zzGUILibTreeView
         ;
         //print("TreeDepth:" + TreeDepth);
         //print(directoryInfo.Name+Folders.Count);
+        bool lIsClick = false;
         GUILayout.BeginVertical();
         {
             foreach (var lView in subViews)
@@ -143,12 +165,13 @@ public class zzGUILibTreeView
                 //执行drawSelfNode时会改变expanded,所以先将其保存
                 bool lPreExpanded = lView.expanded;
                 lView.imageSize = imageSize;
-                lView.drawSelfNode(ref pSelected);
+                lIsClick |= lView.drawSelfNode(ref pSelected);
                 if (lPreExpanded)
-                    lView.drawGUI(ref pSelected);
+                    lIsClick|=lView.drawGUI(ref pSelected);
             }
-            drawSubElement(ref pSelected);
+            lIsClick |= drawSubElement(ref pSelected);
         }
         GUILayout.EndVertical();
+        return lIsClick;
     }
 }

@@ -10,6 +10,14 @@ public abstract class ISoldierAI:MonoBehaviour
         presetAim.checkAndAddAim(new zzAimTranformList.AimInfo(pFinalAim, pAimType));
     }
 
+    public void AddPresetAim(Transform[] pFinalAims, zzAimTranformList.AimType pAimType)
+    {
+        foreach (var lAim in pFinalAims)
+        {
+            presetAim.checkAndAddAim(new zzAimTranformList.AimInfo(lAim, pAimType));
+        }
+    }
+
     public CharacterController character;
 
     public Transform gun;

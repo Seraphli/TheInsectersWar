@@ -259,7 +259,7 @@ public class HeroSpawn : MonoBehaviour
         lLife.addBloodValueChangeCallback(updateBloodBar);
 
         //绑定摄像机
-        _2DCameraFollow lCameraFollow = GameObject.Find("Main Camera").GetComponent<_2DCameraFollow>();
+        _2DCameraFollow lCameraFollow = zzObjectMap.getObject("GameCamera").GetComponent<_2DCameraFollow>();
         lCameraFollow.setTaget(pHeroObject.transform);
 
     }

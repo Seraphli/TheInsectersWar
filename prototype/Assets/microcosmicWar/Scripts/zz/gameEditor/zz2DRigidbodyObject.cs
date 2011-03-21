@@ -32,7 +32,9 @@ public class zz2DRigidbodyObject : zzEditableObject
     [LabelUI(verticalDepth = -1, horizontalDepth = 0)]
     public const string freezePositionLabel = "冻结位移";
 
+    [SerializeField]
     bool _freezePositionX = false;
+    [SerializeField]
     bool _freezePositionY = false;
 
     [zzSerialize]
@@ -59,6 +61,7 @@ public class zz2DRigidbodyObject : zzEditableObject
         }
     }
 
+    [SerializeField]
     bool _freezeRotation = false;
 
     [zzSerialize]
@@ -96,7 +99,6 @@ public class zz2DRigidbodyObject : zzEditableObject
                 RigidbodyConstraints.FreezeRotationX
                 | RigidbodyConstraints.FreezeRotationY
                 | RigidbodyConstraints.FreezePositionZ;
-    bool __freezeRotation = false;
 
     RigidbodyConstraints rigidbodyConstraints
     {

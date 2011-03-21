@@ -148,6 +148,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSelfWhenDestroy.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestoryObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1LoseCondition.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
@@ -206,6 +212,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObjectContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditorEnableList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeFolderDraw.cs" />

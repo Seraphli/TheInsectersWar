@@ -64,6 +64,7 @@ public class SoldierFactory : MonoBehaviour
             //{
             soldierAI.setHome(transform);
             soldierAI.AddPresetAim(armyBase.finalAim, zzAimTranformList.AimType.aliveAim);
+            soldierAI.AddPresetAim(armyBase.finalAims, zzAimTranformList.AimType.aliveAim);
 
             if (randomPath && randomPath.totalWeigth>0)
             {

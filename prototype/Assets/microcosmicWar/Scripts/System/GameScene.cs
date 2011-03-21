@@ -13,20 +13,10 @@ public class GameScene : MonoBehaviour
     static protected GameScene singletonInstance;
 
     public string lastSceneInfoName = "_info";
-    //FIXME_VAR_TYPE sceneDataName= "_sceneData";
 
     public GameObject sceneData;
-    /*
-    Transform pismirePlayerSpawn;
-    Transform beePlayerSpawn;
 
-    GameObject pismirePlayerPrefab;
-    GameObject beePlayerPrefab;
 
-    Transform playerSpawn;
-    GameObject playerPrefab;
-    int adversaryLayerValue;
-    */
     public HeroSpawn pismirePlayerSpawn;
     public HeroSpawn beePlayerSpawn;
 
@@ -35,31 +25,39 @@ public class GameScene : MonoBehaviour
 
     public bool needCreatePlayer = true;
 
-    static GameObject sSceneData;
-    //
-    /*
-    FIXME_VAR_TYPE winCondition=Hashtable();
-    FIXME_VAR_TYPE loseCondition=Hashtable();
+    public GameObject useSceneData;
 
-    void  addWinCondition (pValue){
-        winCondition[pValue]=true;
-    }
-
-    void  reachCondition (pValue){
-        enemyList.Remove(other.transform);
-    }
-
-    void  checkCondition ( Hashtable pList ,  bool isWin  ){
-         if(pList.Count==0)
+    void setSpawn(ref HeroSpawn pSpawn, Race pRace)
+    {
+        if(!pSpawn)
         {
+            foreach (Transform lSpawn in GameSceneManager.Singleton
+                .getManager(pRace, GameSceneManager.UnitManagerType.heroSpawn))
+            {
+                pSpawn = lSpawn.GetComponent<HeroSpawn>();
+                break;
+            }
         }
+
     }
-    */
-    // Use this for initialization
+
     void Awake()
     {
         Random.seed = System.Environment.TickCount;
         singletonInstance = this;
+
+
+        Network.isMessageQueueRunning = true;
+        zzCreatorUtility.resetCreator();
+
+        //}
+    }
+
+    void init()
+    {
+
+        setSpawn(ref pismirePlayerSpawn, Race.ePismire);
+        setSpawn(ref beePlayerSpawn, Race.eBee);
         //print("Awake");
         //if(Network.peerType==NetworkPeerType.Disconnected || Network.peerType==NetworkPeerType.Connecting )
         //	Network.InitializeServer(32, 25000);
@@ -72,10 +70,7 @@ public class GameScene : MonoBehaviour
             Destroy(lLastSceneInfo);
         }
 
-        Network.isMessageQueueRunning = true;
-        zzCreatorUtility.resetCreator();
-
-        sSceneData = sceneData;
+        useSceneData = sceneData;
 
 
         //creat team info
@@ -87,8 +82,6 @@ public class GameScene : MonoBehaviour
         lTeam2Info.teamName = PlayerInfo.eRaceToString(Race.eBee);
         lRule.addTeam(lTeam1Info);
         lRule.addTeam(lTeam2Info);
-
-        //}
     }
 
     public static GameScene getSingleton()
@@ -98,20 +91,6 @@ public class GameScene : MonoBehaviour
 
     public void CreatePlayer()
     {
-        /*
-            GameObject lClone = zzCreatorUtility.Instantiate(playerPrefab, playerSpawn.position,playerSpawn.rotation, 0);
-            //lClone.GetComponent<SoldierAI>().SetAdversaryLayerValue(adversaryLayerValue);
-	
-            _2DCameraFollow cameraFollow = GameObject.Find("Main Camera").GetComponent<_2DCameraFollow>();
-            cameraFollow.target=lClone.transform;
-	
-            //Soldier soldier = lClone.GetComponent<Soldier>();
-            //#####soldier.userControl=true;
-	
-            //		SoldierAI soldierAI = lClone.GetComponent<SoldierAI>();
-            //		soldierAI.AddFinalAim(playerSpawn);
-            //	soldierAI.SetAdversaryLayerValue(adversaryLayerValue);
-        */
         playerSpawn.createHeroFirstTime();
 
         if (Network.connections.Length > 0)
@@ -120,25 +99,20 @@ public class GameScene : MonoBehaviour
 
     void Start()
     {
-        //PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
+        init();
         PlayerInfo playerInfo = getPlayerInfo();
         //print(playerInfo.getRace());
         //Race race=playerInfo.getRace();
 
         if (playerInfo.getRace() == Race.ePismire)
-        //sif(1)
         {
             playerSpawn = pismirePlayerSpawn;
             adversaryPlayerSpawn = beePlayerSpawn;
-            //playerPrefab=pismirePlayerPrefab;
-            //adversaryLayerValue = 1 << LayerMask.NameToLayer("pismire");
         }
         else
         {
             playerSpawn = beePlayerSpawn;
             adversaryPlayerSpawn = pismirePlayerSpawn;
-            //playerPrefab=beePlayerPrefab;
-            //adversaryLayerValue = 1 << LayerMask.NameToLayer("bee");
         }
 
         //adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
@@ -188,7 +162,7 @@ public class GameScene : MonoBehaviour
     public void endGameScene(string pInfo)
     {
         //假如已经停止了,则不往下执行
-        Board.clearList();
+        //Board.clearList();
         Time.timeScale = 0;
         playerSpawn.releaseHeroControl();
         if (needOnGUI)
@@ -218,7 +192,7 @@ public class GameScene : MonoBehaviour
 
     public PlayerInfo getPlayerInfo()
     {
-        PlayerInfo playerInfo = sSceneData.GetComponent<PlayerInfo>();
+        PlayerInfo playerInfo = useSceneData.GetComponent<PlayerInfo>();
         return playerInfo;
     }
 
@@ -226,7 +200,7 @@ public class GameScene : MonoBehaviour
     [RPC]
     public void ImpGameResult(string pWinerRaceName)
     {
-        PlayerInfo playerInfo = sSceneData.GetComponent<PlayerInfo>();
+        PlayerInfo playerInfo = useSceneData.GetComponent<PlayerInfo>();
 
         if (pWinerRaceName == playerInfo.getPlayerName())
             endGameScene("you win");

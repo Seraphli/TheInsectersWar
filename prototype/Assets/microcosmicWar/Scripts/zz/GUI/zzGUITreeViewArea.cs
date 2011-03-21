@@ -3,17 +3,17 @@ using System.Collections;
 
 public class zzGUITreeViewArea: zzGUIContainer
 {
-    StringCallFunc elementSelectEvent;
-    StringCallFunc nodeSelectEvent;
+    StringCallFunc elementClickedEvent;
+    StringCallFunc nodeClickedEvent;
 
-    public void addElementSelectEvent(StringCallFunc pReceiver)
+    public void addElementClickedEvent(StringCallFunc pReceiver)
     {
-        elementSelectEvent += pReceiver;
+        elementClickedEvent += pReceiver;
     }
 
-    public void addNodeSelectEvent(StringCallFunc pReceiver)
+    public void addNodeClickedEvent(StringCallFunc pReceiver)
     {
-        nodeSelectEvent += pReceiver;
+        nodeClickedEvent += pReceiver;
     }
 
     public zzGUILibTreeInfo treeInfo;
@@ -28,10 +28,10 @@ public class zzGUITreeViewArea: zzGUIContainer
 
     void Start()
     {
-        if (elementSelectEvent == null)
-            elementSelectEvent = nullStringCallFunc;
-        if (nodeSelectEvent == null)
-            nodeSelectEvent = nullStringCallFunc;
+        if (elementClickedEvent == null)
+            elementClickedEvent = nullStringCallFunc;
+        if (nodeClickedEvent == null)
+            nodeClickedEvent = nullStringCallFunc;
         rootTreeView = new zzGUILibTreeView();
         rootTreeView.selectedStyle = selectedStyle;
         rootTreeView.notSelectedStyle = notSelectedStyle;
@@ -46,14 +46,14 @@ public class zzGUITreeViewArea: zzGUIContainer
             viewScroll = GUILayout.BeginScrollView(viewScroll);
             var lNewSelected = selectedElement;
             rootTreeView.imageSize = imageSize;
-            rootTreeView.drawGUI(ref lNewSelected);
-            if (selectedElement != lNewSelected)
+
+            if (rootTreeView.drawGUI(ref lNewSelected))
             {
                 selectedElement = lNewSelected;
                 if (lNewSelected is zzGUILibTreeNode)
-                    nodeSelectEvent(selectedElement.stringData);
+                    nodeClickedEvent(selectedElement.stringData);
                 else// (lNewSelected is zzGUILibTreeElement)
-                    elementSelectEvent(selectedElement.stringData);
+                    elementClickedEvent(selectedElement.stringData);
             }
             GUILayout.EndScrollView();
         }

@@ -12,8 +12,10 @@ public class GameSceneManager:MonoBehaviour
         soldier,
         stronghold,
         hero,
+        heroSpawn,
         defenseTower,
         flyer,
+        raceBase,
         typeCount,
     }
 
@@ -24,6 +26,7 @@ public class GameSceneManager:MonoBehaviour
         ground,
         moveableObject,
         background,
+        wayNode,
         typeCount,
     }
 
@@ -126,6 +129,11 @@ public class GameSceneManager:MonoBehaviour
             }
             unitSceneManagersList[(int)lRaceManagersInfo.race] = lSceneManagersList;
         }
+    }
+
+    public zzSceneManager getManager(MapManagerType pManagerName)
+    {
+        return mapManagerList[(int)pManagerName];
     }
 
     public zzSceneManager getManager(Race pRace,UnitManagerType pManagerName)
