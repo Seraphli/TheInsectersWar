@@ -26,7 +26,7 @@ public class HeroSpawn : MonoBehaviour
     protected int rebirthTimeLeave = 0;
     protected zzTimer rebirthTimer;
     zzSceneObjectMap mUIObjectMap;
-    zzGUIProgressBar mBloodBar;
+    zzGUIProgressBarShelter mBloodBar;
 
     void updateBloodBar(Life life)
     {
@@ -36,7 +36,7 @@ public class HeroSpawn : MonoBehaviour
     void Start()
     {
         mUIObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
-        mBloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBar>();
+        mBloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBarShelter>();
         /*
             if( zzCreatorUtility.isHost() )
             {

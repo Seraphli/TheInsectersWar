@@ -224,7 +224,9 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUICombineImage.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBar.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarBase.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarScale.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarShelter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUISwitchButton.cs" />
