@@ -57,7 +57,7 @@ class rule1LoseCondition : IobjectListener
 
     public void checkResult()
     {
-        string teamName = GameScene.getSingleton().getPlayerInfo().getTeamName();
+        string teamName = GameScene.Singleton.playerInfo.getTeamName();
 
         if (rule1.getSingleton().isWin(teamName))
         {

@@ -280,6 +280,9 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRigidbodySweepDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectMap.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\Editor\zzSignalSlotEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\example\zzSignalSlotExample.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlot.cs" />
@@ -289,6 +292,9 @@
      <None Include="Assets\microcosmicWar\Scripts\zz\tool\zzRuler\readme.txt" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\tool\zzRuler\zzHorizontalRuler.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\tool\zzRuler\zzVerticalRuler.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\example\zzTransparencyCaptureExample.cs" />
+     <None Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\readme.txt" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\zzTransparencyCapture.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
@@ -310,7 +316,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSetObjectValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
@@ -326,6 +331,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\BoardDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BodyActionClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BomberAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\doByRace.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Emitter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\EmitterContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\FireSpark.cs" />

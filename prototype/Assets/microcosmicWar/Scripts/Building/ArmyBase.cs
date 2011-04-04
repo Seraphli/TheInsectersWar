@@ -7,7 +7,6 @@ public class ArmyBase : MonoBehaviour
 {
     public string adversaryName = "";
 
-    public Transform finalAim;
     public Transform[] finalAims;
 
     public LayerMask adversaryLayerMask;

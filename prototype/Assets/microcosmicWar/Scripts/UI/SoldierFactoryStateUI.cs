@@ -28,7 +28,8 @@ public class SoldierFactoryStateUI:MonoBehaviour
         soldierFactoryState = SoldierFactoryState.getSingleton();
         soldierFactoryState.setChangedCall(refreshItemShow);
 
-        zzSceneObjectMap lSceneObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
+        zzSceneObjectMap lSceneObjectMap = GameScene.Singleton.playerInfo
+            .UiRoot.GetComponent<zzSceneObjectMap>();
 
         if (!UIroot)
             UIroot = lSceneObjectMap.getObject("soldierModule")

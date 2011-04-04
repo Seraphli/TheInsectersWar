@@ -23,7 +23,7 @@ public class StrongholdOffLineSetting : MonoBehaviour
 
     void createSetting()
     {
-        Race lPlayerChoose = GameScene.getSingleton().getPlayerInfo().race;
+        Race lPlayerChoose = GameScene.Singleton.playerInfo.race;
         foreach (var lData in setting)
         {
             if (lPlayerChoose == lData.playerChoose)

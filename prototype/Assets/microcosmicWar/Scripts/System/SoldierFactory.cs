@@ -63,7 +63,6 @@ public class SoldierFactory : MonoBehaviour
             //foreach (CheckPointPath lCheckPointPath in checkPointPaths)
             //{
             soldierAI.setHome(transform);
-            soldierAI.AddPresetAim(armyBase.finalAim, zzAimTranformList.AimType.aliveAim);
             soldierAI.AddPresetAim(armyBase.finalAims, zzAimTranformList.AimType.aliveAim);
 
             if (randomPath && randomPath.totalWeigth>0)

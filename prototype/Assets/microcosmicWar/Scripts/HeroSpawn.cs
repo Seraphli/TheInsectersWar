@@ -26,17 +26,28 @@ public class HeroSpawn : MonoBehaviour
     protected int rebirthTimeLeave = 0;
     protected zzTimer rebirthTimer;
     zzSceneObjectMap mUIObjectMap;
-    zzGUIProgressBarShelter mBloodBar;
+    public zzGUIProgressBarBase bloodBar;
 
     void updateBloodBar(Life life)
     {
-        mBloodBar.rate = life.getRate();
+        bloodBar.rate = life.getRate();
+    }
+
+    void getUI()
+    {
+        var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
+
+        mUIObjectMap = lUiRoot.GetComponent<zzSceneObjectMap>();
+
+        bloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBarBase>();
+
+        if (!rebirthClockUI)
+            rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
+
     }
 
     void Start()
     {
-        mUIObjectMap = zzObjectMap.getObject("UI").GetComponent<zzSceneObjectMap>();
-        mBloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBarShelter>();
         /*
             if( zzCreatorUtility.isHost() )
             {
@@ -45,10 +56,9 @@ public class HeroSpawn : MonoBehaviour
                 createHero();
             }
         */
+        getUI();
         if (autoCreatePlayer)
             createHeroFirstTime();
-        if (!rebirthClockUI)
-            rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
 
         if (!SystemObject)
             //SystemObject = GameObject.Find("System");
@@ -76,6 +86,10 @@ public class HeroSpawn : MonoBehaviour
     {
         if (haveFirstCreate)
             Debug.LogError("haveFirstCreate == true");
+
+        var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
+        lUiRoot.GetComponent<zzInterfaceGUI>().visible = true;
+
         hero = _createHero();
         zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
         itemBagControl.addCallAfterStart(_toGetItemBagID);
@@ -254,7 +268,7 @@ public class HeroSpawn : MonoBehaviour
         //使用血条UI
         GameObject.Destroy( pHeroObject.transform.FindChild("bloodBar").gameObject );
         Life lLife = pHeroObject.GetComponent<Life>();
-        if (mBloodBar)
+        if (bloodBar)
             updateBloodBar(lLife);
         lLife.addBloodValueChangeCallback(updateBloodBar);
 

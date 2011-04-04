@@ -61,16 +61,6 @@ public class GameScene : MonoBehaviour
         //print("Awake");
         //if(Network.peerType==NetworkPeerType.Disconnected || Network.peerType==NetworkPeerType.Connecting )
         //	Network.InitializeServer(32, 25000);
-        GameObject lLastSceneInfo = GameObject.Find(lastSceneInfoName);
-        if (lLastSceneInfo)
-        {
-            PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
-            playerInfo.setData(lLastSceneInfo.GetComponent<PlayerInfo>());
-            //sceneData.AddComponent( lLastSceneInfo.GetComponent<PlayerInfo>() );
-            Destroy(lLastSceneInfo);
-        }
-
-        useSceneData = sceneData;
 
 
         //creat team info
@@ -89,6 +79,11 @@ public class GameScene : MonoBehaviour
         return singletonInstance;
     }
 
+    public static GameScene Singleton
+    {
+        get { return singletonInstance; }
+    }
+
     public void CreatePlayer()
     {
         playerSpawn.createHeroFirstTime();
@@ -100,11 +95,11 @@ public class GameScene : MonoBehaviour
     void Start()
     {
         init();
-        PlayerInfo playerInfo = getPlayerInfo();
+        PlayerInfo lPlayerInfo = playerInfo;
         //print(playerInfo.getRace());
         //Race race=playerInfo.getRace();
 
-        if (playerInfo.getRace() == Race.ePismire)
+        if (lPlayerInfo.getRace() == Race.ePismire)
         {
             playerSpawn = pismirePlayerSpawn;
             adversaryPlayerSpawn = beePlayerSpawn;
@@ -124,7 +119,7 @@ public class GameScene : MonoBehaviour
 
                 if (Network.connections.Length > 0)
                 {
-                    int lIntRace = (int)PlayerInfo.getAdversaryRace(playerInfo.getRace());
+                    int lIntRace = (int)PlayerInfo.getAdversaryRace(lPlayerInfo.getRace());
                     networkView.RPC("RPCSetRace", Network.connections[0], lIntRace);
                     adversaryPlayerSpawn.setOwer(Network.connections[0]);
                 }
@@ -137,7 +132,6 @@ public class GameScene : MonoBehaviour
     [RPC]
     void RPCSetRace(int pRace)
     {
-        PlayerInfo playerInfo = getPlayerInfo();
         playerInfo.setRace((Race)pRace);
     }
 
@@ -190,10 +184,29 @@ public class GameScene : MonoBehaviour
             networkView.RPC("ImpGameResult", RPCMode.Others, pWinerRaceName);
     }
 
-    public PlayerInfo getPlayerInfo()
+    PlayerInfo _playerInfo;
+
+    public PlayerInfo playerInfo
     {
-        PlayerInfo playerInfo = useSceneData.GetComponent<PlayerInfo>();
-        return playerInfo;
+        get 
+        { 
+            if(_playerInfo==null)
+            {
+                GameObject lLastSceneInfo = GameObject.Find(lastSceneInfoName);
+                if (lLastSceneInfo)
+                {
+                    PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
+                    playerInfo.setData(lLastSceneInfo.GetComponent<PlayerInfo>());
+                    Destroy(lLastSceneInfo);
+                }
+                useSceneData = sceneData;
+                _playerInfo = useSceneData.GetComponent<PlayerInfo>();
+                _playerInfo.UiRoot = zzObjectMap.getObject("TopUI")
+                    .GetComponent<zzSceneObjectMap>()
+                    .getObject(PlayerInfo.eRaceToString(_playerInfo.race));
+            }
+            return _playerInfo;
+        }
     }
 
 

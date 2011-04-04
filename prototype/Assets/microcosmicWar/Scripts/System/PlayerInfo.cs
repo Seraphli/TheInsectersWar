@@ -197,6 +197,8 @@ public class PlayerInfo : MonoBehaviour
 
     public string playerName = "player";
 
+    public GameObject UiRoot;
+
     //FIXME_VAR_TYPE teamName="";
 
     void Awake()

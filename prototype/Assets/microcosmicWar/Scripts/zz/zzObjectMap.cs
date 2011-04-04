@@ -10,13 +10,16 @@ public class zzObjectMap : MonoBehaviour
 
     void Awake()
     {
-        if (
-            mObjectMap.Contains(objectName)
-            && (mObjectMap[objectName] as GameObject)
-            )
-            Debug.LogError("same name:" + objectName);
+        setObject(objectName,gameObject);
+    }
 
-        mObjectMap[objectName] = gameObject;
+    public static void setObject(string pObjectName,GameObject pObject)
+    {
+        if ( mObjectMap.Contains(pObjectName) )
+            Debug.LogError("same name:" + pObjectName);
+
+        mObjectMap[pObjectName] = pObject;
+
     }
 
     public static GameObject getObject(string pName)
