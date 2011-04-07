@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class RaceValueShow:MonoBehaviour
 {
-    zzPlaneMesh planeMesh = new zzPlaneMesh();
+    public zzPlaneMesh planeMesh = new zzPlaneMesh();
     public Material image;
 
     public float _rate;
@@ -42,7 +42,11 @@ public class RaceValueShow:MonoBehaviour
     {
         if( !Application.isPlaying )
         {
-            Awake();
+            if (!planeMesh.mesh
+                || !GetComponent<MeshFilter>()
+                || !GetComponent<MeshFilter>().sharedMesh)
+                Awake();
+            rate = _rate;
         }
     }
 

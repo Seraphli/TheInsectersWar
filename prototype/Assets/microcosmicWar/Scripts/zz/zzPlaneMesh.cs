@@ -104,8 +104,7 @@ public class zzPlaneMesh
         meshRenderer = lMeshRenderer;
 
         //if (!mesh)
-            mesh = new Mesh();
-
+        mesh = new Mesh();
 
         initMesh(mesh);
 

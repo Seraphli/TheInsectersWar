@@ -1,0 +1,105 @@
+fileFormatVersion: 1
+guid: 493553c731306ba48817a930b75ff8a1
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      occupied:
+        firstFrame: 0
+        lastFrame: 55
+        loop: 0
+        wrapMode: 0
+  nodeInfo:
+    YHKZ:
+    - 100000
+    - 400000
+    - 3300000
+    - 2300000
+    YHKS:
+    - 100002
+    - 400002
+    - 3300002
+    - 2300002
+    YJD:
+    - 100004
+    - 400004
+    - 3300004
+    - 2300004
+    YHKX:
+    - 100006
+    - 400006
+    - 3300006
+    - 2300006
+    ZHKZ:
+    - 100008
+    - 400008
+    - 3300008
+    - 2300008
+    ZJDD:
+    - 100010
+    - 400010
+    - 3300010
+    - 2300010
+    CT:
+    - 100012
+    - 400012
+    - 3300012
+    - 2300012
+    ZHKX:
+    - 100014
+    - 400014
+    - 3300014
+    - 2300014
+    //RootNode:
+    - 100016
+    - 400016
+    - 11100000
+    ZJD:
+    - 100018
+    - 400018
+    - 3300016
+    - 2300016
+    ZHKS:
+    - 100020
+    - 400020
+    - 3300018
+    - 2300018
+    Plane01:
+    - 100022
+    - 400022
+    - 3300020
+    - 2300020
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Plane01
+    4300002: ZHKS
+    4300004: ZJD
+    4300006: YJD
+    4300008: YHKS
+    4300010: YHKZ
+    4300012: ZHKZ
+    4300014: ZHKX
+    4300016: YHKX
+    4300018: CT
+    4300020: ZJDD
+    7400000: Take 001 //// Stronghold@occupied
+    7400002: occupied //// Stronghold@occupied

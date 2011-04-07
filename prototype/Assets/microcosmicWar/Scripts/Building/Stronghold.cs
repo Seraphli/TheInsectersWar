@@ -38,11 +38,31 @@ public class Stronghold:MonoBehaviour
 
     public GameObject soldierFactory;
 
+    public Animation strongholdAnimation;
+
+    void toAnimationState(string pAniName)
+    {
+        var lAniState = strongholdAnimation[pAniName];
+        lAniState.time = lAniState.length;
+        lAniState.weight = 1f;
+        lAniState.enabled = true;
+        strongholdAnimation.Sample();
+        lAniState.time = 0;
+        lAniState.enabled = false;
+    }
+
     void Start()
     {
-        if (owner!=Race.eNone)
+        if (owner != Race.eNone)
         {
             buildRace(owner);
+            toAnimationState("occupied");
+        }
+        else
+        {
+            toAnimationState("lost");
+            GameSceneManager.Singleton
+                .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
         }
     }
 
@@ -212,6 +232,7 @@ public class Stronghold:MonoBehaviour
             if (Network.peerType != NetworkPeerType.Disconnected)
                 networkView.RPC("RPCBuildRace", RPCMode.Others,
                     strongholdBuilding.networkView.viewID);
+            occupiedEvent();
         }
 
     }
@@ -220,17 +241,42 @@ public class Stronghold:MonoBehaviour
     public void RPCBuildRace(NetworkViewID pID)
     {
         strongholdBuilding = NetworkView.Find(pID).gameObject;
+        occupiedEvent();
+
+    }
+
+    void occupiedEvent()
+    {
+        strongholdAnimation.CrossFade("occupied");
+        GameSceneManager.Singleton
+            .addObject(owner, GameSceneManager.UnitManagerType.stronghold, gameObject);
+        var strongholdTransform = transform;
+        var lBuildingTransform = strongholdBuilding.transform;
+
+        lBuildingTransform.position = strongholdTransform.position;
+        lBuildingTransform.rotation = strongholdTransform.rotation;
+        lBuildingTransform.localScale = strongholdTransform.localScale;
+
+        lBuildingTransform.parent = strongholdTransform;
+    }
+
+    void lostEvent()
+    {
+        strongholdBuilding = null;
+        strongholdAnimation.CrossFade("lost");
+        GameSceneManager.Singleton
+            .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
     }
 
     [RPC]
     public void RPCBuildingDestroied()
     {
-        strongholdBuilding = null;
+        lostEvent();
     }
 
     void buildingDestroied()
     {
-        strongholdBuilding = null;
+        //strongholdBuilding = null;
         nowOccupiedValue = 0.0f;
         owner = Race.eNone;
 
@@ -239,6 +285,8 @@ public class Stronghold:MonoBehaviour
 
         if (Network.peerType != NetworkPeerType.Disconnected)
             networkView.RPC("RPCBuildingDestroied", RPCMode.Others);
+
+        lostEvent();
     }
 
     /// <summary>
