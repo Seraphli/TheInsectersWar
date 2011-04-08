@@ -60,6 +60,7 @@ public class zzAnimationEditor : Editor
                 //EditorGUILayout.LabelField("动画名称:", state.name);
                 //state.weight = zzEditorGUIUtility.LayoutField("weight", state.weight);
                 state.weight = EditorGUILayout.FloatField("Weight", state.weight);
+                state.layer = EditorGUILayout.IntField("Layer", state.layer);
                 state.wrapMode = (WrapMode)EditorGUILayout.EnumPopup("Wrap Mode", state.wrapMode );
                 //Debug.Log(state.time);
                 //state.time = EditorGUILayout.Slider("Time", state.time, 0.0f, state.length);

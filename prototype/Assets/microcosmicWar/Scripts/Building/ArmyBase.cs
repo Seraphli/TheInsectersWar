@@ -3,15 +3,40 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ArmyBase : MonoBehaviour
+public class ArmyBase : MonoBehaviour, SoldierFactory.SoldierFactoryListener
 {
+
+    public Transform[] finalAims
+    {
+        get
+        {
+            return _finalAims;
+        }
+    }
+
+    public LayerMask adversaryLayerMask
+    {
+        get
+        {
+            return _adversaryLayerMask;
+        }
+    }
+
+    public Transform prepareProduce() 
+    {
+        return _produceTransform;
+    }
+
     public string adversaryName = "";
 
-    public Transform[] finalAims;
+    [SerializeField]
+    Transform[] _finalAims;
 
-    public LayerMask adversaryLayerMask;
+    [SerializeField]
+    LayerMask _adversaryLayerMask;
 
-    public Transform produceTransform;
+    [SerializeField]
+    Transform _produceTransform;
 
     public IobjectListener objectListener;
 
@@ -56,18 +81,23 @@ public class ArmyBase : MonoBehaviour
     {
 
         //adversaryLayerValue = 1 << LayerMask.NameToLayer(adversaryName);
-        adversaryLayerMask = PlayerInfo.getRaceObjectValue(
+        _adversaryLayerMask = PlayerInfo.getRaceObjectValue(
             PlayerInfo.stringToRace(adversaryName));
 
-        if (!produceTransform)
-            produceTransform = transform;
+        if (!_produceTransform)
+            _produceTransform = transform;
 
-        if (finalAims == null || finalAims.Length == 0)
-            finalAims = getArmyBase(PlayerInfo.stringToRace(adversaryName));
+        if (_finalAims == null || _finalAims.Length == 0)
+            _finalAims = getArmyBase(PlayerInfo.stringToRace(adversaryName));
 
         Life lLife = gameObject.GetComponent<Life>();
         //lLife.setDieCallback(dieCall);
         lLife.addDieCallback(dieCall);
+
+        foreach (var lSoldierFactory in GetComponents<SoldierFactory>())
+        {
+            lSoldierFactory.listener = this;
+        }
     }
 
     public void dieCall(Life p)

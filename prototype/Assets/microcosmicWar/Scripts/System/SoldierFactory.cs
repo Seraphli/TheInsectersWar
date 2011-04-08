@@ -4,7 +4,27 @@ using System.Collections;
 
 public class SoldierFactory : MonoBehaviour
 {
+    public interface SoldierFactoryListener
+    {
+        //Transform getProduceTransform(int index);
 
+        Transform[] finalAims
+        {
+            get ;
+        }
+
+        LayerMask adversaryLayerMask
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>produceTransform</returns>
+        Transform prepareProduce();
+
+    }
     //public string adversaryName = "";
 
     //public Transform finalAim;
@@ -25,15 +45,16 @@ public class SoldierFactory : MonoBehaviour
     //Component dieCallFunction;
     //public IobjectListener objectListener;
 
-    ArmyBase armyBase;
+    public SoldierFactoryListener listener;
 
     zzRandomPath randomPath;
+    Transform produceTransform;
 
+    public float prepareTime = 0.5f;
 
     void Start()
     {
         randomPath = gameObject.GetComponent<zzRandomPath>();
-        armyBase = gameObject.GetComponent<ArmyBase>();
 
         timePos = firstTimeOffset;
 
@@ -48,11 +69,15 @@ public class SoldierFactory : MonoBehaviour
         //if(zzCreatorUtility.isHost())
         //{
         timePos += Time.deltaTime;
+        if (!produceTransform && timePos > produceInterval - prepareTime)
+        {
+            produceTransform = listener.prepareProduce();
+        }
         if (timePos > produceInterval)
         {
             //FIXME_VAR_TYPE lClone= Network.Instantiate(soldierToProduce, transform.position+Vector3(0,2.5f,0), Quaternion(), 0);
-            GameObject lClone = zzCreatorUtility.Instantiate(soldierToProduce, 
-                armyBase.produceTransform.position,new Quaternion(), 0);
+            GameObject lClone = zzCreatorUtility.Instantiate(soldierToProduce,
+                produceTransform.position, new Quaternion(), 0);
 
             GameSceneManager.Singleton.addSoldier(lClone);
 
@@ -63,7 +88,7 @@ public class SoldierFactory : MonoBehaviour
             //foreach (CheckPointPath lCheckPointPath in checkPointPaths)
             //{
             soldierAI.setHome(transform);
-            soldierAI.AddPresetAim(armyBase.finalAims, zzAimTranformList.AimType.aliveAim);
+            soldierAI.AddPresetAim(listener.finalAims, zzAimTranformList.AimType.aliveAim);
 
             if (randomPath && randomPath.totalWeigth>0)
             {
@@ -77,7 +102,8 @@ public class SoldierFactory : MonoBehaviour
 
             }
 
-            soldierAI.adversaryLayerMask = armyBase.adversaryLayerMask;
+            soldierAI.adversaryLayerMask = listener.adversaryLayerMask;
+            produceTransform = null;
         }
         //}
     }

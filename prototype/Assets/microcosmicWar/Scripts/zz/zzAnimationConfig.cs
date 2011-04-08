@@ -26,7 +26,7 @@ public class zzAnimationConfig : MonoBehaviour
         public bool useTheConfig = false;
         public float speed = 1.0f;
         public int layer = 0;
-
+        public Transform[] MixingTransforms = new Transform[]{};
         public unityAniEventInfo[] events = new unityAniEventInfo[]{};
 
     }
@@ -49,6 +49,10 @@ public class zzAnimationConfig : MonoBehaviour
                 AnimationState lAnimationState = myAnimation[lStateConfigInfo.animationName];
                 lAnimationState.speed = lStateConfigInfo.speed;
                 lAnimationState.layer = lStateConfigInfo.layer;
+                foreach (var lTransform in lStateConfigInfo.MixingTransforms)
+                {
+                    lAnimationState.AddMixingTransform(lTransform);
+                }
 
                 AnimationClip   lAnimationClip = lAnimationState.clip;
                 if (!haveAddedEvent.ContainsKey(lAnimationClip))

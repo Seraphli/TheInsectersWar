@@ -129,6 +129,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StartSniperMode.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StartSupply.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\Stronghold.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\awakeShooterWhenDie.cs" />
