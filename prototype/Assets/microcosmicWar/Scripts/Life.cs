@@ -20,7 +20,7 @@ public class Life : MonoBehaviour
 
     protected event lifeCallFunc bloodValueChangeCallback = nullLifeCallFunc;
 
-    public ArrayList dieCallbackList = new ArrayList();
+    public lifeCallFunc dieCallbackList;
 
     //在死亡或者去血的回调中,读取
     protected Hashtable injureInfo;
@@ -35,7 +35,12 @@ public class Life : MonoBehaviour
 
     public void addDieCallback(lifeCallFunc call)
     {
-        dieCallbackList.Add(call);
+        dieCallbackList+=call;
+    }
+
+    public void removeDieCallback(lifeCallFunc call)
+    {
+        dieCallbackList-=call;
     }
 
     public void addBloodValueChangeCallback(lifeCallFunc call)
@@ -92,8 +97,7 @@ public class Life : MonoBehaviour
     public void Life_die()
     {
         bloodValue = 0;
-        foreach (lifeCallFunc dieCallback in dieCallbackList)
-            dieCallback(this);
+        dieCallbackList(this);
     }
 
     public void setFullBloodValue(int lValue)

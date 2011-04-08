@@ -230,6 +230,12 @@ public class SoldierFactoryState : MonoBehaviour
             .addFactory(lFactoryInfo.soldierPrefab,lFactoryInfo.produceInterval,
                 lFactoryInfo.firstTimeOffset);
 
+        var lFactory = SoldierFactory.addFactory(lBuilding,
+            lFactoryInfo.soldierPrefab,
+            lFactoryInfo.produceInterval,
+            lFactoryInfo.firstTimeOffset);
+
+        lFactory.listener = lStronghold.GetComponent<SoldierFactoryListener>().interfaceObject;
         lStronghold.setSoldierFactory(lBuilding);
 
         decorateFactoryBuild(lBuilding, race, lStateIndex);

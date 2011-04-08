@@ -1,10 +1,33 @@
 ﻿
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SoldierFactory : MonoBehaviour
 {
-    public interface SoldierFactoryListener
+    //public struct SoldierCreatedList
+    //{
+    //    public SoldierCreatedList(HashSet<Soldier> pSoldierList,int pUsedPoint)
+    //    {
+    //        soldierList = pSoldierList;
+    //        usedPoint = pUsedPoint;
+    //    }
+
+    //    public HashSet<Soldier> soldierList;
+    //    public int usedPoint = 0;
+
+    //}
+
+    static public SoldierFactory addFactory(GameObject factoryObject,
+        GameObject armyPrefab, float pProduceInterval, float pfirstTimeOffset)
+    {
+        SoldierFactory lSoldierFactory = factoryObject.AddComponent<SoldierFactory>();
+        lSoldierFactory.soldierToProduce = armyPrefab;
+        lSoldierFactory.produceInterval = pProduceInterval;
+        lSoldierFactory.firstTimeOffset = pfirstTimeOffset;
+        return lSoldierFactory;
+    }
+
+    public interface Listener
     {
         //Transform getProduceTransform(int index);
 
@@ -24,6 +47,12 @@ public class SoldierFactory : MonoBehaviour
         /// <returns>produceTransform</returns>
         Transform prepareProduce();
 
+        HashSet<Soldier> soldierCreatedList
+        {
+            get;
+            set;
+        }
+
     }
     //public string adversaryName = "";
 
@@ -37,6 +66,12 @@ public class SoldierFactory : MonoBehaviour
 
     public GameObject soldierToProduce;
 
+    public int pointCount = 10;
+
+    public int pointCountInSoldier = 1;
+
+    public HashSet<Soldier> soldierList = new HashSet<Soldier>();
+
     public float firstTimeOffset = 0f;
 
     protected float timePos = 0.0f;
@@ -45,7 +80,7 @@ public class SoldierFactory : MonoBehaviour
     //Component dieCallFunction;
     //public IobjectListener objectListener;
 
-    public SoldierFactoryListener listener;
+    public Listener listener;
 
     zzRandomPath randomPath;
     Transform produceTransform;
@@ -54,14 +89,66 @@ public class SoldierFactory : MonoBehaviour
 
     void Start()
     {
-        randomPath = gameObject.GetComponent<zzRandomPath>();
+        GetComponent<Life>().addDieCallback(OnFactoryDead);
+        randomPath = GetComponent<zzRandomPath>();
 
         timePos = firstTimeOffset;
 
-        if (!zzCreatorUtility.isHost())
+        if (listener==null)
+            listener = GetComponent<SoldierFactoryListener>().interfaceObject;
+
+        var lSoldierCreatedList =  listener.soldierCreatedList;
+        if (lSoldierCreatedList!=null)
+        {
+            soldierList = lSoldierCreatedList;
+            usedPoint = 0;
+            List<Soldier> lRemoveList = new List<Soldier>();
+            foreach (var lSoldier in soldierList)
+            {
+                if (collisionLayer.isAliveFullCheck(lSoldier))
+                    usedPoint += lSoldier.pointCount;
+                else
+                    lRemoveList.Add(lSoldier);
+            }
+            foreach (var lSoldier in lRemoveList)
+                soldierList.Remove(lSoldier);
+        }
+
+        if (zzCreatorUtility.isHost())
+            canProduceCheck();
+        else
             Destroy(this);
 
         
+    }
+
+    public int usedPoint = 0;
+
+    public void changeUsedPoint(int pPointCount)
+    {
+        usedPoint += pPointCount;
+        canProduceCheck();
+    }
+
+    public void canProduceCheck()
+    {
+        if(pointCount-pointCountInSoldier-usedPoint>=0)
+        {
+            //有剩余点数造兵
+            this.enabled = true;
+        }
+        else
+        {
+            this.enabled = false;
+        }
+    }
+
+    public void soldierDeadCall(Life pLife)
+    {
+        var lSoldier = pLife.GetComponent<Soldier>();
+        soldierList.Remove(lSoldier);
+        //canProduceCheck();
+        changeUsedPoint(-(lSoldier.pointCount));
     }
 
     void Update()
@@ -82,6 +169,11 @@ public class SoldierFactory : MonoBehaviour
             GameSceneManager.Singleton.addSoldier(lClone);
 
             timePos = 0.0f;
+            var lSoldier = lClone.GetComponent<Soldier>();
+            lSoldier.pointCount = pointCountInSoldier;
+            changeUsedPoint(pointCountInSoldier);
+            soldierList.Add(lSoldier);
+            lSoldier.GetComponent<Life>().addDieCallback(soldierDeadCall);
             var soldierAI = lClone.GetComponent<ISoldierAI>();
             //soldierAI.AddFinalAim(finalAim);
 
@@ -106,5 +198,18 @@ public class SoldierFactory : MonoBehaviour
             produceTransform = null;
         }
         //}
+    }
+
+    void OnFactoryDead(Life pLife)
+    {
+        if (!zzCreatorUtility.isHost())
+            return;
+
+        foreach (var lSoldier in soldierList)
+        {
+            lSoldier.GetComponent<Life>().removeDieCallback(soldierDeadCall);
+        }
+        
+        listener.soldierCreatedList = soldierList;
     }
 }

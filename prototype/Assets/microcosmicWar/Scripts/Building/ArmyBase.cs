@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ArmyBase : MonoBehaviour, SoldierFactory.SoldierFactoryListener
+public class ArmyBase : MonoBehaviour, SoldierFactory.Listener
 {
 
     public Transform[] finalAims
@@ -25,6 +25,12 @@ public class ArmyBase : MonoBehaviour, SoldierFactory.SoldierFactoryListener
     public Transform prepareProduce() 
     {
         return _produceTransform;
+    }
+
+    public HashSet<Soldier> soldierCreatedList
+    {
+        get;
+        set;
     }
 
     public string adversaryName = "";
@@ -93,11 +99,6 @@ public class ArmyBase : MonoBehaviour, SoldierFactory.SoldierFactoryListener
         Life lLife = gameObject.GetComponent<Life>();
         //lLife.setDieCallback(dieCall);
         lLife.addDieCallback(dieCall);
-
-        foreach (var lSoldierFactory in GetComponents<SoldierFactory>())
-        {
-            lSoldierFactory.listener = this;
-        }
     }
 
     public void dieCall(Life p)

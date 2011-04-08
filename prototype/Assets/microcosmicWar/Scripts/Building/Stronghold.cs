@@ -40,6 +40,10 @@ public class Stronghold:MonoBehaviour
 
     public Animation strongholdAnimation;
 
+    public delegate void RaceChangedEvent(Race pRace);
+
+    public RaceChangedEvent raceChangedEvent;
+
     void toAnimationState(string pAniName)
     {
         var lAniState = strongholdAnimation[pAniName];
@@ -233,6 +237,7 @@ public class Stronghold:MonoBehaviour
                 networkView.RPC("RPCBuildRace", RPCMode.Others,
                     strongholdBuilding.networkView.viewID);
             occupiedEvent();
+            raceChangedEvent(pRace);
         }
 
     }

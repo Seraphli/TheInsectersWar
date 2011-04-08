@@ -14,6 +14,8 @@ public class Soldier : MonoBehaviour
 
     public Emitter emitter;
 
+    public int pointCount = 1;
+
     //改在zzAnimationConfig组件中实现
     //射击在动画的动画,要按从小到大排
     //public float[] fireTimeList;

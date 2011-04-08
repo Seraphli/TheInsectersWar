@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
-public class StrongholdFactory : MonoBehaviour, SoldierFactory.SoldierFactoryListener
+public class StrongholdFactory : MonoBehaviour, SoldierFactory.Listener
 {
 
     public Transform prepareProduce()
@@ -37,6 +38,30 @@ public class StrongholdFactory : MonoBehaviour, SoldierFactory.SoldierFactoryLis
         }
     }
 
+    public HashSet<Soldier> soldierCreatedList
+    {
+        get
+        {
+            var lOut = _soldierCreatedList;
+            _soldierCreatedList = null;
+            return lOut;
+        }
+        set
+        {
+            if (_soldierCreatedList!=null)
+            {
+                foreach (var lSoldier in value)
+                {
+                    _soldierCreatedList.Add(lSoldier);
+                }
+            }
+            else
+                _soldierCreatedList = value;
+        }
+    }
+
+    HashSet<Soldier> _soldierCreatedList = null;
+
     public Race race;
 
     public Transform leftProduceTransform;
@@ -50,18 +75,12 @@ public class StrongholdFactory : MonoBehaviour, SoldierFactory.SoldierFactoryLis
 
     public UnitFaceDirection nowProduceDirection = UnitFaceDirection.left;
 
-    void Start()
+    public void setRace(Race pRace)
     {
+        race = pRace;
         var lAdversaryRace = PlayerInfo.getAdversaryRace(race);
         _adversaryLayerMask = PlayerInfo.getRaceObjectValue(lAdversaryRace);
-        if (_finalAims == null || _finalAims.Length == 0)
-            _finalAims = ArmyBase.getArmyBase(lAdversaryRace);
-
-        foreach (var lSoldierFactory in GetComponents<SoldierFactory>())
-        {
-            print("lSoldierFactory");
-            lSoldierFactory.listener = this;
-        }
+        _finalAims = ArmyBase.getArmyBase(lAdversaryRace);
     }
 
 }

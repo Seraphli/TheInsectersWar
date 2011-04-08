@@ -173,14 +173,14 @@ public class collisionLayer : MonoBehaviour
     //}
 
     //从物体的所属层来判断是否存活
-    public static bool isAlive(Transform pOwn)
+    public static bool isAlive(Component pOwn)
     {
         if (pOwn.gameObject.layer == layers.deadObject)
             return false;
         return true;
     }
 
-    public static bool isAliveFullCheck(Transform pOwn)
+    public static bool isAliveFullCheck(Component pOwn)
     {
         if (pOwn)
             return isAlive(pOwn);
