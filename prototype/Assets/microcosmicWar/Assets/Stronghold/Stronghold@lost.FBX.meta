@@ -141,21 +141,6 @@ ModelImporter:
     - 400046
     - 3300038
     - 2300038
-    ZBLD:
-    - 100048
-    - 400048
-    - 3300040
-    - 2300040
-    YBLD:
-    - 100050
-    - 400050
-    - 3300042
-    - 2300042
-    ZJBLD:
-    - 100052
-    - 400052
-    - 3300044
-    - 2300044
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:
