@@ -44,6 +44,22 @@ public class Stronghold:MonoBehaviour
 
     public RaceChangedEvent raceChangedEvent;
 
+    [System.Serializable]
+    public class RaceShow
+    {
+        public Race race;
+        public Material lightMaterial;
+        public Material waterMaterial;
+    }
+
+    public RaceShow[] raceShowInfo;
+
+    RaceShow[] raceShowData;
+
+    public Animation[] occupyingAnimations;
+    public Renderer[] lightRenderers;
+    public Renderer[] waterRenderers;
+
     void toAnimationState(string pAniName)
     {
         var lAniState = strongholdAnimation[pAniName];
@@ -55,8 +71,36 @@ public class Stronghold:MonoBehaviour
         lAniState.enabled = false;
     }
 
+    void setMaterial(Renderer[] pRenderers, Material pMaterial)
+    {
+        foreach (var lRenderer in pRenderers)
+        {
+            lRenderer.material = pMaterial;
+        }
+    }
+
+    void updateRaceShow()
+    {
+        bool lEnableOccupyingAnimations = (owner != Race.eNone);
+
+        foreach (var lAinmation in occupyingAnimations)
+        {
+            lAinmation.enabled = lEnableOccupyingAnimations;
+        }
+
+        var lRaceShow = raceShowData[(int)owner];
+        setMaterial(lightRenderers, lRaceShow.lightMaterial);
+        setMaterial(waterRenderers, lRaceShow.waterMaterial);
+    }
+
     void Start()
     {
+        raceShowData = new RaceShow[raceShowInfo.Length];
+        foreach (var lRaceShow in raceShowInfo)
+        {
+            raceShowData[(int)lRaceShow.race] = lRaceShow;
+        }
+
         if (owner != Race.eNone)
         {
             buildRace(owner);
@@ -64,6 +108,7 @@ public class Stronghold:MonoBehaviour
         }
         else
         {
+            updateRaceShow();
             toAnimationState("lost");
             GameSceneManager.Singleton
                 .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
@@ -263,12 +308,14 @@ public class Stronghold:MonoBehaviour
         lBuildingTransform.localScale = strongholdTransform.localScale;
 
         lBuildingTransform.parent = strongholdTransform;
+        updateRaceShow();
     }
 
     void lostEvent()
     {
         strongholdBuilding = null;
         strongholdAnimation.CrossFade("lost");
+        updateRaceShow();
         GameSceneManager.Singleton
             .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
     }
