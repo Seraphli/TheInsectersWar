@@ -3,23 +3,65 @@ using UnityEngine;
 using System.Collections;
 
 
+public class zzGUI
+{
+    static zzInterfaceGUI _root;
+
+    public static void _setRoot(zzInterfaceGUI pRoot)
+    {
+        var lRootPosition = pRoot.getPosition();
+        originOfCoordinates = new Vector2(lRootPosition.x, lRootPosition.y);
+        _root = pRoot;
+    }
+
+    public static zzInterfaceGUI root
+    {
+        get { return _root; }
+    }
+
+    public static Vector2 originOfCoordinates;
+}
 
 [ExecuteInEditMode]
 public class zzGUIRender : zzGUIContainer
 {
-    void OnGUI()
+    public void OnGUI()
     {
+        cursorOnControl = null;
         zzGUI._setRoot(this);
         renderGUI();
+        _useCustomPosition = false;
     }
 
-    public override float getWidth()
+    bool _useCustomPosition = false;
+
+    Rect _customPosition;
+
+    public Rect customPosition
     {
-        return Screen.width;
+        set
+        {
+            _useCustomPosition = true;
+            _customPosition = value;
+        }
     }
 
-    public override float getHeight()
+    //public override float calculateWidth()
+    //{
+    //    return Screen.width;
+    //}
+
+    //public override float calculateHeight()
+    //{
+    //    return Screen.height;
+    //}
+
+    public override Rect calculatePosition()
     {
-        return Screen.height;
+        if (_useCustomPosition)
+            return _customPosition;
+        return new Rect(0f, 0f, Screen.width, Screen.height);
     }
+
+    public zzInterfaceGUI cursorOnControl;
 }

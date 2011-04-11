@@ -35,6 +35,13 @@ public class zzWindow : zzGUIContainer
         }
     }
 
+    public override bool isCoordinateReseted
+    {
+        get
+        {
+            return true;
+        }
+    }
 
     public override void impGUI(Rect rect)
     {

@@ -5,21 +5,6 @@ using System.Collections;
 
 //@RequireComponent(zzGUI)
 
-public class zzGUI
-{
-    static zzInterfaceGUI _root;
-
-    public static void _setRoot(zzInterfaceGUI pRoot)
-    {
-        _root = pRoot;
-    }
-
-    public static zzInterfaceGUI root
-    {
-        get { return _root; }
-    }
-}
-
 public enum zzGUIDockPos
 {
     min,
@@ -144,47 +129,77 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     public void renderGUI()
     {
+        calculateAndSetPosition();
+        _renderGUI(getPosition());
+        //if (getVisible())
+        //{
+        //    calculatePosition();
+        //    GUISkin lSkin = getSkin();
+        //    if (lSkin)
+        //    {
+        //        //使用 Skin
+        //        GUISkin lPreSkin = GUI.skin;
+        //        GUI.skin = lSkin;
+        //        impGUI();
+        //        GUI.skin = lPreSkin;
+        //    }
+        //    else
+        //        impGUI();
+        //}
 
+    }
+
+    public virtual bool isCoordinateReseted
+    {
+        get
+        {
+            return false;
+        }
+    }
+
+    [SerializeField]
+    private Rect _screenPosition;
+
+    public Rect screenPosition
+    {
+        get { return _screenPosition; }
+    }
+
+    //bool _isCursorOver;
+
+    //public zzInterfaceGUI root;
+
+    void _renderGUI(Rect rect)
+    {
         if (getVisible())
         {
+            Vector2 lPreOriginOfCoordinates = zzGUI.originOfCoordinates;
+            //root = zzGUI.root;
+            if (isCoordinateReseted)
+            {
+                zzGUI.originOfCoordinates = new Vector2(screenPosition.x, screenPosition.y);
+            }
+
             GUISkin lSkin = getSkin();
             if (lSkin)
             {
                 //使用 Skin
                 GUISkin lPreSkin = GUI.skin;
                 GUI.skin = lSkin;
-                impGUI();
+                impGUI(rect);
                 GUI.skin = lPreSkin;
             }
             else
-                impGUI();
-        }
+                impGUI(rect);
 
+            zzGUI.originOfCoordinates = lPreOriginOfCoordinates;
+        }
     }
 
     public void renderGUI(Rect rect)
     {
-        //Rect lRect = getPosition();
-        //lRect.x += ofsetPos.x;
-        //lRect.y += ofsetPos.y;
-        //lRect.width *= scale.x;
-        //lRect.height *= scale.y;
-
-        if (getVisible())
-        {
-            GUISkin lSkin = getSkin();
-            if (lSkin)
-            {
-                //使用 Skin
-                GUISkin lPreSkin = GUI.skin;
-                GUI.skin = lSkin;
-                impGUI(rect);
-                GUI.skin = lPreSkin;
-            }
-            else
-                impGUI(rect);
-        }
-
+        calculateAndSetPosition();
+        _renderGUI(rect);
     }
 
     public virtual GUISkin getSkin()
@@ -202,10 +217,10 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return visible;
     }
 
-    public virtual void impGUI()
-    {
-        impGUI(getPosition());
-    }
+    //public virtual void impGUI()
+    //{
+    //    impGUI(getPosition());
+    //}
 
     public abstract void impGUI(Rect rect);
 
@@ -239,17 +254,27 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return impGUI;
     }
 
-    public virtual float getWidth()
+    public virtual float calculateWidth()
     {
         if (useRelativePosition.width)
             return relativePosition.width * getParent().getWidth();
         return position.width;
     }
 
-    public virtual float getHeight()
+    public float getWidth()
+    {
+        return position.width;
+    }
+
+    public virtual float calculateHeight()
     {
         if (useRelativePosition.height)
             return relativePosition.height * getParent().getHeight();
+        return position.height;
+    }
+
+    public float getHeight()
+    {
         return position.height;
     }
 
@@ -267,17 +292,27 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return position.y;
     }
 
-    public virtual Rect getPosition()
+    void calculateAndSetPosition()
     {
-        //FIXME_VAR_TYPE lOut= position;
+        position = calculatePosition();
+        _screenPosition = new Rect(
+                position.x + zzGUI.originOfCoordinates.x,
+                position.y + zzGUI.originOfCoordinates.y,
+                position.width,
+                position.height
+            );
+    }
+
+    public virtual Rect calculatePosition()
+    {
         Rect lOut = new Rect();
 
 
-        lOut.width = getWidth();
+        lOut.width = calculateWidth();
         //print(gameObject.name);
         //print(relativeWidth.useRelative);
         //print(lOut.width);
-        lOut.height = getHeight();
+        lOut.height = calculateHeight();
         //horizontal
         switch (horizontalDockPosition)
         {
@@ -312,8 +347,12 @@ public abstract class zzInterfaceGUI : MonoBehaviour
                 break;
         }
 
-        position = lOut;
         return lOut;
+    }
+
+    public virtual Rect getPosition()
+    {
+        return position;
     }
 
     public virtual int getDepth()
@@ -321,32 +360,32 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return depth;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        DrawGizmos(Color.white);
-    }
+    //void OnDrawGizmosSelected()
+    //{
+    //    DrawGizmos(Color.white);
+    //}
 
-    void OnDrawGizmos()
-    {
-        //Gizmos.color = Color.blue;
-        DrawGizmos(Color.blue);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    //Gizmos.color = Color.blue;
+    //    DrawGizmos(Color.blue);
+    //}
 
-    void DrawGizmos(Color pColor)
-    {
-        Gizmos.color = pColor;
+    //void DrawGizmos(Color pColor)
+    //{
+    //    Gizmos.color = pColor;
 
-        Gizmos.matrix = transform.localToWorldMatrix;
+    //    Gizmos.matrix = transform.localToWorldMatrix;
 
-        //OnDrawGizmos 使用不同的摄像机,所以避免改变UI位置,直接获取值
-        //Rect lPosition = getPosition();
-        Rect lPosition = position;
-        Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.y, 0), new Vector3(lPosition.xMax, -lPosition.y, 0));
-        Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.y, 0), new Vector3(lPosition.x, -lPosition.yMax, 0));
+    //    //OnDrawGizmos 使用不同的摄像机,所以避免改变UI位置,直接获取值
+    //    //Rect lPosition = getPosition();
+    //    Rect lPosition = position;
+    //    Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.y, 0), new Vector3(lPosition.xMax, -lPosition.y, 0));
+    //    Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.y, 0), new Vector3(lPosition.x, -lPosition.yMax, 0));
 
 
-        Gizmos.DrawLine(new Vector3(lPosition.xMax, -lPosition.y, 0), new Vector3(lPosition.xMax, -lPosition.yMax, 0));
-        Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.yMax, 0), new Vector3(lPosition.xMax, -lPosition.yMax, 0));
+    //    Gizmos.DrawLine(new Vector3(lPosition.xMax, -lPosition.y, 0), new Vector3(lPosition.xMax, -lPosition.yMax, 0));
+    //    Gizmos.DrawLine(new Vector3(lPosition.x, -lPosition.yMax, 0), new Vector3(lPosition.xMax, -lPosition.yMax, 0));
 
-    }
+    //}
 }

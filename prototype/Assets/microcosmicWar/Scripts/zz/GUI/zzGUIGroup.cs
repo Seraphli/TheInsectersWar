@@ -12,6 +12,14 @@ public class zzGUIGroup : zzGUIContainer
     //public GUIStyle _style = new GUIStyle();
 
     //zzGUI[] subElements;
+    public override bool isCoordinateReseted
+    {
+        get
+        {
+            return true;
+        }
+    }
+
     public zzGUIStyle ContentAndStyle = new zzGUIStyle();
 
     public override void impGUI(Rect rect)

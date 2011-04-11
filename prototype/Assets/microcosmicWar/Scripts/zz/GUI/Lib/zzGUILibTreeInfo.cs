@@ -35,6 +35,7 @@ public class zzGUILibTreeElement
 [System.Serializable]
 public class zzGUILibTreeNode : zzGUILibTreeElement
 {
+    public Texture2D expandedImage;
     public zzGUILibTreeElement[] elements = new zzGUILibTreeElement[0];
     public zzGUILibTreeNode[] nodes = new zzGUILibTreeNode[0];
 
@@ -50,6 +51,29 @@ public class zzGUILibTreeNode : zzGUILibTreeElement
         elements = pData.elements;
         nodes = pData.nodes;
         applyChange();
+    }
+
+    GUIContent _expandedNodeContent;
+
+    public GUIContent expandedNodeContent
+    {
+        get
+        {
+            if (_expandedNodeContent == null)
+            {
+                _expandedNodeContent = new GUIContent(name, expandedImage);
+            }
+            return _expandedNodeContent;
+        }
+    }
+
+    public GUIContent collapsedNodeContent
+    {
+        get
+        {
+            return content;
+
+        }
     }
 }
 
@@ -100,8 +124,11 @@ public class zzGUILibTreeView
     {
         GUILayout.BeginHorizontal();
         GUILayout.Space(imageSize * TreeDepth);
-        bool lNewExpanded = GUILayout.Toggle(expanded, treeNode.content,
-            getStyle(pSelected, treeNode), GUILayout.Height(imageSize));
+        bool lNewExpanded = GUILayout.Toggle(
+            expanded,
+            expanded ? treeNode.expandedNodeContent : treeNode.collapsedNodeContent,
+            getStyle(pSelected, treeNode),
+            GUILayout.Height(imageSize));
         GUILayout.EndHorizontal();
 
         if (expanded != lNewExpanded)

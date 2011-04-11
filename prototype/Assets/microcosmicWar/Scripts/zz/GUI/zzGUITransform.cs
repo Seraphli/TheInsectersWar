@@ -7,11 +7,24 @@ public class zzGUITransform : zzGUIContainer
 {
     //public UIVector2 ofsetPosition;
     public Vector2 scale;
-
+    public float angle;
 
     public override void impSubs()
     {
+        if (angle != 0f)
+        {
+            var lPreMatrix = GUI.matrix;
+            GUIUtility.RotateAroundPivot(angle,new Vector2(screenPosition.x, screenPosition.y));
+            drawScaledSub();
+            GUI.matrix = lPreMatrix;
+        }
+        else
+            drawScaledSub();
 
+    }
+
+    void drawScaledSub()
+    {
         foreach (zzInterfaceGUI lSub in getSubsByDepth())
         {
             Rect lSelfRect = getPosition();
@@ -22,6 +35,7 @@ public class zzGUITransform : zzGUIContainer
             lSubRect.height *= scale.y;
             lSub.renderGUI(lSubRect);
         }
+
     }
 
 }
