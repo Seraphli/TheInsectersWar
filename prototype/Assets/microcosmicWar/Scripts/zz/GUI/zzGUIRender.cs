@@ -28,8 +28,10 @@ public class zzGUIRender : zzGUIContainer
     public void OnGUI()
     {
         cursorOnControl = null;
+        calculateAndSetPosition();
+        originOfCoordinates = new Vector2(position.x, position.y);
         zzGUI._setRoot(this);
-        renderGUI();
+        _renderGUI(position);
         _useCustomPosition = false;
     }
 

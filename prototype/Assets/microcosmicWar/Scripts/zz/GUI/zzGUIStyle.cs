@@ -15,7 +15,7 @@ public class zzGUIStyle
     }
 
     [SerializeField]
-    private bool _useDefaultStyle = false;
+    private bool _useDefaultStyle = true;
 
     public bool UseDefaultStyle
     {

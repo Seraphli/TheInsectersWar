@@ -129,8 +129,9 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     public void renderGUI()
     {
-        calculateAndSetPosition();
+        _beginRender();
         _renderGUI(getPosition());
+        _endRender();
         //if (getVisible())
         //{
         //    calculatePosition();
@@ -149,13 +150,13 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     }
 
-    public virtual bool isCoordinateReseted
-    {
-        get
-        {
-            return false;
-        }
-    }
+    //public virtual bool isCoordinateReseted
+    //{
+    //    get
+    //    {
+    //        return false;
+    //    }
+    //}
 
     [SerializeField]
     private Rect _screenPosition;
@@ -169,17 +170,41 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     //public zzInterfaceGUI root;
 
-    void _renderGUI(Rect rect)
+    /// <summary>
+    /// only can be call by sub widget
+    /// </summary>
+    public virtual Vector2 originOfCoordForSub
+    {
+        get
+        {
+            return originOfCoordinates;
+        }
+    }
+
+    void _beginRender()
+    {
+        originOfCoordinates = getParent().originOfCoordForSub;
+        calculateAndSetPosition();
+        //if (isCoordinateReseted)
+        //{
+        //    zzGUI.originOfCoordinates = new Vector2(screenPosition.x, screenPosition.y);
+        //}
+
+    }
+
+    [SerializeField]
+    protected Vector2 originOfCoordinates;
+
+    void _endRender()
+    {
+        zzGUI.originOfCoordinates = originOfCoordinates;
+    }
+
+    protected void _renderGUI(Rect rect)
     {
         if (getVisible())
         {
-            Vector2 lPreOriginOfCoordinates = zzGUI.originOfCoordinates;
             //root = zzGUI.root;
-            if (isCoordinateReseted)
-            {
-                zzGUI.originOfCoordinates = new Vector2(screenPosition.x, screenPosition.y);
-            }
-
             GUISkin lSkin = getSkin();
             if (lSkin)
             {
@@ -191,15 +216,14 @@ public abstract class zzInterfaceGUI : MonoBehaviour
             }
             else
                 impGUI(rect);
-
-            zzGUI.originOfCoordinates = lPreOriginOfCoordinates;
         }
     }
 
     public void renderGUI(Rect rect)
     {
-        calculateAndSetPosition();
+        _beginRender();
         _renderGUI(rect);
+        _endRender();
     }
 
     public virtual GUISkin getSkin()
@@ -292,12 +316,12 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return position.y;
     }
 
-    void calculateAndSetPosition()
+    protected void calculateAndSetPosition()
     {
         position = calculatePosition();
         _screenPosition = new Rect(
-                position.x + zzGUI.originOfCoordinates.x,
-                position.y + zzGUI.originOfCoordinates.y,
+                position.x + originOfCoordinates.x,
+                position.y + originOfCoordinates.y,
                 position.width,
                 position.height
             );

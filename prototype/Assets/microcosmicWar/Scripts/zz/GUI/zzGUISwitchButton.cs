@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-class zzGUISwitchButton : zzInterfaceGUI
+public class zzGUISwitchButton : zzInterfaceGUI
 {
     public bool isOn = false;
 

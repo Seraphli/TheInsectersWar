@@ -61,7 +61,6 @@ public class zzGUIEditorHelper:MonoBehaviour
 
     void doScale()
     {
-        var lUIScreenPosition = selection.screenPosition;
         var lMousePosition = GUIEvent.mousePosition;
 
         var lUiPosition = selection.getPosition();
@@ -240,7 +239,6 @@ public class zzGUIEditorHelper:MonoBehaviour
 
     void doTranslate()
     {
-        var lUIScreenPosition = selection.screenPosition;
         var lMousePosition = GUIEvent.mousePosition;
 
         var lUiPosition = selection.getPosition();

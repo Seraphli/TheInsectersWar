@@ -3,7 +3,69 @@ using UnityEditor;
 
 public class zzGUIEditorWindow: EditorWindow
 {
-    [MenuItem("Window/zz GUI")]
+    //static void addGUI<T>(string pName) where T : zzInterfaceGUI
+    //{
+    //    var lGUI = Selection.activeTransform.GetComponent<zzInterfaceGUI>();
+    //    var lObject = new GameObject(pName);
+    //    if(lGUI is zzGUIContainer)
+    //    {
+    //        lObject.transform.parent = Selection.activeTransform;
+    //    }
+    //    else
+    //    {
+    //        lObject.transform.parent = Selection.activeTransform.parent;
+    //    }
+    //    zzInterfaceGUI lNewGUiControl= lObject.AddComponent<T>();
+    //    lNewGUiControl.useRelativePosition = new zzGUIRelativeUsedInfo(true, true, true, true);
+    //    lNewGUiControl.relativePosition = new Rect(0.25f, 0.25f, 0.5f, 0.5f);
+
+    //}
+
+    //static bool validateAddGUI()
+    //{
+    //    return Selection.activeTransform != null
+    //        && Selection.activeTransform.GetComponent<zzInterfaceGUI>();
+    //}
+
+    //[MenuItem("Component/zz GUI/Add Window")]
+    //static void menuItemAddWindow()
+    //{
+    //    addGUI<zzWindow>("Window");
+    //}
+
+    //[MenuItem("Component/zz GUI/Add Window",true)]
+    //static bool validateMenuItemAddWindow()
+    //{
+    //    return validateAddGUI();
+    //}
+
+
+
+    //[MenuItem("Component/zz GUI/Add Button")]
+    //static void menuItemAddWindow()
+    //{
+    //    addGUI<zzButton>("Button");
+    //}
+
+    //[MenuItem("Component/zz GUI/Add Button", true)]
+    //static bool validateMenuItemAddButton()
+    //{
+    //    return validateAddGUI();
+    //}
+
+    //[MenuItem("Component/zz GUI/Add SwitchButton")]
+    //static void menuItemAddWindow()
+    //{
+    //    addGUI<zzGUISwitchButton>("SwitchButton");
+    //}
+
+    //[MenuItem("Component/zz GUI/Add SwitchButton", true)]
+    //static bool validateMenuItemAddWindow()
+    //{
+    //    return validateAddGUI();
+    //}
+
+    [MenuItem("Window/zz GUI Editor")]
     static void Init()
     {
         var lWindow = (zzGUIEditorWindow)EditorWindow.GetWindow(typeof(zzGUIEditorWindow), false, "zz GUI");
@@ -41,45 +103,7 @@ public class zzGUIEditorWindow: EditorWindow
         }
         Repaint();
 
-        //_GUIEditorHelper = null;
-        //if (lGUISelection)
-        //{
-        //    var lGUIRoot = lGUISelection.root;
-        //    if (lGUIRoot)
-        //    {
-        //        _GUIEditorHelper = lGUIRoot.GetComponent<zzGUIEditorHelper>();
-        //        if (!_GUIEditorHelper)
-        //            _GUIEditorHelper = lGUIRoot.gameObject.AddComponent<zzGUIEditorHelper>();
-        //    }
-
-        //}
-
-        //if (_GUIEditorHelper)
-        //{
-        //    _GUIEditorHelper.selection = lGUISelection;
-        //}
     }
-
-    //void Update()
-    //{
-    //    //Debug.Log(Input.GetMouseButton(0));
-    //}
-
-    //void OnInspectorUpdate()
-    //{
-    //    //Debug.Log("zzGUIEditorWindow.OnInspectorUpdate");
-    //    //Repaint();
-    //}
-
-    //zzGUIRenderDebuger getGUIRenderDebuger(zzInterfaceGUI pGUI)
-    //{
-    //    var lOut = pGUI.root as zzGUIRenderDebuger;
-    //    if(!lOut)
-    //        lOut = pGUI.root.gameObject.AddComponent<zzGUIRenderDebuger>();
-    //    return lOut;
-    //}
-
-    //zzGUIEditorHelper _GUIEditorHelper;
 
     zzGUIEditorHelper GUIEditorHelper
     {
@@ -92,16 +116,16 @@ public class zzGUIEditorWindow: EditorWindow
         }
     }
 
-    zzGUIRenderDebuger GUIRenderDebuger
-    {
-        get
-        {
-            var lOut = root.GetComponent<zzGUIRenderDebuger>();
-            if (!lOut)
-                lOut = root.gameObject.AddComponent<zzGUIRenderDebuger>();
-            return lOut;
-        }
-    }
+    //zzGUIRenderDebuger GUIRenderDebuger
+    //{
+    //    get
+    //    {
+    //        var lOut = root.GetComponent<zzGUIRenderDebuger>();
+    //        if (!lOut)
+    //            lOut = root.gameObject.AddComponent<zzGUIRenderDebuger>();
+    //        return lOut;
+    //    }
+    //}
 
     public Rect windowRect = new Rect(20, 20, 500, 300);
     public Vector2 scrollPosition;
@@ -126,7 +150,7 @@ public class zzGUIEditorWindow: EditorWindow
         {
             var lGUIEditorHelper = GUIEditorHelper;
             scrollPosition = GUI.BeginScrollView(lShowRect, scrollPosition, lGUIRect);
-            var lGUIRenderDebuger = GUIRenderDebuger;
+
             lGUIEditorHelper.windowPosition = position;
             GUI.BeginGroup(lGUIRect);
 
@@ -139,18 +163,12 @@ public class zzGUIEditorWindow: EditorWindow
                 Camera.main.Render();
             }
             lGUIEditorHelper.showCameraRender = showCameraRender;
-            //var lSelection = _GUIEditorHelper.selection;
-            //EditorGUILayout.LabelField("Name", lSelection.name);
-            //EditorGUILayout.RectField("Screen Position", lSelection.screenPosition);
-            //var lRenderDebuger = getGUIRenderDebuger(lSelection);
-
-            //lGUIRenderDebuger.position = new Rect(0,0,lShowRect.width,lShowRect.height);
-            //lGUIRenderDebuger.drawGUI();
 
             lGUIEditorHelper.useMouseEvent(Event.current);
             root.customPosition = lGUIRect;
-
+            BeginWindows();
             root.OnGUI();
+            EndWindows();
             lGUIEditorHelper.OnGUI();
 
             GUI.EndGroup();
@@ -159,38 +177,23 @@ public class zzGUIEditorWindow: EditorWindow
             GUI.EndScrollView();
 
         }
-        //BeginWindows();
-        //windowRect = GUI.Window(1, windowRect, doWindow, "Hi There");
-        //EndWindows();
-
-        //Debug.Log(Event.current.type);
-        //EditorGUIUtility.RenderGameViewCameras(new Rect(50, 50, position.width, position.height),
-        //    new Rect(30, 30, 100, 100), false, false);
-
-        //EditorGUIUtility.AddCursorRect(new Rect(10, 10, 100, 100), MouseCursor.Link); 
-        //if (Event.current.type== EventType.MouseDown)
-        //{
-        //    Debug.Log("zzGUIEditorWindow.OnGUI");
-        //    Debug.Log(Event.current.type);
-
-        //}
+        
     }
 
-    //void doWindow(int pID)
+    //void resetAllWindowID()
     //{
-    //    GUI.DragWindow();
+    //    if(root)
+    //}
 
-    //    if (_GUIEditorHelper && _GUIEditorHelper.selection)
+    //int setWindowID(zzInterfaceGUI pWidget,int pID)
+    //{
+    //    if(pWidget is zzGUIContainer)
     //    {
-    //        var lCamara = Camera.main;
-    //        var lPreCamaraRect = lCamara.rect;
-    //        lCamara.pixelRect = windowRect;
-    //        Camera.main.Render();
-    //        var lSelection = _GUIEditorHelper.selection;
-    //        ((zzGUIRender)lSelection.root).OnGUI();
-    //        _GUIEditorHelper.OnGUI();
-
-    //        lCamara.rect = new Rect(0,0,1,1);
+    //        if(pWidget is zzWindow)
+    //            ((zzWindow)pWidget).ID = pID;
     //    }
     //}
+
+    //int windowId
+
 }

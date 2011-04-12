@@ -19,7 +19,7 @@ public class zzWindow : zzGUIContainer
 
     void Awake()
     {
-        ID = newID();
+        //ID = newID();
     }
 
     /// <summary>
@@ -35,23 +35,33 @@ public class zzWindow : zzGUIContainer
         }
     }
 
-    public override bool isCoordinateReseted
+    //public override bool isCoordinateReseted
+    //{
+    //    get
+    //    {
+    //        return true;
+    //    }
+    //}
+
+    public override Vector2 originOfCoordForSub
     {
         get
         {
-            return true;
+            var lScreenPosition = screenPosition;
+            return new Vector2(lScreenPosition.x, lScreenPosition.y);
         }
     }
+
 
     public override void impGUI(Rect rect)
     {
         if (ContentAndStyle.UseDefaultStyle)
         {
-            position = GUI.Window(ID, rect, DoMyWindow, ContentAndStyle.Content);
+            position = GUI.Window(GetInstanceID(), rect, DoMyWindow, ContentAndStyle.Content);
             return;
         }
         //print("not _useDefaultStyle");
-        position = GUI.Window(ID, rect, DoMyWindow, ContentAndStyle.Content, ContentAndStyle.Style);
+        position = GUI.Window(GetInstanceID(), rect, DoMyWindow, ContentAndStyle.Content, ContentAndStyle.Style);
     }
 
     public void DoMyWindow(int windowID)

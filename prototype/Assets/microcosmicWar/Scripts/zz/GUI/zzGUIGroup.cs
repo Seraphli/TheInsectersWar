@@ -12,11 +12,14 @@ public class zzGUIGroup : zzGUIContainer
     //public GUIStyle _style = new GUIStyle();
 
     //zzGUI[] subElements;
-    public override bool isCoordinateReseted
+
+
+    public override Vector2 originOfCoordForSub
     {
         get
         {
-            return true;
+            var lScreenPosition = screenPosition;
+            return new Vector2(lScreenPosition.x, lScreenPosition.y);
         }
     }
 
