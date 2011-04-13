@@ -44,7 +44,7 @@ public class zzSignalSlotExample:MonoBehaviour
 
     void Start()
     {
-        //use default when not been set value in Awake
+        //use default when not be set value in Awake
         if (testDelegate == null)
             testDelegate = nullTestDelegate;
         if (setByfunction == null)

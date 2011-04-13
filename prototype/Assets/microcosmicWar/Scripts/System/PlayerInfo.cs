@@ -192,8 +192,20 @@ public class PlayerInfo : MonoBehaviour
         return 0;
     }
 
+    [SerializeField]
+    Race _race = Race.eNone;
 
-    public Race race = Race.eNone;
+    public Race race
+    {
+        get
+        {
+            return _race;
+        }
+        set
+        {
+            _race = value;
+        }
+    }
 
     public string playerName = "player";
 

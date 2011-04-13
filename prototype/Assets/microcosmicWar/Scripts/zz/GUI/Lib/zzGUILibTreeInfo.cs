@@ -180,7 +180,7 @@ public class zzGUILibTreeView
         if (treeNode.changed)
             setTreeNode(treeNode);
 
-        zzGUILibTreeElement lNewSelected = null;
+        //zzGUILibTreeElement lNewSelected = null;
         ;
         //print("TreeDepth:" + TreeDepth);
         //print(directoryInfo.Name+Folders.Count);

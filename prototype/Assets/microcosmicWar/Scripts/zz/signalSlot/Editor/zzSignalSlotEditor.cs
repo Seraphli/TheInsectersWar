@@ -9,13 +9,13 @@ using System.Reflection.Emit;
 public class zzSignalSlotEditor : Editor
 {
 
-    [MenuItem("zz/Add SignalSlot")]
+    [MenuItem("Component/zz/Add SignalSlot")]
     static void addSignalSlot()
     {
         Selection.activeGameObject.AddComponent<zzSignalSlot>();
     }
 
-    [MenuItem("zz/Add SignalSlot", true)]
+    [MenuItem("Component/zz/Add SignalSlot", true)]
     static bool validateAddSignalSlot()
     {
         return Selection.activeTransform != null;
