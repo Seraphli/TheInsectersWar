@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 
 
-class zzLabel : zzInterfaceGUI
+public class zzLabel : zzInterfaceGUI
 {
     //FIXME_VAR_TYPE position= new Rect();
     //public GUIContent _content = new GUIContent();

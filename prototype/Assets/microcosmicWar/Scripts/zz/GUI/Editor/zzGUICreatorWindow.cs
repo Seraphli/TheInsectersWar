@@ -33,7 +33,7 @@ public class zzGUICreatorWindow : EditorWindow
             }
             else
             {
-                lObject.transform.parent = pTransform;
+                lObject.transform.parent = pTransform.parent;
             }
             zzInterfaceGUI lNewGUiWidget = (zzInterfaceGUI)lObject.AddComponent(type);
             lNewGUiWidget.useRelativePosition = new zzGUIRelativeUsedInfo(true, true, true, true);
@@ -63,7 +63,11 @@ public class zzGUICreatorWindow : EditorWindow
         widgetInfoList = new WidgetInfo[] {
             widget<zzWindow>("Window"),
             widget<zzButton>("Button"),
+            widget<zzImageGUI>("Image"),
+            widget<zzGUIToolbar>("Toolbar"),
             widget<zzGUISwitchButton>("SwitchButton"),
+            widget<zzGUIGroup>("Group"),
+            widget<zzGUITransform>("Transform"),
         };
     }
 

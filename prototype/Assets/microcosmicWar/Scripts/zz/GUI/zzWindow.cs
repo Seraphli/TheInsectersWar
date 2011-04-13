@@ -5,11 +5,6 @@ using System.Collections;
 public class zzWindow : zzGUIContainer
 {
 
-    //FIXME_VAR_TYPE windowRect= new Rect(20, 20, 120, 50);
-    //public GUIContent title;
-    //public bool _useDefaultStyle = false;
-    //public GUIStyle _style;
-
     public zzGUIStyle ContentAndStyle = new zzGUIStyle();
     public int ID = 0;
 

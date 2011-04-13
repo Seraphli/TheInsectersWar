@@ -5,11 +5,14 @@ public class zzGUISwitchButton : zzInterfaceGUI
 {
     public bool isOn = false;
 
-    public GUIContent buttonOnContent = new GUIContent();
-    public GUIContent buttonOffContent = new GUIContent();
+    //public GUIContent buttonOnContent = new GUIContent();
+    //public GUIContent buttonOffContent = new GUIContent();
 
-    public bool useDefaultStyle = true;
-    public GUIStyle style;
+    public zzGUIStyle buttonOnContentAndStyle = new zzGUIStyle();
+    public zzGUIStyle buttonOffContentAndStyle = new zzGUIStyle();
+
+    //public bool useDefaultStyle = true;
+    //public GUIStyle style;
 
     public void setOn()
     {
@@ -48,16 +51,21 @@ public class zzGUISwitchButton : zzInterfaceGUI
 
     bool _drawButton(Rect rect)
     {
-        if (useDefaultStyle)
-            return GUI.Button(rect, getNowContent());
-        return GUI.Button(rect, getNowContent(), style);
+        return _drawButton(getNowContentAndStyle(), rect);
+    }
+
+    bool _drawButton(zzGUIStyle pStyle, Rect rect)
+    {
+        if (pStyle.UseDefaultStyle)
+            return GUI.Button(rect, pStyle.Content);
+        return GUI.Button(rect, pStyle.Content, pStyle.Style);
     }
 
 
-    GUIContent  getNowContent()
+    zzGUIStyle getNowContentAndStyle()
     {
         if (isOn)
-            return buttonOnContent;
-        return buttonOffContent;
+            return buttonOnContentAndStyle;
+        return buttonOffContentAndStyle;
     }
 }

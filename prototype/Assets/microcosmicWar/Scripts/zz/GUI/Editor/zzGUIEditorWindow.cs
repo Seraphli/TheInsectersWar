@@ -90,18 +90,19 @@ public class zzGUIEditorWindow: EditorWindow
     void OnSelectionChange()
     {
         zzInterfaceGUI lGUISelection = null;
-        root = null;
+        zzGUIRender lNewRoot = null;
         if (Selection.activeTransform)
         {
             lGUISelection = Selection.activeTransform.GetComponent<zzInterfaceGUI>();
-            root = findGUIRoot(lGUISelection);
-            if(root)
+            lNewRoot = findGUIRoot(lGUISelection);
+            if (lNewRoot)
             {
+                root = lNewRoot;
                 GUIEditorHelper.selection = lGUISelection;
                 showCameraRender = GUIEditorHelper.showCameraRender;
+                Repaint();
             }
         }
-        Repaint();
 
     }
 

@@ -161,6 +161,9 @@ public abstract class zzInterfaceGUI : MonoBehaviour
     [SerializeField]
     private Rect _screenPosition;
 
+    /// <summary>
+    /// Todo: 改用originOfCoordinates和position获取
+    /// </summary>
     public Rect screenPosition
     {
         get { return _screenPosition; }
