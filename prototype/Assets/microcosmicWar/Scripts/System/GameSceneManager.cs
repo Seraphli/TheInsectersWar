@@ -16,6 +16,7 @@ public class GameSceneManager:MonoBehaviour
         defenseTower,
         flyer,
         raceBase,
+        soldierFactory,
         typeCount,
     }
 

@@ -9,6 +9,8 @@ public class SoldierFactorySystem:MonoBehaviour
     public class SoldierInfo
     {
         public string name;
+        public string showName;
+        public Texture image;
         public GameObject soldierPrefab;
         public float produceInterval;
         public float firstTimeOffset;
@@ -32,6 +34,16 @@ public class SoldierFactorySystem:MonoBehaviour
     [SerializeField]
     RaceSoldierInfo[] info;
 
+    public SoldierInfo[] getSoldierInfoList(Race pRace)
+    {
+        foreach (var lRaceSoldierInfo in info)
+        {
+            if (lRaceSoldierInfo.race == pRace)
+                return lRaceSoldierInfo.SoldierInfoes;
+        }
+        return null;
+    }
+
     Dictionary<Race, GameObject> factoryPrefabs;
 
     void    setFactoryPrefabs(Race race, GameObject prefab)
@@ -49,6 +61,14 @@ public class SoldierFactorySystem:MonoBehaviour
     public GameObject   getFactoryPrefab(Race race)
     {
         return factoryPrefabs[race];
+    }
+    
+    public static SoldierFactorySystem Singleton
+    {
+        get
+        {
+            return singletonInstance;
+        }
     }
 
     static protected SoldierFactorySystem singletonInstance = null;

@@ -95,6 +95,14 @@ public class SoldierFactoryState : MonoBehaviour
     }
     static protected SoldierFactoryState singletonInstance = null;
 
+    public static SoldierFactoryState Singleton
+    {
+        get
+        {
+            return singletonInstance;
+        }
+    }
+
     public static SoldierFactoryState getSingleton()
     {
         return singletonInstance;
@@ -210,12 +218,25 @@ public class SoldierFactoryState : MonoBehaviour
             Debug.Log("can't createFactory");
     }
 
+    public int getSoldierIndex(Race pRace, string pSoldierName)
+    {
+        return soldierNameToStateIndex[pSoldierName];
+    }
+
     public void createFactory(Race race, Vector3 lPosition, string lSoldierName, Stronghold lStronghold)
     {
         createFactory(race, lPosition,
             soldierNameToStateIndex[lSoldierName],
             lStronghold);
     }
+
+    public SoldierFactorySystem.SoldierInfo getSoldierInfo(Race pRace, string pSoldierName)
+    {
+        var lStateIndex = soldierNameToStateIndex[pSoldierName];
+        State lState = RaceFactoryState[pRace][lStateIndex];
+        return lState.info;
+    }
+
 
     public void createFactory(Race race, Vector3 lPosition, int lStateIndex, Stronghold lStronghold)
     {
@@ -240,6 +261,14 @@ public class SoldierFactoryState : MonoBehaviour
 
         decorateFactoryBuild(lBuilding, race, lStateIndex);
     }
+
+    //public GameObject createFactorySign(Race pRace, string pSoldierName)
+    //{
+    //    var lStateIndex = soldierNameToStateIndex[pSoldierName];
+    //    State lState = RaceFactoryState[race][lStateIndex];
+    //    GameObject lSign = (GameObject)Instantiate(lState.info.signPrefab);
+    //    return lSign;
+    //}
 
     void decorateFactoryBuild(GameObject pBuild, Race race, int lStateIndex)
     {
