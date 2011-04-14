@@ -5,10 +5,18 @@ public class zzGUITreeViewArea: zzGUIContainer
 {
     StringCallFunc elementClickedEvent;
     StringCallFunc nodeClickedEvent;
+    System.Action<Object> elementClickedObjectEvent;
+
+    static void nullClickedObjectEvent(Object p){}
 
     public void addElementClickedEvent(StringCallFunc pReceiver)
     {
         elementClickedEvent += pReceiver;
+    }
+
+    public void addElementClickedObjectEvent(System.Action<Object> pReceiver)
+    {
+        elementClickedObjectEvent += pReceiver;
     }
 
     public void addNodeClickedEvent(StringCallFunc pReceiver)
@@ -32,6 +40,8 @@ public class zzGUITreeViewArea: zzGUIContainer
             elementClickedEvent = nullStringCallFunc;
         if (nodeClickedEvent == null)
             nodeClickedEvent = nullStringCallFunc;
+        if (elementClickedObjectEvent == null)
+            elementClickedObjectEvent = nullClickedObjectEvent;
         rootTreeView = new zzGUILibTreeView();
         rootTreeView.selectedStyle = selectedStyle;
         rootTreeView.notSelectedStyle = notSelectedStyle;
@@ -53,7 +63,10 @@ public class zzGUITreeViewArea: zzGUIContainer
                 if (lNewSelected is zzGUILibTreeNode)
                     nodeClickedEvent(selectedElement.stringData);
                 else// (lNewSelected is zzGUILibTreeElement)
+                {
                     elementClickedEvent(selectedElement.stringData);
+                    elementClickedObjectEvent(selectedElement.objectData);
+                }
             }
             GUILayout.EndScrollView();
         }
@@ -65,9 +78,9 @@ public class zzGUITreeViewArea: zzGUIContainer
     {
         if (ContentAndStyle.UseDefaultStyle)
         {
-            GUILayout.BeginArea(rect, ContentAndStyle.Content);
+            //GUILayout.BeginArea(rect, ContentAndStyle.Content);
             drawTree();
-            GUILayout.EndArea();
+            //GUILayout.EndArea();
             return;
         }
 

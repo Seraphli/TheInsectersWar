@@ -50,6 +50,11 @@ public class zzObjectPicker:MonoBehaviour
         buttonUpEvent += toObjectCall(pPickEvent);
     }
 
+    public void addButtonDownVoidReceiver(VoidCall pPickEvent)
+    {
+        buttonDownEvent += toObjectCall(pPickEvent);
+    }
+
     GameObject check()
     {
         RaycastHit lRaycastHit;

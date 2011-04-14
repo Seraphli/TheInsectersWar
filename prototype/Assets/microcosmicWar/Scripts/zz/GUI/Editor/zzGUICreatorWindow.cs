@@ -68,6 +68,7 @@ public class zzGUICreatorWindow : EditorWindow
             widget<zzGUISwitchButton>("SwitchButton"),
             widget<zzGUIGroup>("Group"),
             widget<zzGUITransform>("Transform"),
+            widget<zzGUILayoutArea>("Layout Area"),
         };
     }
 

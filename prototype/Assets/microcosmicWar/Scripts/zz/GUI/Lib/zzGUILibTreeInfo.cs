@@ -15,7 +15,7 @@ public class zzGUILibTreeElement
 
     //用以保存自定义数据
     public string stringData;
-    public Component componentData;
+    public Object objectData;
 
     GUIContent _content;
 

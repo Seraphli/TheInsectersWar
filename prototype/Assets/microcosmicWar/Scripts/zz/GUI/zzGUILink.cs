@@ -7,6 +7,9 @@ public class zzGUILink:zzInterfaceGUI
     public override void impGUI(Rect rect)
     {
         if (link)
+        {
+            link.position = rect;
             link.impGUI(rect);
+        }
     }
 }
