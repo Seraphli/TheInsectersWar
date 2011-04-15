@@ -29,6 +29,7 @@ public class PlayerInfo : MonoBehaviour
         {
             case Race.ePismire: return "pismire";
             case Race.eBee: return "bee";
+            case Race.eNone: return "none";
             //case Race.ePismire: return "pismire";
         }
         Debug.LogError("no the race");
@@ -42,6 +43,7 @@ public class PlayerInfo : MonoBehaviour
         {
             case "pismire": return Race.ePismire;
             case "bee": return Race.eBee;
+            case "none": return Race.eNone;
             //case Race.ePismire: return "pismire";
         }
         Debug.LogError("no the race");

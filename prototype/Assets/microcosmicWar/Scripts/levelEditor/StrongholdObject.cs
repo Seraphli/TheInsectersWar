@@ -21,6 +21,9 @@ public class StrongholdObject : zzEditableObject
 
         set 
         {
+            if (_race == value)
+                return;
+
             stronghold.owner = value;
             if (value == Race.eNone)
             {
@@ -32,6 +35,19 @@ public class StrongholdObject : zzEditableObject
             }
             stronghold.updateRaceShow();
             _race = value;
+        }
+    }
+
+    [zzSerialize]
+    public string raceID
+    {
+        get
+        {
+            return PlayerInfo.eRaceToString(race);
+        }
+        set
+        {
+            race = PlayerInfo.stringToRace(value);
         }
     }
 
