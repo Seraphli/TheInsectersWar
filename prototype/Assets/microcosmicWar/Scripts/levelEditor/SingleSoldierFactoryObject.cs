@@ -28,15 +28,93 @@ public class SingleSoldierFactoryObject : zzEditableObject
 
         public Race race;
 
-        public string soldierName;
+        public void setData(SoldierFactorySetting pOther)
+        {
+            _soldierName = pOther._soldierName;
+            _useDefaultProduceSetting = pOther._useDefaultProduceSetting;
+            _produceInterval = pOther._produceInterval;
+            _firstTimeOffset = pOther._firstTimeOffset;
+            _selected = pOther._selected;
+        }
 
-        public bool useDefaultProduceSetting = true;
+        [SerializeField]
+        string _soldierName;
 
-        public float produceInterval;
+        [zzSerialize]
+        public string soldierName 
+        { 
+            get
+            {
+                return _soldierName;
+            }
+            set
+            {
+                _soldierName = value;
+            }
+        }
 
-        public float firstTimeOffset;
+        [SerializeField]
+        bool _useDefaultProduceSetting = true;
 
-        public bool selected = false;
+        [zzSerialize]
+        public bool useDefaultProduceSetting
+        {
+            get
+            {
+                return _useDefaultProduceSetting;
+            }
+            set
+            {
+                _useDefaultProduceSetting = value;
+            }
+        }
+        [SerializeField]
+        float _produceInterval;
+
+        [zzSerialize]
+        public float produceInterval
+        {
+            get
+            {
+                return _produceInterval;
+            }
+            set
+            {
+                _produceInterval = value;
+            }
+        }
+
+        [SerializeField]
+        float _firstTimeOffset;
+
+        [zzSerialize]
+        public float firstTimeOffset
+        {
+            get
+            {
+                return _firstTimeOffset;
+            }
+            set
+            {
+                _firstTimeOffset = value;
+            }
+        }
+
+        [SerializeField]
+        bool _selected = false;
+
+        [zzSerialize]
+        public bool selected
+        {
+            get
+            {
+                return _selected;
+            }
+            set
+            {
+                _selected = value;
+            }
+        }
 
         public SoldierFactory addFactory(GameObject pObject)
         {

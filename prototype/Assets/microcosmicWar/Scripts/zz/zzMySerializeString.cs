@@ -322,6 +322,7 @@ public class zzMySerializeString
         zzSerialize.registerUserSerialize(new zzArraySerialize<float>("fAr"));
         zzSerialize.registerUserSerialize(new zzArraySerialize<bool>("bAr"));
         zzSerialize.registerUserSerialize(new zzArraySerialize<string>("sAr"));
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Hashtable>("tableAr"));
         zzSerialize.registerUserSerialize(new zzVector3Serialize());
         zzSerialize.registerUserSerialize(new zzArraySerialize<Vector3>("v3Ar"));
         zzSerialize.registerUserSerialize(new zzVector2Serialize()); ;

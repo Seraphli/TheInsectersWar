@@ -6,7 +6,36 @@ public class MulSoldierFactoryObject : zzEditableObject
 
     public Race race;
 
-    public SingleSoldierFactoryObject.SoldierFactorySetting[] soldierFactorySettings;
+    [SerializeField]
+    SingleSoldierFactoryObject.SoldierFactorySetting[] _soldierFactorySettings;
+
+    [zzSerialize]
+    public SingleSoldierFactoryObject.SoldierFactorySetting[] soldierFactorySettings
+    {
+        get
+        {
+            return _soldierFactorySettings;
+        }
+
+        set
+        {
+            if(_soldierFactorySettings==null||_soldierFactorySettings.Length==0)
+            {
+                createInfo();
+            }
+            foreach (var lSettingValue in value)
+            {
+                foreach(var lSetting in _soldierFactorySettings)
+                {
+                    if (lSetting.soldierName == lSettingValue.soldierName)
+                    {
+                        lSetting.setData(lSettingValue);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     static MulSoldierFactoryObjectGUI sPropertyGUI = new MulSoldierFactoryObjectGUI();
 
@@ -18,9 +47,31 @@ public class MulSoldierFactoryObject : zzEditableObject
         }
     }
 
+    //public string soldierFactorySettingsData
+    //{
+    //    get
+    //    {
+    //        string lOut;
+    //        foreach (var lSetting in soldierFactorySettingsData)
+    //        {
+    //            lOut += "|soldierName:" + soldierFactorySettingsData.soldierName;
+    //            lOut += ",useDefaultProduceSetting:" + soldierFactorySettingsData.useDefaultProduceSetting;
+    //            lOut += ",produceInterval:" + soldierFactorySettingsData.produceInterval;
+    //            lOut += ",firstTimeOffset:" + soldierFactorySettingsData.firstTimeOffset;
+    //            lOut += ",selected:" + soldierFactorySettingsData.selected;
+    //        }
+    //        return lOut;
+    //    }
+
+    //    set
+    //    {
+    //        var lSettings = value.Split(new char[]{'|'});
+    //    }
+    //}
+
     void Start()
     {
-        if(soldierFactorySettings==null||soldierFactorySettings.Length==0)
+        if(_soldierFactorySettings==null||_soldierFactorySettings.Length==0)
         {
             //in editor mode
             createInfo();
@@ -29,7 +80,7 @@ public class MulSoldierFactoryObject : zzEditableObject
         if(inPlaying)
         {
             var  lSoldierFactories =new List<SoldierFactory>();
-            foreach (var lSetting in soldierFactorySettings)
+            foreach (var lSetting in _soldierFactorySettings)
             {
                 if(lSetting.selected)
                 {
@@ -53,7 +104,7 @@ public class MulSoldierFactoryObject : zzEditableObject
     void createInfo()
     {
         var lSoldierInfoList = SoldierFactorySystem.Singleton.getSoldierInfoList(race);
-        soldierFactorySettings = new SingleSoldierFactoryObject
+        _soldierFactorySettings = new SingleSoldierFactoryObject
             .SoldierFactorySetting[lSoldierInfoList.Length];
         int i = 0;
         foreach (var lInfo in lSoldierInfoList)
@@ -63,7 +114,7 @@ public class MulSoldierFactoryObject : zzEditableObject
             lSoldierFactoryInfo.produceInterval = lInfo.produceInterval;
             lSoldierFactoryInfo.firstTimeOffset = lInfo.firstTimeOffset;
             lSoldierFactoryInfo.race = race;
-            soldierFactorySettings[i] = lSoldierFactoryInfo;
+            _soldierFactorySettings[i] = lSoldierFactoryInfo;
             ++i;
         }
 

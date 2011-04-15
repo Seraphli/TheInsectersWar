@@ -149,12 +149,16 @@
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\setting\RaceChooseSetting.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSelfWhenDestroy.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SingleSoldierFactoryObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\StrongholdObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1LoseCondition.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
@@ -181,6 +185,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameSceneManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactory.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactoryListener.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactoryState.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactorySystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\StrongholdOffLineSetting.cs" />
@@ -216,8 +221,17 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditorEnableList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Editor\zzGUICreatorWindow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Editor\zzGUIEditorWindow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUIEditorHelper.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibDrawLine.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeFolderDraw.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeInfo.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUIRenderDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierColor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierExecutor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierRotation.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierToolbar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneObjectClick.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
@@ -225,6 +239,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUICombineImage.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUILayoutArea.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUILink.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarShelter.cs" />
@@ -359,6 +375,7 @@
      <None Include="Assets\microcosmicWar\注意事项.txt" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\Serialization\zzSerializeAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\ButtonUIAttribute.cs" />
+     <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\EnumUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\FieldUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\ImageUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\LabelUIAttribute.cs" />
@@ -425,8 +442,15 @@
      <None Include="Assets\Standard Assets\Scripts\TimedObjectDestructor.js" />
      <Compile Include="Assets\Standard Assets\Water (Basic)\Sources\Scripts\WaterSimple.cs" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
+     <None Include="Assets\StrumpyShaderEditor\Editor\Resources\Internal\Temp\TempShader.shader" />
+     <None Include="Assets\StrumpyShaderEditor\Editor\Resources\Internal\TextureCopy.shader" />
+     <Compile Include="Assets\StrumpyShaderEditor\Editor\Scripts\NodeEditorWindow.cs" />
+     <Compile Include="Assets\StrumpyShaderEditor\Editor\Scripts\StrumpyPreviewWindow.cs" />
  <Reference Include="AssetStoreTools">
  <HintPath>Assets\AssetStoreTools\Editor\AssetStoreTools.dll</HintPath>
+ </Reference>
+ <Reference Include="StrumpyShaderEditor">
+ <HintPath>Assets\StrumpyShaderEditor\Editor\StrumpyShaderEditor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
