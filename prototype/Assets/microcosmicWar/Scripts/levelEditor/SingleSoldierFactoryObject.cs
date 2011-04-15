@@ -3,28 +3,31 @@
 public class SingleSoldierFactoryObject : zzEditableObject
 {
 
-    public override void applyPlayState()
+    //public override void applyPlayState()
+    //{
+    //    //工厂的设置,必须在工程执行Start前执行
+    //    var lDefaultInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, soldierName);
+    //    if (useDefaultProduceSetting)
+    //    {
+    //        factory.firstTimeOffset = lDefaultInfo.firstTimeOffset;
+    //        factory.produceInterval = lDefaultInfo.produceInterval;
+    //    }
+    //    else
+    //    {
+    //        factory.firstTimeOffset = firstTimeOffset;
+    //        factory.produceInterval = produceInterval;
+    //    }
+    //    factory.soldierToProduce = lDefaultInfo.soldierPrefab;
+
+    //}
+
+
+    [System.Serializable]
+    public class SoldierFactorySetting
     {
-        //工厂的设置,必须在工程执行Start前执行
-        var lDefaultInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, _soldierName);
-        if (useDefaultProduceSetting)
-        {
-            factory.firstTimeOffset = lDefaultInfo.firstTimeOffset;
-            factory.produceInterval = lDefaultInfo.produceInterval;
-        }
-        else
-        {
-            factory.firstTimeOffset = firstTimeOffset;
-            factory.produceInterval = produceInterval;
-        }
-        factory.soldierToProduce = lDefaultInfo.soldierPrefab;
 
-    }
+        public Race race;
 
-
-    [SerializeField]
-    public class SoldierFactoryInfo
-    {
         public string soldierName;
 
         public bool useDefaultProduceSetting = true;
@@ -34,63 +37,95 @@ public class SingleSoldierFactoryObject : zzEditableObject
         public float firstTimeOffset;
 
         public bool selected = false;
+
+        public SoldierFactory addFactory(GameObject pObject)
+        {
+            var lDefaultInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, soldierName);
+            float lFirstTimeOffset;
+            float lProduceInterval;
+            if (useDefaultProduceSetting)
+            {
+                lFirstTimeOffset = lDefaultInfo.firstTimeOffset;
+                lProduceInterval = lDefaultInfo.produceInterval;
+            }
+            else
+            {
+                lFirstTimeOffset = firstTimeOffset;
+                lProduceInterval = produceInterval;
+            }
+
+            return SoldierFactory.addFactory(pObject, lDefaultInfo.soldierPrefab,
+                lProduceInterval, lFirstTimeOffset);
+        }
     }
 
-    public Race race;
+    public SoldierFactorySetting soldierFactorySetting
+        = new SoldierFactorySetting();
+
+    public Race race
+    {
+        get
+        {
+            return soldierFactorySetting.race;
+        }
+        set
+        {
+            soldierFactorySetting.race = value;
+        }
+    }
     //public GameObject buildingObject;
     public GameObject signObject;
-    public SoldierFactory factory;
+    //public SoldierFactory factory;
 
-    public SoldierFactoryInfo soldierFactoryInfo = new SoldierFactoryInfo();
 
     //只有在运行时才会被赋值
     //public GameObject factoryObject;改为成为父物体
 
-    [SerializeField]
-    string _soldierName;
+    //[SerializeField]
+    //string _soldierName;
 
-    [SerializeField]
-    public bool _useDefaultProduceSetting;
+    //[SerializeField]
+    //bool _useDefaultProduceSetting;
     [zzSerialize]
     public bool useDefaultProduceSetting
     {
         get
         {
-            return _useDefaultProduceSetting;
+            return soldierFactorySetting.useDefaultProduceSetting;
         }
         set
         {
-            _useDefaultProduceSetting = value;
+            soldierFactorySetting.useDefaultProduceSetting = value;
         }
     }
 
-    [SerializeField]
-    public float _produceInterval;
+    //[SerializeField]
+    //public float _produceInterval;
     [zzSerialize]
     public float produceInterval
     {
         get
         {
-            return _produceInterval;
+            return soldierFactorySetting.produceInterval;
         }
         set
         {
-            _produceInterval = value;
+            soldierFactorySetting.produceInterval = value;
         }
     }
 
-    [SerializeField]
-    public float _firstTimeOffset;
+    //[SerializeField]
+    //public float _firstTimeOffset;
     [zzSerialize]
     public float firstTimeOffset
     {
         get
         {
-            return _firstTimeOffset;
+            return soldierFactorySetting.firstTimeOffset;
         }
         set
         {
-            _firstTimeOffset = value;
+            soldierFactorySetting.firstTimeOffset = value;
         }
     }
 
@@ -99,18 +134,18 @@ public class SingleSoldierFactoryObject : zzEditableObject
     public string soldierName
     {
         get 
-        { 
-            return _soldierName; 
+        {
+            return soldierFactorySetting.soldierName; 
         }
 
         set 
         {
-            if (_soldierName == name)
+            if (soldierFactorySetting.soldierName == name)
                 return;
-            _soldierName = value;
+            soldierFactorySetting.soldierName = value;
             Destroy(signObject);
             var lTransform = transform;
-            var lSoldierInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, _soldierName);
+            var lSoldierInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, soldierName);
             signObject = (GameObject)Instantiate(lSoldierInfo.signPrefab,
                 lTransform.position, lTransform.rotation);
             signObject.transform.parent = lTransform;
@@ -122,12 +157,11 @@ public class SingleSoldierFactoryObject : zzEditableObject
     //考虑到场景创建初始阶段,物体物体不一定已创建,所以将物体探测部分放在Start中
     void Start()
     {
-
+        var lFactory = soldierFactorySetting.addFactory(gameObject);
         var lStronghold = SoldierFactoryState.Singleton.canCreate(race, transform.position);
-        if(lStronghold)
+        if (lStronghold && !lStronghold.soldierFactory)
         {
-
-            factory.listener = lStronghold
+            lFactory.listener = lStronghold
                 .GetComponent<SoldierFactoryListener>().interfaceObject;
             lStronghold.soldierFactory = gameObject;
         }
@@ -152,20 +186,22 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
         var lFactoryObject = (SingleSoldierFactoryObject)pObject;
         var lSelectedSoldier = lFactoryObject.soldierName;
 
-        drawProduceSetting(lFactoryObject.race,lSelectedSoldier, ref lFactoryObject._useDefaultProduceSetting,
-            ref lFactoryObject._produceInterval, ref lFactoryObject._firstTimeOffset);
+        drawProduceSetting( lFactoryObject.soldierFactorySetting);
 
         var lNewSelected = drawSoldierList(lFactoryObject.race, lSelectedSoldier);
         if (lNewSelected != lSelectedSoldier)
             lFactoryObject.soldierName = lNewSelected;
     }
 
-    public static void drawProduceSetting(Race race, string lSelectedSoldier, ref bool pUseDefault,
-        ref float pProduceInterval,ref float pFirstTimeOffset)
+    public static void drawProduceSetting(
+        SingleSoldierFactoryObject.SoldierFactorySetting pSoldierFactorySetting)
     {
-        float lProduceInterval = pProduceInterval;
-        float lFirstTimeOffset = pFirstTimeOffset;
-        if (pUseDefault)
+        var race = pSoldierFactorySetting.race;
+        string lSelectedSoldier = pSoldierFactorySetting.soldierName;
+        float lProduceInterval = pSoldierFactorySetting.produceInterval;
+        float lFirstTimeOffset = pSoldierFactorySetting.firstTimeOffset;
+        bool lUseDefault = pSoldierFactorySetting.useDefaultProduceSetting;
+        if (lUseDefault)
         {
             var lDefaultInfo = SoldierFactoryState.Singleton
                 .getSoldierInfo(race, lSelectedSoldier);
@@ -175,7 +211,7 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
         bool lNewUse;
         GUILayout.BeginVertical();
         {
-            lNewUse = GUILayout.Toggle(pUseDefault,"使用默认生产设置");
+            lNewUse = GUILayout.Toggle(lUseDefault, "使用默认生产设置");
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("生产间隔时间", GUILayout.ExpandWidth(false));
@@ -194,13 +230,13 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
         }
         GUILayout.EndVertical();
 
-        if (!pUseDefault)
+        if (!lUseDefault)
         {
-            pProduceInterval = lProduceInterval;
-            pFirstTimeOffset = lFirstTimeOffset;
+            pSoldierFactorySetting.produceInterval = lProduceInterval;
+            pSoldierFactorySetting.firstTimeOffset = lFirstTimeOffset;
 
         }
-        pUseDefault = lNewUse;
+        pSoldierFactorySetting.useDefaultProduceSetting = lNewUse;
     }
 
     string drawSoldierList(Race pRace,string pSelected)
