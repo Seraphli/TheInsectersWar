@@ -1,0 +1,11 @@
+{
+	"publisher_id": 0,
+	"publisher_package_id": 609,
+	"title": "zz Signal Slot",
+	"description": "Zz Signal Slot let you can connect signal(delegate) and slot(function) in editor;After setting signal object , signal's delegate method and slot object, it will display all functions&nbsp; fit the delegate ,make you easy to choose.\n<br> \n<br>\nIt is good for independence of component. You can use it in GUI,collision, or any other event.\n<br>\n<br>\n<a href=\"http://forum.unity3d.com/threads/82082/\" target=\"_blank\" >Example and discussion in Unity forum</a>\n<br>\n<br>\n<a href=\"http://en.zonozone.com/\" target=\"_blank\">Homepage</a>",
+	"changes": "1.11\nRename the GameObject in example scene, make it easy to see.",
+	"version_name": "1.11",
+	"category": 3,
+	"recommended_features": [],
+	"required_features": []
+}
