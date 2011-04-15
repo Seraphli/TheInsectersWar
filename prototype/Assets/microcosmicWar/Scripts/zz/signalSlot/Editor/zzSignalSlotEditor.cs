@@ -130,6 +130,7 @@ public class zzSignalSlotEditor : Editor
             }
             EditorGUILayout.EndHorizontal();
 
+            lSignalSlot.destroyAfterAwake = EditorGUILayout.Toggle("Destroy After Awake", lSignalSlot.destroyAfterAwake);
             EditorGUILayout.BeginHorizontal();
             {
                 componentChange("Signal", ref lSignalSlot.signalComponent);

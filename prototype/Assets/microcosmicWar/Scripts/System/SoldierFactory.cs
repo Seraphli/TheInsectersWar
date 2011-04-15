@@ -74,6 +74,7 @@ public class SoldierFactory : MonoBehaviour
 
     public float firstTimeOffset = 0f;
 
+    [SerializeField]
     protected float timePos = 0.0f;
 
     //Component.SendMessage ("dieCallFunction")
@@ -94,12 +95,12 @@ public class SoldierFactory : MonoBehaviour
 
         timePos = firstTimeOffset;
 
-        if (listener==null)
-            listener = GetComponent<SoldierFactoryListener>().interfaceObject;
+        //if (listener==null)
+        //    listener = GetComponent<SoldierFactoryListener>().interfaceObject;
 
-        var lSoldierCreatedList =  listener.soldierCreatedList;
-        if (lSoldierCreatedList!=null)
+        if (listener != null && listener.soldierCreatedList != null)
         {
+            var lSoldierCreatedList = listener.soldierCreatedList;
             soldierList = lSoldierCreatedList;
             usedPoint = 0;
             List<Soldier> lRemoveList = new List<Soldier>();
@@ -155,6 +156,9 @@ public class SoldierFactory : MonoBehaviour
     {
         //if(zzCreatorUtility.isHost())
         //{
+        if (listener==null)
+            return;
+
         timePos += Time.deltaTime;
         if (!produceTransform && timePos > produceInterval - prepareTime)
         {

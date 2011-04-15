@@ -79,7 +79,7 @@ public class Stronghold:MonoBehaviour
         }
     }
 
-    void updateRaceShow()
+    public void updateRaceShow()
     {
         bool lEnableOccupyingAnimations = (owner != Race.eNone);
 
@@ -93,13 +93,17 @@ public class Stronghold:MonoBehaviour
         setMaterial(waterRenderers, lRaceShow.waterMaterial);
     }
 
-    void Start()
+    void Awake()
     {
         raceShowData = new RaceShow[raceShowInfo.Length];
         foreach (var lRaceShow in raceShowInfo)
         {
             raceShowData[(int)lRaceShow.race] = lRaceShow;
         }
+    }
+
+    void Start()
+    {
 
         if (owner != Race.eNone)
         {
@@ -295,9 +299,14 @@ public class Stronghold:MonoBehaviour
 
     }
 
-    void occupiedEvent()
+    public void playOccupiedAimation()
     {
         strongholdAnimation.CrossFade("occupied");
+    }
+
+    void occupiedEvent()
+    {
+        playOccupiedAimation();
         GameSceneManager.Singleton
             .addObject(owner, GameSceneManager.UnitManagerType.stronghold, gameObject);
         var strongholdTransform = transform;
@@ -311,10 +320,15 @@ public class Stronghold:MonoBehaviour
         updateRaceShow();
     }
 
+    public void playLostAnimation()
+    {
+        strongholdAnimation.CrossFade("lost");
+    }
+
     void lostEvent()
     {
         strongholdBuilding = null;
-        strongholdAnimation.CrossFade("lost");
+        playLostAnimation();
         updateRaceShow();
         GameSceneManager.Singleton
             .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);

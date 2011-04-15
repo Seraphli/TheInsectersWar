@@ -18,6 +18,8 @@ public class zzSignalSlot : MonoBehaviour
     public Component slotComponent;
     public string slotMethodName = "slotMethodName";
 
+    public bool destroyAfterAwake = true;
+
     //just for show "enabled" in editor
     void Start(){}
 
@@ -25,7 +27,8 @@ public class zzSignalSlot : MonoBehaviour
     {
         if(!enabled)
         {
-            Destroy(this);
+            if(destroyAfterAwake)
+                Destroy(this);
             return;
         }
 
@@ -56,8 +59,9 @@ public class zzSignalSlot : MonoBehaviour
              lSignalDelegateType, slotComponent, lSlotMethod);
 
         linkSignalToSlot(signalComponent, lSignalMemberInfo, lSlotDelegate);
-
-        Destroy(this);
+        
+        if(destroyAfterAwake)
+            Destroy(this);
     }
 
     static void linkSignalToSlot(object pSignalObject, MemberInfo pSignalMemberInfo,

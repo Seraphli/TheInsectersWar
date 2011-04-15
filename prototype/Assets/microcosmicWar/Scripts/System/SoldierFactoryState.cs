@@ -154,36 +154,48 @@ public class SoldierFactoryState : MonoBehaviour
     /// <returns></returns>
     public Stronghold canCreate(GameObject pGameObject, Race race, out Vector3 position)
     {
-        Stronghold lStronghold = null;
         if (defenseTowerItem.canBuild(pGameObject, out position))
         {
-            //区域内是否有阵地
-            Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
-            if(lIsInSelfZone.Length!=0)
-            {
-                lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
-            }
+            ////区域内是否有阵地
+            //Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
+            //if(lIsInSelfZone.Length!=0)
+            //{
+            //    lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
+            //}
 
-            if (
-                lStronghold
-                && lStronghold.occupied == true//被占领
-                && lStronghold.owner == race//属于自己的种族
-                && !lStronghold.soldierFactory//还未建造兵工厂
-                )
-                return lStronghold;
-
-            //if(
-            //    !lStronghold
-            //    || lStronghold.owner != race
-
-            //    || lStronghold.soldierFactory
-            //   )
-            //    return null;
+            //if (
+            //    lStronghold
+            //    && lStronghold.occupied == true//被占领
+            //    && lStronghold.owner == race//属于自己的种族
+            //    && !lStronghold.soldierFactory//还未建造兵工厂
+            //    )
+            //    return lStronghold;
+            return canCreate(race, position);
 
         }
         return null;
     }
+    
+    public Stronghold canCreate(Race race, Vector3 position)
+    {
+        Stronghold lStronghold = null;
+        //区域内是否有阵地
+        Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
+        if (lIsInSelfZone.Length != 0)
+        {
+            lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
+        }
 
+        if (
+            lStronghold
+            && lStronghold.occupied == true//被占领
+            && lStronghold.owner == race//属于自己的种族
+            && !lStronghold.soldierFactory//还未建造兵工厂
+            )
+            return lStronghold;
+        return null;
+
+    }
     public void tryCreateFactory(Race race,int index,GameObject onwer)
     {
         if (zzCreatorUtility.isHost())
