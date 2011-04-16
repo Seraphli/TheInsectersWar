@@ -121,7 +121,6 @@ public class rule1 : MonoBehaviour
 
     public TeamLoseData getTeamLoseRule(string teamName)
     {
-        //print(teamName);
         TeamData teamData = (TeamData)teamLoseInfoList[teamName];
         return teamData.teamLoseRule;
     }
@@ -132,6 +131,14 @@ public class rule1 : MonoBehaviour
     }*/
 
     static protected rule1 singletonInstance = null;
+
+    public static rule1 Singleton
+    {
+        get
+        {
+            return singletonInstance;
+        }
+    }
 
     public static rule1 getSingleton()
     {
@@ -148,7 +155,7 @@ public class rule1 : MonoBehaviour
 
         foreach (TeamInfo i in teamNameListInfo)
         {
-            getSingleton().addTeam(i);
+            addTeam(i);
         }
         //print("Awake "+teamLoseInfoList.Count);
     }

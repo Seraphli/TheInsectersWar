@@ -25,7 +25,7 @@ public class GameScene : MonoBehaviour
 
     public bool needCreatePlayer = true;
 
-    public GameObject useSceneData;
+    //public GameObject useSceneData;
 
     void setSpawn(ref HeroSpawn pSpawn, Race pRace)
     {
@@ -58,20 +58,7 @@ public class GameScene : MonoBehaviour
 
         setSpawn(ref pismirePlayerSpawn, Race.ePismire);
         setSpawn(ref beePlayerSpawn, Race.eBee);
-        //print("Awake");
-        //if(Network.peerType==NetworkPeerType.Disconnected || Network.peerType==NetworkPeerType.Connecting )
-        //	Network.InitializeServer(32, 25000);
 
-
-        //creat team info
-        //{
-        rule1 lRule = gameObject.GetComponent<rule1>();
-        TeamInfo lTeam1Info = new TeamInfo();
-        lTeam1Info.teamName = PlayerInfo.eRaceToString(Race.ePismire);
-        TeamInfo lTeam2Info = new TeamInfo();
-        lTeam2Info.teamName = PlayerInfo.eRaceToString(Race.eBee);
-        lRule.addTeam(lTeam1Info);
-        lRule.addTeam(lTeam2Info);
     }
 
     public static GameScene getSingleton()
@@ -193,15 +180,15 @@ public class GameScene : MonoBehaviour
             if(_playerInfo==null)
             {
                 GameObject lLastSceneInfo = GameObject.Find(lastSceneInfoName);
+                _playerInfo = sceneData.GetComponent<PlayerInfo>();
                 if (lLastSceneInfo)
                 {
-                    PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
-                    playerInfo.setData(lLastSceneInfo.GetComponent<PlayerInfo>());
-                    Destroy(lLastSceneInfo);
+                    _playerInfo.setData(lLastSceneInfo.GetComponent<PlayerInfo>());
+                    //在编辑器中要多次使用,所以不可以删除
+                    //Destroy(lLastSceneInfo);
                 }
-                useSceneData = sceneData;
-                _playerInfo = useSceneData.GetComponent<PlayerInfo>();
-                _playerInfo.UiRoot = zzObjectMap.getObject("TopUI")
+                //useSceneData = sceneData;
+                _playerInfo.UiRoot = _playerInfo.topUi
                     .GetComponent<zzSceneObjectMap>()
                     .getObject(PlayerInfo.eRaceToString(_playerInfo.race));
             }
@@ -213,7 +200,7 @@ public class GameScene : MonoBehaviour
     [RPC]
     public void ImpGameResult(string pWinerRaceName)
     {
-        PlayerInfo playerInfo = useSceneData.GetComponent<PlayerInfo>();
+        PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
 
         if (pWinerRaceName == playerInfo.getPlayerName())
             endGameScene("you win");

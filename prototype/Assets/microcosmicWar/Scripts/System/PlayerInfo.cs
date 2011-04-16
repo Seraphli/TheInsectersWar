@@ -211,7 +211,11 @@ public class PlayerInfo : MonoBehaviour
 
     public string playerName = "player";
 
+    public GameObject topUi;
+
     public GameObject UiRoot;
+
+    public bool destroyAfterCollectData;
 
     //FIXME_VAR_TYPE teamName="";
 
@@ -229,6 +233,8 @@ public class PlayerInfo : MonoBehaviour
     public void setData(PlayerInfo pOther)
     {
         this.race = pOther.race;
+        if (pOther.destroyAfterCollectData)
+            Destroy(pOther.gameObject);
     }
 
     public void setRace(Race pRace)

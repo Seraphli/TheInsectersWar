@@ -22,16 +22,16 @@ class rule1LoseCondition : IobjectListener
 
     public override void initedCall()
     {
-        //print("initedCall");
-        if (rule1.getSingleton())
+        var lRule = rule1.Singleton;
+        if (lRule)
         {
             if (rule1LoseConditionType == Rule1LoseConditionType.eInAll)
             {
-                rule1.getSingleton().getTeamLoseRule(teamName).addLoseConditionInAll(GetInstanceID());
+                lRule.getTeamLoseRule(teamName).addLoseConditionInAll(GetInstanceID());
             }
             else
             {
-                rule1.getSingleton().getTeamLoseRule(teamName).addLoseConditionInOne(GetInstanceID());
+                lRule.getTeamLoseRule(teamName).addLoseConditionInOne(GetInstanceID());
             }
         }
     }
@@ -39,17 +39,18 @@ class rule1LoseCondition : IobjectListener
     public override void removedCall()
     {
         //print("removedCall");
-        if (rule1.getSingleton())
+        var lRule = rule1.Singleton;
+        if (lRule)
         {
             if (rule1LoseConditionType == Rule1LoseConditionType.eInAll)
             {
                 //print("rule1LoseConditionType == Rule1LoseConditionType.eInAll");
-                rule1.getSingleton().getTeamLoseRule(teamName).removeLoseConditionInAll(GetInstanceID());
+                lRule.getTeamLoseRule(teamName).removeLoseConditionInAll(GetInstanceID());
             }
             else
             {
                 //print("rule1LoseConditionType != Rule1LoseConditionType.eInAll");
-                rule1.getSingleton().getTeamLoseRule(teamName).removeLoseConditionInOne(GetInstanceID());
+                lRule.getTeamLoseRule(teamName).removeLoseConditionInOne(GetInstanceID());
             }
             checkResult();
         }
@@ -59,12 +60,12 @@ class rule1LoseCondition : IobjectListener
     {
         string teamName = GameScene.Singleton.playerInfo.getTeamName();
 
-        if (rule1.getSingleton().isWin(teamName))
+        if (rule1.Singleton.isWin(teamName))
         {
             //print("rule1.getSingleton().isWin(teamName)");
             GameScene.getSingleton().endGameScene("you win");
         }
-        else if (rule1.getSingleton().isLose(teamName))
+        else if (rule1.Singleton.isLose(teamName))
         {
             //print("rule1.getSingleton().isLose(teamName)");
             GameScene.getSingleton().endGameScene("you lose");
