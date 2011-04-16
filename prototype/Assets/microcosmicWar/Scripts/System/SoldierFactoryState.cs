@@ -12,27 +12,27 @@ public class SoldierFactoryState : MonoBehaviour
         public State(SoldierFactorySystem.SoldierInfo pInfo)
         {
             info = pInfo;
-            building = null;
+            //building = null;
         }
 
         public SoldierFactorySystem.SoldierInfo info;
-        private GameObject _building;
+        //private GameObject _building;
 
-        public bool netCanBuild;
+        //public bool netCanBuild;
 
-        public GameObject building
-        {
-            get { return _building; }
-            set 
-            { 
-                _building = value;
-            }
-        }
+        //public GameObject building
+        //{
+        //    get { return _building; }
+        //    set 
+        //    { 
+        //        _building = value;
+        //    }
+        //}
 
-        public bool canBuild()
-        {
-            return !_building;
-        }
+        //public bool canBuild()
+        //{
+        //    return !_building;
+        //}
     }
 
     zzUtilities.voidFunction changedCall = zzUtilities.nullFunction;
@@ -45,30 +45,30 @@ public class SoldierFactoryState : MonoBehaviour
     Dictionary<Race, List<State>> RaceFactoryState = new Dictionary<Race,List<State>>();
     Dictionary<GameObject, State> buildToState;
 
-    void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
-    {
-        //if (stream.isWriting)
-        //{
-            foreach (var lRaceFactory in RaceFactoryState)
-            {
-                foreach (var lState in lRaceFactory.Value)
-                {
-                    stream.Serialize(ref lState.netCanBuild);
-                }
-            }
-        //}
-        ////---------------------------------------------------
-        //stream.Serialize(ref lOwner);
-        //stream.Serialize(ref nowOccupiedValue);
-        //stream.Serialize(ref pismireCount); ;
-        //stream.Serialize(ref beeCount);
-        ////---------------------------------------------------
-        //if (stream.isReading)
-        //{
-        //    owner = (Race)lOwner;
-        //    strongholdValueShow.showRace(owner);
-        //}
-    }
+    //void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    //{
+    //    //if (stream.isWriting)
+    //    //{
+    //        foreach (var lRaceFactory in RaceFactoryState)
+    //        {
+    //            foreach (var lState in lRaceFactory.Value)
+    //            {
+    //                stream.Serialize(ref lState.netCanBuild);
+    //            }
+    //        }
+    //    //}
+    //    ////---------------------------------------------------
+    //    //stream.Serialize(ref lOwner);
+    //    //stream.Serialize(ref nowOccupiedValue);
+    //    //stream.Serialize(ref pismireCount); ;
+    //    //stream.Serialize(ref beeCount);
+    //    ////---------------------------------------------------
+    //    //if (stream.isReading)
+    //    //{
+    //    //    owner = (Race)lOwner;
+    //    //    strongholdValueShow.showRace(owner);
+    //    //}
+    //}
 
     public System.Collections.ObjectModel.ReadOnlyCollection<State>
         getFactoryStates(Race race)
@@ -76,11 +76,11 @@ public class SoldierFactoryState : MonoBehaviour
         return RaceFactoryState[race].AsReadOnly();
     }
 
-    public void setBuilding(Race race, int index, GameObject pBuilding)
-    {
-        State lState = RaceFactoryState[race][index];
-        lState.building = pBuilding;
-    }
+    //public void setBuilding(Race race, int index, GameObject pBuilding)
+    //{
+    //    State lState = RaceFactoryState[race][index];
+    //    lState.building = pBuilding;
+    //}
 
     Dictionary<string, int> soldierNameToStateIndex = new Dictionary<string, int>();
 
@@ -190,7 +190,7 @@ public class SoldierFactoryState : MonoBehaviour
             lStronghold
             && lStronghold.occupied == true//被占领
             && lStronghold.owner == race//属于自己的种族
-            && !lStronghold.soldierFactory//还未建造兵工厂
+            //&& !lStronghold.soldierFactory//还未建造兵工厂
             )
             return lStronghold;
         return null;
@@ -214,12 +214,12 @@ public class SoldierFactoryState : MonoBehaviour
     void _tryCreateFactory(Race race,int index,GameObject owner)
     {
         Vector3 lPosition;
-        var lState = RaceFactoryState[race][index];
-        if(!lState.canBuild())
-        {
-            Debug.LogError("!lStates[index].canBuild()");
-            return;
-        }
+        //var lState = RaceFactoryState[race][index];
+        //if(!lState.canBuild())
+        //{
+        //    Debug.LogError("!lStates[index].canBuild()");
+        //    return;
+        //}
         Stronghold lStronghold = canCreate(owner, race, out lPosition);
 
         if (lStronghold)
@@ -269,7 +269,7 @@ public class SoldierFactoryState : MonoBehaviour
             lFactoryInfo.firstTimeOffset);
 
         lFactory.listener = lStronghold.GetComponent<SoldierFactoryListener>().interfaceObject;
-        lStronghold.setSoldierFactory(lBuilding);
+        lStronghold.soldierFactory = lBuilding;
 
         decorateFactoryBuild(lBuilding, race, lStateIndex);
     }
@@ -299,10 +299,10 @@ public class SoldierFactoryState : MonoBehaviour
 
     void _decorateFactoryBuild(GameObject lBuilding, Race race, int lStateIndex)
     {
-        lBuilding.GetComponent<Life>().addDieCallback(buildingDeadCall);
+        //lBuilding.GetComponent<Life>().addDieCallback(buildingDeadCall);
         State lState = RaceFactoryState[race][lStateIndex];
-        lState.building = lBuilding;
-        buildToState[lBuilding] = lState;
+        //lState.building = lBuilding;
+        //buildToState[lBuilding] = lState;
         GameObject lSign = (GameObject)Instantiate(
             lState.info.signPrefab, lBuilding.transform.position, Quaternion.identity);
         lSign.transform.parent = lBuilding.transform;
@@ -310,19 +310,19 @@ public class SoldierFactoryState : MonoBehaviour
         changedCall();
     }
 
-    void buildingDeadCall(Life life)
-    {
-        var lState = buildToState[life.gameObject];
-        lState.building = null;
+    //void buildingDeadCall(Life life)
+    //{
+    //    var lState = buildToState[life.gameObject];
+    //    lState.building = null;
 
-        if (zzCreatorUtility.isHost())
-        {
-            var lFactoryInfo = lState.info;
-            zzObjectMap.getObject(lFactoryInfo.armyBaseName)
-                .GetComponent<ArmyBase>()
-                .removeFactory(lFactoryInfo.soldierPrefab);
-        }
+    //    if (zzCreatorUtility.isHost())
+    //    {
+    //        var lFactoryInfo = lState.info;
+    //        zzObjectMap.getObject(lFactoryInfo.armyBaseName)
+    //            .GetComponent<ArmyBase>()
+    //            .removeFactory(lFactoryInfo.soldierPrefab);
+    //    }
 
-        changedCall();
-    }
+    //    changedCall();
+    //}
 }

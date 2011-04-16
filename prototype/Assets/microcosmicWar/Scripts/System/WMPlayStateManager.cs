@@ -6,7 +6,7 @@ public class WMPlayStateManager : PlayStateManager
 
     public GameObject managerObject;
 
-    void addPlayingObject(GameObject lClone)
+    public static void addManagedObject(GameObject lClone)
     {
         var lGameSceneManager = GameSceneManager.Singleton;
         var lGameObjectType = lClone.GetComponent<WMGameObjectType>();
@@ -21,6 +21,12 @@ public class WMPlayStateManager : PlayStateManager
         else
             lGameSceneManager.addObject(
                 GameSceneManager.MapManagerType.moveableObject, lClone);
+
+    }
+
+    public static void addPlayingObject(GameObject lClone)
+    {
+        addManagedObject(lClone);
         lClone.GetComponent<zzEditableObjectContainer>().play = true;
     }
 

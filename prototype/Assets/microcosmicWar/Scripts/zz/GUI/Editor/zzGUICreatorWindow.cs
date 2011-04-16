@@ -62,6 +62,7 @@ public class zzGUICreatorWindow : EditorWindow
     {
         widgetInfoList = new WidgetInfo[] {
             widget<zzWindow>("Window"),
+            widget<zzLabel>("Label"),
             widget<zzButton>("Button"),
             widget<zzImageGUI>("Image"),
             widget<zzGUIToolbar>("Toolbar"),

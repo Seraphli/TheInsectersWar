@@ -88,7 +88,7 @@ public class HeroSpawn : MonoBehaviour
             Debug.LogError("haveFirstCreate == true");
 
         var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
-        lUiRoot.GetComponent<zzInterfaceGUI>().visible = true;
+        lUiRoot.GetComponent<zzInterfaceGUI>().setVisible( true );
 
         hero = _createHero();
         zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();

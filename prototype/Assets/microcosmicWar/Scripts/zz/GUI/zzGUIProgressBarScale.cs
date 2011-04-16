@@ -6,9 +6,9 @@ public class zzGUIProgressBarScale : zzGUIProgressBarBase
 {
     public override void impGUI(Rect rect)
     {
-        zzInterfaceGUI[] lSubs = gameObject.GetComponentsInChildren<zzInterfaceGUI>();
-        foreach (var lSub in lSubs)
+        foreach (Transform lSubTransform in transform)
         {
+            var lSub = lSubTransform.GetComponent<zzInterfaceGUI>();
             Rect lRelativePosition = lSub.relativePosition;
             if (direction == zzGUIDirection.horizontal)
                 lRelativePosition.width = rate;

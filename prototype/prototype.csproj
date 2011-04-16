@@ -149,6 +149,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\Editor\MakeEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\setting\RaceChooseSetting.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSelfWhenDestroy.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
@@ -181,6 +182,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\System\ActionCommandControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\ActionCommandInput.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\AutoSupplyAirplane.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\AutoWMGameObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\collisionLayer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameScene.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameSceneManager.cs" />

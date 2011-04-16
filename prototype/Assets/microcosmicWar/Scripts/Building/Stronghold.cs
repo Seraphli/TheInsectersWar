@@ -36,7 +36,24 @@ public class Stronghold:MonoBehaviour
 
     public StrongholdValueShow strongholdValueShow;
 
-    public GameObject soldierFactory;
+    [SerializeField]
+    GameObject _soldierFactory;
+
+    public GameObject soldierFactory
+    {
+        get
+        {
+            return _soldierFactory;
+        }
+        set
+        {
+            if(_soldierFactory && _soldierFactory!=value)
+            {
+                _soldierFactory.GetComponent<Life>().makeDead();
+            }
+            _soldierFactory = value;
+        }
+    }
 
     public Animation strongholdAnimation;
 

@@ -47,6 +47,8 @@ public class SoldierFactory : MonoBehaviour
         /// <returns>produceTransform</returns>
         Transform prepareProduce();
 
+        HashSet<Soldier> popSoldierCreatedList();
+
         HashSet<Soldier> soldierCreatedList
         {
             get;
@@ -100,9 +102,11 @@ public class SoldierFactory : MonoBehaviour
 
         if (listener != null && listener.soldierCreatedList != null)
         {
-            var lSoldierCreatedList = listener.soldierCreatedList;
+            var lSoldierCreatedList = listener.popSoldierCreatedList();
             soldierList = lSoldierCreatedList;
             usedPoint = 0;
+
+            //移除死掉的
             List<Soldier> lRemoveList = new List<Soldier>();
             foreach (var lSoldier in soldierList)
             {
@@ -119,7 +123,6 @@ public class SoldierFactory : MonoBehaviour
             canProduceCheck();
         else
             Destroy(this);
-
         
     }
 

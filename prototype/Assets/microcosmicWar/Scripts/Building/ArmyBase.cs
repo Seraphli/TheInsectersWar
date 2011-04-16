@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ArmyBase : MonoBehaviour, SoldierFactory.Listener
+public class ArmyBase : MonoBehaviour
 {
 
     public Transform[] finalAims
@@ -22,16 +22,16 @@ public class ArmyBase : MonoBehaviour, SoldierFactory.Listener
         }
     }
 
-    public Transform prepareProduce() 
-    {
-        return _produceTransform;
-    }
+    //public Transform prepareProduce() 
+    //{
+    //    return _produceTransform;
+    //}
 
-    public HashSet<Soldier> soldierCreatedList
-    {
-        get;
-        set;
-    }
+    //public HashSet<Soldier> soldierCreatedList
+    //{
+    //    get;
+    //    set;
+    //}
 
     public string adversaryName = "";
 

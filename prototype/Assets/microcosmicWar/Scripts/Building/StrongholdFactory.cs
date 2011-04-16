@@ -38,13 +38,18 @@ public class StrongholdFactory : MonoBehaviour, SoldierFactory.Listener
         }
     }
 
+    public HashSet<Soldier> popSoldierCreatedList()
+    {
+        var lOut = _soldierCreatedList;
+        _soldierCreatedList = null;
+        return lOut;
+    }
+
     public HashSet<Soldier> soldierCreatedList
     {
         get
         {
-            var lOut = _soldierCreatedList;
-            _soldierCreatedList = null;
-            return lOut;
+            return _soldierCreatedList;
         }
         set
         {
