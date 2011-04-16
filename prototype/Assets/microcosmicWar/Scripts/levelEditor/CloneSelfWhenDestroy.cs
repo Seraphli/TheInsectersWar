@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//危险误用
 public class CloneSelfWhenDestroy : MonoBehaviour
 {
     void OnDestroy()

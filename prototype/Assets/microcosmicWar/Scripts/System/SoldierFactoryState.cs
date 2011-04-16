@@ -258,10 +258,10 @@ public class SoldierFactoryState : MonoBehaviour
 
 
         var lFactoryInfo = lState.info;
-        zzObjectMap.getObject(lFactoryInfo.armyBaseName)
-            .GetComponent<ArmyBase>()
-            .addFactory(lFactoryInfo.soldierPrefab,lFactoryInfo.produceInterval,
-                lFactoryInfo.firstTimeOffset);
+        //zzObjectMap.getObject(lFactoryInfo.armyBaseName)
+        //    .GetComponent<ArmyBase>()
+        //    .addFactory(lFactoryInfo.soldierPrefab,lFactoryInfo.produceInterval,
+        //        lFactoryInfo.firstTimeOffset);
 
         var lFactory = SoldierFactory.addFactory(lBuilding,
             lFactoryInfo.soldierPrefab,

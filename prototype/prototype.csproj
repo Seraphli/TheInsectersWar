@@ -154,6 +154,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\EditorViewSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
@@ -320,6 +321,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectCreator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectInit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIndexTableClass.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzInputDownEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLayerMaskSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMasterServer.cs" />
