@@ -12,12 +12,12 @@ public class MouseZoom : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") < 0) // back
+        if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
         {
             wantSize = Mathf.Max(wantSize - sizeInEveryChange, minSize);
 
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
         {
             wantSize = Mathf.Min(wantSize + sizeInEveryChange, maxSize);
         }

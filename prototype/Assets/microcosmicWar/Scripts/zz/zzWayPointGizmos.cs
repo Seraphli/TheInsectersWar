@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class zzWayPoint : MonoBehaviour
+public class zzWayPointGizmos : MonoBehaviour
 {
     void OnDrawGizmos()
     {

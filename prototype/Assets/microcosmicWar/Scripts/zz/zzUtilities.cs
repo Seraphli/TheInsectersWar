@@ -174,6 +174,24 @@ public class zzPair
     public object right;
 }
 
+public class zzPair<T>
+{
+    override public string ToString()
+    {
+        return "left:" + left + " right:" + right;
+    }
+
+    public zzPair() { }
+    public zzPair(T Lift, T Right)
+    {
+        left = Lift;
+        right = Right;
+    }
+
+    public T left;
+    public T right;
+}
+
 public class zzTransform
 {
     public Vector3 position;
