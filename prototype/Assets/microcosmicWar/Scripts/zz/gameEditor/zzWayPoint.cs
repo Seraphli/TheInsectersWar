@@ -3,16 +3,54 @@ using System.Collections.Generic;
 
 public class zzWayPoint:MonoBehaviour
 {
-    public zzWayPoint[] nextPoints = new zzWayPoint[0]{};
+    public zzWayPoint[] nextPoints = new zzWayPoint[0] { };
+    public zzWayPoint[] backPoints = new zzWayPoint[0] { };
 
-    public void addNextPoint(zzWayPoint pPoint)
+    public void OnRemove()
+    {
+        foreach (var lNextPoint in nextPoints)
+        {
+            lNextPoint.removeBackPoint(this);
+        }
+        foreach (var lBackPoint in backPoints)
+        {
+            var lNextPoints = new List<zzWayPoint>(lBackPoint.nextPoints);
+
+            //移除成功则替换原数组
+            if (lNextPoints.Remove(this))
+            {
+                lBackPoint.nextPoints = lNextPoints.ToArray();
+            }
+        }
+    }
+
+    void addBackPoint(zzWayPoint pPoint)
+    {
+        var lBackPoints = new List<zzWayPoint>(backPoints);
+        lBackPoints.Add(pPoint);
+        backPoints = lBackPoints.ToArray();
+    }
+
+    void removeBackPoint(zzWayPoint pPoint)
+    {
+        var lBackPoints = new List<zzWayPoint>(backPoints);
+
+        //移除成功则替换原数组
+        if (lBackPoints.Remove(pPoint))
+            backPoints = lBackPoints.ToArray();
+    }
+
+    public bool addNextPoint(zzWayPoint pPoint)
     {
         var lNextPoints = new List<zzWayPoint>(nextPoints);
         if (!lNextPoints.Contains(pPoint))
         {
             lNextPoints.Add(pPoint);
             nextPoints = lNextPoints.ToArray();
+            pPoint.addBackPoint(this);
+            return true;
         }
+        return false;
     }
 
     public void removeNextPoint(zzWayPoint pPoint)
@@ -21,7 +59,10 @@ public class zzWayPoint:MonoBehaviour
 
         //移除成功则替换原数组
         if (lNextPoints.Remove(pPoint))
+        {
             nextPoints = lNextPoints.ToArray();
+            pPoint.removeBackPoint(this);
+        }
     }
 
     public zzWayPoint[] getNeighbor(float pRange,float pYLimit, LayerMask pPointMask, LayerMask pPreventMask)

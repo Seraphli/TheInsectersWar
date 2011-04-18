@@ -8,11 +8,22 @@ public class zzWayPointLine : P2PLine
 
     public Transform end;
 
+    public float lineZ = -3f;
+
     //public Vector3 endPointPos;
     void Start()
     {
-        beginPosition = begin.position;
-        endPosition = end.position;
+        beginPosition =getVector( begin.position);
+        endPosition = getVector( end.position);
+    }
+
+    public void setPoints(zzWayPoint pPointFrom,zzWayPoint pPointTo)
+    {
+        begin = pPointFrom.transform;
+        end = pPointTo.transform;
+        pPointFrom.addNextPoint(pPointTo);
+        print(begin.position);
+        print(end.position);
     }
 
     void Update()
@@ -23,10 +34,16 @@ public class zzWayPointLine : P2PLine
             return;
         }
 
-        if (beginPosition != begin.position)
-            beginPosition = begin.position;
-        if (endPosition != end.position)
-            endPosition = end.position;
+        if (beginPosition != getVector( begin.position))
+            beginPosition = getVector( begin.position);
+        if (endPosition !=getVector(  end.position))
+            endPosition = getVector( end.position);
+    }
+
+    Vector3 getVector(Vector3 pPos)
+    {
+        pPos.z = lineZ;
+        return pPos;
     }
 
     void OnDestory()

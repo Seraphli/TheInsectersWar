@@ -1,135 +1,113 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class zzWayPointConnecter:MonoBehaviour
+public class zzWayPointConnecter : ObjectPickBase
 {
+    public string lineTypeName;
 
-    public Transform pointParent;
+    public zzWayPoint beginPoint;
 
-    public Transform lineParent;
+    public P2PLine connectLine;
 
-    public float neighborRange = 20f;
-
-    public float maxHeigth = 5f;
-
-    public LayerMask pointMask;
-
-    public LayerMask preventMask;
+    public Camera camera;
 
     public float lineZ = -3f;
+    //public Transform choosedPointTransform;
 
-    public float lineWidth = 0.1f;
+    public System.Action<GameObject> objectAddedEvent;
 
-    public Material lineMaterial;
-
-    //List<LineRenderer> lines = new List<LineRenderer>();
-
-    class NeighborInfo
+    public override void OnLeftOn(GameObject pObject)
     {
-        Dictionary<zzWayPoint,HashSet<zzWayPoint>>
-            data = new Dictionary<zzWayPoint,HashSet<zzWayPoint>>();
+        OnConnectDown(pObject);
+    }
 
-        public HashSet<zzWayPoint> getNeighborData(zzWayPoint pPoint)
-        {
-            return getNeighborData(data, pPoint);
-        }
+    public override void OnLeftOff(GameObject pObject)
+    {
+        OnConnectUp(pObject);
+    }
 
-        public static HashSet<zzWayPoint> getNeighborData(
-            Dictionary<zzWayPoint, HashSet<zzWayPoint>> pData,
-            zzWayPoint pPoint)
-        {
-            HashSet<zzWayPoint> lOut;
-            if (pData.ContainsKey(pPoint))
-                lOut = pData[pPoint];
-            else
-            {
-                lOut = new HashSet<zzWayPoint>();
-                pData[pPoint] = lOut;
-            }
-            return lOut;
-        }
 
-        public bool isNeighbor(zzWayPoint pPointA, zzWayPoint pPointB)
-        {
-            return getNeighborData(pPointA).Contains(pPointB);
-        }
+    void Update()
+    {
+        //if(choosedPointTransform)
+        //{
+            refreshLineShow();
+        //}
+    }
 
-        public void addNeighbor(zzWayPoint pPointA, zzWayPoint pPointB)
+    void refreshLineShow()
+    {
+        var lMousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+        lMousePos.z = lineZ;
+        connectLine.endPosition = lMousePos;
+    }
+
+    //public bool setPoint(GameObject pObject)
+    //{
+    //    if (!pObject)
+    //        return false;
+
+    //    if (pObject.GetComponent<zzWayPoint>())
+    //        choosedInPoint = pObject.GetComponent<zzWayPoint>();
+    //    else if (pObject.GetComponent<zzWayPoint>())
+    //        choosedOutPoint = pObject.GetComponent<zzWayPoint>();
+    //    else
+    //        return false;
+
+    //    choosedPointTransform = pObject.transform;
+    //    connectLine.visible = true;
+    //    refreshLineShow();
+    //    return true;
+    //}
+
+    static zzWayPoint getWayPoint(GameObject pObject)
+    {
+        if (!pObject)
+            return null;
+        var lWayPoint = pObject.GetComponent<zzWayPoint>();
+        if (!lWayPoint)
+            return pObject.transform.parent.GetComponent<zzWayPoint>();
+        return lWayPoint;
+    }
+
+    public void OnConnectDown(GameObject pObject)
+    {
+        var lWayPoint = getWayPoint(pObject);
+        if (lWayPoint)
         {
-            getNeighborData(pPointA).Add(pPointB);
-            getNeighborData(pPointB).Add(pPointA);
+            beginPoint = lWayPoint;
+            var lPosition = beginPoint.transform.position;
+            lPosition.z = lineZ;
+            //重置线
+            connectLine.beginPosition = lPosition;
+            connectLine.endPosition = lPosition;
+            enabled = true;
+            connectLine.visible = true;
         }
     }
 
-    [ContextMenu("update Line")]
-    public void updateLine()
+    public void OnConnectUp(GameObject pObject)
     {
-        //lineParent.childCount;
-        List<zzPair<Vector3>> lLines = new List<zzPair<Vector3>>();
-        var lNeighborInfo = new NeighborInfo();
-        foreach (Transform lPoint in pointParent)
+        if (beginPoint)
         {
-            var lWayPoint = lPoint.GetComponent<zzWayPoint>();
-            if (!lWayPoint)
-                continue;
-            var lWayPointPos = lPoint.position;
-            lWayPointPos.z = lineZ;
-            var lNeighbors = lWayPoint.getNeighbor(neighborRange, maxHeigth
-                    ,pointMask, preventMask);
-            foreach (var lNeighbor in lNeighbors)
+            print("if (beginPoint)");
+            var lWayPoint = getWayPoint(pObject);
+            if (lWayPoint != beginPoint)
             {
-                if (!lNeighborInfo.isNeighbor(lWayPoint,lNeighbor))
-                {
-                    var lNeighborPos = lNeighbor.transform.position;
-                    lNeighborPos.z =lineZ;
-                    lLines.Add(new zzPair<Vector3>(lWayPointPos,lNeighborPos));
-                    lNeighborInfo.addNeighbor(lWayPoint,lNeighbor);
-                    //NeighborInfo
-                }
+                print("add line");
+                var lObject = GameSystem.Singleton.createObject(lineTypeName);
+                var lLine = lObject.GetComponent<zzWayPointLine>();
+                lLine.lineZ = lineZ;
+                lLine.setPoints(beginPoint, lWayPoint);
+                objectAddedEvent(lObject);
             }
         }
-        updateLine(lLines);
+        beginPoint = null;
+
+        this.enabled = false;
+        connectLine.visible = false;
+
     }
 
-    public void updateLine(List<zzPair<Vector3>> pLines)
-    {
-        if(lineParent.childCount>=pLines.Count)
-        {
-            int i = 0;
-            for(;i<pLines.Count;++i)
-            {
-                var lLineRender = lineParent.GetChild(i)
-                        .GetComponent<LineRenderer>();
-                setLine(pLines[i], lLineRender);
-            }
-            for (; i < lineParent.childCount;++i )
-            {
-                Destroy(lineParent.GetChild(i).gameObject);
-            }
-        }
-        else//if(lineParent.childCount<pLines.Count)
-        {
-            int i = 0;
-            for (; i < lineParent.childCount; ++i)
-            {
-                var lLineRender = lineParent.GetChild(i)
-                        .GetComponent<LineRenderer>();
-                setLine(pLines[i], lLineRender);
-            }
-            for (; i < pLines.Count; ++i)
-            {
-                var lObject = new GameObject("Line");
-                setLine(pLines[i], lObject.AddComponent<LineRenderer>());
-                lObject.transform.parent = lineParent;
-            }
-        }
-    }
 
-    void setLine(zzPair<Vector3> pLinePos,LineRenderer pLineRenderer)
-    {
-        pLineRenderer.SetPosition(0, pLinePos.left);
-        pLineRenderer.SetPosition(1, pLinePos.right);
-        pLineRenderer.SetWidth(lineWidth, lineWidth);
-        pLineRenderer.material = lineMaterial;
-    }
 }
