@@ -21,12 +21,12 @@ public class zzScriptSearch:EditorWindow
         if(GUILayout.Button("search",GUILayout.ExpandWidth(false)) && scriptToSearch)
         {
             string lScriptName = scriptToSearch.name;
-            var lType = System.Type.GetType(lScriptName);
+            //var lType = System.Type.GetType(lScriptName);
             List<GameObject> lResult = new List<GameObject>();
             var lAllObject = (GameObject[])Resources.FindObjectsOfTypeAll(typeof(GameObject));
             foreach (var lObject in lAllObject)
             {
-                if (lObject.GetComponent(lType))
+                if (lObject.GetComponent(lScriptName))
                     lResult.Add(lObject);
             }
             result = lResult.ToArray();

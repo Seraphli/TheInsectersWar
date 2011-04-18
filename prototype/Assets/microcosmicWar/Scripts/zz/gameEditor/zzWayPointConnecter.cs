@@ -76,11 +76,11 @@ public class zzWayPointConnecter : ObjectPickBase
         if (lWayPoint)
         {
             beginPoint = lWayPoint;
-            var lPosition = beginPoint.transform.position;
-            lPosition.z = lineZ;
+            var lPosition = beginPoint.lineCenter;
             //重置线
             connectLine.beginPosition = lPosition;
             connectLine.endPosition = lPosition;
+            lineZ = lPosition.z;
             enabled = true;
             connectLine.visible = true;
         }
@@ -92,12 +92,12 @@ public class zzWayPointConnecter : ObjectPickBase
         {
             print("if (beginPoint)");
             var lWayPoint = getWayPoint(pObject);
-            if (lWayPoint != beginPoint)
+            if (lWayPoint && lWayPoint != beginPoint)
             {
                 print("add line");
                 var lObject = GameSystem.Singleton.createObject(lineTypeName);
                 var lLine = lObject.GetComponent<zzWayPointLine>();
-                lLine.lineZ = lineZ;
+
                 lLine.setPoints(beginPoint, lWayPoint);
                 objectAddedEvent(lObject);
             }

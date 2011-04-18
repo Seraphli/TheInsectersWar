@@ -3,8 +3,19 @@ using System.Collections.Generic;
 
 public class zzWayPoint:MonoBehaviour
 {
+    [SerializeField]
+    Transform _lineCenter;
+
     public zzWayPoint[] nextPoints = new zzWayPoint[0] { };
     public zzWayPoint[] backPoints = new zzWayPoint[0] { };
+
+    public Vector3 lineCenter
+    {
+        get
+        {
+            return _lineCenter.position;
+        }
+    }
 
     public void OnRemove()
     {

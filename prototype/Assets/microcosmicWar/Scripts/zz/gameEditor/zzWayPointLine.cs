@@ -2,28 +2,53 @@
 
 public class zzWayPointLine : P2PLine
 {
-    public Transform begin;
+    public zzWayPoint begin;
 
-    //public Vector3 beginPointPos;
+    public zzWayPoint end;
 
-    public Transform end;
-
-    public float lineZ = -3f;
-
-    //public Vector3 endPointPos;
-    void Start()
+    [zzSerialize]
+    public int beginPointID
     {
-        beginPosition =getVector( begin.position);
-        endPosition = getVector( end.position);
+        get
+        {
+            return begin.gameObject.GetInstanceID();
+        }
+        set
+        {
+            zzGetObjectByID.addSetMethod(
+                (x) => begin = x.GetComponent<zzWayPoint>(),
+                value
+                );
+        }
     }
 
-    public void setPoints(zzWayPoint pPointFrom,zzWayPoint pPointTo)
+    [zzSerialize]
+    public int endPointID
     {
-        begin = pPointFrom.transform;
-        end = pPointTo.transform;
-        pPointFrom.addNextPoint(pPointTo);
-        print(begin.position);
-        print(end.position);
+        get
+        {
+            return end.gameObject.GetInstanceID();
+        }
+        set
+        {
+            zzGetObjectByID.addSetMethod(
+                (x) => end = x.GetComponent<zzWayPoint>(),
+                value
+                );
+        }
+    }
+
+    void Start()
+    {
+        beginPosition = begin.lineCenter;
+        endPosition = end.lineCenter;
+        begin.addNextPoint(end);
+    }
+
+    public void setPoints(zzWayPoint pPointFrom, zzWayPoint pPointTo)
+    {
+        begin = pPointFrom;
+        end = pPointTo;
     }
 
     void Update()
@@ -34,22 +59,16 @@ public class zzWayPointLine : P2PLine
             return;
         }
 
-        if (beginPosition != getVector( begin.position))
-            beginPosition = getVector( begin.position);
-        if (endPosition !=getVector(  end.position))
-            endPosition = getVector( end.position);
+        if (beginPosition != begin.lineCenter)
+            beginPosition = begin.lineCenter;
+        if (endPosition != end.lineCenter)
+            endPosition = end.lineCenter;
     }
 
-    Vector3 getVector(Vector3 pPos)
-    {
-        pPos.z = lineZ;
-        return pPos;
-    }
 
     void OnDestory()
     {
         if(begin&&end)
-            begin.GetComponent<zzWayPoint>()
-                .removeNextPoint(end.GetComponent<zzWayPoint>());
+            begin.removeNextPoint(end);
     }
 }
