@@ -50,7 +50,10 @@ public class zzSignalSlot : MonoBehaviour
             .GetMethod(slotMethodName, ParameterTypes);
 
 
-        if (lSlotMethod == null || lSlotMethod.ReturnType != ReturnType)
+        if (lSlotMethod == null ||
+                !(lSlotMethod.ReturnType == ReturnType
+                ||lSlotMethod.ReturnType.IsSubclassOf(ReturnType))
+            )
         {
             Debug.LogError("Slot Method isn't fit Signal,or it is not public");
             return;

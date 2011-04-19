@@ -29,6 +29,7 @@ public class GameSceneManager:MonoBehaviour
         background,
         wayNode,
         stronghold,
+        wayNodeLink,
         other,
         typeCount,
     }

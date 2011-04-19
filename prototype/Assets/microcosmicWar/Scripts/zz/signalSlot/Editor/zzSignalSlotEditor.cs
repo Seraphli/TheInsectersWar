@@ -201,7 +201,8 @@ public class zzSignalSlotEditor : Editor
             //Debug.Log(pMethodInfo.ReturnType.ToString());
             //Debug.Log(pReturnType.ToString());
             //Debug.Log("pMethodInfo.ReturnType == pReturnType:" + (pMethodInfo.ReturnType == pReturnType));
-            if (pMethodInfo.ReturnType == pReturnType
+            if (
+                (pMethodInfo.ReturnType == pReturnType || pMethodInfo.ReturnType.IsSubclassOf(pReturnType))
                 && isEquals(
                         zzSignalSlot.toTypeArray(pMethodInfo.GetParameters()),
                         pParameterTypes))

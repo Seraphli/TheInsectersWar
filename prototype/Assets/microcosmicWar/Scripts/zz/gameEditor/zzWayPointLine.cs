@@ -43,7 +43,7 @@ public class zzWayPointLine : P2PLine
         beginPosition = begin.lineCenter;
         endPosition = end.lineCenter;
         updateArrow();
-        begin.addNextPoint(end);
+        //begin.addNextPoint(end);
     }
 
     public void setPoints(zzWayPoint pPointFrom, zzWayPoint pPointTo)
@@ -83,9 +83,9 @@ public class zzWayPointLine : P2PLine
     }
 
 
-    void OnDestory()
-    {
-        if(begin&&end)
-            begin.removeNextPoint(end);
-    }
+    //void OnDestory()
+    //{
+    //    if(begin&&end)
+    //        begin.removeNextPoint(end);
+    //}
 }
