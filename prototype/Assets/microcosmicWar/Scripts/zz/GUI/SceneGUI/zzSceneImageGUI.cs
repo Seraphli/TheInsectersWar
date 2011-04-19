@@ -49,7 +49,7 @@ public class zzSceneImageGUI:MonoBehaviour
         return _size;
     }
 
-    static Vector2 getFitSize(Vector2 pMaxSize, Texture2D pImage)
+    public static Vector2 getFitSize(Vector2 pMaxSize, Texture2D pImage)
     {
         float lWidth = (float)pImage.width;
         float lHeigth = (float)pImage.height;

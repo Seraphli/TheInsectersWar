@@ -20,7 +20,7 @@ public class Board : MonoBehaviour
         foreach(Transform lBoard in GameSceneManager.Singleton
             .getManager(GameSceneManager.MapManagerType.board))
         {
-            Physics.IgnoreCollision(lBoard.collider, pCollider);
+            lBoard.GetComponent<Board>().turnOffCollision(pCollider);
 
         }
     }
@@ -40,20 +40,29 @@ public class Board : MonoBehaviour
     //{
     //    sBoardList.Add(gameObject);
     //}
-    static void turnOffCollisionWithManager(zzSceneManager pSceneManager, Collider pCollider)
+    static void turnOffCollisionWithManager(zzSceneManager pSceneManager, Collider[] pColliders)
     {
         foreach (Transform lObject in pSceneManager)
         {
-            Physics.IgnoreCollision(lObject.collider, pCollider);
+            var lObjectCollider = lObject.collider;
+            foreach (var lCollider in pColliders)
+            {
+                Physics.IgnoreCollision(lObjectCollider, lCollider);
+            }
         }
     }
     void turnOffCollisionWithManager(zzSceneManager pSceneManager)
     {
-        turnOffCollisionWithManager(pSceneManager,collider);
+        turnOffCollisionWithManager(pSceneManager, boardColliders);
     }
+
+    public Collider[] boardColliders = new Collider[0];
 
     void Start()
     {
+        if (boardColliders.Length == 0)
+            boardColliders = new Collider[1] { collider };
+
         var lGameSceneManager = GameSceneManager.Singleton;
 
         turnOffCollisionWithManager( 
@@ -77,12 +86,25 @@ public class Board : MonoBehaviour
 
     public void turnOffCollision(GameObject pGameObject)
     {
-        Physics.IgnoreCollision(gameObject.collider, pGameObject.collider);
+        turnOffCollision(pGameObject.collider);
     }
 
-    public void turnOnCollision(GameObject pGameObject)
+    public void turnOffCollision(Collider pObjectCollider)
     {
-        Physics.IgnoreCollision(gameObject.collider, pGameObject.collider, false);
+        foreach (var lBoardCollider in boardColliders)
+        {
+            Physics.IgnoreCollision(lBoardCollider, pObjectCollider);
+        }
+    }
+
+    public void turnOffCollision(Collider pBoardCollider, GameObject pGameObject)
+    {
+        Physics.IgnoreCollision(pBoardCollider, pGameObject.collider);
+    }
+
+    public void turnOnCollision(Collider pBoardCollider, GameObject pGameObject)
+    {
+        Physics.IgnoreCollision(pBoardCollider, pGameObject.collider, false);
     }
 
     public static void addBoardInAllChild(GameObject pGameObject)

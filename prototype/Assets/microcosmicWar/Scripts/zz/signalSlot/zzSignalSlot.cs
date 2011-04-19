@@ -10,12 +10,12 @@ public class zzSignalSlot : MonoBehaviour
     //用于注释 便于观看
     public string description = "";
 
-    public Component signalComponent;
+    public UnityEngine.Object signalComponent;
 
     //delegate or event
     public string signalMethodName = "signalMethodName";
 
-    public Component slotComponent;
+    public UnityEngine.Object slotComponent;
     public string slotMethodName = "slotMethodName";
 
     public bool destroyAfterAwake = true;

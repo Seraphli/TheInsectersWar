@@ -21,39 +21,60 @@ public class zzSignalSlotEditor : Editor
         return Selection.activeTransform != null;
     }
 
-    static Component selectComponents(Component pSelected)
+    static UnityEngine.Object selectComponents(UnityEngine.Object pSelected)
     {
-        var lComponents = pSelected.GetComponents<Component>();
+        Component[] lComponents ;
+        GameObject lObject;
+        if (pSelected is GameObject)
+            lObject = (GameObject)pSelected;
+        else
+            lObject = ((Component)pSelected).gameObject;
+        
+        lComponents = lObject.GetComponents<Component>();
+
         int lIndex = 0;
-        string[] lComponentNames = new string[lComponents.Length];
+        string[] lComponentNames = new string[lComponents.Length+1];
         for (int i = 0; i < lComponents.Length;++i )
         {
             lComponentNames[i] = lComponents[i].GetType().ToString();
             if (lComponents[i] == pSelected)
                 lIndex = i;
         }
+        lComponentNames[lComponents.Length] = "GameObject";
+        if(pSelected is GameObject)
+        {
+            lIndex = lComponents.Length;
+        }
         int lNewIndex = EditorGUILayout.Popup(lIndex, lComponentNames);
-        //if(lNewIndex!=lIndex)
+        //Debug.Log(lNewIndex);
+        //Debug.Log(lComponentNames[lNewIndex]);
+        if (lNewIndex == lComponents.Length)
+        {
+            //Debug.Log("GameObject");
+            //Debug.Log(lObject.ToString());
+            return lObject;
+        }
         return lComponents[lNewIndex];
         //return null;
     }
 
-    void componentChange(string pComponentType, ref Component pSelected,
-        Component pNewSelected)
+    void componentChange(string pComponentType, ref UnityEngine.Object pSelected,
+        UnityEngine.Object pNewSelected)
     {
         if (pSelected != pNewSelected)
         {
             Undo.RegisterUndo(target, pComponentType + " Component Change");
             pSelected = pNewSelected;
+            //Debug.Log(pSelected.ToString());
         }
     }
 
-    void componentChange(string pComponentType, ref Component pSelected)
+    void componentChange(string pComponentType, ref UnityEngine.Object pSelected)
     {
         GUILayout.Label(pComponentType, GUILayout.Width(35));
 
         componentChange(pComponentType, ref  pSelected,
-            (Component)EditorGUILayout.ObjectField(pSelected, typeof(Component)));
+            (UnityEngine.Object)EditorGUILayout.ObjectField(pSelected, typeof(UnityEngine.Object)));
 
         if (pSelected)
             componentChange(pComponentType, ref pSelected,
@@ -118,8 +139,16 @@ public class zzSignalSlotEditor : Editor
         GUI.color = lPreColor;
     }
 
+    public bool useBuiltinGUI = false;
+
     public override void OnInspectorGUI()
     {
+        useBuiltinGUI = EditorGUILayout.Toggle("Default GUI", useBuiltinGUI);
+        if(useBuiltinGUI)
+        {
+            base.OnInspectorGUI();
+            return;
+        }
         zzSignalSlot lSignalSlot = (zzSignalSlot)target;
         EditorGUILayout.BeginVertical();
         {

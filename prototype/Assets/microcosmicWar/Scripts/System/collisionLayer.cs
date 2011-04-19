@@ -22,9 +22,11 @@ public class layers
 
     public static readonly int deadObject = LayerMask.NameToLayer("deadObject");
 
+    //跳板 子弹可穿透
     public static readonly int board = LayerMask.NameToLayer("board");
     public static readonly int boardValue = 1 << board;
 
+    //地面 子弹不可穿透
     public static readonly int ground = LayerMask.NameToLayer("ground");
     public static readonly int groundValue = 1 << ground;
 
@@ -41,6 +43,9 @@ public class layers
 
     public static readonly int moveableObject = LayerMask.NameToLayer("moveableObject");
     public static readonly int moveableObjectValue = 1 << moveableObject;
+
+    public static readonly int boardDetector = LayerMask.NameToLayer("boardDetector");
+    public static readonly int boardDetectorValue = 1 << boardDetector;
 }
 
 public class collisionLayer : MonoBehaviour

@@ -132,6 +132,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Editor\TestEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\awakeShooterWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\createObjectWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\destroyComponentWhenDie.cs" />
@@ -155,6 +156,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CustomObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\EditorViewSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MouseZoom.cs" />
@@ -224,6 +226,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObjectContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditorEnableList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzPipeObjectToEditable.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPoint.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointAutoLineShow.cs" />
@@ -312,6 +315,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeSelfID.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestoryObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectValue.cs" />
@@ -330,6 +335,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zz2DCameraDrag.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCopyProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzFrequencyTimerClass.cs" />

@@ -7,12 +7,20 @@ public class BoardDetector : MonoBehaviour
 
 
     public GameObject boardPlayer;
-    protected Vector3 originalPosition;
+
+    [SerializeField]
+    Vector3 originalPosition;
+
+    [SerializeField]
+    Collider playerCollider;
+
     //用于探测板是否在脚下
     protected bool inited = false;
 
     void Start()
     {
+        gameObject.layer = layers.boardDetector;
+        playerCollider = boardPlayer.collider;
         Board.turnOffCollisionWithAllBaord(boardPlayer);
         originalPosition = transform.localPosition;
         inited = true;
@@ -46,23 +54,27 @@ public class BoardDetector : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //print("OnTriggerEnter");
-        Board lBoard = other.GetComponent<Board>();
-        if (lBoard)
-        {
-            lBoard.turnOnCollision(boardPlayer);
-        }
+        //print("OnTriggerEnter:" + other.name);
+        //Board lBoard = other.GetComponent<Board>();
+        //if (lBoard)
+        //{
+        //    print(lBoard.boardColliders.Length);
+        //    lBoard.turnOnCollision(other,boardPlayer);
+        //}
+        Physics.IgnoreCollision(other, playerCollider,false);
     }
 
 
     void OnTriggerExit(Collider other)
     {
-        //print("OnTriggerExit");
-        Board lBoard = other.GetComponent<Board>();
-        if (lBoard)
-        {
-            lBoard.turnOffCollision(boardPlayer);
-        }
+        //print("OnTriggerExit:" + other.name);
+        //Board lBoard = other.GetComponent<Board>();
+        //if (lBoard)
+        //{
+        //    print(lBoard.boardColliders.Length);
+        //    lBoard.turnOffCollision(other,boardPlayer);
+        //}
+        Physics.IgnoreCollision(other, playerCollider);
     }
 
 }
