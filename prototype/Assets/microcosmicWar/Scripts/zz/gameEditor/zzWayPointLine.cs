@@ -42,6 +42,7 @@ public class zzWayPointLine : P2PLine
     {
         beginPosition = begin.lineCenter;
         endPosition = end.lineCenter;
+        updateArrow();
         begin.addNextPoint(end);
     }
 
@@ -60,9 +61,25 @@ public class zzWayPointLine : P2PLine
         }
 
         if (beginPosition != begin.lineCenter)
+        {
             beginPosition = begin.lineCenter;
+            updateArrow();
+        }
         if (endPosition != end.lineCenter)
+        {
             endPosition = end.lineCenter;
+            updateArrow();
+        }
+    }
+
+    void updateArrow()
+    {
+        var lPosition = (beginPosition + endPosition)/2f;
+        transform.position = lPosition;
+        var lBeginToEnd = endPosition -  beginPosition;
+        var lRotation = new Quaternion();
+        lRotation.SetFromToRotation(Vector3.up, lBeginToEnd);
+        transform.rotation = lRotation;
     }
 
 

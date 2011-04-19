@@ -157,6 +157,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\EditorViewSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MouseZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SingleSoldierFactoryObject.cs" />
@@ -217,12 +218,17 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzEditorGUIUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzGobalTransformWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzMake2DRigidbody.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzScriptSearch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObjectContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditorEnableList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzRigidbodyObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPoint.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointAutoLineShow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointConnecter.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointLine.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Editor\zzGUICreatorWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Editor\zzGUIEditorWindow.cs" />
@@ -300,6 +306,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRigidbodySweepDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzGetObjectByID.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzMySerializeString.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeAttribute.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeSelfID.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectValue.cs" />
@@ -316,6 +328,7 @@
      <None Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\readme.txt" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\zzTransparencyCapture.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zz2DCameraDrag.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
@@ -327,7 +340,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLayerMaskSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMasterServer.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMySerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectPicker.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzPlaneMesh.cs" />
@@ -336,7 +348,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzRigidbodyUtility.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
@@ -344,7 +355,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzUtilities.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzValueMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzViewCapturer.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPoint.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPointGizmos.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Airplane.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AnimationListeners.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
@@ -377,7 +388,6 @@
      <Compile Include="Assets\microcosmicWar\Water\Scripts\WaterInteractions.cs" />
      <None Include="Assets\microcosmicWar\Water\Shaders\WaterShader.shader" />
      <None Include="Assets\microcosmicWar\注意事项.txt" />
-     <Compile Include="Assets\modelPainter\Scripts\Attribute\Serialization\zzSerializeAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\ButtonUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\EnumUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\FieldUIAttribute.cs" />
@@ -406,7 +416,6 @@
      <Compile Include="Assets\modelPainter\Scripts\Serialization\SceneLoader.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Serialization\SceneSaver.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Serialization\SerializeScene.cs" />
-     <Compile Include="Assets\modelPainter\Scripts\Serialization\zzSerializeObject.cs" />
      <Compile Include="Assets\modelPainter\Scripts\UI\CreateObjectWindow.cs" />
      <Compile Include="Assets\modelPainter\Scripts\UI\IPropertyGUI.cs" />
      <Compile Include="Assets\modelPainter\Scripts\UI\ObjectPropertySettingGUI.cs" />
