@@ -32,7 +32,7 @@ public class BoardDetector : MonoBehaviour
         if (inited)
         {
             Vector3 lPos = transform.localPosition;
-            lPos.y = originalPosition.y - 1;
+            lPos.y = originalPosition.y - 2;
             transform.localPosition = lPos;
             //transform.localPosition.y = originalPosition.y - 1;
         }
