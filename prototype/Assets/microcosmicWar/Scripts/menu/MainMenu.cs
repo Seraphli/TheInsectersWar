@@ -77,6 +77,11 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    public void loadEditor()
+    {
+        Application.LoadLevel("levelEditor");
+    }
+
     /*
     void  OnGUI (){
 	

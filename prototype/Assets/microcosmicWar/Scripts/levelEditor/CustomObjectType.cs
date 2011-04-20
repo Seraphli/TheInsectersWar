@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class CustomObjectType:MonoBehaviour
+public class CustomObjectType:zzEditableObject
 {
     public GameObject objectRoot;
 
@@ -15,7 +15,13 @@ public class CustomObjectType:MonoBehaviour
     [SerializeField]
     ObjectType _objectType;
 
-    List<Collider> objectCollider = new List<Collider>();
+    [SerializeField]
+    bool haveInit = false;
+
+    [SerializeField]
+    Board board;
+
+    List<Collider> objectCollider;
 
     [EnumUI(new string[] { "地面", "跳板", "物体" },
          new int[] { (int)ObjectType.ground, (int)ObjectType.board, (int)ObjectType.moveableObject })]
@@ -29,6 +35,10 @@ public class CustomObjectType:MonoBehaviour
         set
         {
             _objectType = value;
+
+            //ToDo:优化,等模型先生成时,模型会被setLayer两次
+            //被设置类型时,都要更新,因为至少要更新MapManagerType
+            updateObjectType();
         }
     }
 
@@ -42,30 +52,60 @@ public class CustomObjectType:MonoBehaviour
 
         set
         {
-            _objectType = (ObjectType)System.Enum.Parse(typeof(ObjectType), value);
+            objectType = (ObjectType)System.Enum.Parse(typeof(ObjectType), value);
         }
     }
 
-
-    void Start()
+    void updateObjectType()
     {
-        switch(_objectType)
+        objectCollider = new List<Collider>();
+        GameSceneManager.MapManagerType lMapManagerType;
+        switch (_objectType)
         {
             case ObjectType.ground:
                 setLayer(layers.ground, GameSceneManager.MapManagerType.ground);
+                removeBoard();
                 break;
             case ObjectType.board:
                 setLayer(layers.board, GameSceneManager.MapManagerType.board);
-                gameObject.AddComponent<Board>().boardColliders = objectCollider.ToArray();
+                getBoard().boardColliders = objectCollider.ToArray();
                 break;
             case ObjectType.moveableObject:
                 setLayer(layers.moveableObject, GameSceneManager.MapManagerType.moveableObject);
+                removeBoard();
                 break;
             default:
                 Debug.LogError("switch(_objectType)");
                 break;
         }
         objectCollider = null;
+
+    }
+
+    void removeBoard()
+    {
+        if(board)
+        {
+            Destroy(board);
+            board = null;
+        }
+    }
+
+    Board getBoard()
+    {
+        if (!board)
+            board = gameObject.AddComponent<Board>();
+        return board;
+    }
+
+
+    void Start()
+    {
+        if(!haveInit)
+        {
+            updateObjectType();
+            haveInit = true;
+        }
     }
 
     void addObjectCollider(Transform pObject )
@@ -76,7 +116,8 @@ public class CustomObjectType:MonoBehaviour
 
     void setLayer(int layerIndex,GameSceneManager.MapManagerType pMapManagerType)
     {
-        GameSceneManager.Singleton.addObject(pMapManagerType, objectRoot);
+        GetComponent<WMGameObjectType>().mapType = pMapManagerType;
+
         objectRoot.layer = layerIndex;
         addObjectCollider(objectRoot.transform);
         foreach (Transform lObject in objectRoot.transform)

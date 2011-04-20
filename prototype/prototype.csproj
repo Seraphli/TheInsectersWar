@@ -222,10 +222,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzMake2DRigidbody.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzScriptSearch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyDragMove.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObjectContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditorEnableList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzObjectPickEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzPipeObjectToEditable.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPoint.cs" />
@@ -399,6 +401,7 @@
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\FieldUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\ImageUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\LabelUIAttribute.cs" />
+     <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\SliderUIAttribute.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Attribute\UI\UIAttributeBase.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\AddObjectToManager.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\GameConfig.cs" />
