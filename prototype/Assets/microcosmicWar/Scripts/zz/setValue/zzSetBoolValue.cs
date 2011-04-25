@@ -10,16 +10,32 @@ public class zzSetBoolValue : MonoBehaviour
 
     public bool implementWhenAwake = true;
 
-    void Awake()
+    public void addReceiver(System.Action<bool> pSetFunc)
     {
+        setFunc += pSetFunc;
         if (implementWhenAwake)
-            setValue();
+            pSetFunc(valueToSet);
     }
+
+    System.Action<bool> setFunc;
+
+    //void Awake()
+    //{
+    //    var lMember = zzSignalSlot.getSignalMember(setObject, valueName);
+    //    if (implementWhenAwake)
+    //        setValue();
+    //}
+
+    //void Start()
+    //{
+
+    //}
 
     public void setValue()
     {
-        var lType = setObject.GetType();
-        var lField = lType.GetField(valueName);
-        lField.SetValue(setObject, valueToSet);
+        //var lType = setObject.GetType();
+        //var lField = lType.GetField(valueName);
+        //lField.SetValue(setObject, valueToSet);
+        setFunc(valueToSet);
     }
 }

@@ -47,6 +47,11 @@ public class MulSoldierFactoryObject : zzEditableObject
         }
     }
 
+    public override void applyPlayState()
+    {
+        enabled = true;
+    }
+
     //public string soldierFactorySettingsData
     //{
     //    get
@@ -69,7 +74,7 @@ public class MulSoldierFactoryObject : zzEditableObject
     //    }
     //}
 
-    void Start()
+    void LateUpdate()
     {
         if(_soldierFactorySettings==null||_soldierFactorySettings.Length==0)
         {
@@ -99,6 +104,8 @@ public class MulSoldierFactoryObject : zzEditableObject
                 lStronghold.soldierFactory = gameObject;
             }
         }
+
+        enabled = false;
     }
 
     void createInfo()

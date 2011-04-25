@@ -15,7 +15,6 @@ public class zzSceneManager:MonoBehaviour , IEnumerable
     public void addObject(GameObject pObject)
     {
         pObject.transform.parent = managerRoot;
-
     }
 
     public void addObjects(GameObject[] pObjects)

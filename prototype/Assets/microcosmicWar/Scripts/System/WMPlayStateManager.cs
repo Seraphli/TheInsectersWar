@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class WMPlayStateManager : PlayStateManager
 {
@@ -30,7 +30,9 @@ public class WMPlayStateManager : PlayStateManager
         lClone.GetComponent<zzEditableObjectContainer>().play = true;
     }
 
-    public override void applyPlayState()
+    public bool directSetObject = false;
+
+    void recoverablePlayState()
     {
         foreach (Transform lObject in managerObject.transform)
         {
@@ -38,6 +40,46 @@ public class WMPlayStateManager : PlayStateManager
             addPlayingObject(lClone);
         }
         managerObject.SetActiveRecursively(false);
+    }
+
+    void directPlayState()
+    {
+        List<Transform> lObjects = new List<Transform>(managerObject.transform.childCount);
+
+        //int i = 0;
+        //for (;i<lTransform.childCount;++i)
+        //{
+        //    lTransform.GetChild(i).name = "directPlayState";
+        //    addPlayingObject(lTransform.GetChild(i).gameObject);
+        //}
+        //print(i);
+        //print(managerObject.transform.childCount);
+        //int i = 0;
+        foreach (Transform lObject in managerObject.transform)
+        {
+            lObjects.Add(lObject); ;
+        }
+        foreach (Transform lObject in lObjects)
+        {
+            addPlayingObject(lObject.gameObject);
+            //++i;
+        }
+        //print(i);
+
+        //managerObject.transform.DetachChildren();
+        //Destroy(managerObject);
+    }
+
+    public override void applyPlayState()
+    {
+        if(directSetObject)
+        {
+            directPlayState();
+        }
+        else
+        {
+            recoverablePlayState();
+        }
     }
 
     public override void applyStopState()

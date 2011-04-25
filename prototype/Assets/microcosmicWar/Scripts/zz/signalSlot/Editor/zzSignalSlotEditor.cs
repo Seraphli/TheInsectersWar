@@ -36,9 +36,12 @@ public class zzSignalSlotEditor : Editor
         string[] lComponentNames = new string[lComponents.Length+1];
         for (int i = 0; i < lComponents.Length;++i )
         {
-            lComponentNames[i] = lComponents[i].GetType().ToString();
-            if (lComponents[i] == pSelected)
-                lIndex = i;
+            if (lComponents[i])//存在lComponents[i]==null的情况,原因不明
+            {
+                lComponentNames[i] = lComponents[i].GetType().ToString();
+                if (lComponents[i] == pSelected)
+                    lIndex = i;
+            }
         }
         lComponentNames[lComponents.Length] = "GameObject";
         if(pSelected is GameObject)
@@ -220,11 +223,25 @@ public class zzSignalSlotEditor : Editor
     {
         pSelected = -1;
         List<string> lOut = new List<string>();
+        Type lType = pObject.GetType();
         //Debug.Log("pObject:" + pObject.ToString());
-        MethodInfo[] pMethodInfoList = pObject.GetType().GetMethods();
+        if(pParameterTypes.Length==1&&pReturnType==null)
+        {
+            var lParameterType = pParameterTypes[0];
+            var lPropertyList = lType.GetProperties();
+            foreach (var lProperty in lPropertyList)
+            {
+                if(lProperty.PropertyType ==lParameterType
+                    || lParameterType.IsSubclassOf(lProperty.PropertyType))
+                    lOut.Add(lProperty.Name);
+                if (pSelectedName == lProperty.Name)
+                    pSelected = lOut.Count - 1;
+            }
+            //var lField = lType.GetFields();
+        }
+        MethodInfo[] pMethodInfoList = lType.GetMethods();
 
         //Debug.Log("pMethodInfoList:" + pMethodInfoList.Length);
-        int i=0;
         foreach (var pMethodInfo in pMethodInfoList)
         {
             //Debug.Log(pMethodInfo.ReturnType.ToString());
@@ -238,9 +255,8 @@ public class zzSignalSlotEditor : Editor
             {
                 lOut.Add(pMethodInfo.Name);
                 if (pSelectedName == pMethodInfo.Name)
-                    pSelected = i;
+                    pSelected = lOut.Count-1;
             }
-            ++i;
         }
         return lOut;
     }

@@ -159,6 +159,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CustomObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\EditorViewSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\LevelLoader.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MouseZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
@@ -222,6 +223,14 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzMake2DRigidbody.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\zzScriptSearch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Editor\ZZSpriteEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzActionList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnAction.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnAwakeEvent.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnEventBase.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnFrameList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnLateUpdateOnce.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnStart.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnUpdateOnce.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyDragMove.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
@@ -262,6 +271,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUISwitchButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITextField.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIToggle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIToolbar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITransform.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITreeFolder.cs" />

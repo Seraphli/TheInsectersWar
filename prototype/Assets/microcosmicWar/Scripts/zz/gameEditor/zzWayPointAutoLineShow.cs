@@ -22,6 +22,8 @@ public class zzWayPointAutoLineShow : MonoBehaviour
 
     public Material lineMaterial;
 
+    public int lineLayer = 0;
+
     //List<LineRenderer> lines = new List<LineRenderer>();
 
     class NeighborInfo
@@ -116,6 +118,7 @@ public class zzWayPointAutoLineShow : MonoBehaviour
             for (; i < pLines.Count; ++i)
             {
                 var lObject = new GameObject("Line");
+                lObject.layer = lineLayer;
                 setLine(pLines[i], lObject.AddComponent<LineRenderer>());
                 lObject.transform.parent = lineParent;
             }
