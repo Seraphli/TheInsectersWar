@@ -35,6 +35,11 @@ public class zzGUISwitchButton : zzInterfaceGUI
         switchEvent += pReceiver;
     }
 
+    public void addClickEventReceiver(VoidCallFunc pReceiver)
+    {
+        switchEvent += (x) => pReceiver();
+    }
+
     public override void impGUI(Rect rect)
     {
         if (_drawButton(rect))

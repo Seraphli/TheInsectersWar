@@ -185,8 +185,8 @@ public class SoldierFactoryState : MonoBehaviour
         {
             lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
         }
-        print(lStronghold.occupied);
-        print(lStronghold.owner);
+        //print(lStronghold.occupied);
+        //print(lStronghold.owner);
         if (
             lStronghold
             && lStronghold.occupied == true//被占领

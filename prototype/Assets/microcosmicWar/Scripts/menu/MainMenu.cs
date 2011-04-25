@@ -65,12 +65,12 @@ public class MainMenu : MonoBehaviour
     void bindGUI()
     {
         zzInterfaceGUI buttonParentGUI = GUIRoot.getSubElement("window");
-        bindButtonCall(buttonParentGUI, "sewer1", sewer1ButtonCall);
-        bindButtonCall(buttonParentGUI, "SinglePlayer", ChooseRaceButtonCall);
-        bindButtonCall(buttonParentGUI, "NetworkPlayer", NetworkMenuButtonCall);
-        bindButtonCall(buttonParentGUI, "LanNetworkPlayer", LanNetworkMenuButtonCall);
-        bindButtonCall(buttonParentGUI, "Quit", QuitButtonCall);
-        bindButtonCall(buttonParentGUI, "Language", LanguageButtonCall);
+        //bindButtonCall(buttonParentGUI, "sewer1", sewer1ButtonCall);
+        //bindButtonCall(buttonParentGUI, "SinglePlayer", ChooseRaceButtonCall);
+        //bindButtonCall(buttonParentGUI, "NetworkPlayer", NetworkMenuButtonCall);
+        //bindButtonCall(buttonParentGUI, "LanNetworkPlayer", LanNetworkMenuButtonCall);
+        //bindButtonCall(buttonParentGUI, "Quit", QuitButtonCall);
+        //bindButtonCall(buttonParentGUI, "Language", LanguageButtonCall);
         
         //显示版本号
         buttonParentGUI.getSubElement("versionLabel").setText("微观战争 " + versionnumber);

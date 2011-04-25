@@ -121,7 +121,7 @@ public class Stronghold:MonoBehaviour
 
     void Start()
     {
-        print("stronghold:"+name);
+        //print("stronghold:"+name);
         if (owner != Race.eNone)
         {
             buildRace(owner);

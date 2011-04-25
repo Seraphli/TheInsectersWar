@@ -232,7 +232,8 @@ public class PlayerInfo : MonoBehaviour
     //}
     public void setData(PlayerInfo pOther)
     {
-        this.race = pOther.race;
+        race = pOther.race;
+        playerName = pOther.playerName;
         if (pOther.destroyAfterCollectData)
             Destroy(pOther.gameObject);
     }

@@ -27,6 +27,23 @@ public class GameScene : MonoBehaviour
 
     //public GameObject useSceneData;
 
+    public System.Action gameWinEvent;
+    public System.Action gameLostEvent;
+    public System.Action gameEndEvent;
+    public System.Action<string> gameInterruptedEvent;
+
+    void initEvent()
+    {
+        if (gameWinEvent == null)
+            gameWinEvent = nullEvent;
+        if (gameLostEvent == null)
+            gameLostEvent = nullEvent;
+        if (gameEndEvent == null)
+            gameEndEvent = nullEvent;
+    }
+
+    static void nullEvent(){}
+
     void setSpawn(ref HeroSpawn pSpawn, Race pRace)
     {
         if(!pSpawn)
@@ -81,6 +98,7 @@ public class GameScene : MonoBehaviour
 
     void Start()
     {
+        initEvent();
         init();
         PlayerInfo lPlayerInfo = playerInfo;
         //print(playerInfo.getRace());
@@ -125,50 +143,55 @@ public class GameScene : MonoBehaviour
     protected bool needOnGUI = false;
     protected string buttonInfo = "";
 
-    void OnGUI()
-    {
-        if (needOnGUI)
-        {
+    //void OnGUI()
+    //{
+    //    if (needOnGUI)
+    //    {
 
-            GUILayout.BeginArea(new Rect(Screen.width / 2, Screen.height / 2, 200, Screen.height / 2));
-            if (GUILayout.Button(buttonInfo))
-            {
-                Time.timeScale = 1;
-                Application.LoadLevel("LoaderMenu");
-            }
-            GUILayout.EndArea();
-        }
-    }
+    //        GUILayout.BeginArea(new Rect(Screen.width / 2, Screen.height / 2, 200, Screen.height / 2));
+    //        if (GUILayout.Button(buttonInfo))
+    //        {
+    //            Time.timeScale = 1;
+    //            Application.LoadLevel("LoaderMenu");
+    //        }
+    //        GUILayout.EndArea();
+    //    }
+    //}
 
-    public void endGameScene(string pInfo)
+    public void endGameScene()
     {
         //假如已经停止了,则不往下执行
         //Board.clearList();
         Time.timeScale = 0;
         playerSpawn.releaseHeroControl();
-        if (needOnGUI)
-            return;
-        needOnGUI = true;
-        buttonInfo = pInfo;
+    }
+
+    void OnDestroy()
+    {
+        Time.timeScale = 1f;
+    }
+
+    void interruptGame(string pInfo)
+    {
+        endGameScene();
+        gameInterruptedEvent(pInfo);
     }
 
     void OnDisconnectedFromServer(NetworkDisconnection info)
     {
-        endGameScene("Network Player Disconnection");
+        interruptGame("Network Player Disconnection");
     }
 
     void OnPlayerDisconnected(NetworkPlayer player)
     {
-        endGameScene("Network Player Disconnection");
+        interruptGame("Network Player Disconnection");
     }
 
-    public void gameResult(string pWinerRaceName)
+    public void gameResult(string pRaceName,bool pIsWiner)
     {
-        ImpGameResult(pWinerRaceName);
-        if (Network.peerType == NetworkPeerType.Disconnected)
-            ImpGameResult(pWinerRaceName);
-        else
-            networkView.RPC("ImpGameResult", RPCMode.Others, pWinerRaceName);
+        ImpGameResult(pRaceName, pIsWiner);
+        if (Network.peerType != NetworkPeerType.Disconnected)
+            networkView.RPC("ImpGameResult", RPCMode.Others, pRaceName, pIsWiner);
     }
 
     PlayerInfo _playerInfo;
@@ -198,13 +221,27 @@ public class GameScene : MonoBehaviour
 
 
     [RPC]
-    public void ImpGameResult(string pWinerRaceName)
+    public void ImpGameResult(string pWinerRaceName, bool pIsWiner)
     {
-        PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
+        //PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
 
         if (pWinerRaceName == playerInfo.getPlayerName())
-            endGameScene("you win");
+        {
+            if (pIsWiner)
+                gameWinEvent();
+            else
+                gameLostEvent();
+        }
+        //endGameScene("you win");
         else
-            endGameScene("you lose");
+        {
+            if (pIsWiner)
+                gameLostEvent();
+            else
+                gameWinEvent();
+        }
+            //endGameScene("you lose");
+        endGameScene();
+        gameEndEvent();
     }
 }
