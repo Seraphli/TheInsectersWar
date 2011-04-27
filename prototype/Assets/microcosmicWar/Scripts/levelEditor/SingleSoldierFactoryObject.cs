@@ -235,13 +235,16 @@ public class SingleSoldierFactoryObject : zzEditableObject
     //考虑到场景创建初始阶段,物体物体不一定已创建,所以将物体探测部分放在Start中
     void LateUpdate()
     {
-        var lFactory = soldierFactorySetting.addFactory(gameObject);
-        var lStronghold = SoldierFactoryState.Singleton.canCreate(race, transform.position);
-        if (lStronghold && !lStronghold.soldierFactory)
+        if(zzCreatorUtility.isHost())
         {
-            lFactory.listener = lStronghold
-                .GetComponent<SoldierFactoryListener>().interfaceObject;
-            lStronghold.soldierFactory = gameObject;
+            var lFactory = soldierFactorySetting.addFactory(gameObject);
+            var lStronghold = SoldierFactoryState.Singleton.canCreate(race, transform.position);
+            if (lStronghold && !lStronghold.soldierFactory)
+            {
+                lFactory.listener = lStronghold
+                    .GetComponent<SoldierFactoryListener>().interfaceObject;
+                lStronghold.soldierFactory = gameObject;
+            }
         }
         enabled = false;
     }

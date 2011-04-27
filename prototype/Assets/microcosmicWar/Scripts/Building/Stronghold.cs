@@ -301,7 +301,7 @@ public class Stronghold:MonoBehaviour
 
             if (Network.peerType != NetworkPeerType.Disconnected)
                 networkView.RPC("RPCBuildRace", RPCMode.Others,
-                    strongholdBuilding.networkView.viewID);
+                    strongholdBuilding.networkView.viewID,(int)owner);
             occupiedEvent();
             raceChangedEvent(pRace);
         }
@@ -309,8 +309,9 @@ public class Stronghold:MonoBehaviour
     }
 
     [RPC]
-    public void RPCBuildRace(NetworkViewID pID)
+    public void RPCBuildRace(NetworkViewID pID,int pOwner)
     {
+        owner = (Race)pOwner;
         strongholdBuilding = NetworkView.Find(pID).gameObject;
         occupiedEvent();
 

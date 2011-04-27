@@ -22,10 +22,39 @@ public class WMPlayStateManager : PlayStateManager
             lGameSceneManager.addObject(
                 GameSceneManager.MapManagerType.moveableObject, lClone);
 
-        if (lClone.networkView)
-            lClone.networkView.viewID = Network.AllocateViewID();
+    }
+
+    List<Transform> objectList;
+
+    void getAllSceneObject()
+    {
+        objectList = new List<Transform>(managerObject.transform.childCount);
+
+        foreach (Transform lObject in managerObject.transform)
+        {
+            objectList.Add(lObject); ;
+        }
 
     }
+
+    [RPC]
+    void OnAfterLoaded()
+    {
+        foreach (Transform lObject in objectList)
+        {
+            addPlayingObject(lObject.gameObject);
+            //++i;
+        }
+    }
+    //public static void addViewID(GameObject lClone)
+    //{
+    //    var lNetworkView = lClone.networkView;
+    //    if (lNetworkView 
+    //        && lNetworkView.viewID == NetworkViewID.unassigned)
+    //    {
+    //        lNetworkView.viewID = Network.AllocateViewID();
+    //    }
+    //}
 
     public static void addPlayingObject(GameObject lClone)
     {
@@ -47,26 +76,50 @@ public class WMPlayStateManager : PlayStateManager
 
     void directPlayState()
     {
-        List<Transform> lObjects = new List<Transform>(managerObject.transform.childCount);
-
-        //int i = 0;
-        //for (;i<lTransform.childCount;++i)
-        //{
-        //    lTransform.GetChild(i).name = "directPlayState";
-        //    addPlayingObject(lTransform.GetChild(i).gameObject);
-        //}
-        //print(i);
-        //print(managerObject.transform.childCount);
-        //int i = 0;
-        foreach (Transform lObject in managerObject.transform)
+        getAllSceneObject();
+        print(Network.minimumAllocatableViewIDs);
+        if (Network.peerType != NetworkPeerType.Disconnected)
         {
-            lObjects.Add(lObject); ;
+            var lViewIDManager = zzAllocateViewIDManager.Singleton;
+            if (Network.isServer)
+            {
+                for (int i = 0; i < objectList.Count; ++i)
+                {
+                    var lNetworkView = objectList[i].networkView;
+                    if (lNetworkView)
+                    {
+                        var lID = Network.AllocateViewID();
+                        lNetworkView.viewID = lID;
+                        lViewIDManager.setViewID(i, lID);
+                        print(lNetworkView.viewID.ToString() + ":"
+                            + lNetworkView.name);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < objectList.Count; ++i)
+                {
+                    var lNetworkView = objectList[i].networkView;
+                    if (lNetworkView)
+                    {
+                        lViewIDManager.getViewID(i,
+                            (x) =>
+                            {
+                                lNetworkView.viewID = x;
+                                print(x.ToString() + ":" + lNetworkView.name);
+                            }
+                            );
+                    }
+                }
+            }
+            //foreach (Transform lObject in lObjects)
+            //{
+            //    addViewID(lObject.gameObject);
+            //}
         }
-        foreach (Transform lObject in lObjects)
-        {
-            addPlayingObject(lObject.gameObject);
-            //++i;
-        }
+        else
+            OnAfterLoaded();
         //print(i);
 
         //managerObject.transform.DetachChildren();

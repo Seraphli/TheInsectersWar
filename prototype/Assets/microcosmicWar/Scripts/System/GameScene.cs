@@ -125,7 +125,7 @@ public class GameScene : MonoBehaviour
                 if (Network.connections.Length > 0)
                 {
                     int lIntRace = (int)PlayerInfo.getAdversaryRace(lPlayerInfo.getRace());
-                    networkView.RPC("RPCSetRace", Network.connections[0], lIntRace);
+                    //networkView.RPC("RPCSetRace", Network.connections[0], lIntRace);
                     adversaryPlayerSpawn.setOwer(Network.connections[0]);
                 }
                 CreatePlayer();
@@ -134,11 +134,11 @@ public class GameScene : MonoBehaviour
 
     }
 
-    [RPC]
-    void RPCSetRace(int pRace)
-    {
-        playerInfo.setRace((Race)pRace);
-    }
+    //[RPC]
+    //void RPCSetRace(int pRace)
+    //{
+    //    playerInfo.setRace((Race)pRace);
+    //}
 
     protected bool needOnGUI = false;
     protected string buttonInfo = "";
@@ -189,9 +189,13 @@ public class GameScene : MonoBehaviour
 
     public void gameResult(string pRaceName,bool pIsWiner)
     {
-        ImpGameResult(pRaceName, pIsWiner);
-        if (Network.peerType != NetworkPeerType.Disconnected)
-            networkView.RPC("ImpGameResult", RPCMode.Others, pRaceName, pIsWiner);
+        if(zzCreatorUtility.isHost())
+        {
+            ImpGameResult(pRaceName, pIsWiner);
+            if (Network.peerType != NetworkPeerType.Disconnected)
+                networkView.RPC("ImpGameResult", RPCMode.Others, pRaceName, pIsWiner);
+
+        }
     }
 
     PlayerInfo _playerInfo;

@@ -82,7 +82,7 @@ public class MulSoldierFactoryObject : zzEditableObject
             createInfo();
         }
 
-        if(inPlaying)
+        if (inPlaying && zzCreatorUtility.isHost())
         {
             var  lSoldierFactories =new List<SoldierFactory>();
             foreach (var lSetting in _soldierFactorySettings)

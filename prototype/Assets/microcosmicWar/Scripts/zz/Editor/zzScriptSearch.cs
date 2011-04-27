@@ -11,13 +11,15 @@ public class zzScriptSearch:EditorWindow
     }
 
     public MonoScript scriptToSearch;
-    public string scriptNameToSearch;
+    public string scriptNameToSearch = "";
+    public Vector2 scrollPos;
     public GameObject[] result = new GameObject[0]{};
     void OnGUI()
     {
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         var lNewScriptToSearch = (MonoScript)EditorGUILayout.ObjectField(scriptToSearch, typeof(MonoScript));
+        scriptNameToSearch = EditorGUILayout.TextField(scriptNameToSearch);
         if (scriptToSearch!=lNewScriptToSearch)
         {
             scriptToSearch = lNewScriptToSearch;
@@ -36,12 +38,13 @@ public class zzScriptSearch:EditorWindow
             }
             result = lResult.ToArray();
         }
-
         GUILayout.EndHorizontal();
+        scrollPos = GUILayout.BeginScrollView(scrollPos);
         foreach (var lObject in result)
         {
             EditorGUILayout.ObjectField(lObject, typeof(GameObject));
         }
+        GUILayout.EndScrollView();
         GUILayout.EndVertical();
     }
 }
