@@ -22,7 +22,7 @@ public class LevelShow:MonoBehaviour
                 var lGUIElement = new zzGUILibTreeElement();
                 lGUIElement.name = lLevelDir.Name;
                 lGUIElement.image = defaultLevelImage;
-                lGUIElement.stringData = lLevelDir.FullName;
+                lGUIElement.stringData = lDirectory.Name + "/" + lLevelDir.Name;
                 //lGUIElement.objectData = lInfoElement.data;
                 lLevelElement.Add( lGUIElement );
             }

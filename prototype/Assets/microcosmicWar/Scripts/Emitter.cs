@@ -37,19 +37,6 @@ public class Emitter : MonoBehaviour
 
     protected float _bulletAliveTime;
 
-    //public delegate void initBulletNullFunc(Bullet pBullet);
-
-    //static void nullInitBulletNullFunc(Bullet pBullet){}
-    //protected void  initBulletNullFunc ( Bullet pBullet  ){
-    //}
-
-    //protected initBulletNullFunc initBulletFunc = nullInitBulletNullFunc;
-
-    //public void setInitBulletFunc(initBulletNullFunc pFunc)
-    //{
-    //    initBulletFunc = pFunc;
-    //}
-
     public virtual void setInjureInfo(Hashtable pInjureInfo)
     {
         injureInfo = pInjureInfo;
@@ -58,12 +45,11 @@ public class Emitter : MonoBehaviour
     void Start()
     {
         _bulletAliveTime = shootRange / bulletSpeed;
-        //print(""+bulletAliveTime+"="+shootRange"//"+bulletSpeed);
     }
 
-    void Update()
-    {
-    }
+    //void Update()
+    //{
+    //}
 
     public virtual GameObject[] EmitBullet()
     {
@@ -71,25 +57,17 @@ public class Emitter : MonoBehaviour
         if (zzCreatorUtility.isHost())
         {
             lOut = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, new Quaternion(), 0);
-            //clone.layer = bulletLayer;
 
-            //print(transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0)) );
-            //Rigidbody lRigidbody = clone.GetComponentInChildren<Rigidbody>();
-            //lRigidbody.velocity=transform.localToWorldMatrix.MultiplyVector(Vector3(1,0,0))*bulletSpeed;
-            //clone.velocity=transform.forward;
             Bullet pBullet = lOut.GetComponentInChildren<Bullet>();
             pBullet.setLayer(bulletLayer);
             pBullet.setAliveTime(_bulletAliveTime);
-            //pBullet.setForward(getForward());
-            //pBullet.setSpeed(bulletSpeed);
+
             pBullet.setForwardVelocity(getForward() * bulletSpeed);
             if (injureInfo!=null)
             {
                 pBullet.setInjureInfo(injureInfo);
             }
 
-            //执行外部的初始化子弹的函数
-            //initBulletFunc(pBullet);
         }
         if (fireSound)
         {

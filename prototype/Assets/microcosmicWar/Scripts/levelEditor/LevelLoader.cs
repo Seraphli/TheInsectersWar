@@ -4,6 +4,23 @@ public class LevelLoader:MonoBehaviour
 {
     public string settingObject;
 
+    public string rootPath;
+
+    string toPath(string pLevelName)
+    {
+        string lOut = pLevelName;
+        var rootNameLength = rootPath.Length;
+        if (rootNameLength > 0)
+        {
+            if (pLevelName.Length <= rootNameLength + 1
+                ||pLevelName.Substring(0,rootNameLength+1)!=(rootPath+"/"))
+            {
+                lOut = rootPath + "/" + pLevelName;
+            }
+        }
+        return lOut;
+    }
+
     public string levelName
     {
         get
@@ -12,7 +29,7 @@ public class LevelLoader:MonoBehaviour
         }
         set
         {
-            _levelName = value;
+            _levelName = toPath(value);
         }
     }
 

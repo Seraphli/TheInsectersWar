@@ -22,6 +22,9 @@ public class WMPlayStateManager : PlayStateManager
             lGameSceneManager.addObject(
                 GameSceneManager.MapManagerType.moveableObject, lClone);
 
+        if (lClone.networkView)
+            lClone.networkView.viewID = Network.AllocateViewID();
+
     }
 
     public static void addPlayingObject(GameObject lClone)

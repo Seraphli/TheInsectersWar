@@ -52,9 +52,33 @@ public class Bullet : MonoBehaviour
             shape.layer = pLayer;
     }
 
+    public GameObject renderObject;
+
+    public float hideTime = 0.05f;
+
+    zzTimer showRenderObjectTimer;
+
+    void hideObject()
+    {
+        renderObject.SetActiveRecursively(false);
+        showRenderObjectTimer = gameObject.AddComponent<zzTimer>();
+        showRenderObjectTimer.setImpFunction(showObject);
+        showRenderObjectTimer.setInterval(hideTime);
+    }
+
+    void showObject()
+    {
+        renderObject.SetActiveRecursively(true);
+        Destroy(showRenderObjectTimer);
+    }
 
     void Start()
     {
+        if (renderObject && zzCreatorUtility.isHost())
+        {
+            hideObject();
+        }
+
         if (shape)
         {
             shape.layer = gameObject.layer;

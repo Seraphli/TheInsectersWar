@@ -38,8 +38,8 @@ public class ActionCommandInput : MonoBehaviour
         if (Input.GetKey(up))
             lActionCommand.FaceUp = true;
 
-        lActionCommand.Fire = Input.GetKeyDown(fire);
-        lActionCommand.Jump = Input.GetKeyDown(jump);
+        lActionCommand.Fire = Input.GetKey(fire);
+        lActionCommand.Jump = Input.GetKey(jump);
         return lActionCommand;
     }
 

@@ -8,17 +8,15 @@ public class NetworkMenu : MonoBehaviour
 {
 
     //玩家信息
-    public int raceSelect = 0;
+    public Race raceSelect = Race.ePismire;
     public string playerName = "player";
 
-    public string savedDataName = "_info";
+    //public string savedDataName = "_info";
 
     //网络联接
 
     public string remoteIP = "127.0f.0.1f";
     public int remotePort = 25000;
-    //FIXME_VAR_TYPE listenPort= 25000;
-    //FIXME_VAR_TYPE useNAT= false;
 
     public NetworkConnectionError networkConnectionError;
 
@@ -39,6 +37,12 @@ public class NetworkMenu : MonoBehaviour
 
     public bool useNat = false;
 
+    public System.Action<Race> selectRaceEvent;
+
+    public System.Action<string> selectMapEvent;
+
+    public System.Action loadGameSceneEvent;
+
     //void initBroadcastSent()
     //{
     //    broadcastSentObject = (GameObject)Object.Instantiate(broadcastObjectPrefab);
@@ -49,19 +53,15 @@ public class NetworkMenu : MonoBehaviour
     //    lBroadcast.autoInterval = autoSentInterval;
     //}
 
-    //FIXME_VAR_TYPE serverPort= 25002;
-    //private FIXME_VAR_TYPE doneTesting= false;
-    //private FIXME_VAR_TYPE probingPublicIP= false;
-    //private FIXME_VAR_TYPE testMessage= "Undetermined NAT capabilities";
-    void Start()
-    {
-        DontDestroyOnLoad(GameObject.Find(savedDataName));
+    //void Start()
+    //{
+    //    //DontDestroyOnLoad(GameObject.Find(savedDataName));
 
-        //MasterServer.ClearHostList();
-        //MasterServer.RequestHostList(gameTypeName);
-        ////Network.useNat = true;
-        //Network.useNat = false;
-    }
+    //    //MasterServer.ClearHostList();
+    //    //MasterServer.RequestHostList(gameTypeName);
+    //    ////Network.useNat = true;
+    //    //Network.useNat = false;
+    //}
     void Update()
     {
         refreshTimePos += Time.deltaTime;
@@ -94,7 +94,7 @@ public class NetworkMenu : MonoBehaviour
     void OnPlayerConnected(NetworkPlayer player)
     {
         print("OnPlayerConnected");
-        Race lServerRace = raceSelectToEnum(raceSelect);
+        Race lServerRace = raceSelect;
         //networkView.RPC( "LoadMyLevel", RPCMode.AllBuffered, "", 0);
 
         int lIntRace = (int)Race.ePismire;
@@ -122,128 +122,128 @@ public class NetworkMenu : MonoBehaviour
         //print("LoadMyLevel");
         Network.isMessageQueueRunning = false;
 
-        PlayerInfo playerInfo = GameObject.Find(savedDataName).GetComponentInChildren<PlayerInfo>();
-        playerInfo.setRace((Race)race);
-        playerInfo.setPlayerName(playerName);
+        //PlayerInfo playerInfo = GameObject.Find(savedDataName).GetComponentInChildren<PlayerInfo>();
+        //playerInfo.setRace((Race)race);
+        //playerInfo.setPlayerName(playerName);
+        selectRaceEvent((Race)race);
+        selectMapEvent(mapName);
 
         //Application.LoadLevel("testScene");
-        Application.LoadLevel("netSewer2");
+        //Application.LoadLevel("netSewer2");
+        loadGameSceneEvent();
     }
 
-    void OnGUI(){
-	GUILayout.Space(10);
-	GUILayout.BeginHorizontal();
-	GUILayout.Space(10);
-	
-	if (Network.peerType == NetworkPeerType.Disconnected)
-	{
-		GUILayout.BeginVertical();
-		GUILayout.Label("your name");
-		playerName= GUILayout.TextField(playerName, GUILayout.MinWidth(100));
-		GUILayout.Space(5);
-		
-		GUILayout.Label("As Server");
-		GUILayout.Label("choose team");
-		GUILayout.Space(5);
-		raceSelect = GUILayout.SelectionGrid (raceSelect,new string[]{"pismire","bee"},2);
+    void initHost(string playName,Race pRace,string pMapName)
+    {
+        Network.InitializeServer(32, remotePort, useNat);
 
-		GUILayout.Space(10);
-		
-		GUILayout.BeginHorizontal();
-		if (GUILayout.Button ("Start Server:"))
-		{
-            Network.InitializeServer(32, remotePort, useNat);
+        var lHostInfo = new zzHostInfo();
+        lHostInfo.gameType = gameTypeName;
+        lHostInfo.gameName = gameName;
 
-            var lHostInfo = new zzHostInfo();
-            lHostInfo.gameType = gameTypeName;
-            lHostInfo.gameName = gameName;
-            lHostInfo.comment = playerName;
-            networkHost.RegisterHost(lHostInfo);
-					
-		}
-		remotePort = int.Parse(GUILayout.TextField(remotePort.ToString()));
-		GUILayout.EndHorizontal();
-		
-		GUILayout.Space(15);
-		
-		GUILayout.Label("As Client:");
-		GUILayout.BeginHorizontal();
-		if (GUILayout.Button ("Manual Connect"))
-		{
+        Hashtable lTableData = new Hashtable();
+        lTableData["playName"] = playName;
+        lTableData["race"] = (int)pRace;
+        lTableData["map"] = pMapName;
+        string lStringData = zzSerializeString.Singleton.pack(lTableData);
+        lHostInfo.comment = lStringData;
 
-			//HostData[] data = MasterServer.PollHostList();
-			//Network.useNat = useNAT;
-			// Use NAT punchthrough if no public IP present
-			//Network.useNat = !Network.HavePublicAddress();
-			//Network.useNat = false;
-			networkConnectionError = Network.Connect(remoteIP, remotePort);
-			//print(networkConnectionError);
-		}
-		remoteIP = GUILayout.TextField(remoteIP, GUILayout.MinWidth(100));
-		GUILayout.EndHorizontal();
-		// Refresh hosts
-		GUILayout.Label(networkConnectionError.ToString());
-		GUILayout.Label(Network.peerType.ToString());
-		
-        //if (GUILayout.Button ("Refresh available Servers manually") )
-        //{
-        //    MasterServer.RequestHostList (gameTypeName);
-        //}
-        //GUILayout.Space(10);
-	
-        //HostData[] data = MasterServer.PollHostList();
-        //GUILayout.Label(data.Length.ToString());
-        var lServerList = serverList.serverList;
-        foreach (var lServer in lServerList)
+        networkHost.RegisterHost(lHostInfo);
+    }
+
+    public string mapName;
+
+    void OnGUI()
+    {
+        GUILayout.Space(10);
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(10);
+
+        if (Network.peerType == NetworkPeerType.Disconnected)
         {
-            GUILayout.Label("player name: " + lServer.Value);
-            GUILayout.Label("IP:"+lServer.Key);
-            if (GUILayout.Button("Connect"))
+            GUILayout.BeginVertical();
+            GUILayout.Label("your name");
+            playerName = GUILayout.TextField(playerName, GUILayout.MinWidth(100));
+            GUILayout.Space(5);
+
+            GUILayout.Label("As Server");
+            GUILayout.Label("choose team");
+            GUILayout.Space(5);
+            raceSelect = (Race)GUILayout.SelectionGrid((int)raceSelect, new string[] { "pismire", "bee" }, 2);
+
+            GUILayout.Space(10);
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Start Server:"))
             {
-                Network.Connect(lServer.Key, remotePort);
+                initHost(playerName, raceSelect, mapName);
+                //Network.InitializeServer(32, remotePort, useNat);
+
+                //var lHostInfo = new zzHostInfo();
+                //lHostInfo.gameType = gameTypeName;
+                //lHostInfo.gameName = gameName;
+                //lHostInfo.comment = playerName;
+                //networkHost.RegisterHost(lHostInfo);
+
             }
-            GUILayout.Space(2);
+            remotePort = int.Parse(GUILayout.TextField(remotePort.ToString()));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(15);
+
+            GUILayout.Label("As Client:");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Manual Connect"))
+            {
+
+                //HostData[] data = MasterServer.PollHostList();
+                //Network.useNat = useNAT;
+                // Use NAT punchthrough if no public IP present
+                //Network.useNat = !Network.HavePublicAddress();
+                //Network.useNat = false;
+                networkConnectionError = Network.Connect(remoteIP, remotePort);
+                //print(networkConnectionError);
+            }
+            remoteIP = GUILayout.TextField(remoteIP, GUILayout.MinWidth(100));
+            GUILayout.EndHorizontal();
+            // Refresh hosts
+            GUILayout.Label(networkConnectionError.ToString());
+            GUILayout.Label(Network.peerType.ToString());
+
+            var lServerList = serverList.serverList;
+            foreach (var lServer in lServerList)
+            {
+                Hashtable lTableData = (Hashtable)zzSerializeString.Singleton
+                    .unpackToData(lServer.Value);
+                string lHostPlayName = (string)lTableData["playName"];
+                string lHostMap = (string)lTableData["map"];
+                Race lHostRace = (Race)lTableData["race"] ;
+                GUILayout.Label("player name: " + lHostPlayName);
+                GUILayout.Label("map: " + lHostMap);
+                GUILayout.Label("IP:" + lServer.Key);
+                if (GUILayout.Button("Connect"))
+                {
+                    mapName = lHostMap;
+                    Network.Connect(lServer.Key, remotePort);
+                }
+                GUILayout.Space(2);
+            }
+
+            GUILayout.EndVertical();
         }
-        //foreach (HostData element in data)
-        //{
-        //    //GUILayout.Label(element.gameType);
-        //    //GUILayout.Label(element.gameName);
-        //    GUILayout.Label("player name: "+element.comment);
-        //    GUILayout.Label("IP:");
-        //    foreach(string ipElement in element.ip)
-        //        GUILayout.Label(ipElement);
-        //    //print(element.ip);
-        //    //print(element.ip[0]);
-        //    GUILayout.Label("port: "+element.port.ToString());
-			
-        //        if (GUILayout.Button("Connect"))
-        //        {
-        //            // Enable NAT functionality based on what the hosts if configured to do
-        //            Network.useNat = element.useNat;
-        //            //if (Network.useNat)
-        //            //	print("Using Nat punchthrough to connect");
-        //            //else
-        //            //	print("Connecting directly to host");
-        //            Network.Connect(element.ip, element.port);			
-        //        }
-        //    GUILayout.Space(2);
-        //}
-		
-		GUILayout.EndVertical();
-	}
-	else
-	{
-		if (GUILayout.Button ("Disconnect"))
-		{
-            networkHost.UnregisterHost();
-			Network.Disconnect(200);
-		}
-		GUILayout.Label("state: "+Network.peerType.ToString());
-	}
-	
-	GUILayout.FlexibleSpace();
-	GUILayout.EndHorizontal();
-}
+        else
+        {
+            if (GUILayout.Button("Disconnect"))
+            {
+                networkHost.UnregisterHost();
+                Network.Disconnect(200);
+            }
+            GUILayout.Label("state: " + Network.peerType.ToString());
+        }
+
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+    }
 
     
     //void  TestConnection (){
