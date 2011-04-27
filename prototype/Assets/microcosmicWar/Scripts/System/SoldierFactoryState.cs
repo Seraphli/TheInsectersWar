@@ -178,6 +178,11 @@ public class SoldierFactoryState : MonoBehaviour
     
     public Stronghold canCreate(Race race, Vector3 position)
     {
+        return canCreate(race, position,true);
+    }
+
+    public Stronghold canCreate(Race race, Vector3 position, bool pCheckoCcupied)
+    {
         Stronghold lStronghold = null;
         //区域内是否有阵地
         Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
@@ -189,8 +194,8 @@ public class SoldierFactoryState : MonoBehaviour
         //print(lStronghold.owner);
         if (
             lStronghold
-            && lStronghold.occupied == true//被占领
             && lStronghold.owner == race//属于自己的种族
+            && (!pCheckoCcupied||lStronghold.occupied == true)//被占领
             //&& !lStronghold.soldierFactory//还未建造兵工厂
             )
             return lStronghold;

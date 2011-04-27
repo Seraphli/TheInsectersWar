@@ -6,30 +6,45 @@ public class zzAllocateViewIDManager:MonoBehaviour
 {
     public class IdToSetNetworkId<T>
     {
-
-        public void getViewID(T pObjectID, SetViewIDFunc pSetFunc)
+        /// <summary>
+        /// 如果执行设置,返回真
+        /// </summary>
+        /// <param name="pObjectID"></param>
+        /// <param name="pSetFunc"></param>
+        /// <returns></returns>
+        public bool getViewID(T pObjectID, SetViewIDFunc pSetFunc)
         {
             if (idToViewID.ContainsKey(pObjectID))
             {
                 pSetFunc(idToViewID[pObjectID]);
                 idToViewID.Remove(pObjectID);
+                return true;
             }
             else
             {
                 idToSetFunc[pObjectID] = pSetFunc;
+                return false;
             }
         }
 
-        public void setViewID(T pObjectID, NetworkViewID pNetworkViewID)
+        /// <summary>
+        /// 如果执行设置,返回真
+        /// </summary>
+        /// <param name="pObjectID"></param>
+        /// <param name="pNetworkViewID"></param>
+        /// <returns></returns>
+        public bool setViewID(T pObjectID, NetworkViewID pNetworkViewID)
         {
             if(idToSetFunc.ContainsKey(pObjectID))
             {
                 idToSetFunc[pObjectID](pNetworkViewID);
                 idToSetFunc.Remove(pObjectID);
+                return true;
             }
             else
             {
                 idToViewID[pObjectID] = pNetworkViewID;
+                return false;
             }
         }
 
@@ -52,6 +67,7 @@ public class zzAllocateViewIDManager:MonoBehaviour
     IdToSetNetworkId<string> stringToSetNetworkId = new IdToSetNetworkId<string>();
     //IdToSetNetworkId<string> stringToSetNetworkId;
 
+    //客户端调用
     public void getViewID(int pObjectID, SetViewIDFunc pSetFunc)
     {
         intToSetNetworkId.getViewID(pObjectID, pSetFunc);
@@ -62,6 +78,7 @@ public class zzAllocateViewIDManager:MonoBehaviour
         stringToSetNetworkId.getViewID(pObjectID, pSetFunc);
     }
 
+    //服务端调用
     public void setViewID(int pObjectID, NetworkViewID pNetworkViewID)
     {
         networkView.RPC("intToViewID", RPCMode.Others, pObjectID, pNetworkViewID);
@@ -70,16 +87,6 @@ public class zzAllocateViewIDManager:MonoBehaviour
     public void setViewID(string pObjectID, NetworkViewID pNetworkViewID)
     {
         networkView.RPC("stringToViewID", RPCMode.Others, pObjectID, pNetworkViewID);
-    }
-
-    public void beginGroup()
-    {
-
-    }
-
-    public void endGroup()
-    {
-
     }
 
     [RPC]

@@ -64,7 +64,6 @@ public class GameScene : MonoBehaviour
         singletonInstance = this;
 
 
-        Network.isMessageQueueRunning = true;
         zzCreatorUtility.resetCreator();
 
         //}

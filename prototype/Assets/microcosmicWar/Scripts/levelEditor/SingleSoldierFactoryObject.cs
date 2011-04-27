@@ -238,8 +238,9 @@ public class SingleSoldierFactoryObject : zzEditableObject
         if(zzCreatorUtility.isHost())
         {
             var lFactory = soldierFactorySetting.addFactory(gameObject);
-            var lStronghold = SoldierFactoryState.Singleton.canCreate(race, transform.position);
-            if (lStronghold && !lStronghold.soldierFactory)
+            var lStronghold = SoldierFactoryState.Singleton
+                .canCreate(race, transform.position,false);
+            if (lStronghold)
             {
                 lFactory.listener = lStronghold
                     .GetComponent<SoldierFactoryListener>().interfaceObject;

@@ -37,6 +37,8 @@ public class HeroSpawn : MonoBehaviour
     {
         var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
 
+        lUiRoot.GetComponent<zzInterfaceGUI>().setVisible(true);
+
         mUIObjectMap = lUiRoot.GetComponent<zzSceneObjectMap>();
 
         bloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBarBase>();
@@ -87,8 +89,6 @@ public class HeroSpawn : MonoBehaviour
         if (haveFirstCreate)
             Debug.LogError("haveFirstCreate == true");
 
-        var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
-        lUiRoot.GetComponent<zzInterfaceGUI>().setVisible( true );
 
         hero = _createHero();
         zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();

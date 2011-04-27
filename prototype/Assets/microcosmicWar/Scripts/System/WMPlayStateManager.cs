@@ -3,8 +3,30 @@ using System.Collections.Generic;
 
 public class WMPlayStateManager : PlayStateManager
 {
+    void Awake()
+    {
+        Network.isMessageQueueRunning = true;
+    }
 
+    public zzGroupViewIDManager groupViewIDManager;
     public GameObject managerObject;
+
+    public override void setPlay(bool pIsPlay)
+    {
+        if (_inPlaying == pIsPlay)
+            return;
+        _inPlaying = pIsPlay;
+        if (pIsPlay)//stop=>play
+        {
+            applyPlayState();
+            //changedToPlayEvent();
+        }
+        else//play=>stop
+        {
+            applyStopState();
+            doChangedToStopEvent();
+        }
+    }
 
     public static void addManagedObject(GameObject lClone)
     {
@@ -43,8 +65,8 @@ public class WMPlayStateManager : PlayStateManager
         foreach (Transform lObject in objectList)
         {
             addPlayingObject(lObject.gameObject);
-            //++i;
         }
+        doChangedToPlayEvent();
     }
     //public static void addViewID(GameObject lClone)
     //{
@@ -72,6 +94,7 @@ public class WMPlayStateManager : PlayStateManager
             addPlayingObject(lClone);
         }
         managerObject.SetActiveRecursively(false);
+        doChangedToPlayEvent();
     }
 
     void directPlayState()
@@ -80,7 +103,8 @@ public class WMPlayStateManager : PlayStateManager
         print(Network.minimumAllocatableViewIDs);
         if (Network.peerType != NetworkPeerType.Disconnected)
         {
-            var lViewIDManager = zzAllocateViewIDManager.Singleton;
+            var lViewIDManager = groupViewIDManager;
+            lViewIDManager.setGroupBegin(OnAfterLoaded);
             if (Network.isServer)
             {
                 for (int i = 0; i < objectList.Count; ++i)
@@ -90,11 +114,10 @@ public class WMPlayStateManager : PlayStateManager
                     {
                         var lID = Network.AllocateViewID();
                         lNetworkView.viewID = lID;
-                        lViewIDManager.setViewID(i, lID);
-                        print(lNetworkView.viewID.ToString() + ":"
-                            + lNetworkView.name);
+                        lViewIDManager.setViewID(i, lNetworkView);
                     }
                 }
+                lViewIDManager.setGroupEnd();
             }
             else
             {
@@ -103,15 +126,10 @@ public class WMPlayStateManager : PlayStateManager
                     var lNetworkView = objectList[i].networkView;
                     if (lNetworkView)
                     {
-                        lViewIDManager.getViewID(i,
-                            (x) =>
-                            {
-                                lNetworkView.viewID = x;
-                                print(x.ToString() + ":" + lNetworkView.name);
-                            }
-                            );
+                        lViewIDManager.getViewID(i, lNetworkView);
                     }
                 }
+
             }
             //foreach (Transform lObject in lObjects)
             //{
@@ -160,7 +178,13 @@ public class WMPlayStateManager : PlayStateManager
     public override void updateObject(GameObject pOjbect)
     {
         if (_inPlaying)
+        {
             addPlayingObject(pOjbect);
+        }
+        else if (pOjbect.networkView)
+        {
+            pOjbect.networkView.enabled = false;
+        }
     }
 
     //public void updateObjects()

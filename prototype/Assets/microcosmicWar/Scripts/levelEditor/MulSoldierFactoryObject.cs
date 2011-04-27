@@ -92,8 +92,9 @@ public class MulSoldierFactoryObject : zzEditableObject
                     lSoldierFactories.Add(lSetting.addFactory(gameObject));
                 }
             }
-            var lStronghold = SoldierFactoryState.Singleton.canCreate(race, transform.position);
-            if (lStronghold && !lStronghold.soldierFactory)
+            var lStronghold = SoldierFactoryState.Singleton
+                .canCreate(race, transform.position, false);
+            if (lStronghold)
             {
                 var lFactoryListener = lStronghold
                     .GetComponent<SoldierFactoryListener>().interfaceObject;

@@ -121,7 +121,6 @@ public class Stronghold:MonoBehaviour
 
     void Start()
     {
-        //print("stronghold:"+name);
         if (owner != Race.eNone)
         {
             buildRace(owner);
@@ -136,10 +135,10 @@ public class Stronghold:MonoBehaviour
         }
     }
 
-    public void setSoldierFactory(GameObject pSoldierFactory)
-    {
-        soldierFactory = pSoldierFactory;
-    }
+    //public void setSoldierFactory(GameObject pSoldierFactory)
+    //{
+    //    soldierFactory = pSoldierFactory;
+    //}
 
     GameObject  getBuilding(Race race)
     {
