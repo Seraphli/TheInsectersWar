@@ -67,7 +67,7 @@ public class zzSignalSlot : MonoBehaviour
             Destroy(this);
     }
 
-    static void linkSignalToSlot(object pSignalObject, MemberInfo pSignalMemberInfo,
+    public static void linkSignalToSlot(object pSignalObject, MemberInfo pSignalMemberInfo,
         System.Delegate pSlotDelegate)
     {
         if (pSignalMemberInfo is PropertyInfo)
