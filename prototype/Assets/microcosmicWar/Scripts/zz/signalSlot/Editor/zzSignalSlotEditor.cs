@@ -27,8 +27,13 @@ public class zzSignalSlotEditor : Editor
         GameObject lObject;
         if (pSelected is GameObject)
             lObject = (GameObject)pSelected;
-        else
+        else if (pSelected is Component)
             lObject = ((Component)pSelected).gameObject;
+        else
+        {
+            Debug.Log(pSelected.GetType());
+            return pSelected;
+        }
         
         lComponents = lObject.GetComponents<Component>();
 

@@ -73,15 +73,20 @@ public class Emitter : MonoBehaviour
         {
             fireSound.Play();
         }
+        playFireSpark();
 
-        if(fireSpark)
+        return new GameObject[]{lOut};
+    }
+
+    protected void playFireSpark()
+    {
+        if (fireSpark)
         {
             GameObject clone;
             clone = (GameObject)Instantiate(fireSpark, transform.position, transform.rotation);
             FireSpark lFireSpark = clone.GetComponent<FireSpark>();
             lFireSpark.setForward(getForward());
         }
-        return new GameObject[]{lOut};
     }
 
     public virtual void setBulletLayer(int pBulletLayer)

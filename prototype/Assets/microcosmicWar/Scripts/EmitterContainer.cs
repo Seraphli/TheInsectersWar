@@ -34,6 +34,7 @@ public class EmitterContainer : Emitter
         {
             fireSound.Play();
         }
+        playFireSpark();
         return lOut.ToArray();
     }
 
