@@ -62,7 +62,7 @@ public class Bullet : MonoBehaviour
     {
         renderObject.SetActiveRecursively(false);
         showRenderObjectTimer = gameObject.AddComponent<zzTimer>();
-        showRenderObjectTimer.setImpFunction(showObject);
+        showRenderObjectTimer.addImpFunction(showObject);
         showRenderObjectTimer.setInterval(hideTime);
     }
 

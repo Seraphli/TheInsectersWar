@@ -164,7 +164,7 @@ public abstract class ISoldierAI:MonoBehaviour
         //行为更新的计时器
         actionCommandTimer = gameObject.AddComponent<zzTimer>();
         actionCommandTimer.setInterval(actionCommandUpdateInterval);
-        actionCommandTimer.setImpFunction(this.actionCommandUpdate);
+        actionCommandTimer.addImpFunction(this.actionCommandUpdate);
 
         //广范围探测追踪(敌人)的计时器
         zzCoroutineTimer lFollowDetectorTimer = gameObject.AddComponent<zzCoroutineTimer>();

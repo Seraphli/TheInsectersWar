@@ -13,7 +13,7 @@ public class zzCreateObjectInTime : MonoBehaviour
     {
         timer = gameObject.AddComponent<zzTimer>();
         timer.setInterval(interval);
-        timer.setImpFunction(createObject);
+        timer.addImpFunction(createObject);
     }
 
     void createObject()

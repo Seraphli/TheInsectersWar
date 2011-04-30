@@ -7,13 +7,15 @@ public class FireSpark : MonoBehaviour
 {
     #region IAbleSetForward 成员
 
+    public void setForward(float pAngle)
+    {
+        transform.rotation = Quaternion.Euler(0f, 0f, pAngle);
+    }
+
     public void setForward(Vector3 pForward)
     {
         pForward.z = 0;
-        Quaternion lRotation = new Quaternion();
-        lRotation.SetFromToRotation(Vector3.right, pForward);
-        //transform.rotation.SetFromToRotation(Vector3.right,pForward);
-        transform.rotation = lRotation;
+        setForward(Vector3.Angle(Vector3.right, pForward));
     }
 
     public Vector3 getForward()

@@ -26,7 +26,7 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
             recoverTimer = gameObject.AddComponent<zzTimer>();
         }
         recoverTimer.setInterval(recoverInterval);
-        recoverTimer.setImpFunction(recover);
+        recoverTimer.addImpFunction(recover);
     }
 
     void recover()

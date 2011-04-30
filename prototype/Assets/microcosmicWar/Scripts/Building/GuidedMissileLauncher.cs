@@ -81,7 +81,7 @@ class GuidedMissileLauncher : DefenseTower
     protected override void initWhenHost()
     {
         fireTimer = gameObject.AddComponent<zzTimer>();
-        fireTimer.setImpFunction(fireAndSetNextTime);
+        fireTimer.addImpFunction(fireAndSetNextTime);
         fireTimer.setInterval(getIntervalAndMove());
     }
 

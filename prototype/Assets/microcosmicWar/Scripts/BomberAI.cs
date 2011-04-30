@@ -38,7 +38,7 @@ public class BomberAI:MonoBehaviour
     {
         actionCommandTimer = gameObject.AddComponent<zzTimer>();
         actionCommandTimer.setInterval(actionCommandUpdateInterval);
-        actionCommandTimer.setImpFunction(fireDetect);
+        actionCommandTimer.addImpFunction(fireDetect);
 
         nowAim = adversaryBase;
 
@@ -66,7 +66,7 @@ public class BomberAI:MonoBehaviour
         if (lResult.Length > 0)
         {
             actionCommandTimer.setInterval(fireDelayRange);
-            actionCommandTimer.setImpFunction(fire);
+            actionCommandTimer.addImpFunction(fire);
             emitter.bulletAliveTime = getBulletAliveTime(lResult[0].transform.position);
             print(getBulletAliveTime(lResult[0].transform.position));
         }
@@ -81,7 +81,7 @@ public class BomberAI:MonoBehaviour
         actionCommandControl.setCommand(actionCommand);
 
         actionCommandTimer.setInterval(0f);
-        actionCommandTimer.setImpFunction(closeFire);
+        actionCommandTimer.addImpFunction(closeFire);
     }
 
     void closeFire()
@@ -90,7 +90,7 @@ public class BomberAI:MonoBehaviour
         actionCommandControl.setCommand(actionCommand);
 
         actionCommandTimer.setInterval(goBackDelayAfterFire);
-        actionCommandTimer.setImpFunction(toGoBackState);
+        actionCommandTimer.addImpFunction(toGoBackState);
 
     }
 

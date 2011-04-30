@@ -1,6 +1,5 @@
-﻿
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class MessageRedirect : MonoBehaviour
 {
@@ -8,11 +7,33 @@ public class MessageRedirect : MonoBehaviour
 
     public Transform messageReceiver;
 
-    //void Start()
-    //{
-        //if(!messageReceiver)
-        //	messageReceiver=transform.parent;
-    //}
+    [System.Serializable]
+    public class ActionInfo
+    {
+        public string name;
+        public zzOnAction action;
+    }
+
+    public ActionInfo[] actionList = new ActionInfo[0]{};
+
+    Dictionary<string, zzOnAction> actionMap;
+
+    void Awake()
+    {
+        if (actionList.Length == 0)
+            return;
+
+        actionMap = new Dictionary<string, zzOnAction>();
+        foreach (var lActionInfo in actionList)
+        {
+            actionMap[lActionInfo.name] = lActionInfo.action;
+        }
+    }
+
+    public void actionRedirectReceiver(string actionName)
+    {
+        actionMap[actionName].impAction();
+    }
 
     public void messageRedirectReceiver(string methodName)
     {

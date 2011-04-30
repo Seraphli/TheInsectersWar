@@ -8,12 +8,12 @@ public class zzTimer : MonoBehaviour
 
     public float interval;
 
-    public zzFrequencyTimer frequencyTimer = new zzFrequencyTimer();
+    public zzTimerClass timer = new zzTimerClass();
 
     public float timePos
     {
-        get { return frequencyTimer.timePos; }
-        set { frequencyTimer.timePos = value; }
+        get { return timer.timePos; }
+        set { timer.timePos = value; }
     }
 
     void Start()
@@ -21,21 +21,18 @@ public class zzTimer : MonoBehaviour
         setInterval(interval);
     }
 
-    public void setImpFunction(zzUtilities.voidFunction pFunc)
+    public void addImpFunction(zzUtilities.voidFunction pFunc)
     {
-        frequencyTimer.setImpFunction(pFunc);
+        timer.addImpFunction(pFunc);
     }
 
     public void setInterval(float pInterval)
     {
-        //print(1.0f/pInterval);
-        //防止在 Start 前执行,使interval未赋值执行setInterval
-        interval = pInterval;
-        frequencyTimer.setFrequencyOfImp(1.0f / pInterval);
+        timer.setInterval(pInterval);
     }
 
     void Update()
     {
-        frequencyTimer.Update();
+        timer.Update();
     }
 }

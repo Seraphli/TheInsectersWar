@@ -262,7 +262,7 @@ public class SoldierAI : ISoldierAI
         }
         moveLockTimer.timePos = 0;
         moveLockTimer.setInterval(pTime);
-        moveLockTimer.setImpFunction(unlockMove);
+        moveLockTimer.addImpFunction(unlockMove);
     }
 
     public void unlockMove()

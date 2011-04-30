@@ -31,7 +31,7 @@ public class zzSignalSlotEditor : Editor
             lObject = ((Component)pSelected).gameObject;
         else
         {
-            Debug.Log(pSelected.GetType());
+            Debug.Log(pSelected.GetType() + ":" + pSelected);
             return pSelected;
         }
         

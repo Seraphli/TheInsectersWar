@@ -54,12 +54,12 @@ public class SonicWaveTower : MonoBehaviour
             zzTimer lAttackTimer = gameObject.AddComponent<zzTimer>();
             lAttackTimer.setInterval(attackInterval);
             //zTimer.setImpFunction(My);
-            lAttackTimer.setImpFunction(Attack);
+            lAttackTimer.addImpFunction(Attack);
         }
 
         zzTimer lWaveTimer = gameObject.AddComponent<zzTimer>();
         lWaveTimer.setInterval(waveCreatedInterval);
-        lWaveTimer.setImpFunction(createWave);
+        lWaveTimer.addImpFunction(createWave);
     }
 
     public void initRace(Race pRace)

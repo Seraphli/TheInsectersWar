@@ -122,7 +122,7 @@ public class HeroSpawn : MonoBehaviour
         //重生的延迟执行
         rebirthTimer = gameObject.AddComponent<zzTimer>();
 
-        rebirthTimer.setImpFunction(_rebirthHeroCreate);
+        rebirthTimer.addImpFunction(_rebirthHeroCreate);
         rebirthTimer.setInterval(rebirthTime);
         //if(Network.peerType !=NetworkPeerType.Disconnected)
         //	GameObject lHeroObject = Network.Instantiate(heroPrefab,transform.position,Quaternion(),0);
@@ -168,7 +168,7 @@ public class HeroSpawn : MonoBehaviour
     void RPCCreateHeroRebirthClock()
     {
         rebirthClockTimer = gameObject.AddComponent<zzTimer>();
-        rebirthClockTimer.setImpFunction(_updateRebirthTimeLeave);
+        rebirthClockTimer.addImpFunction(_updateRebirthTimeLeave);
         rebirthClockTimer.setInterval(1.0f);
 
         rebirthClockUI.setVisible(true);

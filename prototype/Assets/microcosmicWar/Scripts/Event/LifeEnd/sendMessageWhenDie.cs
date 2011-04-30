@@ -13,7 +13,8 @@ class sendMessageWhenDie:MonoBehaviour
 
     void Start()
     {
-        life = gameObject.GetComponentInChildren<Life>();
+        if (!life)
+            life = gameObject.GetComponentInChildren<Life>();
         life.addDieCallback(deadAction);
     }
 

@@ -64,13 +64,13 @@ public class zzBroadcast:MonoBehaviour
         {
             case ServerType.receive:
                 initReciever();
-                timer.setImpFunction(receive);
+                timer.addImpFunction(receive);
                 break;
 
             case ServerType.send:
                 initSender();
                 if (autoSent)
-                    timer.setImpFunction(sent);
+                    timer.addImpFunction(sent);
                 else
                     timer.enable = false;
                 break;

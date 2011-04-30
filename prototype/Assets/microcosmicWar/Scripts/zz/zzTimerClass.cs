@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 
 [System.Serializable]
-class zzTimerClass
+public class zzTimerClass
 {
 
     public float interval = 1.0f;
@@ -27,9 +27,9 @@ class zzTimerClass
     }
 
 
-    public void setImpFunction(zzUtilities.voidFunction pFunc)
+    public void addImpFunction(zzUtilities.voidFunction pFunc)
     {
-        impFunction = pFunc;
+        impFunction += pFunc;
     }
 
     public void Update()
