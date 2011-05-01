@@ -9,7 +9,15 @@ public class CreateByPrefab: MonoBehaviour
 
     public delegate void AddObjectEvent(GameObject pObject);
 
+    static void nullAddObjectEvent(GameObject pObject){}
+
     AddObjectEvent addObjectEvent;
+
+    void Start()
+    {
+        if (addObjectEvent == null)
+            addObjectEvent = nullAddObjectEvent;
+    }
 
     public void addAddObjectEventReceiver(AddObjectEvent pFunc)
     {

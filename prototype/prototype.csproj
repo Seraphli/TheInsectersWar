@@ -110,6 +110,8 @@
      <None Include="Assets\Detonator\TestScene\DetonatorTest.js" />
      <Compile Include="Assets\Editor\AstarPathEditor.cs" />
      <Compile Include="Assets\Editor\AstarWelcome.cs" />
+     <None Include="Assets\EffectsbyStv\Weapon Effects\Scripts\j_ArmorEffect.js" />
+     <None Include="Assets\EffectsbyStv\Weapon Effects\Scripts\j_MushroomCloudBehavior.js" />
      <None Include="Assets\microcosmicWar\Assets\Rocket Jet\Support\Particle Add (Overlay).shader" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\AiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\AiMachineGunAI.cs" />
@@ -131,6 +133,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\Stronghold.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdValueShow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Editor\AutoSetGameObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\TestEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\awakeShooterWhenDie.cs" />
@@ -146,6 +149,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\DeadZone.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\playSoundWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeIntervalRecoverByDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeRateRangeEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeRecoverConstValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\defenseTowerItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\item\healthPackItem.cs" />
@@ -160,6 +164,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\EditorViewSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\FreezeAllRotation.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\LevelLoader.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\LevelShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MouseZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
@@ -182,6 +187,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ShieldPismireLifeChanged.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\ActionCommandControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\ActionCommandInput.cs" />
@@ -230,6 +236,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnFrameList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnLateUpdateOnce.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnStart.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnTriggerEnter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnUpdateOnce.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyDragMove.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
@@ -321,6 +328,9 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRigidbodySweepDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteAttach.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteLocalPos.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteParent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzGetObjectByID.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzMySerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeAttribute.cs" />
@@ -330,11 +340,16 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetFloatValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetPositionValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetStringValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetValueBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\Editor\zzSignalSlotEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\example\zzSignalSlotExample.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlot.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlotList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
@@ -344,8 +359,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\example\zzTransparencyCaptureExample.cs" />
      <None Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\readme.txt" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\zzTransparencyCapture.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzApplication.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzDontDestroyOnLoad.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zz2DCameraDrag.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAllocateViewID.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAllocateViewIDManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCopyProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
@@ -353,10 +372,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzFrequencyTimerClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectCreator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectInit.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGroupViewIDManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIndexTableClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzInputDownEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLayerMaskSwitch.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLogFile.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMasterServer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectPicker.cs" />
@@ -455,12 +476,6 @@
      <Compile Include="Assets\Pathfinding\AstarMath.cs" />
      <Compile Include="Assets\Pathfinding\AstarPath.cs" />
      <Compile Include="Assets\Pathfinding\Seeker.cs" />
-     <None Include="Assets\Radar\Script\Radar.js" />
-     <Compile Include="Assets\Radar\Script\Radar2.cs" />
-     <None Include="Assets\Radar\Script\Radar2.js" />
-     <Compile Include="Assets\Radar\Script\RadarTest.cs" />
-     <None Include="Assets\Radar Pro\Shaders\Alpha-Cancel.shader" />
-     <Compile Include="Assets\RadarTest\Script\Radar.cs" />
      <Compile Include="Assets\Standard Assets\Camera Scripts\MouseLook.cs" />
      <None Include="Assets\Standard Assets\Camera Scripts\MouseOrbit.js" />
      <None Include="Assets\Standard Assets\Camera Scripts\SmoothFollow.js" />

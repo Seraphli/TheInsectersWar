@@ -14,7 +14,17 @@ public class HeroSpawn : MonoBehaviour
 
     public GameObject hero;
     public zzInterfaceGUI rebirthClockUI;
-    public GameObject SystemObject;
+    [SerializeField]
+    GameObject _SystemObject;
+    public GameObject SystemObject
+    {
+        get
+        {
+            if (!_SystemObject)
+                _SystemObject = zzObjectMap.getObject("system");
+            return _SystemObject;
+        }
+    }
 
     //是否创建过
     protected bool haveFirstCreate = false;
@@ -61,10 +71,6 @@ public class HeroSpawn : MonoBehaviour
         getUI();
         if (autoCreatePlayer)
             createHeroFirstTime();
-
-        if (!SystemObject)
-            //SystemObject = GameObject.Find("System");
-            SystemObject = zzObjectMap.getObject("system");
     }
 
     public void setOwer(NetworkPlayer pOwner)

@@ -74,10 +74,10 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        if (renderObject && zzCreatorUtility.isHost())
-        {
-            hideObject();
-        }
+        //if (renderObject && zzCreatorUtility.isHost())
+        //{
+        //    hideObject();
+        //}
 
         if (shape)
         {
@@ -176,9 +176,8 @@ public class Bullet : MonoBehaviour
     public void setForward(Vector3 pForward,bool pRPCCall)
     {
         pForward.z = 0;
-        Quaternion lRotation = new Quaternion();
-        lRotation.SetFromToRotation(Vector3.right, pForward);
-        //transform.rotation.SetFromToRotation(Vector3.right,pForward);
+
+        var lRotation = Quaternion.Euler(0f, 0f, Vector3.Angle(Vector3.right, pForward));
         transform.rotation = lRotation;
         float lSpeed = bulletRigidbody.velocity.magnitude;
         Vector3 lVelocity = pForward.normalized * lSpeed;
@@ -212,8 +211,8 @@ public class Bullet : MonoBehaviour
     public void setForwardVelocity(Vector3 pVelocity, bool pRPCCall)
     {
         pVelocity.z = 0;
-        var lRotation = new Quaternion();
-        lRotation.SetFromToRotation(Vector3.right, pVelocity);
+
+        var lRotation = Quaternion.Euler(0f, 0f, Vector3.Angle(Vector3.right, pVelocity));
         transform.rotation = lRotation;
         bulletRigidbody.velocity = pVelocity;
         setBulletForwardVelocity(pVelocity, lRotation, pRPCCall);

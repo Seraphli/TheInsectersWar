@@ -15,12 +15,24 @@ public class LifeRecoverConstValue : MonoBehaviour
     public float duration = 10.0f;
     public Life life;
 
-    //FIXME_VAR_TYPE timePos= 0.0f;
     public float recoverValueResidue = 0.0f;
 
     public void setLife(Life plife)
     {
         life = plife;
+    }
+
+    System.Action recoverEndEvent;
+
+    public void addRecoverEndEventReceiver(System.Action pReceiver)
+    {
+        recoverEndEvent += pReceiver;
+    }
+
+    void Start()
+    {
+        if (recoverEndEvent == null)
+            recoverEndEvent = zzUtilities.nullFunction;
     }
 
     void Update()
@@ -35,9 +47,10 @@ public class LifeRecoverConstValue : MonoBehaviour
         //if(lNowRecoverValue>recoverValue)
         //	lNowRecoverValue = recoverValue;
         recoverValue -= lNowRecoverValue;
-        life.setBloodValue(life.getBloodValue() + lNowRecoverValue);
+        if(zzCreatorUtility.isHost())
+            life.setBloodValue(life.getBloodValue() + lNowRecoverValue);
 
         if (duration <= 0)
-            zzCreatorUtility.Destroy(this);
+            recoverEndEvent();
     }
 }
