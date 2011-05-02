@@ -28,6 +28,7 @@ public class zzTimer : MonoBehaviour
 
     public void setInterval(float pInterval)
     {
+        interval = pInterval;
         timer.setInterval(pInterval);
     }
 

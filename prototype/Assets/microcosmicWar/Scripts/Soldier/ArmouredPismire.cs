@@ -5,6 +5,9 @@ public class ArmouredPismire:MonoBehaviour
 {
     public DefenseTower defenseTower;
     public LifeTriggerDetector[] lifeTriggerDetectors;
+
+    public ParticleEmitter jumpJet;
+
     //敌人还在这个角度时,枪不动
     public float fireDeviation = 4.0f;
 
@@ -35,9 +38,15 @@ public class ArmouredPismire:MonoBehaviour
             defenseTower.takeAim(lAim.position, fireDeviation);
 
         if (character.isGrounded())
+        {
             character.runSpeed = speedOnGround;
+            jumpJet.emit = false;
+        }
         else
+        {
             character.runSpeed = speedOnAir;
+            jumpJet.emit = true;
+        }
 
     }
 }

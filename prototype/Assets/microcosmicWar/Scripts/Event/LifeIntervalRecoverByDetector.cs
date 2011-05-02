@@ -19,6 +19,9 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
     public zzDetectorBase detector;
     public zzTimer recoverTimer;
 
+    public event System.Action onRecoverStayEvent;
+    public event System.Action offRecoverStayEvent;
+
     void Awake()
     {
         if (!recoverTimer)
@@ -32,11 +35,18 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
     void recover()
     {
         var lDetected = detector.detect(maxRecoverObjectNum, recoverLayerMask);
-        foreach (var lCollider in lDetected)
+        if (lDetected.Length>0)
         {
-            var lLife = Life.getLifeFromTransform(lCollider.transform);
-            lLife.injure(-recoverValueEveryTime);
+            if(zzCreatorUtility.isHost())
+                foreach (var lCollider in lDetected)
+                {
+                    var lLife = Life.getLifeFromTransform(lCollider.transform);
+                    lLife.injure(-recoverValueEveryTime);
+                }
+            onRecoverStayEvent();
         }
+        else
+            offRecoverStayEvent();
     }
 
 }
