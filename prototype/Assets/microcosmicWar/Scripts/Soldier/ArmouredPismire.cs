@@ -3,10 +3,14 @@ using System.Collections;
 
 public class ArmouredPismire:MonoBehaviour
 {
+    public ActionCommandControl actionCommandControl;
     public DefenseTower defenseTower;
     public LifeTriggerDetector[] lifeTriggerDetectors;
 
     public ParticleEmitter jumpJet;
+    public float jumpJetTime;
+    public Animation myAnimation;
+    public string jumpAnimationName;
 
     //敌人还在这个角度时,枪不动
     public float fireDeviation = 4.0f;
@@ -17,9 +21,15 @@ public class ArmouredPismire:MonoBehaviour
     public float speedOnGround;
     public float speedOnAir;
 
+    zzTimer jumpJetEffectzzTimer;
+
     void Start()
     {
         character = soldier.character;
+        jumpJetEffectzzTimer = gameObject.AddComponent<zzTimer>();
+        jumpJetEffectzzTimer.setInterval(jumpJetTime);
+        jumpJetEffectzzTimer.addImpFunction(OffJumpJetEffect);
+        jumpJetEffectzzTimer.enabled = false;
     }
 
     void Update()
@@ -40,13 +50,28 @@ public class ArmouredPismire:MonoBehaviour
         if (character.isGrounded())
         {
             character.runSpeed = speedOnGround;
-            jumpJet.emit = false;
         }
         else
         {
             character.runSpeed = speedOnAir;
-            jumpJet.emit = true;
         }
+        if (actionCommandControl.getCommand().Jump)
+            OnJump();
 
     }
+
+    void OnJump()
+    {
+        myAnimation.CrossFade(jumpAnimationName, 0.2f);
+        jumpJet.emit = true;
+        jumpJetEffectzzTimer.enabled = true;
+    }
+
+    void OffJumpJetEffect()
+    {
+        jumpJet.emit = false;
+        jumpJetEffectzzTimer.enabled = false;
+    }
+
+
 }

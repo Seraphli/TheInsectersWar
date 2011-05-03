@@ -19,8 +19,8 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
     public zzDetectorBase detector;
     public zzTimer recoverTimer;
 
-    public event System.Action onRecoverStayEvent;
-    public event System.Action offRecoverStayEvent;
+    //public event System.Action onRecoverStayEvent;
+    //public event System.Action offRecoverStayEvent;
 
     void Awake()
     {
@@ -43,10 +43,10 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
                     var lLife = Life.getLifeFromTransform(lCollider.transform);
                     lLife.injure(-recoverValueEveryTime);
                 }
-            onRecoverStayEvent();
+            //onRecoverStayEvent();
         }
-        else
-            offRecoverStayEvent();
+        //else
+        //    offRecoverStayEvent();
     }
 
 }

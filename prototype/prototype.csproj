@@ -184,6 +184,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\HeroNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ISoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\MedicAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\MedicEffectDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ShieldPismireLifeChanged.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierAI.cs" />
@@ -328,6 +329,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRigidbodySweepDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzTriggerDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzTriggerDetectorEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteAttach.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteLocalPos.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteParent.cs" />
@@ -338,6 +341,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeSelfID.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestoryObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestoryOneObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetFloatValue.cs" />
@@ -373,6 +377,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectCreator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGameObjectInit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzGroupViewIDManager.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIgnoreCollision.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzIndexTableClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzInputDownEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzItemSystem.cs" />

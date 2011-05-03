@@ -40,7 +40,8 @@ public class zzSignalSlotList:MonoBehaviour
         MemberInfo lSignalMemberInfo = zzSignalSlot.getSignalMember(signalComponent, signalMethodName);
         if (lSignalMemberInfo == null)
         {
-            Debug.LogError(gameObject.name + ":There is not name in method,or it is not public");
+            Debug.LogError(gameObject.name + ":There is not name in method,or it is not public." 
+                + signalComponent + "." + signalMethodName);
             return;
         }
         Type lSignalDelegateType = zzSignalSlot.getSignalDelegate(lSignalMemberInfo);

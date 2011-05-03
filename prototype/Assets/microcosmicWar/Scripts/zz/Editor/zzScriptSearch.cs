@@ -26,7 +26,8 @@ public class zzScriptSearch:EditorWindow
             scriptNameToSearch = scriptToSearch.name;
         }
 
-        if(GUILayout.Button("search",GUILayout.ExpandWidth(false)) && scriptToSearch)
+        if (GUILayout.Button("search", GUILayout.ExpandWidth(false))
+            && scriptNameToSearch.Length>0)
         {
             //var lType = System.Type.GetType(lScriptName);
             List<GameObject> lResult = new List<GameObject>();

@@ -5,11 +5,13 @@ using System.Collections;
 class destroyComponentWhenDie:MonoBehaviour
 {
     public float delayTime = 0.0f;
+    public Life life;
     public Component componentToDestroy;
 
     void Start()
     {
-        Life life = gameObject.GetComponentInChildren<Life>();
+        if(!life)
+            life = gameObject.GetComponentInChildren<Life>();
         life.addDieCallback(deadAction);
     }
 
