@@ -100,48 +100,44 @@ public class WMPlayStateManager : PlayStateManager
     void directPlayState()
     {
         getAllSceneObject();
-        print(Network.minimumAllocatableViewIDs);
+        List<NetworkView> lNetworkViewList = new List<NetworkView>();
+        foreach (var lObject in objectList)
+        {
+            lNetworkViewList.AddRange( lObject.GetComponents<NetworkView>() );
+        }
         if (Network.peerType != NetworkPeerType.Disconnected)
         {
             var lViewIDManager = groupViewIDManager;
             lViewIDManager.setGroupBegin(OnAfterLoaded);
             if (Network.isServer)
             {
-                for (int i = 0; i < objectList.Count; ++i)
+                if (lNetworkViewList.Count > Network.minimumAllocatableViewIDs)
                 {
-                    var lNetworkView = objectList[i].networkView;
-                    if (lNetworkView)
-                    {
-                        var lID = Network.AllocateViewID();
-                        lNetworkView.viewID = lID;
-                        lViewIDManager.setViewID(i, lNetworkView);
-                    }
+                    Network.minimumAllocatableViewIDs
+                        = (int)(lNetworkViewList.Count * 1.5f);
+                }
+                for (int i = 0; i < lNetworkViewList.Count; ++i)
+                {
+                    var lNetworkView = lNetworkViewList[i];
+                    var lID = Network.AllocateViewID();
+                    lNetworkView.viewID = lID;
+                    lViewIDManager.setViewID(i, lNetworkView);
                 }
                 lViewIDManager.setGroupEnd();
             }
             else
             {
-                for (int i = 0; i < objectList.Count; ++i)
+                for (int i = 0; i < lNetworkViewList.Count; ++i)
                 {
-                    var lNetworkView = objectList[i].networkView;
-                    if (lNetworkView)
-                    {
-                        lViewIDManager.getViewID(i, lNetworkView);
-                    }
+                    var lNetworkView = lNetworkViewList[i];
+                    lViewIDManager.getViewID(i, lNetworkView);
                 }
 
             }
-            //foreach (Transform lObject in lObjects)
-            //{
-            //    addViewID(lObject.gameObject);
-            //}
+
         }
         else
             OnAfterLoaded();
-        //print(i);
-
-        //managerObject.transform.DetachChildren();
-        //Destroy(managerObject);
     }
 
     public override void applyPlayState()

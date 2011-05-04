@@ -51,9 +51,7 @@ public class MedicEffectDetector:MonoBehaviour
 
     void OnSoldierExit(Collider other)
     {
-        //因为一个物体会被多次OnTriggerExit
-        if (soldierToEffect.ContainsKey(other))
-            offEffect(soldierToEffect[other]);
+        offEffect(soldierToEffect[other]);
     }
 
     void offEffect(GameObject pEffectObject)

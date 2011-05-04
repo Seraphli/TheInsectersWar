@@ -55,7 +55,8 @@ public class zzTriggerDetector : zzDetectorBase
 
     void OnTriggerExit(Collider other)
     {
-        removeDetectedObject(other);
+        if (detectedList.Contains(other))
+            removeDetectedObject(other);
     }
 
 

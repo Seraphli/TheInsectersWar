@@ -173,7 +173,7 @@ public class SoldierFactory : MonoBehaviour
             GameObject lClone = zzCreatorUtility.Instantiate(soldierToProduce,
                 produceTransform.position, new Quaternion(), 0);
 
-            GameSceneManager.Singleton.addSoldier(lClone);
+            //GameSceneManager.Singleton.addSoldier(lClone);
 
             timePos = 0.0f;
             var lSoldier = lClone.GetComponent<Soldier>();
