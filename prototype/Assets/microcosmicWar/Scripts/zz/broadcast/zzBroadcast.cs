@@ -36,11 +36,18 @@ public class zzBroadcast:MonoBehaviour
         recieverFunc += pRecieverFunc;
     }
 
-    zzUtilities.voidFunction beginRecieverFunc;
+    System.Action beginRecieverFunc;
 
-    public void addBeginRecieverFunc(zzUtilities.voidFunction pFunc)
+    public void addBeginRecieverFunc(System.Action pFunc)
     {
         beginRecieverFunc += pFunc;
+    }
+
+    System.Action endRecieverFunc;
+
+    public void addEndRecieverFunc(System.Action pFunc)
+    {
+        endRecieverFunc += pFunc;
     }
 
 
@@ -53,6 +60,8 @@ public class zzBroadcast:MonoBehaviour
     {
         if (beginRecieverFunc==null)
             beginRecieverFunc = zzUtilities.nullFunction;
+        if (endRecieverFunc==null)
+            endRecieverFunc = zzUtilities.nullFunction;
         mServertype = servertype;
         //if (mServertype == ServerType.receive || autoSent)
         //{
@@ -155,7 +164,10 @@ public class zzBroadcast:MonoBehaviour
         while (lEndPoint!=null)
         {
             recieverFunc(lReceivedDate, lEndPoint.Address.ToString());
+
+            //下一条数据
             lEndPoint = broadcastReciever.receive(out lReceivedDate);
         }
+        endRecieverFunc();
     }
 }

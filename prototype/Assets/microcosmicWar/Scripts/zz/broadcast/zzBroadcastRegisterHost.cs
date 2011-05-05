@@ -12,9 +12,13 @@ public class zzBroadcastRegisterHost : zzNetworkHost
 
     public override void RegisterHost(zzHostInfo pHostInfo)
     {
-        //gameType = pHostInfo.gameType;
-        //gameName = pHostInfo.gameName;
-        sender.sentedData = pHostInfo.comment;
+        Hashtable lSentedData = new Hashtable();
+        lSentedData["gameName"] = pHostInfo.gameName;
+        lSentedData["gameType"] = pHostInfo.gameType;
+        lSentedData["comment"] = pHostInfo.comment;
+        lSentedData["GUID"] = pHostInfo.guid;
+        lSentedData["port"] = pHostInfo.port;
+        sender.sentedData = zzSerializeString.Singleton.pack(lSentedData);
         sender.enabled = true;
     }
 

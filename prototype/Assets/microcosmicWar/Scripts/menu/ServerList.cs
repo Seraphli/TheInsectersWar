@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 public class ServerList:MonoBehaviour
 {
-    public Dictionary<string, string> serverList = new Dictionary<string, string>();
+    public Dictionary<string, zzHostData> serverList =new Dictionary<string, zzHostData>();
 
     public void OnBeginReceive()
     {
         serverList.Clear();
     }
 
-    public void OnReceive(string data, string IP)
+    public void OnReceive(zzHostData data)
     {
-        serverList[IP] = data;
+        serverList[data.guid] = data;
     }
 }

@@ -49,7 +49,7 @@ public class zzMasterServerRequester : MonoBehaviour
     public float autoRequestInterval = 7f;
 
 
-    public delegate void RecieverFunc(string data, string IP);
+    public delegate void RecieverFunc(zzHostData data);
     RecieverFunc recieverFunc;
 
     public void addReciever(RecieverFunc pRecieverFunc)
@@ -64,10 +64,19 @@ public class zzMasterServerRequester : MonoBehaviour
         beginRecieverFunc += pFunc;
     }
 
+    System.Action endRecieverFunc;
+
+    public void addEndRecieverFunc(System.Action pFunc)
+    {
+        endRecieverFunc += pFunc;
+    }
+
     void Start()
     {
         if (beginRecieverFunc == null)
             beginRecieverFunc = zzUtilities.nullFunction;
+        if (endRecieverFunc == null)
+            endRecieverFunc = zzUtilities.nullFunction;
         if (_autoRequestHostList)
             createAutoRequest();
     }
@@ -117,8 +126,16 @@ public class zzMasterServerRequester : MonoBehaviour
         beginRecieverFunc();
         foreach (Hashtable lHost in hostList)
         {
-            recieverFunc(lHost["comment"] as string, lHost["IP"] as string);
+            zzHostData lHostData = new zzHostData();
+            lHostData.gameName = lHost["gameName"] as string;
+            lHostData.gameType = lHost["gameType"] as string;
+            lHostData.comment = lHost["comment"] as string;
+            lHostData.guid = lHost["guid"] as string;
+            lHostData.IP = lHost["IP"] as string;
+            lHostData.port = (int)(lHost["port"]);
+            recieverFunc(lHostData);
         }
+        endRecieverFunc();
         //}
     }
 

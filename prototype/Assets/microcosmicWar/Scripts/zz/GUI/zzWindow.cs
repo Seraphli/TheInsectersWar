@@ -10,13 +10,6 @@ public class zzWindow : zzGUIContainer
 
     public bool enableDrag = false;
 
-    //zzGUI[] subElements;
-
-    void Awake()
-    {
-        //ID = newID();
-    }
-
     /// <summary>
     /// 父UI有Group 时,将返回错误的信息
     /// </summary>
@@ -29,14 +22,6 @@ public class zzWindow : zzGUIContainer
             return position.Contains(lMousePosition); 
         }
     }
-
-    //public override bool isCoordinateReseted
-    //{
-    //    get
-    //    {
-    //        return true;
-    //    }
-    //}
 
     public override Vector2 originOfCoordForSub
     {
@@ -72,27 +57,5 @@ public class zzWindow : zzGUIContainer
     {
         impSubs();
     }
-
-
-    // Make the contents of the window
-    //function DoMyWindow ( int windowID  ) 
-    //	{
-    //if (GUI.Button ( new Rect(10,20,100,20), "Hello World"))
-    //print ("Got a click");
-    //foreach(zzGUI i in subElements)
-    //	i.renderGUI();
-    //print("DoMyWindow begin");
-
-    /*
-foreach(Transform i in transform)
-{
-    //print(i.name);
-    zzGUI renderGUI = i.GetComponent<zzGUI>();
-    if(renderGUI)
-        renderGUI.renderGUI();
-}
-*/
-    //print("DoMyWindow end");
-    //	}
 
 }

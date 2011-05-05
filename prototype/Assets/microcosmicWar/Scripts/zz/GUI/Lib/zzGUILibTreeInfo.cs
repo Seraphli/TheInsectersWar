@@ -19,6 +19,8 @@ public class zzGUILibTreeElement
 
     GUIContent _content;
 
+    public Dictionary<string, string> stringInfo;
+
     public GUIContent content
     {
         get
@@ -43,6 +45,7 @@ public class zzGUILibTreeNode : zzGUILibTreeElement
 
     public void applyChange() 
     { 
+        //告知绘图部分,节点内容已改变
         changed = true; 
     }
 
@@ -181,7 +184,7 @@ public class zzGUILibTreeView
             setTreeNode(treeNode);
 
         //zzGUILibTreeElement lNewSelected = null;
-        ;
+
         //print("TreeDepth:" + TreeDepth);
         //print(directoryInfo.Name+Folders.Count);
         bool lIsClick = false;
@@ -201,4 +204,104 @@ public class zzGUILibTreeView
         GUILayout.EndVertical();
         return lIsClick;
     }
+}
+
+public class zzGUILibListView
+{
+    [System.Serializable]
+    public class TitleInfo
+    {
+        public string name;
+        public string showName;
+        public float width;
+    }
+    public GUIStyle selectedStyle;
+    public GUIStyle notSelectedStyle;
+    public GUIStyle titleStyle;
+
+    zzGUILibTreeNode treeNode;
+
+    public void setTreeNode(zzGUILibTreeNode pTreeNode)
+    {
+        treeNode = pTreeNode;
+    }
+
+    //public string[] titleList;
+
+    //public float[] titleWidthList;
+    public TitleInfo[] titleList;
+
+    bool drawSubElement(ref zzGUILibTreeElement pSelected)
+    {
+        return false;
+    }
+
+    GUIStyle getStyle(object pSelected, object pShowed)
+    {
+        if (pSelected == pShowed)
+            return selectedStyle;
+        return notSelectedStyle;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pSelected"></param>
+    /// <returns>是否点击</returns>
+    public bool drawGUI(ref zzGUILibTreeElement pSelected)
+    {
+
+        //if (treeNode.changed)
+        //    setTreeNode(treeNode);
+        bool lOut = false;
+        GUILayout.BeginVertical();
+        {
+            GUILayout.BeginHorizontal();
+            {
+                foreach (var lTitleInfo in titleList)
+                {
+                    GUILayout.Label(lTitleInfo.showName, titleStyle,
+                        GUILayout.Width(lTitleInfo.width));
+                }
+            }
+            GUILayout.EndHorizontal();
+            foreach (var lElement in treeNode.elements)
+            {
+                var lStyle = getStyle(pSelected, lElement);
+                var lShowData = lElement.stringInfo;
+                bool lIsClick = false;
+                GUILayout.BeginHorizontal();
+                {
+                    if (lShowData == null)
+                    {
+                        foreach (var lTitleInfo in titleList)
+                            lIsClick |= GUILayout.Button("", lStyle, GUILayout.Width(lTitleInfo.width));
+                    }
+                    else
+                    {
+                        foreach (var lTitleInfo in titleList)
+                        {
+                            string lData;
+                            if (lShowData.ContainsKey(lTitleInfo.name))
+                                lData = lShowData[lTitleInfo.name];
+                            else
+                                lData = "";
+                            lIsClick |= GUILayout.Button(lData, lStyle, GUILayout.Width(lTitleInfo.width));
+                        }
+                    }
+                }
+                if (lIsClick)
+                {
+                    pSelected = lElement;
+                    lOut = true;
+                }
+                GUILayout.EndHorizontal();
+            }
+
+        }
+        GUILayout.EndVertical();
+
+        return false;
+    }
+
 }

@@ -65,6 +65,7 @@ public class zzGUICreatorWindow : EditorWindow
             widget<zzLabel>("Label"),
             widget<zzButton>("Button"),
             widget<zzImageGUI>("Image"),
+            widget<zzGUITextField>("TextField"),
             widget<zzGUIToolbar>("Toolbar"),
             widget<zzGUISwitchButton>("SwitchButton"),
             widget<zzGUIGroup>("Group"),
