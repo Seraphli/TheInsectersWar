@@ -3,6 +3,7 @@
 public class zzGUIListViewArea : zzGUIContainer
 {
     public zzGUILibTreeInfo treeInfo;
+    public zzGUILibTreeElementEvent eventObject;
 
     zzGUILibListView listView = new zzGUILibListView();
 
@@ -16,6 +17,19 @@ public class zzGUIListViewArea : zzGUIContainer
 
     public zzGUILibListView.TitleInfo[] titleList;
     Vector2 viewScroll;
+
+    void Start()
+    {
+        if(!eventObject)
+        {
+            eventObject = GetComponent<zzGUILibTreeElementEvent>();
+            if(!eventObject)
+            {
+                eventObject = gameObject.AddComponent<zzGUILibTreeElementEvent>();
+            }
+        }
+    }
+
     public override void impGUI(Rect rect)
     {
         if (ContentAndStyle.UseDefaultStyle)
@@ -40,7 +54,11 @@ public class zzGUIListViewArea : zzGUIContainer
             listView.titleStyle = titleStyle;
             listView.titleList = titleList;
             listView.setTreeNode(treeInfo.treeInfo);
-            listView.drawGUI(ref selectedElement);
+            if(listView.drawGUI(ref selectedElement))
+            {
+                eventObject.callElementClickedEvent(selectedElement.stringData);
+                eventObject.callElementClickedObjectEvent(selectedElement.objectData);
+            }
         }
         GUILayout.EndScrollView();
     }

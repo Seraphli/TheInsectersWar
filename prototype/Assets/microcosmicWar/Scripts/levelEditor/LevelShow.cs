@@ -9,6 +9,15 @@ public class LevelShow:MonoBehaviour
     public Texture2D defaultLevelImage;
     public zzGUILibTreeInfo treeUIInfo;
 
+    public bool checkMapAvailable(string pMap)
+    {
+        if (Directory.Exists(levelRootFolder + "/" + pMap))
+        {
+            return true;
+        }
+        return false;
+    }
+
     zzGUILibTreeElement[] getLevelInFolder(string pLevelRootFolder)
     {
         DirectoryInfo lDirectory = new DirectoryInfo(pLevelRootFolder);
@@ -22,7 +31,7 @@ public class LevelShow:MonoBehaviour
                 var lGUIElement = new zzGUILibTreeElement();
                 lGUIElement.name = lLevelDir.Name;
                 lGUIElement.image = defaultLevelImage;
-                lGUIElement.stringData = lDirectory.Name + "/" + lLevelDir.Name;
+                lGUIElement.stringData = lLevelDir.Name;
                 //lGUIElement.objectData = lInfoElement.data;
                 lLevelElement.Add( lGUIElement );
             }

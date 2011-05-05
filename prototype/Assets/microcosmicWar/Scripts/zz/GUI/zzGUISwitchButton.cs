@@ -3,7 +3,21 @@ using System.Collections;
 
 public class zzGUISwitchButton : zzInterfaceGUI
 {
-    public bool isOn = false;
+    [SerializeField]
+    bool _isOn = false;
+
+    public bool isOn
+    {
+        get
+        {
+            return _isOn;
+        }
+        set
+        {
+            if (_isOn != value)
+                switchButton();
+        }
+    }
 
     //public GUIContent buttonOnContent = new GUIContent();
     //public GUIContent buttonOffContent = new GUIContent();
@@ -16,19 +30,27 @@ public class zzGUISwitchButton : zzInterfaceGUI
 
     public void setOn()
     {
-        if (!isOn)
+        if (!_isOn)
             switchButton();
     }
 
     public void setOff()
     {
-        if (isOn)
+        if (_isOn)
             switchButton();
     }
 
     public delegate void SwitchEvent(bool lIsOn);
 
+    public  void nullSwitchEvent(bool lIsOn){}
+
     SwitchEvent switchEvent;
+
+    void Start()
+    {
+        if (switchEvent == null)
+            switchEvent = nullSwitchEvent;
+    }
 
     public void addSwitchEventReceiver(SwitchEvent pReceiver)
     {
@@ -50,8 +72,8 @@ public class zzGUISwitchButton : zzInterfaceGUI
 
     public void switchButton()
     {
-        isOn = !isOn;
-        switchEvent(isOn);
+        _isOn = !_isOn;
+        switchEvent(_isOn);
     }
 
     bool _drawButton(Rect rect)
@@ -69,7 +91,7 @@ public class zzGUISwitchButton : zzInterfaceGUI
 
     zzGUIStyle getNowContentAndStyle()
     {
-        if (isOn)
+        if (_isOn)
             return buttonOnContentAndStyle;
         return buttonOffContentAndStyle;
     }

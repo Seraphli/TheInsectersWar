@@ -301,7 +301,7 @@ public class zzGUILibListView
         }
         GUILayout.EndVertical();
 
-        return false;
+        return lOut;
     }
 
 }

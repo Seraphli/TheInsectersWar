@@ -21,18 +21,73 @@ public class NetworkMenu : MonoBehaviour
     }
     //玩家信息
     public Race raceSelect = Race.ePismire;
-    public string playerName = "player";
+
+    [SerializeField]
+    string _playerName = "player";
+
+    public string playerName
+    {
+        get
+        {
+            return _playerName;
+        }
+        set
+        {
+            _playerName = value;
+        }
+    }
 
     //public string savedDataName = "_info";
 
     //网络联接
 
-    public string remoteIP = "127.0.0.1";
-    public int remotePort = 25000;
+    [SerializeField]
+    string _remoteIP = "127.0.0.1";
+    public string remoteIP
+    {
+        get
+        {
+            return _remoteIP;
+        }
+        set
+        {
+            _remoteIP = value;
+        }
+    }
+
+    [SerializeField]
+    int _remotePort = 25000;
+    public int remotePort
+    {
+        get
+        {
+            return _remotePort;
+        }
+        set
+        {
+            _remotePort = value;
+        }
+    }
+
+    public string stateInfo
+    {
+        get
+        {
+            return Network.peerType.ToString();
+        }
+    }
+
+    public string errorInfo
+    {
+        get
+        {
+            return networkConnectionError.ToString();
+        }
+    }
 
     public NetworkConnectionError networkConnectionError;
 
-    public string gameTypeName = "CZLUniqueGameType";
+    public string gameTypeName = "CZLGameType";
     public string gameName = "czl game";
 
     public float hostListRefreshTimeout = 10.0f;
@@ -57,6 +112,10 @@ public class NetworkMenu : MonoBehaviour
 
     public System.Action loadGameSceneEvent;
 
+    public System.Func<string, bool> checkMapAvailableEvent;
+
+    public System.Action<string> serverEvent;
+
     protected Race raceSelectToEnum(int ID)
     {
         if (ID == 0)
@@ -65,6 +124,11 @@ public class NetworkMenu : MonoBehaviour
             return Race.eBee;
         Debug.LogError("raceSelectToEnum(int ID)");
         return Race.eNone;
+    }
+
+    void Awake()
+    {
+        Network.Disconnect();
     }
 
     void OnFailedToConnect(NetworkConnectionError error)
@@ -109,22 +173,54 @@ public class NetworkMenu : MonoBehaviour
         //playerInfo.setRace((Race)race);
         //playerInfo.setPlayerName(playerName);
         selectRaceEvent((Race)race);
-        selectMapEvent(mapName);
+        selectMapEvent(hostMap);
 
         //Application.LoadLevel("testScene");
         //Application.LoadLevel("netSewer2");
         loadGameSceneEvent();
     }
 
-    public void startHost()
+    public bool startHost()
     {
-        initHost(playerName, raceSelect, mapName);
+        if (mapName.Length>0&&checkMapAvailableEvent(mapName))
+        {
+            hostInfo = initHost(_playerName, raceSelect, mapName);
+            return true;
+        }
+        return false;
     }
 
-    void initHost(string playName,Race pRace,string pMapName)
+    public bool isServer
     {
-        Network.InitializeServer(32, remotePort, useNat);
+        set
+        {
+            if(Network.isServer!=value)
+            {
+                if(value)
+                {
+                    if (startHost())
+                        serverEvent("玩家:" + _playerName + " " + "地图:" + mapName);
+                }
+                else
+                {
+                    Network.Disconnect();
+                    networkHost.UnregisterHost();
+                    serverEvent("服务已关闭");
+                }
+            }
+        }
+        get 
+        { 
+            return Network.isServer; 
+        }
+    }
 
+    zzHostInfo hostInfo;
+
+    zzHostInfo initHost(string playName, Race pRace, string pMapName)
+    {
+        Network.InitializeServer(32, _remotePort, useNat);
+        hostMap = pMapName;
         var lHostInfo = new zzHostInfo();
         lHostInfo.gameType = gameTypeName;
         lHostInfo.gameName = gameName;
@@ -135,11 +231,50 @@ public class NetworkMenu : MonoBehaviour
         lTableData["map"] = pMapName;
         string lStringData = zzSerializeString.Singleton.pack(lTableData);
         lHostInfo.comment = lStringData;
+        lHostInfo.port = _remotePort;
 
         networkHost.RegisterHost(lHostInfo);
+        return lHostInfo;
     }
 
-    public string mapName;
+    [SerializeField]
+    string _mapName;
+
+    [SerializeField]
+    string hostMap;
+
+    public string mapName
+    {
+        get
+        {
+            return _mapName;
+        }
+
+        set
+        {
+            _mapName = value;
+        }
+    }
+
+    [SerializeField]
+    string hostGUID;
+
+    public void setHostGuid(string pGuid)
+    {
+        hostGUID = pGuid;
+    }
+
+    public void connectHost()
+    {
+        if(serverList.serverList.ContainsKey(hostGUID))
+        {
+            var lHostInfo = serverList.serverList[hostGUID];
+            Hashtable lTableData = (Hashtable)zzSerializeString.Singleton
+                .unpackToData(lHostInfo.comment);
+            hostMap = (string)lTableData["map"];
+            networkConnectionError = Network.Connect(lHostInfo.IP, lHostInfo.port);
+        }
+    }
 
     string getRaceName(Race pRace)
     {
@@ -197,20 +332,5 @@ public class NetworkMenu : MonoBehaviour
     }
 
 
-    public string stateInfo
-    {
-        get
-        {
-            return Network.peerType.ToString();
-        }
-    }
-
-    public string errorInfo
-    {
-        get
-        {
-            return networkConnectionError.ToString();
-        }
-    }
 
 }
