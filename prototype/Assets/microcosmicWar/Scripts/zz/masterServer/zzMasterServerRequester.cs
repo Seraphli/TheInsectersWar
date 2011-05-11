@@ -83,9 +83,12 @@ public class zzMasterServerRequester : MonoBehaviour
 
     zzTimerCoroutine requestHostTimer;
 
+    [SerializeField]
+    string url;
+
     IEnumerator getHostList()
     {
-        var url = masterServerURL + "queryhost";
+        url = masterServerURL + "queryhost";
 
         url += "?gameType=" + WWW.EscapeURL(gameType);
         //url += "&gameName=" + WWW.EscapeURL(gameName);
@@ -130,9 +133,9 @@ public class zzMasterServerRequester : MonoBehaviour
             lHostData.gameName = lHost["gameName"] as string;
             lHostData.gameType = lHost["gameType"] as string;
             lHostData.comment = lHost["comment"] as string;
-            lHostData.guid = lHost["guid"] as string;
+            lHostData.guid = lHost["GUID"] as string;
             lHostData.IP = lHost["IP"] as string;
-            lHostData.port = (int)(lHost["port"]);
+            lHostData.port = int.Parse((string)lHost["port"]);
             recieverFunc(lHostData);
         }
         endRecieverFunc();

@@ -144,8 +144,9 @@ public class zzMasterServerGameHost : zzNetworkHost
         }
         else
         {
-            var url = masterServerURL + "registerhost";
-
+            externalIP = Network.player.externalIP;
+            externalPort = Network.player.externalPort;
+            url = masterServerURL + "registerhost";
             url += "?IP=" + Network.player.externalIP;
             url += "&port=" + Network.player.externalPort;
             url += "&GUID=" + Network.player.guid;
@@ -160,7 +161,7 @@ public class zzMasterServerGameHost : zzNetworkHost
 
     }
 
-
+    public string url;
 
     IEnumerator sentUrlInfo(string pUrl)
     {
