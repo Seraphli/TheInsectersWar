@@ -45,4 +45,8 @@ public abstract class zzNetworkHost:MonoBehaviour
 
     public abstract void UnregisterHost();
 
+    public abstract void addRegisterSucceedReceiver(System.Action pReceiver);
+
+    public abstract void addRegisterFailReceiver(System.Action pReceiver);
+
 }

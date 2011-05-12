@@ -15,7 +15,8 @@ public class FireSpark : MonoBehaviour
     public void setForward(Vector3 pForward)
     {
         pForward.z = 0;
-        setForward(Vector3.Angle(Vector3.right, pForward));
+        float lSign = pForward.y > 0f ? 1f : -1f;
+        setForward(Vector3.Angle(Vector3.right, pForward) * lSign);
     }
 
     public Vector3 getForward()

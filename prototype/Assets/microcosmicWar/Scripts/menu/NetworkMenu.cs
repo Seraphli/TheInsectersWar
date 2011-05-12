@@ -215,9 +215,17 @@ public class NetworkMenu : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        networkHost.addRegisterSucceedReceiver(
+            () => Network.InitializeServer(32, _remotePort, useNat));
+
+        networkHost.addRegisterFailReceiver(() => serverEvent("失败"));
+    }
+
     [SerializeField]
     zzHostInfo hostInfo;
-    public zzNatStun natStun;
+
     zzHostInfo initHost(string playName, Race pRace, string pMapName)
     {
         hostMap = pMapName;
@@ -232,9 +240,6 @@ public class NetworkMenu : MonoBehaviour
         string lStringData = zzSerializeString.Singleton.pack(lTableData);
         lHostInfo.comment = lStringData;
         lHostInfo.port = _remotePort;
-        natStun.query(lHostInfo);
-
-        Network.InitializeServer(32, _remotePort, useNat);
 
         networkHost.RegisterHost(lHostInfo);
         return lHostInfo;

@@ -34,7 +34,7 @@ public class zzRayRandomLengthDetector : zzDetectorBase
         return Physics.RaycastAll(transform.position, worldDirection, getLength(), pLayerMask);
     }
 
-    float getLength()
+    protected float getLength()
     {
         return Random.Range(lengthMin, lengthMax);
     }

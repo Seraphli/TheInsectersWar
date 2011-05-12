@@ -98,7 +98,7 @@ public class Emitter : MonoBehaviour
     public virtual Vector3 getForward()
     {
         //return transform.right;
-        return transform.localToWorldMatrix.MultiplyVector(new Vector3(1, 0, 0));
+        return transform.localToWorldMatrix.MultiplyVector(Vector3.right);
     }
 
     public virtual Ray getFireRay()

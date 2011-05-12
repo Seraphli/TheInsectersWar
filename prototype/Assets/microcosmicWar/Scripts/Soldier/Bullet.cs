@@ -177,7 +177,8 @@ public class Bullet : MonoBehaviour
     {
         pForward.z = 0;
 
-        var lRotation = Quaternion.Euler(0f, 0f, Vector3.Angle(Vector3.right, pForward));
+        float lSign = pForward.y > 0f ? 1f : -1f;
+        var lRotation = Quaternion.Euler(0f, 0f, lSign*Vector3.Angle(Vector3.right, pForward));
         transform.rotation = lRotation;
         float lSpeed = bulletRigidbody.velocity.magnitude;
         Vector3 lVelocity = pForward.normalized * lSpeed;
@@ -211,8 +212,8 @@ public class Bullet : MonoBehaviour
     public void setForwardVelocity(Vector3 pVelocity, bool pRPCCall)
     {
         pVelocity.z = 0;
-
-        var lRotation = Quaternion.Euler(0f, 0f, Vector3.Angle(Vector3.right, pVelocity));
+        float lSign = pVelocity.y > 0f ? 1f : -1f;
+        var lRotation = Quaternion.Euler(0f, 0f, lSign*Vector3.Angle(Vector3.right, pVelocity));
         transform.rotation = lRotation;
         bulletRigidbody.velocity = pVelocity;
         setBulletForwardVelocity(pVelocity, lRotation, pRPCCall);

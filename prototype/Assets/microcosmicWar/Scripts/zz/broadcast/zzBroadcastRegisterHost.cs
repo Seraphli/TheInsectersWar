@@ -10,8 +10,18 @@ public class zzBroadcastRegisterHost : zzNetworkHost
         sender.enabled = false;
     }
 
+    System.Action afterRegister;
+
+    public override void addRegisterSucceedReceiver(System.Action pReceiver)
+    {
+        afterRegister += pReceiver;
+    }
+
+    public override void addRegisterFailReceiver(System.Action pReceiver){}
+
     public override void RegisterHost(zzHostInfo pHostInfo)
     {
+        afterRegister();
         Hashtable lSentedData = new Hashtable();
         lSentedData["gameName"] = pHostInfo.gameName;
         lSentedData["gameType"] = pHostInfo.gameType;
