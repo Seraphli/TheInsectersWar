@@ -10,6 +10,8 @@ public class zzWindow : zzGUIContainer
 
     public bool enableDrag = false;
 
+    public bool alwayFront = false;
+
     /// <summary>
     /// 父UI有Group 时,将返回错误的信息
     /// </summary>
@@ -50,6 +52,8 @@ public class zzWindow : zzGUIContainer
         //print("enableDrag:"+enableDrag);
         if (enableDrag)
             GUI.DragWindow();
+        if (alwayFront)
+            GUI.BringWindowToFront(GetInstanceID());
     }
 
     

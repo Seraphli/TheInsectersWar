@@ -46,6 +46,8 @@ public class layers
 
     public static readonly int boardDetector = LayerMask.NameToLayer("boardDetector");
     public static readonly int boardDetectorValue = 1 << boardDetector;
+
+    public static readonly int virtualObject = LayerMask.NameToLayer("virtualObject");
 }
 
 public class collisionLayer : MonoBehaviour

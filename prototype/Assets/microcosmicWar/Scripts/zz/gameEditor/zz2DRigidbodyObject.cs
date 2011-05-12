@@ -80,7 +80,7 @@ public class zz2DRigidbodyObject : zzEditableObject
     bool _freezeRotation = false;
 
     [zzSerialize]
-    [FieldUI("冻结旋转", verticalDepth = 0)]
+    [FieldUI("冻结旋转", verticalDepth = 0, tooltip = "禁止物体在运行时旋转")]
     public bool freezeRotation
     {
         get { return _freezeRotation; }
