@@ -169,6 +169,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MouseZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SceneObjectEdit.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SceneryCreator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SceneryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SingleSoldierFactoryObject.cs" />
@@ -246,6 +247,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzShortcutKey.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyDragMove.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRotator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditableObjectContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzEditorEnableList.cs" />
