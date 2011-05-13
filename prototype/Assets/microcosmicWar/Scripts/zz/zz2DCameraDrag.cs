@@ -3,6 +3,7 @@
 public class zz2DCameraDrag : MonoBehaviour
 {
     public Camera dragedCamera;
+    public Transform cameraTransform;
 
     //public bool inDraging
     //{
@@ -24,11 +25,11 @@ public class zz2DCameraDrag : MonoBehaviour
     {
         var lNowMouseWorldPos
             = dragedCamera.ScreenToWorldPoint(Input.mousePosition);
-        var lCameraPos = dragedCamera.transform.position;
+        var lCameraPos = cameraTransform.position;
         var lMouseToCameraVector = lCameraPos - lNowMouseWorldPos;
         var lNewPos = dragBeginMouseWorldPos + lMouseToCameraVector;
         lNewPos.z = lCameraPos.z;
-        dragedCamera.transform.position = lNewPos;
+        cameraTransform.position = lNewPos;
     }
 
     public void endDrag()

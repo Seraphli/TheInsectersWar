@@ -20,6 +20,15 @@ public class zzObjectPicker:MonoBehaviour
     public bool pickWhenDown;
     public bool pickWhenUp;
 
+    [System.Serializable]
+    public class PickerInfo
+    {
+        public Camera camera;
+        public LayerMask pickLayerMask;
+    }
+
+    public PickerInfo[] pickerInfos = new PickerInfo[0] { };
+
     public static Ray getMainCameraRay()
     {
         var lMousePos = Input.mousePosition;
@@ -58,10 +67,17 @@ public class zzObjectPicker:MonoBehaviour
     GameObject check()
     {
         RaycastHit lRaycastHit;
-        if (Physics.Raycast(getMainCameraRay(), out lRaycastHit, pickDistance, pickLayerMask))
+
+        var lMousePos = Input.mousePosition;
+
+        foreach (var lInfo in pickerInfos)
         {
-            return lRaycastHit.collider.gameObject;
+            var lRay = lInfo.camera.ScreenPointToRay(
+                new Vector3(lMousePos.x, lMousePos.y, lInfo.camera.nearClipPlane));
+            if (Physics.Raycast(lRay, out lRaycastHit, pickDistance, lInfo.pickLayerMask))
+                return lRaycastHit.collider.gameObject;
         }
+
         return null;
 
     }
@@ -86,6 +102,11 @@ public class zzObjectPicker:MonoBehaviour
 
         if (buttonUpEvent == null)
             buttonUpEvent += nullObjectCall;
+
+        if (pickerInfos.Length == 0)
+            pickerInfos = new PickerInfo[] {
+                new PickerInfo { camera = Camera.main, pickLayerMask=-1 } 
+            };
 
     }
 
