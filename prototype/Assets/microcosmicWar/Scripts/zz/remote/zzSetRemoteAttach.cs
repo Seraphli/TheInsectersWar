@@ -4,7 +4,7 @@ public class zzSetRemoteAttach:MonoBehaviour
 {
     public void setData(Transform pParent)
     {
-        networkView.RPC("RPCSetRemoteParent", RPCMode.Others, pParent.networkView.viewID);
+        networkView.RPC("RPCSetRemoteAttach", RPCMode.Others, pParent.networkView.viewID);
     }
 
     [RPC]

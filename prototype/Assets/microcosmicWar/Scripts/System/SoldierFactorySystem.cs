@@ -78,6 +78,11 @@ public class SoldierFactorySystem:MonoBehaviour
         return singletonInstance;
     }
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         if (singletonInstance)

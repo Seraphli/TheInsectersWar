@@ -39,7 +39,7 @@ public class EditorViewSwitch:MonoBehaviour
     {
         foreach (var lObject in pObjects)
         {
-            lObject.active = pActive;
+            lObject.SetActiveRecursively(pActive);
         }
         foreach (var lComponent in pComponents)
         {

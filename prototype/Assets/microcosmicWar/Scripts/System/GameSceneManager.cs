@@ -111,6 +111,11 @@ public class GameSceneManager:MonoBehaviour
         get { return singletonInstance; }
     }
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         if (singletonInstance != null)

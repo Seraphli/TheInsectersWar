@@ -257,6 +257,11 @@ public class zzItemSystem : MonoBehaviour
         return singletonInstance;
     }
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         if (singletonInstance)

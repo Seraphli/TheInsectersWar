@@ -83,6 +83,7 @@ public class StrongholdObject : zzEditableObject
     void Awake()
     {
         stronghold.owner = _race;
+        energy = _energy;
     }
 
 

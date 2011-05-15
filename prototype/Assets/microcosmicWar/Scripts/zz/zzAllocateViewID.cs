@@ -10,12 +10,11 @@ public class zzAllocateViewID:MonoBehaviour
             {
                 var lID = Network.AllocateViewID();
                 networkView.viewID = lID;
-                zzAllocateViewIDManager.Singleton
-                    .setViewID(name, lID);
+                zzAllocateViewIDManager.setViewID(name, lID);
             }
             else
             {
-                zzAllocateViewIDManager.Singleton.getViewID(name, setNetView);
+                zzAllocateViewIDManager.getViewID(name, setNetView);
             }
         }
     }

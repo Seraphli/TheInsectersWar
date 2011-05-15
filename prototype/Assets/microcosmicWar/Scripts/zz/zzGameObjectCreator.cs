@@ -46,6 +46,11 @@ public class zzGameObjectCreator : MonoBehaviour
         initObject.init(p);
     }
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         if (singletonInstance)

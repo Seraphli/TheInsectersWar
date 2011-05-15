@@ -145,6 +145,11 @@ public class rule1 : MonoBehaviour
         return singletonInstance;
     }
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         //print(gameObject.name);

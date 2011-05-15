@@ -108,22 +108,23 @@ public class CustomObjectType:zzEditableObject
         }
     }
 
-    void addObjectCollider(Transform pObject )
+    void setObjectCollider(Transform pObject, int pLayerIndex)
     {
         if (pObject.collider)
+        {
             objectCollider.Add(pObject.collider);
+            pObject.gameObject.layer = pLayerIndex;
+        }
     }
 
-    void setLayer(int layerIndex,GameSceneManager.MapManagerType pMapManagerType)
+    void setLayer(int pLayerIndex,GameSceneManager.MapManagerType pMapManagerType)
     {
         GetComponent<WMGameObjectType>().mapType = pMapManagerType;
 
-        objectRoot.layer = layerIndex;
-        addObjectCollider(objectRoot.transform);
+        setObjectCollider(objectRoot.transform, pLayerIndex);
         foreach (Transform lObject in objectRoot.transform)
         {
-            addObjectCollider(lObject);
-            lObject.gameObject.layer = layerIndex;
+            setObjectCollider(lObject, pLayerIndex);
         }
     }
     

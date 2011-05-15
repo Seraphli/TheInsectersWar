@@ -51,12 +51,13 @@ public class RestorableValue:MonoBehaviour
     public void reduce(int pValue)
     {
         nowValue -= pValue;
-        if(Network.isServer)
+        if(Network.peerType!= NetworkPeerType.Disconnected)
         {
             networkView.RPC("RPCRestorableValueChange", RPCMode.Others, nowValue);
         }
     }
 
+    [RPC]
     void RPCRestorableValueChange(int pValue)
     {
         nowValue = pValue;

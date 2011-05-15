@@ -44,9 +44,15 @@ public class zzGetObjectByID:MonoBehaviour
 
     static zzGetObjectByID singletonInstance;
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
-        //enabled = false;
+        if (singletonInstance != null)
+            Debug.LogError("have singletonInstance");
         singletonInstance = this;
     }
 

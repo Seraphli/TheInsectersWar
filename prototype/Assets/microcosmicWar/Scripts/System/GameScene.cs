@@ -168,6 +168,7 @@ public class GameScene : MonoBehaviour
     void OnDestroy()
     {
         Time.timeScale = 1f;
+        singletonInstance = null;
     }
 
     void interruptGame(string pInfo)

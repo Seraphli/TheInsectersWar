@@ -59,7 +59,7 @@ public class zzAllocateViewIDManager:MonoBehaviour
         get { return singletonInstance; }
     }
 
-    static zzAllocateViewIDManager singletonInstance;
+    static zzAllocateViewIDManager singletonInstance = null;
 
     public delegate void SetViewIDFunc(NetworkViewID pNetworkViewID);
 
@@ -67,24 +67,48 @@ public class zzAllocateViewIDManager:MonoBehaviour
     IdToSetNetworkId<string> stringToSetNetworkId = new IdToSetNetworkId<string>();
     //IdToSetNetworkId<string> stringToSetNetworkId;
 
-    //客户端调用
-    public void getViewID(int pObjectID, SetViewIDFunc pSetFunc)
+    //public void getViewID(int pObjectID, SetViewIDFunc pSetFunc)
+    //{
+    //    intToSetNetworkId.getViewID(pObjectID, pSetFunc);
+    //}
+    static List<KeyValuePair<string, SetViewIDFunc>> getViewIDList
+        = new List<KeyValuePair<string, SetViewIDFunc>>();
+
+    public static void getViewID(string pObjectID, SetViewIDFunc pSetFunc)
     {
-        intToSetNetworkId.getViewID(pObjectID, pSetFunc);
+        if (singletonInstance)
+            singletonInstance._getViewID(pObjectID, pSetFunc);
+        else
+            getViewIDList
+                .Add(new KeyValuePair<string, SetViewIDFunc>(pObjectID, pSetFunc));
     }
 
-    public void getViewID(string pObjectID, SetViewIDFunc pSetFunc)
+    //客户端调用
+    void _getViewID(string pObjectID, SetViewIDFunc pSetFunc)
     {
         stringToSetNetworkId.getViewID(pObjectID, pSetFunc);
     }
 
-    //服务端调用
-    public void setViewID(int pObjectID, NetworkViewID pNetworkViewID)
+    //public void setViewID(int pObjectID, NetworkViewID pNetworkViewID)
+    //{
+    //    networkView.RPC("intToViewID", RPCMode.Others, pObjectID, pNetworkViewID);
+    //}
+
+    static List<KeyValuePair<string, NetworkViewID>> setViewIDList
+        = new List<KeyValuePair<string, NetworkViewID>>();
+
+    public static void setViewID(string pObjectID, NetworkViewID pNetworkViewID)
     {
-        networkView.RPC("intToViewID", RPCMode.Others, pObjectID, pNetworkViewID);
+        if (singletonInstance)
+            singletonInstance._setViewID(pObjectID, pNetworkViewID);
+        else
+            setViewIDList
+                .Add(new KeyValuePair<string, NetworkViewID>(pObjectID, pNetworkViewID));
+
     }
     
-    public void setViewID(string pObjectID, NetworkViewID pNetworkViewID)
+    //服务端调用
+    void _setViewID(string pObjectID, NetworkViewID pNetworkViewID)
     {
         networkView.RPC("stringToViewID", RPCMode.Others, pObjectID, pNetworkViewID);
     }
@@ -101,10 +125,26 @@ public class zzAllocateViewIDManager:MonoBehaviour
         stringToSetNetworkId.setViewID(pObjectID, pNetworkViewID);
     }
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         if (singletonInstance)
             Debug.LogError("zzAllocateViewIDManager");
         singletonInstance = this;
+        foreach (var lInfo in getViewIDList)
+        {
+            _getViewID(lInfo.Key, lInfo.Value);
+        }
+        getViewIDList.Clear();
+        
+        foreach (var lInfo in setViewIDList)
+        {
+            _setViewID(lInfo.Key, lInfo.Value);
+        }
+        setViewIDList.Clear();
     }
 }

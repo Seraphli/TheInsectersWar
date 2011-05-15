@@ -103,7 +103,7 @@ public class WMPlayStateManager : PlayStateManager
         List<NetworkView> lNetworkViewList = new List<NetworkView>();
         foreach (var lObject in objectList)
         {
-            lNetworkViewList.AddRange( lObject.GetComponents<NetworkView>() );
+            lNetworkViewList.AddRange( lObject.GetComponentsInChildren<NetworkView>() );
         }
         if (Network.peerType != NetworkPeerType.Disconnected)
         {

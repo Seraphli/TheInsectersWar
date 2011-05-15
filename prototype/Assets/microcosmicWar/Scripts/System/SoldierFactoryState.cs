@@ -118,6 +118,11 @@ public class SoldierFactoryState : MonoBehaviour
     [SerializeField]
     SoldierListInfo[] soldierRace;
 
+    void OnDestroy()
+    {
+        singletonInstance = null;
+    }
+
     void Awake()
     {
         if (singletonInstance)
