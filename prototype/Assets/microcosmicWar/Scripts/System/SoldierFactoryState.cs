@@ -202,6 +202,9 @@ public class SoldierFactoryState : MonoBehaviour
         return null;
 
     }
+
+    public int createFactoryNeedEnergy = 5;
+
     public void tryCreateFactory(Race race,int index,GameObject onwer)
     {
         if (zzCreatorUtility.isHost())
@@ -230,7 +233,13 @@ public class SoldierFactoryState : MonoBehaviour
 
         if (lStronghold)
         {
-            createFactory(race, lPosition, index, lStronghold);
+            var lEnergyValue = lStronghold.GetComponent<zzSceneObjectMap>()
+                    .getObject("energyValue").GetComponent<RestorableValue>();
+            if (lEnergyValue.nowValue >= createFactoryNeedEnergy)
+            {
+                lEnergyValue.reduce(createFactoryNeedEnergy);
+                createFactory(race, lPosition, index, lStronghold);
+            }
         }
         else
             Debug.Log("can't createFactory");

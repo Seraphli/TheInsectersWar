@@ -8,7 +8,8 @@ public class RaceValueShow:MonoBehaviour
     public zzPlaneMesh planeMesh = new zzPlaneMesh();
     public Material image;
 
-    public float _rate;
+    [SerializeField]
+    float _rate;
     public float rate
     {
         get

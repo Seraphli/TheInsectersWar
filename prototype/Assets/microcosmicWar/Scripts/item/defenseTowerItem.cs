@@ -5,6 +5,7 @@ using System.Collections;
 class defenseTowerItem : IitemObject
 {
     public string defenseTowerTypeName = "unnamed defenseTowerItem";
+    public int needEnergy = 10;
     protected Vector3 towerPosition;
     protected int towerFace;
     protected GameObject useObject;
@@ -52,7 +53,7 @@ class defenseTowerItem : IitemObject
     }
 
     //附加检测是否在自己领地内
-    public static bool canBuildCheckManor(GameObject pGameObject, out Vector3 position)
+    public static Stronghold canBuildCheckManor(GameObject pGameObject, out Vector3 position)
     {
         if (canBuild(pGameObject, out position) )
         {
@@ -67,9 +68,9 @@ class defenseTowerItem : IitemObject
             if (lStronghold
                 && lStronghold.occupied == true
                 && lStronghold.owner == PlayerInfo.getRace(pGameObject.layer))
-                return true;
+                return lStronghold;
         }
-        return false;
+        return null;
     }
 
     public override bool canUse(GameObject pGameObject)
@@ -77,27 +78,21 @@ class defenseTowerItem : IitemObject
         Hero hero = pGameObject.GetComponentInChildren<Hero>();
         int face = (int)hero.getFace();
 
-        //Hero hero = pGameObject.GetComponentInChildren<Hero>();
-        //Vector3 position = pGameObject.transform.position;
-
-        //position.x += hero.getFaceDirection() * 3;
-        //position.y += 2;
-        //RaycastHit lHit;
-        //if (Physics.Raycast(position, new Vector3(0, -1, 0), out lHit, 4, layers.boardValue))
-        if (canBuildCheckManor(pGameObject, out towerPosition))
+        var lStronghold = canBuildCheckManor(pGameObject, out towerPosition);
+        if (lStronghold )
         {
-            //FIXME_VAR_TYPE lRange= Vector2(0,2,0);
-            //Debug.Log(""+(lHit.point+Vector3(0,4,0))+(lHit.point+Vector3(0,0.1f,0)));
-            //if(!Physics.CheckCapsule  (lHit.point+Vector3(0,3,0), lHit.point+Vector3(0,-1,0), 0.25f ) )
-            //if (!haveBoardOverhead(towerPosition))
-            //{
+            var lEnergyValue = lStronghold.GetComponent<zzSceneObjectMap>()
+                    .getObject("energyValue").GetComponent<RestorableValue>();
+            if (lEnergyValue.nowValue >= needEnergy)
+            {
+                lEnergyValue.reduce(needEnergy);
                 //towerPosition = lHit.point;
                 towerFace = face;
                 //Debug.Log(face);
                 useObject = pGameObject;
                 //Debug.Log("can use");
                 return true;
-            //}
+            }
         }
         //Debug.Log(""+position+","+lHit.point);
         return false;

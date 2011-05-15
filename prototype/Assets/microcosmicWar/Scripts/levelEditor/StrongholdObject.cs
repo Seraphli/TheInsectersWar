@@ -7,6 +7,35 @@ public class StrongholdObject : zzEditableObject
 
     public Stronghold stronghold;
 
+    public RestorableValue energyValue;
+
+    public zzSceneTextureNumber energyNumber;
+
+    [SerializeField]
+    int _energy = 20;
+
+    [SerializeField]
+    int minEnergy = 0;
+
+    [SerializeField]
+    int maxEnergy = 999;
+
+    [zzSerialize]
+    [FieldUI("能量", verticalDepth=-1)]
+    public int energy
+    {
+        get 
+        { 
+            return _energy; 
+        }
+        set
+        {
+            _energy = Mathf.Clamp(value, minEnergy, maxEnergy); 
+            energyValue.fullValue = _energy;
+            energyNumber.number = _energy;
+        }
+    }
+
     [LabelUI( horizontalDepth=0)]
     public const string chooseLabel = "所属种族:";
 
