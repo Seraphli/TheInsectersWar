@@ -152,9 +152,16 @@ class zzFileBrowserDialog : zzWindow
                 GUILayout.Space(10);
 
                 var lDirectories = directoryInfo.GetDirectories();
-                var lFiles = directoryInfo.GetFiles(fileFilterString);
+                List<FileInfo> lFiles = new List<FileInfo>();
+                {
+                    foreach (var lFilter in extensionFilters[extensionFilteIndex].filters)
+                    {
+                        lFiles.AddRange(directoryInfo.GetFiles(lFilter));
+                    }
+                }
+
                 var lPathFile = new List<FileSystemInfo>(lDirectories);
-                lPathFile.AddRange(lFiles);
+                lPathFile.AddRange(lFiles.ToArray());
                 pathFiles = lPathFile.ToArray();
                 //pathFiles = (FileSystemInfo[])lDirectories + (FileSystemInfo[])lFiles;
                 // Handle the files list

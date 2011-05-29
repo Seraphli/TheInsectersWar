@@ -47,7 +47,7 @@ public class SceneryCreator:MonoBehaviour
         if (!fileBrowserDialog)
         {
             fileBrowserDialog = zzFileBrowserDialog.createDialog();
-            fileBrowserDialog.addFileFilter("", new string[] { "*.png" });
+            fileBrowserDialog.addFileFilter("", new string[] { "*.png", "*.jpg", "*.jpeg" });
             fileBrowserDialog.relativePosition = new Rect(0.0f, 0.0f, 6.0f / 7.0f, 4.0f / 5.0f);
             fileBrowserDialog.useRelativePosition = new zzGUIRelativeUsedInfo(false, false, true, true);
             fileBrowserDialog.horizontalDockPosition = zzGUIDockPos.center;
@@ -61,7 +61,7 @@ public class SceneryCreator:MonoBehaviour
 
     class OutData
     {
-        public OutData(Texture2D lImage)
+        public OutData(Texture2D lImage, string pExtension)
         {
             width = lImage.width;
             height = lImage.height;
@@ -69,11 +69,11 @@ public class SceneryCreator:MonoBehaviour
             if (!Mathf.IsPowerOfTwo(lImage.width)
                 || !Mathf.IsPowerOfTwo(lImage.height))
             {
-                lImage.Resize(Mathf.NextPowerOfTwo(lImage.width),
-                    Mathf.NextPowerOfTwo(lImage.height));
-                lImage.Apply();
+                TextureScale.Point(lImage,
+                    Mathf.NextPowerOfTwo(lImage.width), Mathf.NextPowerOfTwo(lImage.height));
             }
-            resource = new GenericResource<Texture2D>(lImage);
+            resource =GameResourceManager.Main.createImage(lImage);
+            resource.extension = pExtension;
         }
         public int width;
         public int height;
@@ -106,7 +106,9 @@ public class SceneryCreator:MonoBehaviour
                 BinaryReader lBinaryReader = new BinaryReader(lImageFile);
                 lImage.LoadImage(lBinaryReader.ReadBytes((int)lImageFile.Length));
             }
-            nowOutData = new OutData(lImage);
+            var  lExtension = System.IO.Path.GetExtension(fileBrowserDialog.selectedLocation);
+            lExtension = lExtension.Substring(1, lExtension.Length - 1);
+            nowOutData = new OutData(lImage, lExtension);
             imgPathToData[lFileInfo.ToString()] = nowOutData;
 
         }

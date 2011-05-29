@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 public class zzSimplyPolygon
 {
+    //所有凹点
     LinkedList<zz2DPoint> mConcavePoints = new LinkedList<zz2DPoint>();
+    //所有凸点
     LinkedList<zz2DPoint> mConvexPoints = new LinkedList<zz2DPoint>();
+    //所有定点
     LinkedList<zz2DPoint> mAllPoints = new LinkedList<zz2DPoint>();
 
     public int pointNum
@@ -169,6 +172,10 @@ public class zzSimplyPolygon
 
     Vector2[] shapePoint;
 
+    /// <summary>
+    /// 输入多边形信息
+    /// </summary>
+    /// <param name="points"></param>
     public void setShape(Vector2[] points )
     {
         //Debug.Log(points.Length);
@@ -258,7 +265,12 @@ public class zzSimplyPolygon
         return false;
     }
 
-
+    /// <summary>
+    /// 连线是否会被多边形内的其他线截断
+    /// </summary>
+    /// <param name="lineBegin"></param>
+    /// <param name="lineEnd"></param>
+    /// <returns></returns>
     public bool isCrossWithLine(zz2DPoint lineBegin, zz2DPoint lineEnd)
     {
         //先判断有无和边界盒相交
@@ -409,6 +421,13 @@ public class zzSimplyPolygon
     //    return null;
     //}
 
+    /// <summary>
+    /// 可用来复制多边形信息
+    /// </summary>
+    /// <param name="pBeginPoint"></param>
+    /// <param name="pEndPoint"></param>
+    /// <param name="pFirstPoint"></param>
+    /// <param name="pLastPoint"></param>
     void addOtherPolygonPoint(zz2DPoint pBeginPoint, zz2DPoint pEndPoint,
         out zz2DPoint pFirstPoint, out zz2DPoint pLastPoint)
     {
@@ -456,6 +475,12 @@ public class zzSimplyPolygon
         return lOut;
     }
 
+    /// <summary>
+    /// 合并边与孔
+    /// </summary>
+    /// <param name="pPolygon1Point"></param>
+    /// <param name="pPolygon2Point"></param>
+    /// <returns></returns>
     public static zzSimplyPolygon combinePolygon(zz2DPoint pPolygon1Point, zz2DPoint pPolygon2Point)
     {
 
@@ -485,11 +510,17 @@ public class zzSimplyPolygon
         return lOut;
     }
 
+    /// <summary>
+    /// 从同一多边形的两个点连线中,切割图形
+    /// </summary>
+    /// <param name="pPoint1"></param>
+    /// <param name="pPoint2"></param>
+    /// <returns></returns>
     public static zzSimplyPolygon[] cut(zz2DPoint pPoint1, zz2DPoint pPoint2)
     {
         if (pPoint1.listNode.List == pPoint2.listNode.List)
             return new zzSimplyPolygon[] { getSubPolygon(pPoint1, pPoint2), getSubPolygon(pPoint2, pPoint1) };
-        else
+        else//切割点一个在孔上
             return new zzSimplyPolygon[] { combinePolygon(pPoint1, pPoint2) };
         return null;
 

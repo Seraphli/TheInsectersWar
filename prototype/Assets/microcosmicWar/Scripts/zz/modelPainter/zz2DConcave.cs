@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class zz2DConcave
 {
+    //保存处理过程中的点数据
     class PointDate
     {
         //0为外边,polygonId-1为孔索引
@@ -275,6 +276,10 @@ public class zz2DConcave
 
     }
 
+    /// <summary>
+    /// 执行一步的剖解
+    /// </summary>
+    /// <returns></returns>
     public  zz2DConcave[]   stepDecompose()
     {
         if (isConvex)
@@ -301,6 +306,10 @@ public class zz2DConcave
 
     }
 
+    /// <summary>
+    /// 凸剖为凸行数组
+    /// </summary>
+    /// <returns></returns>
     public  zzSimplyPolygon[]    decompose()
     {
         zz2DConcave[] lResult = stepDecompose();
@@ -385,7 +394,7 @@ public class zz2DConcave
     }
 
     /// <summary>
-    /// 
+    /// 凸剖凹边形,输出连接的两个点的信息
     /// </summary>
     /// <param name="pConcave"></param>
     /// <param name="Point1Data"></param>

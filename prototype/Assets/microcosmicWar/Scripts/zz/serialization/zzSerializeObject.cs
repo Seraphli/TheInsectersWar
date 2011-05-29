@@ -6,6 +6,22 @@ using System.Reflection;
 //提供序列化"zzSerializeAttribute"功能的单实例类
 public class zzSerializeObject
 {
+    zzSerializeObject()
+    {
+        classSerialization = new ClassSerialization();
+        classSerialization.serializeObject = this;
+    }
+
+    public interface SerializationMethod
+    {
+        zzSerializeObject serializeObject { set; }
+
+        System.Type serializeType { get; }
+
+        object serialize(object pObject);
+
+        object deserialize(System.Type lPropertyType, object lTableValue);
+    }
     //class PropertyControl
     //{
     //    public PropertyControl(MemberInfo pMemberInfo)
@@ -44,12 +60,87 @@ public class zzSerializeObject
         get { return singletonInstance; }
     }
 
-    public Dictionary<System.Type, PropertyInfo[]> typeToSerializeMethod
-        = new Dictionary<System.Type,PropertyInfo[]>();
+    public Dictionary<System.Type, PropertyInfo[]> typeToSerializeInMethod
+        = new Dictionary<System.Type, PropertyInfo[]>();
+
+    public Dictionary<System.Type, PropertyInfo[]> typeToSerializeOutMethod
+        = new Dictionary<System.Type, PropertyInfo[]>();
+
+    Dictionary<System.Type, SerializationMethod> customMethods
+        = new Dictionary<System.Type,SerializationMethod>();
+
+    public void setCustomMethod(SerializationMethod pCustomMethod)
+    {
+        customMethods[pCustomMethod.serializeType] = pCustomMethod;
+    }
+
+    public SerializationMethod getMethod(System.Type pType)
+    {
+        if (customMethods.ContainsKey(pType))
+            return customMethods[pType];
+        return classSerialization;
+    }
+
+    ClassSerialization classSerialization;
+
+    public class ClassSerialization: SerializationMethod
+    {
+        public zzSerializeObject serializeObject 
+        {
+            set { _serializeObject = value; } 
+        }
+        zzSerializeObject _serializeObject;
+        public System.Type serializeType { get{return null;} }
+
+        public object serialize(object lValue)
+        {
+            object lOut;
+            if (lValue is System.Array)
+            {
+                var lArrayList = new ArrayList();
+                foreach (var lElement in lValue as System.Array)
+                {
+                    lArrayList.Add(_serializeObject.serializeToTable(lElement));
+                }
+                lOut = lArrayList;
+            }
+            else
+                lOut = _serializeObject.serializeToTable(lValue);
+            return lOut;
+        }
+
+        public object deserialize(System.Type lPropertyType, object lTableValue)
+        {
+            object lValue = null;
+            if (
+                       lPropertyType.IsSubclassOf(typeof(System.Array))
+                       && lTableValue is ArrayList)
+            {
+                var lTableArrayList = (ArrayList)lTableValue;
+                var lElementType = lPropertyType.GetElementType();
+                lValue = System.Array.CreateInstance(lElementType, lTableArrayList.Count);
+                var lArray = (System.Array)lValue;
+                int i = 0;
+                foreach (var lTableValueElement in lTableArrayList)
+                {
+                    var lElement = System.Activator.CreateInstance(lElementType);
+                    _serializeObject.serializeFromTable(lElement, (Hashtable)lTableValueElement);
+                    lArray.SetValue(lElement, i);
+                    ++i;
+                }
+            }
+            else if (lTableValue.GetType() == typeof(Hashtable))
+            {
+                lValue = System.Activator.CreateInstance(lPropertyType);
+                _serializeObject.serializeFromTable(lValue, (Hashtable)lTableValue);
+            }
+            return lValue;
+        }
+    }
 
     public Hashtable serializeToTable(object pObject)
     {
-        var lList = getSerializeMethod(pObject.GetType());
+        var lList = getSerializeOutMethod(pObject.GetType());
         var lOut = new Hashtable();
         lOut["#ClassType"] = pObject.GetType().Name;
         var lSerializeString = zzSerializeString.Singleton;
@@ -60,18 +151,7 @@ public class zzSerializeObject
             //非支持类型,则转为table
             if (!lSerializeString.isSupportedType(lValue.GetType()))
             {
-                if (lValue is System.Array)
-                {
-                    var lArrayList = new ArrayList();
-                    foreach (var lElement in lValue as System.Array)
-                    {
-                        lArrayList.Add(serializeToTable(lElement));
-                    }
-                    lValue = lArrayList;
-                }
-                else
-                    lValue = serializeToTable(lValue);
-
+                lValue = getMethod(lValue.GetType()).serialize(lValue);
             }
 
             //Debug.Log("Name:" + lPropertyInfo.Name + " " + lValue);
@@ -82,7 +162,7 @@ public class zzSerializeObject
 
     public void serializeFromTable(object pObject, Hashtable pTable)
     {
-        var lList = getSerializeMethod(pObject.GetType());
+        var lList = getSerializeInMethod(pObject.GetType());
         var lSerializeString = zzSerializeString.Singleton;
         foreach (var lPropertyInfo in lList)
         {
@@ -96,38 +176,8 @@ public class zzSerializeObject
                     lValue = lTableValue;
                 else
                 {
-                    //非支持的类型: 类或 类的数组
-                    if(
-                        lPropertyType.IsSubclassOf(typeof(System.Array))
-                        && lTableValue is ArrayList)
-                    {
-                        var lTableArrayList = (ArrayList)lTableValue;
-                        var lElementType = lPropertyType.GetElementType();
-                        lValue = System.Array.CreateInstance(lElementType, lTableArrayList.Count);
-                        var lArray = (System.Array)lValue;
-                        int i = 0;
-                        foreach (var lTableValueElement in lTableArrayList)
-                        {
-                            var lElement = System.Activator.CreateInstance(lElementType);
-                            serializeFromTable(lElement, (Hashtable)lTableValueElement);
-                            lArray.SetValue(lElement, i);
-                            ++i;
-                        }
-                    }
-                    else if (lTableValue.GetType() == typeof(Hashtable))
-                    {
-                        lValue = System.Activator.CreateInstance(lPropertyType);
-                        serializeFromTable(lValue, (Hashtable)lTableValue);
-                    }
+                    lValue = getMethod(lPropertyType).deserialize(lPropertyType, lTableValue);
                 }
-            //    var lTable = lValue as Hashtable;
-            //    var lArray = lValue as System.Array;
-            //    if (lTable!=null
-            //        &&lTable.Contains("#ClassName"))
-            //    {
-
-            //    }
-                //    else
                 if (lValue == null)
                     Debug.LogError("error in " + pObject.GetType().ToString() + "." + lPropertyInfo.Name);
                 else
@@ -137,27 +187,38 @@ public class zzSerializeObject
                 }
             }
         }
-        
+
     }
 
-    PropertyInfo[] getSerializeMethod(System.Type lType)
+    PropertyInfo[] getSerializeOutMethod(System.Type lType)
     {
-        if(typeToSerializeMethod.ContainsKey(lType))
-            return typeToSerializeMethod[lType];
-        var lOut = createSerializeMethod(lType);
-        typeToSerializeMethod[lType] = lOut;
+        if (typeToSerializeOutMethod.ContainsKey(lType))
+            return typeToSerializeOutMethod[lType];
+        var lOut = createSerializeMethod(lType, false, true);
+        typeToSerializeOutMethod[lType] = lOut;
         return lOut;
     }
 
-    PropertyInfo[] createSerializeMethod(System.Type lType)
+    PropertyInfo[] getSerializeInMethod(System.Type lType)
+    {
+        if(typeToSerializeInMethod.ContainsKey(lType))
+            return typeToSerializeInMethod[lType];
+        var lOut = createSerializeMethod(lType,true,false);
+        typeToSerializeInMethod[lType] = lOut;
+        return lOut;
+    }
+
+    PropertyInfo[] createSerializeMethod(System.Type lType, bool pNeedSerializeIn, bool pNeedSerializeOut)
     {
         List<PropertyInfo> lOut = new List<PropertyInfo>();
         var lMembers = lType.GetMembers();
         foreach (var lMember in lMembers)
         {
             zzSerializeAttribute[] lAttributes =
-                (zzSerializeAttribute[])lMember.GetCustomAttributes(typeof(zzSerializeAttribute), false);
-            if (lAttributes.Length > 0)
+                (zzSerializeAttribute[])lMember.GetCustomAttributes(typeof(zzSerializeAttribute), true);
+            if (lAttributes.Length > 0
+                && ( pNeedSerializeIn?lAttributes[0].serializeIn:true)
+                && ( pNeedSerializeOut?lAttributes[0].serializeOut:true))
             {
                 lOut.Add((PropertyInfo)lMember);
             }

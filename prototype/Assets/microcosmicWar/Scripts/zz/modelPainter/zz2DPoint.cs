@@ -299,6 +299,7 @@ public class zz2DPoint
         get { return mDiagonals.Count > 0; }
     }
 
+    //点在多边形中的节点
     internal LinkedListNode<zz2DPoint> listNode;
 
     internal int pointType=0;

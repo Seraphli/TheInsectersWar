@@ -214,7 +214,10 @@ public class SoldierFactory : MonoBehaviour
 
         foreach (var lSoldier in soldierList)
         {
-            lSoldier.GetComponent<Life>().removeDieCallback(soldierDeadCall);
+            if (lSoldier)
+                lSoldier.GetComponent<Life>().removeDieCallback(soldierDeadCall);
+            else
+                Debug.LogError("OnFactoryDead:var lSoldier in soldierList");
         }
         
         listener.soldierCreatedList = soldierList;

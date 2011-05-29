@@ -7,5 +7,4 @@ AudioImporter:
   3d: 1
   forceToMono: 0
   stream: 1
-  bitrate: 70000
   useHardware: 1
