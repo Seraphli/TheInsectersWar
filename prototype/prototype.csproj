@@ -116,6 +116,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\AiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\AiMachineGunAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\ArmyBase.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Building\BatteryValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\DefenseTower.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\DefenseTowerAim.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\DefenseTowerHelper.cs" />
@@ -124,6 +125,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\GuidedMissileLauncherAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\GuidedMissileLauncherHelp.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\RaceValueShow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Building\RestorableValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\SniperData.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\SniperEntrance.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\SniperMode.cs" />
@@ -168,12 +170,14 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\LevelShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MouseZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\MulSoldierFactoryObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\OrthographicZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SceneObjectEdit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SceneryCreator.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SceneryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SetFindWay.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\SingleSoldierFactoryObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\StrongholdObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\_2DPerspectiveZoom.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1LoseCondition.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
@@ -278,6 +282,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierToolbar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneImageGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneObjectClick.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\SceneGUI\zzSceneTextureNumber.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzFileBrowserDialog.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUICombineImage.cs" />
@@ -418,6 +423,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzSceneObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\ZZSprite.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTextureScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzTimerCoroutine.cs" />
@@ -468,6 +474,7 @@
      <Compile Include="Assets\modelPainter\Scripts\Manager\GameConfig.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\GameResourceManager.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\GameSystem.cs" />
+     <Compile Include="Assets\modelPainter\Scripts\Manager\GenericResource.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\PlayStateManager.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ObjectPick\EditableObjectScale.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ObjectPick\ObjectPickBase.cs" />
@@ -525,6 +532,9 @@
      <Compile Include="Assets\StrumpyShaderEditor\Editor\Scripts\StrumpyPreviewWindow.cs" />
  <Reference Include="AssetStoreTools">
  <HintPath>Assets\AssetStoreTools\Editor\AssetStoreTools.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Drawing">
+ <HintPath>Assets\modelPainter\Scripts\Manager\System.Drawing.dll</HintPath>
  </Reference>
  <Reference Include="StrumpyShaderEditor">
  <HintPath>Assets\StrumpyShaderEditor\Editor\StrumpyShaderEditor.dll</HintPath>
