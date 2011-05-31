@@ -75,7 +75,14 @@ public class EditorViewSwitch:MonoBehaviour
 
     void OnDestroy()
     {
-        if(viewMode==ViewMode.game)
-            setActive(editorObjects, editorComponents, true);
+        //防止在编辑器中报错
+        try
+        {
+            if (viewMode == ViewMode.game)
+                setActive(editorObjects, editorComponents, true);
+        }
+        catch (System.Exception e)
+        {
+        }
     }
 }

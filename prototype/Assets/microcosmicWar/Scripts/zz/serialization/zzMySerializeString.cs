@@ -111,6 +111,46 @@ class zzQuaternionSerialize : IzzUserDataSerializeString
 		return pPos;
 	}
 };
+//----------------------------------------------------------------------------------------------
+
+class zzRectSerialize : IzzUserDataSerializeString
+{
+
+    public zzRectSerialize()
+        : base(typeof(Rect), "rt")
+    {
+
+    }
+
+    public override string userPack(object pData)
+    {
+        Rect ldata = (Rect)pData;
+        //Debug.Log( pack(lV3.x) );
+        return getUserDataDefineStr() +
+             zzSerializeString.getSingleton().pack(ldata.x) +
+              zzSerializeString.getSingleton().pack(ldata.y) +
+               zzSerializeString.getSingleton().pack(ldata.width) +
+                zzSerializeString.getSingleton().pack(ldata.height);
+    }
+
+    public override int userUnpack(ArrayList pSerializePackList, int pPos, DataWrap pOut)//out end postion
+    {
+        //FIXME_VAR_TYPE t= pSerializePackList[pPos] as SerializePackData;
+        //Debug.Log(t);
+        //Debug.Log(zzSerializeString.getSingleton().unpack(t));
+        Rect ldata = new Rect();
+        ldata.x = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ++pPos;
+        ldata.y = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ++pPos;
+        ldata.width = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ++pPos;
+        ldata.height = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ++pPos;
+        pOut.data = ldata;
+        return pPos;
+    }
+};
 
 //----------------------------------------------------------------------------------------------
 
@@ -329,6 +369,8 @@ public class zzMySerializeString
         zzSerialize.registerUserSerialize(new zzArraySerialize<Vector2>("v2Ar"));
         zzSerialize.registerUserSerialize(new zzQuaternionSerialize());
         zzSerialize.registerUserSerialize(new zzArraySerialize<Quaternion>("q4Ar"));
+        zzSerialize.registerUserSerialize(new zzRectSerialize());
+        zzSerialize.registerUserSerialize(new zzArraySerialize<Rect>("rtAr"));
         zzSerialize.registerUserSerialize(new zzPairSerialize());
         zzSerialize.registerUserSerialize(new zzArrayListSerialize());
         zzSerialize.registerUserSerialize(new zzTableSerialize());

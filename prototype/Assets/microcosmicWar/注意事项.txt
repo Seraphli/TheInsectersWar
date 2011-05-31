@@ -18,4 +18,10 @@
 地图上要作成prefab的物体(父物体),坐标为0。以便于后面安放
 
 
-编辑器场景转游戏场景:1删除编辑物体 2删除切换物体 3删除EditorSceneManager与SerializeScene中的信号 4状态管理器勾选directSetObject 5game over 按钮的响应
+编辑器场景转游戏场景:
+1删除编辑物体 
+2删除切换物体 
+3删除EditorSceneManager与SerializeScene中的信号 
+4状态管理器勾选directSetObject 
+5game over 按钮的响应
+6资源管理器中打开压缩图片
