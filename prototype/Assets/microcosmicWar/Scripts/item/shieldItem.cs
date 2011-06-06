@@ -23,22 +23,15 @@ class shieldItem : IitemObject
     {
         //Life lLife = useObject.GetComponent<Life>();
         //Shield lShield = useObject.AddComponent<Shield>();
-        GameObject lShieldObject = (GameObject)zzCreatorUtility.Instantiate(shieldObject,Vector3.zero,Quaternion.identity,0);
+        GameObject lShieldObject 
+            = (GameObject)zzCreatorUtility.Instantiate(shieldObject,Vector3.zero,Quaternion.identity,0);
+        var lAdversaryWeaponLayer = PlayerInfo.getAdversaryRaceBulletLayer(useObject.layer);
         Shield lShield = lShieldObject.GetComponent<Shield>();
-        lShield.adversaryWeaponLayer
-            = PlayerInfo.getAdversaryRaceBulletLayer(useObject.layer);
-        //lShield.transform.parent = useObject.transform;
-        //lShield.transform.localPosition = Vector3.zero;
-        lShield.setOwner(useObject);
-        //GameObject networkHelperObject;
-        //NetworkHelpObject lNetworkHelpObject;
-        //if (Network.peerType != NetworkPeerType.Disconnected)
-        //{
-        //    networkHelperObject = Network.Instantiate(networkObjectPrefab
-        //        , Vector3.zero, Quaternion.identity, 0);
-        //    lNetworkHelpObject = networkHelperObject.GetComponent<NetworkHelpObject>();
-        //}
+        lShield.adversaryWeaponLayer = lAdversaryWeaponLayer;
 
+        lShield.setOwner(useObject);
+
+        lShieldObject.GetComponent<EffectOfShield>().filterLayer = lAdversaryWeaponLayer;
         //在一段时间后删除
         zzCoroutineTimer lTimer = lShieldObject.AddComponent<zzCoroutineTimer>();
         lTimer.setInterval(duration);

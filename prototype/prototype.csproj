@@ -160,7 +160,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\setting\RaceChooseSetting.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSelfWhenDestroy.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestoryObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CombineImagePlane.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestroyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CustomObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\EditorObject.cs" />
@@ -184,6 +185,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\menu\MainMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ServerList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\recycle\FadeShield.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ArmouredPismire.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Bullet.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFaceVelocity.cs" />
@@ -370,11 +372,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeSelfID.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeString.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestoryObject.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestoryOneObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestroyObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestroyOneObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetFloatValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetIntValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetPositionValue.cs" />
@@ -439,6 +442,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\BodyActionClass.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BomberAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\doByRace.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\EffectOfShield.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Emitter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\EmitterContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\FireSpark.cs" />
@@ -476,6 +480,7 @@
      <Compile Include="Assets\modelPainter\Scripts\Manager\GameSystem.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\GenericResource.cs" />
      <Compile Include="Assets\modelPainter\Scripts\Manager\PlayStateManager.cs" />
+     <Compile Include="Assets\modelPainter\Scripts\ObjectPick\Editable2DObjectScale.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ObjectPick\EditableObjectScale.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ObjectPick\ObjectPickBase.cs" />
      <Compile Include="Assets\modelPainter\Scripts\ObjectPick\ObjectPickList.cs" />

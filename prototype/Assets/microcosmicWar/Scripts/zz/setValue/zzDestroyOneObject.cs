@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class zzDestoryOneObject:MonoBehaviour
+public class zzDestroyOneObject:MonoBehaviour
 {
     public GameObject objectToDestory;
 

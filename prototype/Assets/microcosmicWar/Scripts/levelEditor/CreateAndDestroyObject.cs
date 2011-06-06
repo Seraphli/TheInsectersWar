@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class CreateAndDestoryObject : MonoBehaviour
+public class CreateAndDestroyObject : MonoBehaviour
 {
     public GameObject objectToManage;
 

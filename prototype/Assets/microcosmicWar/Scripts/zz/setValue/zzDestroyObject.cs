@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class zzDestoryObject:MonoBehaviour
+public class zzDestroyObject:MonoBehaviour
 {
     System.Func<Object> getObjectFunc;
 
