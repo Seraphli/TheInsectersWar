@@ -30,7 +30,6 @@ class shieldItem : IitemObject
         //lShield.transform.parent = useObject.transform;
         //lShield.transform.localPosition = Vector3.zero;
         lShield.setOwner(useObject);
-
         //GameObject networkHelperObject;
         //NetworkHelpObject lNetworkHelpObject;
         //if (Network.peerType != NetworkPeerType.Disconnected)

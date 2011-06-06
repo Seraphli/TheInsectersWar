@@ -12,8 +12,9 @@ public class zzCoroutineTimer : MonoBehaviour
     {
         while(true)
         {
-            impFunction();
+            //先延时,后执行
             yield return new WaitForSeconds(interval);
+            impFunction();
         }
     }
 

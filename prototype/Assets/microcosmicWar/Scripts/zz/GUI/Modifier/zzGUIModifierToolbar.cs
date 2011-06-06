@@ -108,7 +108,7 @@ public class zzGUIModifierToolbar : zzGUIModifierBase
         {
             if (lSelected == lEnumIndex.enumValue)
             {
-                toolbar.selected = lEnumIndex.toolbarIndex;
+                toolbar._selected = lEnumIndex.toolbarIndex;
                 break;
             }
         }

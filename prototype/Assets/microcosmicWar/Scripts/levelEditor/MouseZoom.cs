@@ -7,18 +7,12 @@ public abstract class ScaleBase : MonoBehaviour
 
 public class MouseZoom : MonoBehaviour
 {
-    public Camera zoomCamera;
-    public float maxSize = 40f;
-    public float minSize = 1.5f;
-
-    public float wantSize = 9.5f;
-    public float sizeInEveryChange = 1f;
-
     public ScaleBase[] scaleList;
 
     public float wantRange;
     public float nowRange;
-    public float rangeInEveryChange = 0.08f;
+    public float perInEveryChange = 0.1f;
+    public float minPerInEveryChange = 0.05f;
     public float damping = 0.5f;
 
     void setRange(float lRange)
@@ -39,13 +33,13 @@ public class MouseZoom : MonoBehaviour
         if (Input.GetAxis("Mouse ScrollWheel") > 0) // back
         {
             //wantSize = Mathf.Max(wantSize - sizeInEveryChange, minSize);
-            wantRange = Mathf.Max(wantRange - rangeInEveryChange, 0f);
+            wantRange = Mathf.Max(Mathf.Max(wantRange * (1 - perInEveryChange),minPerInEveryChange), 0f);
 
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0) // forward
         {
             //wantSize = Mathf.Min(wantSize + sizeInEveryChange, maxSize);
-            wantRange = Mathf.Min(wantRange + rangeInEveryChange, 1f);
+            wantRange = Mathf.Min(Mathf.Max(wantRange * (1 + perInEveryChange), minPerInEveryChange), 1f);
         }
 
         //if (!Mathf.Approximately(wantSize, zoomCamera.orthographicSize))

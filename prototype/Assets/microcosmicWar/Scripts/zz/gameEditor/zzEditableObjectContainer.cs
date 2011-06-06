@@ -74,10 +74,35 @@ public class zzEditableObjectContainer:MonoBehaviour
     bool canScale = true;
     [SerializeField]
     bool _uniformScale;
+    [SerializeField]
+    bool _2D = true;
+    [SerializeField]
+    Renderer renderObject;
+
 
     public bool uniformScale
     {
         get { return _uniformScale; }
+    }
+
+    public void transformUniformScale(float pValue)
+    {
+        if (!canScale)
+        {
+            return;
+        }
+        var lLocalScale = transform.localScale;
+        pValue += 1f;
+        float lMinValue = 0.005f;
+        lLocalScale.Scale(new Vector3(pValue, pValue, _2D ? 1f : pValue));
+        lLocalScale.x = Mathf.Sign(lLocalScale.x) * Mathf.Max(Mathf.Abs(lLocalScale.x), lMinValue);
+        lLocalScale.y = Mathf.Sign(lLocalScale.y) * Mathf.Max(Mathf.Abs(lLocalScale.y), lMinValue);
+        lLocalScale.z = Mathf.Sign(lLocalScale.z) * Mathf.Max(Mathf.Abs(lLocalScale.z), lMinValue);
+        //if (renderObject)
+        //{
+        //    var lSize = renderObject.bounds.size;
+        //}
+        transform.localScale = lLocalScale;
     }
 
     public void transformScale(Vector3 pScaleChange)
@@ -93,7 +118,7 @@ public class zzEditableObjectContainer:MonoBehaviour
         {
             float lLength = (pScaleChange.x > 0 ? 1f : -1f) * pScaleChange.magnitude;
             float lUniformValue = lLocalScale.x + lLength;
-            lScale = new Vector3(lUniformValue, lUniformValue, lUniformValue);
+            lScale = new Vector3(lUniformValue, lUniformValue, _2D ? 1f : lUniformValue);
         }
         else
             lScale = lLocalScale + pScaleChange;

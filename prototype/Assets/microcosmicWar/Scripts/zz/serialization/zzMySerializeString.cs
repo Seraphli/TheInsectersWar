@@ -139,13 +139,13 @@ class zzRectSerialize : IzzUserDataSerializeString
         //Debug.Log(t);
         //Debug.Log(zzSerializeString.getSingleton().unpack(t));
         Rect ldata = new Rect();
-        ldata.x = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ldata.x = (float)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
         ++pPos;
-        ldata.y = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ldata.y = (float)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
         ++pPos;
-        ldata.width = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ldata.width = (float)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
         ++pPos;
-        ldata.height = (int)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
+        ldata.height = (float)zzSerializeString.getSingleton().unpack(pSerializePackList[pPos] as SerializePackData);
         ++pPos;
         pOut.data = ldata;
         return pPos;

@@ -7,22 +7,22 @@ using System.Drawing.Imaging;
 public class SceneryCreator:MonoBehaviour
 {
 
-    static void BitmapToTexture2D(System.Drawing.Bitmap pBitmap,
-        Rectangle pRect,Texture2D pTexture)
-    {
-        print("BitmapToTexture2D begin:" + pRect +" "+ System.DateTime.Now);
-        for (int y = 0; y < pRect.Height; ++y)
-        {
-            int lBitmapY = pRect.Y+y;
-            for (int x = 0; x < pRect.Width; ++x)
-            {
-                var lColor = pBitmap.GetPixel(pRect.X + x, lBitmapY);
-                pTexture.SetPixel(x, y, new UnityEngine.Color(lColor.R, lColor.G, lColor.B, lColor.A));
-            }
-        }
-        pTexture.Apply();
-        print("BitmapToTexture2D end:" + System.DateTime.Now);
-    }
+    //static void BitmapToTexture2D(System.Drawing.Bitmap pBitmap,
+    //    Rectangle pRect,Texture2D pTexture)
+    //{
+    //    print("BitmapToTexture2D begin:" + pRect +" "+ System.DateTime.Now);
+    //    for (int y = 0; y < pRect.Height; ++y)
+    //    {
+    //        int lBitmapY = pRect.Y+y;
+    //        for (int x = 0; x < pRect.Width; ++x)
+    //        {
+    //            var lColor = pBitmap.GetPixel(pRect.X + x, lBitmapY);
+    //            pTexture.SetPixel(x, y, new UnityEngine.Color(lColor.R, lColor.G, lColor.B, lColor.A));
+    //        }
+    //    }
+    //    pTexture.Apply();
+    //    print("BitmapToTexture2D end:" + System.DateTime.Now);
+    //}
 
     static void fillPowerOfTwo(Texture2D pImage)
     {
@@ -53,88 +53,55 @@ public class SceneryCreator:MonoBehaviour
         pImage.Apply();
     }
 
-    static void fillPowerOfTwo(Texture2D pImage, UnityEngine.Color fillColor)
-    {
-        int lPreWidth = pImage.width;
-        int lPreHeight = pImage.height;
-        if (Mathf.IsPowerOfTwo(lPreWidth) && Mathf.IsPowerOfTwo(lPreHeight))
-        {
-            print("don't need fillPowerOfTwo");
-            return;
-        }
-        var lPixels = pImage.GetPixels();
-        pImage.Resize(Mathf.NextPowerOfTwo(lPreWidth), Mathf.NextPowerOfTwo(lPreHeight));
-        //var lNewPixels = new UnityEngine.Color[pImage.width * pImage.height];
-        //int lSrcY = 0;
-        //for (int y = pImage.height - lPreHeight; y < pImage.height; ++y)
-        //{
-        //    int lSrc = lSrcY * lPreWidth - 1;
-        //    int lSrcEnd = lSrc + lPreWidth;
-        //    int lDest = y * pImage.width -1 ;
-        //    while (lSrc < lSrcEnd)
-        //    {
-        //        lNewPixels[++lDest] = lPixels[++lSrc];
-        //    }
-        //    ++lSrcY;
-        //}
-        //pImage.SetPixels(lNewPixels);
-        int i = -1;
-        for (int y = lPreHeight; y > 0; --y)
-        {
-            for (int x = 0; x < lPreWidth; ++x)
-            {
-                pImage.SetPixel(x, y, lPixels[++i]);
-            }
-            for (int x = lPreWidth; x < pImage.width; ++x)
-            {
-                pImage.SetPixel(x, y, fillColor);
-            }
-        }
-        for (int y = pImage.height; y < lPreHeight; ++y)
-        {
-            for (int x = 0; x < pImage.width; ++x)
-            {
-                pImage.SetPixel(x, y, fillColor);
-            }
-        }
-        pImage.Apply();
-    }
+    //static void fillPowerOfTwo(Texture2D pImage, UnityEngine.Color fillColor)
+    //{
+    //    int lPreWidth = pImage.width;
+    //    int lPreHeight = pImage.height;
+    //    if (Mathf.IsPowerOfTwo(lPreWidth) && Mathf.IsPowerOfTwo(lPreHeight))
+    //    {
+    //        print("don't need fillPowerOfTwo");
+    //        return;
+    //    }
+    //    var lPixels = pImage.GetPixels();
+    //    pImage.Resize(Mathf.NextPowerOfTwo(lPreWidth), Mathf.NextPowerOfTwo(lPreHeight));
 
-    static void BitmapToTexture2D(System.Drawing.Bitmap pBitmap,
-        Texture2D pTexture)
-    {
-        print("BitmapToTexture2D begin:" + System.DateTime.Now);
-        for (int y = 0; y < pBitmap.Height; ++y)
-        {
-            for (int x = 0; x < pBitmap.Width; ++x)
-            {
-                var lColor = pBitmap.GetPixel(x, y);
-                pTexture.SetPixel(x, y, new UnityEngine.Color(lColor.R, lColor.G, lColor.B, lColor.A));
-            }
-        }
-        //int lPixelCount = pBitmap.Height * pBitmap.Width;
-        //var lPixels = new Color[lPixelCount];
-        //var lBitmapData = pBitmap.LockBits(
-        //    new Rectangle(0, 0, pBitmap.Width, pBitmap.Height),
-        //    ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-        //lBitmapData.Scan0
- 
-        //int lBufferSize = pBitmap.Height * pBitmap.Width * 4;
+    //    int i = -1;
+    //    for (int y = lPreHeight; y > 0; --y)
+    //    {
+    //        for (int x = 0; x < lPreWidth; ++x)
+    //        {
+    //            pImage.SetPixel(x, y, lPixels[++i]);
+    //        }
+    //        for (int x = lPreWidth; x < pImage.width; ++x)
+    //        {
+    //            pImage.SetPixel(x, y, fillColor);
+    //        }
+    //    }
+    //    for (int y = pImage.height; y < lPreHeight; ++y)
+    //    {
+    //        for (int x = 0; x < pImage.width; ++x)
+    //        {
+    //            pImage.SetPixel(x, y, fillColor);
+    //        }
+    //    }
+    //    pImage.Apply();
+    //}
 
-        // Create new memory stream and save image to stream so   
-        // we don't have to save and read file  
-        //using (System.IO.MemoryStream lMemoryStream =
-        //    new System.IO.MemoryStream(lBufferSize))
-        //{
-        //    pBitmap.Save(lMemoryStream, System.Drawing.Imaging.ImageFormat.Png);
-
-        //    pTexture.LoadImage(lMemoryStream.GetBuffer());
-        //}
-        //pTexture.SetPixels(lPixels);
-        pTexture.Apply();
-        //pBitmap.UnlockBits(lBitmapData);
-        print("BitmapToTexture2D end:" + System.DateTime.Now);
-    } 
+    //static void BitmapToTexture2D(System.Drawing.Bitmap pBitmap,
+    //    Texture2D pTexture)
+    //{
+    //    print("BitmapToTexture2D begin:" + System.DateTime.Now);
+    //    for (int y = 0; y < pBitmap.Height; ++y)
+    //    {
+    //        for (int x = 0; x < pBitmap.Width; ++x)
+    //        {
+    //            var lColor = pBitmap.GetPixel(x, y);
+    //            pTexture.SetPixel(x, y, new UnityEngine.Color(lColor.R, lColor.G, lColor.B, lColor.A));
+    //        }
+    //    }
+    //    pTexture.Apply();
+    //    print("BitmapToTexture2D end:" + System.DateTime.Now);
+    //} 
 
     const int maxSize = 4096;
 
@@ -149,7 +116,7 @@ public class SceneryCreator:MonoBehaviour
         print("lYCount:" + lYCount);
         Rect lRightBottomRect = new Rect((lXCount - 1) * maxSize, (lYCount - 1) * maxSize,
             pImage.Width % maxSize, pImage.Height % maxSize);
-        System.IO.MemoryStream lMemoryStream = new MemoryStream(maxSize * maxSize*4 +1024*1024);
+        MemoryStream lMemoryStream = new MemoryStream(maxSize * maxSize*4 +1024*1024);
         for (int y = 0; y < lYCount; ++y)
         {
             for (int x=0;x<lXCount;++x)
@@ -303,7 +270,7 @@ public class SceneryCreator:MonoBehaviour
                 //if (lWidth > maxSize || lHeight > maxSize)
                 //{
                     print("decomposeImage(lImageFile)");
-                    lImageInfo.rightBottomRect = decomposeImage(lImageFile, PixelFormat.Format24bppRgb,
+                    lImageInfo.rightBottomRect = decomposeImage(lImageFile, PixelFormat.Format32bppArgb,
                         out decomposedImages, out lXCount);
                     //lImageFile.Dispose();
                     //return;
@@ -332,7 +299,14 @@ public class SceneryCreator:MonoBehaviour
             imgPathToData[lFileInfo.ToString()] = nowOutData;
 
         }
+        foreach (var lRenderer in previewRenderer.GetComponentsInChildren<Renderer>())
+        {
+            lRenderer.enabled = false;
+        }
         previewRenderer.GetComponent<CombineImagePlane>().imageInfo = nowOutData.imageInfo;
+
+        Vector2 lSize = zzSceneImageGUI.getFitSize(drawMaxSize, nowOutData.width, nowOutData.height);
+        previewTransform.localScale = new Vector3(lSize.x, lSize.y, 1f);
         //image = nowOutData.resource.resource;
     }
 

@@ -21,7 +21,7 @@ public class zzShortcutKey:MonoBehaviour
                 Input.GetKey(lInfo.holdKey)
                 && Input.GetKeyDown(lInfo.downKey))
             {
-                print(lInfo.action.name);
+                //print(lInfo.action.name);
                 lInfo.action.impAction();
             }
         }

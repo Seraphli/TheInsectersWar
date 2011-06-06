@@ -100,13 +100,13 @@ public class CombineImagePlane:MonoBehaviour
                     if (y == lYCount - 1)
                         lMaterailScale.y = lRightBottomRect.height /(float)lImages[lPlaneIndex].height; 
                     lPlaneObject.renderer.material.mainTextureScale = lMaterailScale;
-                    print("x:" + x+" y:"+y);
-                    print("lWidth:" + lWidth+" lHeight:"+lHeight);
-                    print(new Vector3((x * lFirstPicWidth + (float)lWidth / 2f) / lXPixelNum - 0.5f,
-                            (y * lFirstPicHeight + (float)lHeight / 2f) / lYPixelNum - 0.5f, 0f));
-                    print(new Vector3((float)lWidth / lXPixelNum,
-                            (float)lHeight / lYPixelNum,1f));
-                    print(lMaterailScale);
+                    //print("x:" + x+" y:"+y);
+                    //print("lWidth:" + lWidth+" lHeight:"+lHeight);
+                    //print(new Vector3((x * lFirstPicWidth + (float)lWidth / 2f) / lXPixelNum - 0.5f,
+                    //        (y * lFirstPicHeight + (float)lHeight / 2f) / lYPixelNum - 0.5f, 0f));
+                    //print(new Vector3((float)lWidth / lXPixelNum,
+                    //        (float)lHeight / lYPixelNum,1f));
+                    //print(lMaterailScale);
                 }
             }
 

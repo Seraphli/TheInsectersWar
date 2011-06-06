@@ -49,10 +49,10 @@ public class zzSceneImageGUI:MonoBehaviour
         return _size;
     }
 
-    public static Vector2 getFitSize(Vector2 pMaxSize, Texture2D pImage)
+    public static Vector2 getFitSize(Vector2 pMaxSize, int pWidth,int pHeigth)
     {
-        float lWidth = (float)pImage.width;
-        float lHeigth = (float)pImage.height;
+        float lWidth = (float)pWidth;
+        float lHeigth = (float)pHeigth;
 
         float lWidthHeigthRate = lWidth / lHeigth;
 
@@ -65,6 +65,12 @@ public class zzSceneImageGUI:MonoBehaviour
             pMaxSize.y = pMaxSize.x / lWidthHeigthRate;
         }
         return pMaxSize;
+
+    }
+
+    public static Vector2 getFitSize(Vector2 pMaxSize, Texture2D pImage)
+    {
+        return getFitSize(pMaxSize,pImage.width, pImage.height);
     }
 
     Material    initMaterial()
