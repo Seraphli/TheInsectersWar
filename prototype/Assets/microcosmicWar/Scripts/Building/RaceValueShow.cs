@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 public class RaceValueShow:MonoBehaviour
 {
-    public zzPlaneMesh planeMesh = new zzPlaneMesh();
-    public Material image;
+    public Renderer valueRenderer;
+
+    public float beginOffset;
+    public float endOffset;
 
     [SerializeField]
     float _rate;
@@ -20,35 +22,23 @@ public class RaceValueShow:MonoBehaviour
         set
         {
             _rate = value;
-            planeMesh.UVs[3].y = value;
-            planeMesh.UVs[2].y = value;
-
-
-            planeMesh.vertices[3].y = value;
-            planeMesh.vertices[2].y = value;
-
-            planeMesh.UpdateMesh();
+            valueRenderer.material.mainTextureOffset 
+                = new Vector2(Mathf.Lerp(beginOffset,endOffset,_rate), 0f);
         }
     }
 
     void Awake()
     {
-        planeMesh.Init(gameObject);
-        GetComponent<MeshRenderer>().material = image;
         rate = _rate;
     }
         
-    //在编辑模式下显示
-    void OnDrawGizmosSelected()
-    {
-        if( !Application.isPlaying )
-        {
-            if (!planeMesh.mesh
-                || !GetComponent<MeshFilter>()
-                || !GetComponent<MeshFilter>().sharedMesh)
-                Awake();
-            rate = _rate;
-        }
-    }
+    ////在编辑模式下显示
+    //void OnDrawGizmosSelected()
+    //{
+    //    if( !Application.isPlaying )
+    //    {
+    //        rate = _rate;
+    //    }
+    //}
 
 }

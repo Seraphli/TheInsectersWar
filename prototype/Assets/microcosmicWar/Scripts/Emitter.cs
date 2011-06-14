@@ -56,7 +56,9 @@ public class Emitter : MonoBehaviour
         GameObject lOut = null;
         if (zzCreatorUtility.isHost())
         {
-            lOut = zzCreatorUtility.Instantiate(bulletPrefab, transform.position, new Quaternion(), 0);
+            var lPosition = transform.position;
+            lPosition.z=0f;
+            lOut = zzCreatorUtility.Instantiate(bulletPrefab, lPosition, Quaternion.identity, 0);
 
             Bullet pBullet = lOut.GetComponentInChildren<Bullet>();
             pBullet.setLayer(bulletLayer);

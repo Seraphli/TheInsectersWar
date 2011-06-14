@@ -48,6 +48,26 @@ public class zzCharacter
         return characterController.isGrounded;
     }
 
+    public void OnSerializeNetworkView2D(BitStream stream, NetworkMessageInfo info)
+    {
+        Vector3 pos = new Vector3();
+        Quaternion rot = new Quaternion();
+        Transform lTransform = characterController.transform;
+        //---------------------------------------------------
+        if (stream.isWriting)
+        {
+            pos = lTransform.position;
+        }
+        //---------------------------------------------------
+        stream.Serialize(ref pos);
+        stream.Serialize(ref moveV);
+        //---------------------------------------------------
+        if (stream.isReading)
+        {
+            lTransform.position = pos;
+        }
+    }
+
     public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
         Vector3 pos = new Vector3();
@@ -68,7 +88,6 @@ public class zzCharacter
         {
             lTransform.position = pos;
             lTransform.rotation = rot;
-
         }
     }
 
@@ -120,6 +139,8 @@ public class UnitActionCommand
         command = pOther.command;
 
     }
+
+    //只网络同步后8位
     public int command;
 
     const int faceLeftCommand = 1 << 0;
@@ -142,6 +163,7 @@ public class UnitActionCommand
 
     const int jumpCommand           = 1 << 6;
     const int negJumpCommand = ~jumpCommand;
+
 
     //朝向左
     public bool FaceLeft
@@ -307,20 +329,21 @@ public class ActionCommandControl : MonoBehaviour
 
     public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
+        char lCommand = (char)System.Convert.ToByte(unitActionCommand.command & 0xff);
+
+        //---------------------------------------------------
+        stream.Serialize(ref lCommand);
+        //---------------------------------------------------
+        if (stream.isReading)
+        {
+            unitActionCommand.command = ((byte)lCommand)&0xff;
+        }
         //int lFace = face;
         //stream.Serialize(lFace);
         //face =  lFace;
 
-        stream.Serialize(ref unitActionCommand.command);
-        //stream.Serialize(unitActionCommand.FaceRight);
-        //stream.Serialize(unitActionCommand.FaceUp);
-        //stream.Serialize(unitActionCommand.FaceDown);
-
-        //stream.Serialize(unitActionCommand.GoForward);
-
-        //stream.Serialize(unitActionCommand.Fire);
-        //stream.Serialize(unitActionCommand.Jump);
-
+        //stream.Serialize(ref unitActionCommand.command);
+        
         /*
         if(info.networkView.name!="NS")
         {

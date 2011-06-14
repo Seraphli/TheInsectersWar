@@ -58,8 +58,13 @@ public class zzSignalSlot : MonoBehaviour
             Debug.LogError("Slot Method isn't fit Signal,or it is not public");
             return;
         } 
-        var lSlotDelegate = System.Delegate.CreateDelegate(
-             lSignalDelegateType, slotComponent, lSlotMethod);
+        Delegate lSlotDelegate;
+        if (lSlotMethod.IsStatic)
+            lSlotDelegate = System.Delegate.CreateDelegate(
+                 lSignalDelegateType, lSlotMethod);
+        else
+            lSlotDelegate = System.Delegate.CreateDelegate(
+                 lSignalDelegateType, slotComponent, lSlotMethod);
 
         linkSignalToSlot(signalComponent, lSignalMemberInfo, lSlotDelegate);
         

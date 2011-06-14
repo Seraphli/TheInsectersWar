@@ -15,17 +15,41 @@ public class BoardDetector : MonoBehaviour
     Collider playerCollider;
 
     //用于探测板是否在脚下
+
     protected bool inited = false;
 
-    void Start()
+    IEnumerator Start()
     {
-        gameObject.layer = layers.boardDetector;
-        playerCollider = boardPlayer.collider;
-        Board.turnOffCollisionWithAllBaord(boardPlayer);
-        originalPosition = transform.localPosition;
-        inited = true;
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        //initCheck();
         //print(originalPosition);
+        if (!inited)
+        {
+            gameObject.layer = layers.boardDetector;
+            playerCollider = boardPlayer.collider;
+
+            Board.turnOffCollisionWithAllBaord(boardPlayer);
+            originalPosition = transform.localPosition;
+            inited = true;
+
+        }
     }
+    
+    //延迟到碰撞体active了,再关闭与板的碰撞
+    //void initCheck()
+    //{
+    //    if(!inited)
+    //    {
+    //        gameObject.layer = layers.boardDetector;
+    //        playerCollider = boardPlayer.collider;
+
+    //        Board.turnOffCollisionWithAllBaord(boardPlayer);
+    //        originalPosition = transform.localPosition;
+    //        inited = true;
+
+    //    }
+    //}
 
     public void down()
     {
@@ -54,20 +78,33 @@ public class BoardDetector : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //print("OnTriggerEnter:" + other.name);
+        print("OnTriggerEnter:" + other.name);
         //Board lBoard = other.GetComponent<Board>();
         //if (lBoard)
         //{
         //    print(lBoard.boardColliders.Length);
         //    lBoard.turnOnCollision(other,boardPlayer);
         //}
-        Physics.IgnoreCollision(other, playerCollider,false);
+        if (!inited)
+        {
+            gameObject.layer = layers.boardDetector;
+            playerCollider = boardPlayer.collider;
+
+            Board.turnOffCollisionWithAllBaord(boardPlayer);
+            originalPosition = transform.localPosition;
+            inited = true;
+            if (other.gameObject.layer == layers.board)
+                Physics.IgnoreCollision(other, playerCollider, false);
+
+        }
+        else
+            Physics.IgnoreCollision(other, playerCollider,false);
     }
 
 
     void OnTriggerExit(Collider other)
     {
-        //print("OnTriggerExit:" + other.name);
+        print("OnTriggerExit:" + other.name);
         //Board lBoard = other.GetComponent<Board>();
         //if (lBoard)
         //{

@@ -9,7 +9,7 @@ public class StrongholdValueShow:MonoBehaviour
     public RaceValueShow pismireValueShow;
     public RaceValueShow beeValueShow;
 
-    RaceValueShow nowValueShow;
+    public RaceValueShow nowValueShow;
     public Race nowRace;
 
     public void showRace(Race race)
@@ -20,33 +20,33 @@ public class StrongholdValueShow:MonoBehaviour
         nowValueShow = null;
         if (race == Race.ePismire )
         {
-            pismireValueShow.gameObject.active = true;
+            pismireValueShow.gameObject.SetActiveRecursively(true);
             nowValueShow = pismireValueShow;
         }
         else
         {
-            pismireValueShow.gameObject.active = false;
+            pismireValueShow.gameObject.SetActiveRecursively( false );
 
         }
         
         if(race == Race.eBee)
         {
-            beeValueShow.gameObject.active = true;
+            beeValueShow.gameObject.SetActiveRecursively( true);
             nowValueShow = beeValueShow;
         }
         else
         {
-            beeValueShow.gameObject.active = false;
+            beeValueShow.gameObject.SetActiveRecursively(false);
 
         }
     }
 
-    void Start()
-    {
-        pismireValueShow.gameObject.active = false;
-        beeValueShow.gameObject.active = false;
-        nowRace = Race.eNone;
-    }
+    //void Start()
+    //{
+    //    pismireValueShow.gameObject.active = false;
+    //    beeValueShow.gameObject.active = false;
+    //    nowRace = Race.eNone;
+    //}
 
     public float rate
     {

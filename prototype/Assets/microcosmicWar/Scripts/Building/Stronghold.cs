@@ -295,7 +295,6 @@ public class Stronghold:MonoBehaviour
             sendMessageWhenDie lSendMessageWhenDie
                 = strongholdBuilding.GetComponent<sendMessageWhenDie>();
             lSendMessageWhenDie.messageReceiver = gameObject;
-            strongholdValueShow.showRace(Race.eNone);
             owner = pRace;
 
             if (Network.peerType != NetworkPeerType.Disconnected)
@@ -323,6 +322,8 @@ public class Stronghold:MonoBehaviour
 
     void occupiedEvent()
     {
+        strongholdValueShow.showRace(owner);
+        strongholdValueShow.rate = 1f;
         playOccupiedAimation();
         GameSceneManager.Singleton
             .addObject(owner, GameSceneManager.UnitManagerType.stronghold, gameObject);
@@ -334,6 +335,9 @@ public class Stronghold:MonoBehaviour
         lBuildingTransform.localScale = strongholdTransform.localScale;
 
         lBuildingTransform.parent = strongholdTransform;
+        var lLifeValueShow = strongholdValueShow.nowValueShow;
+        strongholdBuilding.GetComponent<Life>()
+            .addBloodValueChangeCallback((x) => lLifeValueShow.rate = x.getRate());
         updateRaceShow();
     }
 
@@ -344,6 +348,7 @@ public class Stronghold:MonoBehaviour
 
     void lostEvent()
     {
+        strongholdValueShow.showRace(Race.eNone);
         strongholdBuilding = null;
         playLostAnimation();
         updateRaceShow();
@@ -401,7 +406,7 @@ public class Stronghold:MonoBehaviour
         //---------------------------------------------------
         stream.Serialize(ref lOwner);
         stream.Serialize(ref nowOccupiedValue);
-        stream.Serialize(ref pismireCount); ;
+        stream.Serialize(ref pismireCount);
         stream.Serialize(ref beeCount);
         //---------------------------------------------------
         if (stream.isReading)

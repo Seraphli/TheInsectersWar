@@ -40,7 +40,7 @@ public class SoldierNetView : MonoBehaviour
     {
         life.OnSerializeNetworkView(stream, info);
         actionCommandControl.OnSerializeNetworkView(stream, info);
-        character.OnSerializeNetworkView(stream, info);
+        character.OnSerializeNetworkView2D(stream, info);
         /*
         FIXME_VAR_TYPE pos=Vector3();
         FIXME_VAR_TYPE rot=Quaternion();

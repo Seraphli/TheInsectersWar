@@ -51,7 +51,7 @@ public class HeroNetView : MonoBehaviour
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
-        character.OnSerializeNetworkView(stream, info);
+        character.OnSerializeNetworkView2D(stream, info);
         actionCommandControl.OnSerializeNetworkView(stream, info);
     }
 

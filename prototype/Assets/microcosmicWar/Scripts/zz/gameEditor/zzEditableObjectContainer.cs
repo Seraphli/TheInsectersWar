@@ -51,6 +51,7 @@ public class zzEditableObjectContainer:MonoBehaviour
         {
             if (value)
             {
+                zzUndo.registerUndo(transform);
                 foreach (var lObject in editableObjectList)
                 {
                     lObject.OnDragOn();
