@@ -282,9 +282,7 @@ public class zzGUILibListView
                         foreach (var lTitleInfo in titleList)
                         {
                             string lData;
-                            if (lShowData.ContainsKey(lTitleInfo.name))
-                                lData = lShowData[lTitleInfo.name];
-                            else
+                            if (!lShowData.TryGetValue(lTitleInfo.name, out lData))
                                 lData = "";
                             lIsClick |= GUILayout.Button(lData, lStyle, GUILayout.Width(lTitleInfo.width));
                         }

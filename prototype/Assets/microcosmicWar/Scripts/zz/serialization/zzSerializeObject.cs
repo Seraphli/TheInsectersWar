@@ -76,8 +76,9 @@ public class zzSerializeObject
 
     public SerializationMethod getMethod(System.Type pType)
     {
-        if (customMethods.ContainsKey(pType))
-            return customMethods[pType];
+        SerializationMethod lCustomMethod;
+        if (customMethods.TryGetValue(pType, out lCustomMethod))
+            return lCustomMethod;
         return classSerialization;
     }
 
@@ -192,18 +193,20 @@ public class zzSerializeObject
 
     PropertyInfo[] getSerializeOutMethod(System.Type lType)
     {
-        if (typeToSerializeOutMethod.ContainsKey(lType))
-            return typeToSerializeOutMethod[lType];
-        var lOut = createSerializeMethod(lType, false, true);
+        PropertyInfo[] lOut;
+        if (typeToSerializeOutMethod.TryGetValue(lType, out lOut))
+            return lOut;
+        lOut = createSerializeMethod(lType, false, true);
         typeToSerializeOutMethod[lType] = lOut;
         return lOut;
     }
 
     PropertyInfo[] getSerializeInMethod(System.Type lType)
     {
-        if(typeToSerializeInMethod.ContainsKey(lType))
+        PropertyInfo[] lOut;
+        if (typeToSerializeInMethod.TryGetValue(lType, out lOut))
             return typeToSerializeInMethod[lType];
-        var lOut = createSerializeMethod(lType,true,false);
+        lOut = createSerializeMethod(lType,true,false);
         typeToSerializeInMethod[lType] = lOut;
         return lOut;
     }

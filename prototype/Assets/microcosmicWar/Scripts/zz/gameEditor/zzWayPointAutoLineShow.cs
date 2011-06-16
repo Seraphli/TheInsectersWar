@@ -41,9 +41,7 @@ public class zzWayPointAutoLineShow : MonoBehaviour
             zzWayPoint pPoint)
         {
             HashSet<zzWayPoint> lOut;
-            if (pData.ContainsKey(pPoint))
-                lOut = pData[pPoint];
-            else
+            if (!pData.TryGetValue(pPoint, out lOut))
             {
                 lOut = new HashSet<zzWayPoint>();
                 pData[pPoint] = lOut;

@@ -312,9 +312,8 @@ public class NetworkMenu : MonoBehaviour
             Hashtable lTableData = (Hashtable)zzSerializeString.Singleton
                 .unpackToData(lServer.comment);
             zzGUILibTreeElement lElement;
-            if (lIdToElement.ContainsKey(lServerDic.Key))
+            if (lIdToElement.TryGetValue(lServerDic.Key, out lElement))
             {
-                lElement = lIdToElement[lServerDic.Key];
                 lIdToElement.Remove(lServerDic.Key);
             }
             else
