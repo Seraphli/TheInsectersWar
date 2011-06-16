@@ -11,7 +11,7 @@ class sendMessageWhenDie:MonoBehaviour
     public string methodName;
     public bool sendSelf = false;
 
-    void Start()
+    void Awake()
     {
         if (!life)
             life = gameObject.GetComponentInChildren<Life>();

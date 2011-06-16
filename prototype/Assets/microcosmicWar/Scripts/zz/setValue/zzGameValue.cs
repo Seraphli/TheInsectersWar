@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//can delete
 public class zzGameValue:MonoBehaviour
 {
     public GameObject gameValue;

@@ -84,6 +84,7 @@ public class Life : MonoBehaviour
                 Life_die();
                 if (Network.peerType != NetworkPeerType.Disconnected)
                     networkView.RPC("Life_die", RPCMode.Others);
+                    //NetworkHelper.makeDead(networkView);
             }
         }
     }

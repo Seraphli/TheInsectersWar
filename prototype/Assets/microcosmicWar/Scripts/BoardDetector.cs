@@ -18,6 +18,11 @@ public class BoardDetector : MonoBehaviour
 
     protected bool inited = false;
 
+    void Awake()
+    {
+        gameObject.layer = layers.boardDetector;
+    }
+
     IEnumerator Start()
     {
         yield return new WaitForFixedUpdate();
@@ -78,7 +83,7 @@ public class BoardDetector : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        print("OnTriggerEnter:" + other.name);
+        //print("OnTriggerEnter:" + other.name);
         //Board lBoard = other.GetComponent<Board>();
         //if (lBoard)
         //{
@@ -104,7 +109,7 @@ public class BoardDetector : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        print("OnTriggerExit:" + other.name);
+        //print("OnTriggerExit:" + other.name);
         //Board lBoard = other.GetComponent<Board>();
         //if (lBoard)
         //{

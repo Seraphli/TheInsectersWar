@@ -65,6 +65,8 @@ public class zzUndo:MonoBehaviour
 
     public UndoMementoFactory[] undoMementoFactory;
 
+    public int maxUndoCount = 100;
+
     Dictionary<System.Type, System.Func<UndoMemento>> typeToUndo 
         = new Dictionary<System.Type,System.Func<UndoMemento>>();
 
@@ -118,15 +120,19 @@ public class zzUndo:MonoBehaviour
         return typeToUndo[pType];
     }
 
-    List<UndoObject> undoList = new List<UndoObject>();
+    LinkedList<UndoObject> undoList = new LinkedList<UndoObject>();
     //List<Object> undoObjectList;
-    List<UndoObject> redoList = new List<UndoObject>();
+    LinkedList<UndoObject> redoList = new LinkedList<UndoObject>();
     //List<Object> redoObjectList;
     void _registerUndo(object pObjectToUndo)
     {
-        undoList.Add(new UndoObject((Object)pObjectToUndo, 
+        undoList.AddLast(new UndoObject((Object)pObjectToUndo, 
             getUndoMementoCreateFun(pObjectToUndo.GetType())));
         redoList.Clear();
+        while (undoList.Count > maxUndoCount)
+        {
+            undoList.RemoveFirst();
+        }
     }
 
     public static void registerUndo(object pObjectToUndo)
@@ -134,14 +140,14 @@ public class zzUndo:MonoBehaviour
         singletonInstance._registerUndo(pObjectToUndo);
     }
 
-    void transportUndo(List<UndoObject> pFrom, List<UndoObject> pTo)
+    void transportUndo(LinkedList<UndoObject> pFrom, LinkedList<UndoObject> pTo)
     {
         if (pFrom.Count < 1)
             return;
-        var lUndoObject = pFrom[pFrom.Count - 1];
-        pFrom.RemoveAt(pFrom.Count - 1);
+        var lUndoObject = pFrom.Last.Value;
+        pFrom.RemoveLast();
         lUndoObject.swapUndo();
-        pTo.Add(lUndoObject);
+        pTo.AddLast(lUndoObject);
     }
 
     void _performUndo()

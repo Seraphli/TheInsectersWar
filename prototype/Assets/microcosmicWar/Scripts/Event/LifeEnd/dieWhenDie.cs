@@ -5,7 +5,7 @@ using System.Collections;
 class dieWhenDie : MonoBehaviour
 {
     public float delayTime = 0.0f;
-    void Start()
+    void Awake()
     {
         Life life = gameObject.GetComponentInChildren<Life>();
         life.addDieCallback(deadAction);

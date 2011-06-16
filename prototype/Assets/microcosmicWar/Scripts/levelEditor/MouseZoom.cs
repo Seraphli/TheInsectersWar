@@ -15,6 +15,8 @@ public class MouseZoom : MonoBehaviour
     public float minPerInEveryChange = 0.05f;
     public float damping = 0.5f;
 
+    public float lastTime = 0f;
+
     void setRange(float lRange)
     {
         foreach (var lScale in scaleList)
@@ -26,6 +28,7 @@ public class MouseZoom : MonoBehaviour
     void Start()
     {
         setRange(nowRange);
+        lastTime = Time.realtimeSinceStartup;
     }
 
     void Update()
@@ -47,8 +50,10 @@ public class MouseZoom : MonoBehaviour
         //        wantSize, Time.deltaTime/damping);
         if (!Mathf.Approximately(wantRange, nowRange))
         {
-            nowRange = Mathf.Lerp(nowRange, wantRange, Time.deltaTime / damping);
+            nowRange = Mathf.Lerp(nowRange, wantRange,
+                (Time.realtimeSinceStartup - lastTime) / damping);
             setRange(nowRange);
+            lastTime = Time.realtimeSinceStartup;
         }
     }
 

@@ -127,7 +127,7 @@ public class Bullet : MonoBehaviour
 
         if (lLife && harmVale!=0)
             lLife.injure(harmVale, injureInfo);
-
+        //print(networkView.viewID);
         //if(zzCreatorUtility.isHost())
         lifeEnd();
     }

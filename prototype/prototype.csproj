@@ -251,6 +251,8 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnTriggerEnter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzOnUpdateOnce.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\event\zzShortcutKey.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DEditorBound.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DEditorPosition.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyDragMove.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRigidbodyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zz2DRotator.cs" />
@@ -374,6 +376,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\serialization\zzSerializeString.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestroyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzDestroyOneObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameObjectValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetFloatValue.cs" />
@@ -396,6 +399,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\example\zzTransparencyCaptureExample.cs" />
      <None Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\readme.txt" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\TransparencyCapture\zzTransparencyCapture.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\undo\zzUndo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzApplication.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzDontDestroyOnLoad.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />

@@ -11,7 +11,7 @@ public class playAnimationWhenDie : MonoBehaviour
     public Life life;
 
 
-    void Start()
+    void Awake()
     {
         life = gameObject.GetComponentInChildren<Life>();
         life.addDieCallback(deadAction);

@@ -10,7 +10,7 @@ public class createObjectWhenDie : MonoBehaviour
     public Life life;
     public bool onlyInHost = false;
 
-    void Start()
+    void Awake()
     {
         life = gameObject.GetComponentInChildren<Life>();
         life.addDieCallback(deadAction);

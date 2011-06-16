@@ -12,11 +12,25 @@ public class zzSetValueBase<T> : MonoBehaviour
         valueToSet = pValue;
     }
 
+    public void changeAndSetValue(T pValue)
+    {
+        valueToSet = pValue;
+        setFunc(valueToSet);
+    }
+
     public void addReceiver(System.Action<T> pSetFunc)
     {
         setFunc += pSetFunc;
         if (implementWhenAwake)
             pSetFunc(valueToSet);
+    }
+
+    public void addVoidReceiver(System.Action pSetFunc)
+    {
+        System.Action<T> lSetFunc = (x) => pSetFunc();
+        setFunc += lSetFunc;
+        if (implementWhenAwake)
+            lSetFunc(valueToSet);
     }
 
     System.Action<T> setFunc;

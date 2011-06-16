@@ -1,11 +1,17 @@
 
-function Start () {
-	for(var i=0;i<100;i++){
-	transform.Find("outerhalo").particleEmitter.Emit();
-	yield WaitForSeconds(0.14);
-	transform.Find("halotrail").particleEmitter.Emit();
-	
-	yield WaitForSeconds(1.8);
-	}
+var outerhalo:ParticleEmitter;
+var halotrail:ParticleEmitter;
+
+function Start () 
+{
+    while(true)
+    {
+        outerhalo.Emit();
+	    yield WaitForSeconds(0.14);
+	    halotrail.Emit();
+    	
+	    yield WaitForSeconds(1.8);
+    
+    }
 	
 }
