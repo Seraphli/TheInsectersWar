@@ -139,6 +139,11 @@ public class zzSerializeObject
         }
     }
 
+    public bool needSerializeOut(object pObject)
+    {
+        return getSerializeOutMethod(pObject.GetType()).Length > 0;
+    }
+
     public Hashtable serializeToTable(object pObject)
     {
         var lList = getSerializeOutMethod(pObject.GetType());
