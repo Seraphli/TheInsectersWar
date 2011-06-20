@@ -56,7 +56,7 @@ public class zzWayPointLine : P2PLine
     {
         if( !begin | !end)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 

@@ -5,7 +5,7 @@ public class _2DPerspectiveZoom : ScaleBase
     public Transform zoomCameraTransform;
     public float to = 5f;
     public float from = 1.5f;
-    public override float range
+    public override float rate
     {
         set
         {

@@ -20,6 +20,14 @@ public class StrongholdObject : zzEditableObject
     [SerializeField]
     int maxEnergy = 999;
 
+    public Transform buildingZone;
+
+    [SerializeField]
+    float maxBuildingZoneSize = 30f;
+
+    [SerializeField]
+    float minBuildingZoneSize = 5f;
+
     [zzSerialize]
     [FieldUI("能量", verticalDepth=-1)]
     public int energy
@@ -77,6 +85,57 @@ public class StrongholdObject : zzEditableObject
         set
         {
             race = PlayerInfo.stringToRace(value);
+        }
+    }
+
+    bool _defaultBuildingZone = true;
+
+    [zzSerialize]
+    [FieldUI("使用默认范围", verticalDepth = 2)]
+    public bool defaultBuildingZone
+    {
+        get { return _defaultBuildingZone; }
+        set 
+        { 
+            _defaultBuildingZone = value;
+            updateBuildingZoneSize();
+        }
+    }
+
+    float _buildingZoneSize = 20f;
+
+    [zzSerialize]
+    [FieldUI("据点范围", verticalDepth = 3)]
+    public float buildingZoneSize
+    {
+        get 
+        { return _buildingZoneSize; }
+        set 
+        {
+            _buildingZoneSize = Mathf.Clamp(value, minBuildingZoneSize, maxBuildingZoneSize);
+            updateBuildingZoneSize();
+        }
+    }
+
+    void updateBuildingZoneSize()
+    {
+        if(!_defaultBuildingZone)
+        {
+            var lSize = new Vector3(_buildingZoneSize, _buildingZoneSize, 1);
+            buildingZone.localScale = lSize;
+        }
+    }
+
+    [SliderUI(0f, 1f, verticalDepth = 4)]
+    public float buildingZoneSizeRate
+    {
+        get
+        {
+            return Mathf.InverseLerp(minBuildingZoneSize, maxBuildingZoneSize, buildingZoneSize);
+        }
+        set 
+        {
+            buildingZoneSize = Mathf.Lerp(minBuildingZoneSize, maxBuildingZoneSize, value); 
         }
     }
 

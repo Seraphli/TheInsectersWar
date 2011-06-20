@@ -3,6 +3,7 @@
 public class zz2DRigidbodyDragMove:MonoBehaviour
 {
     public Joint jointDrag;
+    public bool detectCollisions = true;
 
     Vector3 getXYWantPos()
     {
@@ -15,6 +16,7 @@ public class zz2DRigidbodyDragMove:MonoBehaviour
     {
         if (enabled)
         {
+            jointDrag.connectedBody.detectCollisions = true;
             jointDrag.connectedBody = null;
             editableObject.draged = false;
             editableObject = null;
@@ -37,6 +39,7 @@ public class zz2DRigidbodyDragMove:MonoBehaviour
 
         jointDrag.transform.position = getXYWantPos();
         jointDrag.connectedBody = lEditableObject.rigidbody;
+        jointDrag.connectedBody.detectCollisions = detectCollisions;
     }
 
 

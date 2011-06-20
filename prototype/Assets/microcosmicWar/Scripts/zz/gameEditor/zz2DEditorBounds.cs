@@ -2,6 +2,6 @@
 
 public class zz2DEditorBounds:MonoBehaviour
 {
-    public float width;
-    public float height;
+    public float width = 1f;
+    public float height = 1f;
 }

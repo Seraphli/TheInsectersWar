@@ -2,7 +2,7 @@
 
 public abstract class ScaleBase : MonoBehaviour
 {
-    public abstract float range { set; }
+    public abstract float rate { set; }
 }
 
 public class MouseZoom : MonoBehaviour
@@ -21,7 +21,7 @@ public class MouseZoom : MonoBehaviour
     {
         foreach (var lScale in scaleList)
         {
-            lScale.range = lRange;
+            lScale.rate = lRange;
         }
     }
 
