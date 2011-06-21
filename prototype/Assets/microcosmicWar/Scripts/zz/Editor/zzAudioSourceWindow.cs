@@ -85,7 +85,6 @@ public class zzAudioSourceWindow : EditorWindow
         foreach (var lFileFullName in lfiles)
         {
             var lFile = lPath + Path.GetFileName(lFileFullName);
-            Debug.Log(lFile);
             var lObject = (GameObject)AssetDatabase.LoadMainAssetAtPath(lFile);
             if (lObject)
             {
@@ -93,8 +92,14 @@ public class zzAudioSourceWindow : EditorWindow
                 //Debug.Log(lObject.audio == null);
                 //Debug.Log(lObject.GetComponents<T>().Length);
                 //Debug.Log(lObject.GetComponentsInChildren<T>().Length);
-                lOut.AddRange(GetComponentsInChildren < T > (lObject.transform));
-                Debug.Log(lOut.Count);
+                var lSources = GetComponentsInChildren<T>(lObject.transform);
+                if (lSources.Length>0)
+                {
+                    Debug.Log(lFile);
+                    lOut.AddRange(lSources);
+                    EditorUtility.SetDirty(lObject);
+                    Debug.Log(lOut.Count);
+                }
             }
         }
         //else
