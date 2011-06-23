@@ -31,19 +31,54 @@ public class DefenseTower : MonoBehaviour
 
     public Emitter emitter;
 
-    public bool fire = false;
+    public bool _fire = false;
+
+    public bool fire
+    {
+        get { return _fire; }
+        set
+        {
+            if(_fire!=value)
+            {
+                fireSwitchAction(value);
+                if (Network.peerType != NetworkPeerType.Disconnected)
+                    networkView.RPC("fireSwitchAction", RPCMode.Others, value);
+            }
+        }
+    }
+
+    [RPC]
+    void fireSwitchAction(bool pFire)
+    {
+        _fire = pFire;
+        if (_fire)
+            fireOnEventReceiver();
+        else
+            fireOffEventReceiver();
+    }
+
+    System.Action fireOnEventReceiver;
+    public void addFireOnEventReceiver(System.Action pReceiver)
+    {
+        fireOnEventReceiver += pReceiver;
+    }
+    System.Action fireOffEventReceiver;
+    public void addFireOffEventReceiver(System.Action pReceiver)
+    {
+        fireOffEventReceiver += pReceiver;
+    }
 
     public bool initDefenseTower = true;
 
-    public void setFire(bool pNeedFire)
-    {
-        fire = pNeedFire;
-    }
+    //public void setFire(bool pNeedFire)
+    //{
+    //    fire = pNeedFire;
+    //}
 
-    public bool inFiring()
-    {
-        return fire;
-    }
+    //public bool inFiring()
+    //{
+    //    return fire;
+    //}
 
     public virtual void Start()
     {
@@ -112,11 +147,12 @@ public class DefenseTower : MonoBehaviour
         //探测器 扳机 的设置在UI脚本中
 
         gameObject.layer = pLayer;
-
-        foreach (Transform i in transform.Find("shape"))
-        {
-            i.gameObject.layer = pLayer;
-        }
+        var lShape = transform.Find("shape");
+        if(lShape)
+            foreach (Transform i in lShape)
+            {
+                i.gameObject.layer = pLayer;
+            }
         //collisionLayer.addCollider(gameObject);
         emitter.setBulletLayer(getBulletLayer());
     }
@@ -125,7 +161,7 @@ public class DefenseTower : MonoBehaviour
     {
         //print( LayerMask.NameToLayer( LayerMask.LayerToName(gameObject.layer)+"Bullet" ));
         //子弹所在层名字为:种族名字+Bullet
-        return LayerMask.NameToLayer(LayerMask.LayerToName(gameObject.layer) + "Bullet");
+        return PlayerInfo.getBulletLayer(gameObject.layer);
     }
 
     public virtual void Update()
@@ -277,7 +313,7 @@ public class DefenseTower : MonoBehaviour
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
-        stream.Serialize(ref nowAngular);
+        //stream.Serialize(ref nowAngular);
         stream.Serialize(ref aimAngular);
     }
 

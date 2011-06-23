@@ -1,19 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class LifeTriggerDetector : zzDetectorBase
 {
-    public Hashtable enemyList = new Hashtable();
+    public HashSet<Transform> enemyList = new HashSet<Transform>();
 
     [SerializeField]
     Transform _lockedTarget;
 
     [SerializeField]
-    LayerMask detectLayerMask;
+    public LayerMask detectLayerMask;
 
     public Transform lockedTarget
     {
         get { return _lockedTarget; }
+    }
+
+    public int targetCount
+    {
+        get { return enemyList.Count; }
     }
 
     public override Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc)
@@ -36,7 +41,7 @@ public class LifeTriggerDetector : zzDetectorBase
             //如果之前的目标作废,则使用新的
             if (!collisionLayer.isAliveFullCheck(_lockedTarget))
                 _lockedTarget = other.transform;
-            enemyList[other.transform] = true;
+            enemyList.Add(other.transform);
         }
     }
 
@@ -56,16 +61,16 @@ public class LifeTriggerDetector : zzDetectorBase
         //避免一帧中多次OnTriggerExit和其他的情况,所以用此方法
 
         _lockedTarget = null;
-        foreach (System.Collections.DictionaryEntry i in enemyList)
+        foreach (var lEnemy in enemyList)
         {
             //判断物体是否还在场景中
-            if (collisionLayer.isAliveFullCheck(i.Key as Transform))
+            if (collisionLayer.isAliveFullCheck(lEnemy))
             {
-                _lockedTarget = (Transform)i.Key;
+                _lockedTarget = lEnemy;
                 break;
             }
             //若已被消毁,则从表中将其删去
-            enemyList.Remove(i);
+            enemyList.Remove(lEnemy);
         }
         return _lockedTarget;
     }

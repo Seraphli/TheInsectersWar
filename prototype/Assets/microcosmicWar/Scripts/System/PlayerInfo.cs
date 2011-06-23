@@ -74,9 +74,27 @@ public class PlayerInfo : MonoBehaviour
         return 0;
     }
 
+    public static LayerMask getRaceObjectMask(Race race)
+    {
+        switch (race)
+        {
+            case Race.eBee: return 1 << layers.bee | 1 << layers.beeBuilding;
+            case Race.ePismire: return 1 << layers.pismire | 1 << layers.pismireBuilding;
+            //case Race.ePismire: return "pismire";
+        }
+        Debug.LogError(race);
+        return 0;
+
+    }
+
     public static int getAdversaryRaceLayer(Race race)
     {
         return getRaceLayer(getAdversaryRace(race));
+    }
+
+    public static LayerMask getAdversaryRaceObjectMask(Race race)
+    {
+        return getRaceObjectMask(getAdversaryRace(race));
     }
 
     public static int getAdversaryRaceLayer(int raceLayer)
@@ -115,15 +133,9 @@ public class PlayerInfo : MonoBehaviour
 
     public static int getBulletLayer(int raceLayer)
     {
-        //switch (raceLayer)
-        //{
-        //case layers.pismire: return layers.bee;
-        //case layers.bee: return layers.pismire;
-        //case Race.ePismire: return "pismire";
-        //}
-        if (raceLayer == layers.pismire)
+        if (raceLayer == layers.pismire || raceLayer == layers.pismireBuilding)
             return layers.pismireBullet;
-        else if (raceLayer == layers.bee)
+        else if (raceLayer == layers.bee || raceLayer == layers.beeBuilding)
             return layers.beeBullet;
 
         Debug.LogError(raceLayer);
@@ -132,9 +144,9 @@ public class PlayerInfo : MonoBehaviour
 
     public static Race getRace(int raceLayer)
     {
-        if (raceLayer == layers.pismire)
+        if (raceLayer == layers.pismire || raceLayer == layers.pismireBuilding)
             return Race.ePismire;
-        else if (raceLayer == layers.bee)
+        else if (raceLayer == layers.bee || raceLayer == layers.beeBuilding)
             return Race.eBee;
 
         Debug.LogError(raceLayer);

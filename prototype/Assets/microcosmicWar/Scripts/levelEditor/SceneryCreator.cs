@@ -6,23 +6,19 @@ using System.Drawing.Imaging;
 
 public class SceneryCreator:MonoBehaviour
 {
+    System.Action<int, int> sizeChangedEvent;
+    static void nullImageSizeChangedReceiver(int a,int b){}
 
-    //static void BitmapToTexture2D(System.Drawing.Bitmap pBitmap,
-    //    Rectangle pRect,Texture2D pTexture)
-    //{
-    //    print("BitmapToTexture2D begin:" + pRect +" "+ System.DateTime.Now);
-    //    for (int y = 0; y < pRect.Height; ++y)
-    //    {
-    //        int lBitmapY = pRect.Y+y;
-    //        for (int x = 0; x < pRect.Width; ++x)
-    //        {
-    //            var lColor = pBitmap.GetPixel(pRect.X + x, lBitmapY);
-    //            pTexture.SetPixel(x, y, new UnityEngine.Color(lColor.R, lColor.G, lColor.B, lColor.A));
-    //        }
-    //    }
-    //    pTexture.Apply();
-    //    print("BitmapToTexture2D end:" + System.DateTime.Now);
-    //}
+    public void addImageSizeChangedReceiver(System.Action<int, int> pReceiver)
+    {
+        sizeChangedEvent += pReceiver;
+    }
+
+    void Start()
+    {
+        if (sizeChangedEvent == null)
+            sizeChangedEvent = nullImageSizeChangedReceiver;
+    }
 
     static void fillPowerOfTwo(Texture2D pImage)
     {
@@ -52,56 +48,6 @@ public class SceneryCreator:MonoBehaviour
         //pImage.SetPixels(lNewPixels);
         pImage.Apply();
     }
-
-    //static void fillPowerOfTwo(Texture2D pImage, UnityEngine.Color fillColor)
-    //{
-    //    int lPreWidth = pImage.width;
-    //    int lPreHeight = pImage.height;
-    //    if (Mathf.IsPowerOfTwo(lPreWidth) && Mathf.IsPowerOfTwo(lPreHeight))
-    //    {
-    //        print("don't need fillPowerOfTwo");
-    //        return;
-    //    }
-    //    var lPixels = pImage.GetPixels();
-    //    pImage.Resize(Mathf.NextPowerOfTwo(lPreWidth), Mathf.NextPowerOfTwo(lPreHeight));
-
-    //    int i = -1;
-    //    for (int y = lPreHeight; y > 0; --y)
-    //    {
-    //        for (int x = 0; x < lPreWidth; ++x)
-    //        {
-    //            pImage.SetPixel(x, y, lPixels[++i]);
-    //        }
-    //        for (int x = lPreWidth; x < pImage.width; ++x)
-    //        {
-    //            pImage.SetPixel(x, y, fillColor);
-    //        }
-    //    }
-    //    for (int y = pImage.height; y < lPreHeight; ++y)
-    //    {
-    //        for (int x = 0; x < pImage.width; ++x)
-    //        {
-    //            pImage.SetPixel(x, y, fillColor);
-    //        }
-    //    }
-    //    pImage.Apply();
-    //}
-
-    //static void BitmapToTexture2D(System.Drawing.Bitmap pBitmap,
-    //    Texture2D pTexture)
-    //{
-    //    print("BitmapToTexture2D begin:" + System.DateTime.Now);
-    //    for (int y = 0; y < pBitmap.Height; ++y)
-    //    {
-    //        for (int x = 0; x < pBitmap.Width; ++x)
-    //        {
-    //            var lColor = pBitmap.GetPixel(x, y);
-    //            pTexture.SetPixel(x, y, new UnityEngine.Color(lColor.R, lColor.G, lColor.B, lColor.A));
-    //        }
-    //    }
-    //    pTexture.Apply();
-    //    print("BitmapToTexture2D end:" + System.DateTime.Now);
-    //} 
 
     const int maxSize = 4096;
 
@@ -307,6 +253,7 @@ public class SceneryCreator:MonoBehaviour
 
         Vector2 lSize = zzSceneImageGUI.getFitSize(drawMaxSize, nowOutData.width, nowOutData.height);
         previewTransform.localScale = new Vector3(lSize.x, lSize.y, 1f);
+        sizeChangedEvent(nowOutData.width, nowOutData.height);
         //image = nowOutData.resource.resource;
     }
 

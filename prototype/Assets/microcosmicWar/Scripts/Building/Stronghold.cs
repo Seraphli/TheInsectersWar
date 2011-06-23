@@ -34,6 +34,8 @@ public class Stronghold:MonoBehaviour
     public GameObject pismireBuildingPrefab;
     public GameObject beeBuildingPrefab;
 
+    public GameObject attachmentPrefab;
+
     public StrongholdValueShow strongholdValueShow;
 
     [SerializeField]
@@ -339,6 +341,11 @@ public class Stronghold:MonoBehaviour
         strongholdBuilding.GetComponent<Life>()
             .addBloodValueChangeCallback((x) => lLifeValueShow.rate = x.getRate());
         updateRaceShow();
+
+        //据点升级设置
+        var lStrongholdUpdate = strongholdBuilding.GetComponent<StrongholdUpdate>();
+        lStrongholdUpdate.attachmentPrefab = attachmentPrefab;
+        lStrongholdUpdate.strongholdAnimation = strongholdAnimation;
     }
 
     public void playLostAnimation()

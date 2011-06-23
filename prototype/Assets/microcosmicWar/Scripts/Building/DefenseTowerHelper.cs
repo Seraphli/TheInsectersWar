@@ -15,7 +15,7 @@ public class DefenseTowerHelper : MonoBehaviour
 
         GameObject lTowerObject = gameObject;
         //AiMachineGunAI lTowerAI = lTowerObject.GetComponentInChildren<AiMachineGunAI>();
-        AiMachineGunAI lTowerAI = lTowerObject.transform.Find("turn/enemyDetector").GetComponent<AiMachineGunAI>();
+        OldAiMachineGunAI lTowerAI = lTowerObject.transform.Find("turn/enemyDetector").GetComponent<OldAiMachineGunAI>();
         //Transform AIOb = transform.Find("turn/enemyDetector");
         //print("AIOb:"+(AIOb==null));
         //print(AIOb.GetComponent<AiMachineGunAI>()==null);

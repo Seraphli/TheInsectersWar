@@ -118,6 +118,13 @@ class UnitFace
             return UnitFaceDirection.right;
         return UnitFaceDirection.left;
     }
+
+    public static UnitFaceDirection getFace(float pValue)
+    {
+        if (pValue > 0f)
+            return UnitFaceDirection.right;
+        return UnitFaceDirection.left;
+    }
 }
 
 public class UnitActionCommand

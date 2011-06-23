@@ -39,8 +39,34 @@ public class zzAnimationConfig : MonoBehaviour
     /// </summary>
     static Dictionary<AnimationClip, bool> haveAddedEvent = new Dictionary<AnimationClip, bool>();
 
+    public void play(string pAnimation)
+    {
+        myAnimation.Play(pAnimation);
+    }
+
+    public string stateWhenStart;
+
+    void toAnimationState(string pAniName)
+    {
+        var lAniState = myAnimation[pAniName];
+
+        //var lPreWeight = lAniState.weight;
+        var lPreAniEnabled = lAniState.enabled;
+
+        lAniState.weight = 1f;
+        lAniState.enabled = true;
+
+        myAnimation.Sample();
+
+        //lAniState.weight = lPreWeight;
+        lAniState.enabled = lPreAniEnabled;
+    }
+
     void Start()
     {
+        if (stateWhenStart.Length > 0)
+            toAnimationState(stateWhenStart);
+
         foreach (unityAniStateConfigInfo lStateConfigInfo in animationConfig)
         {
             //是否使用配置

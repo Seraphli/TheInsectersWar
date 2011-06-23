@@ -19,7 +19,7 @@ public class DefenseTowerNetView : MonoBehaviour
         //print(!zzCreatorUtility.isHost());
         if (!zzCreatorUtility.isHost())
         {
-            Destroy(defenseTower.GetComponentInChildren<AiMachineGunAI>());
+            Destroy(defenseTower.GetComponentInChildren<OldAiMachineGunAI>());
         }
     }
 
@@ -37,7 +37,7 @@ public class DefenseTowerNetView : MonoBehaviour
         if (stream.isWriting)
         {
             lAngle = defenseTower.getAngle();
-            lFire = defenseTower.inFiring();
+            //lFire = defenseTower.inFiring();
             lAimAngular = defenseTower._getSmoothAngle();
             //	lFace=defenseTower.getFaceDirection();
 
@@ -53,7 +53,7 @@ public class DefenseTowerNetView : MonoBehaviour
         if (stream.isReading)
         {
             defenseTower.setAngle(lAngle);
-            defenseTower.setFire(lFire);
+            //defenseTower.setFire(lFire);
             defenseTower._setSmoothAngle(lAimAngular);
             //	defenseTower.setFaceDirection(lFace);
 
