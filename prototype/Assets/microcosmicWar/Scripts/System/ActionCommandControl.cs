@@ -51,7 +51,7 @@ public class zzCharacter
     public void OnSerializeNetworkView2D(BitStream stream, NetworkMessageInfo info)
     {
         Vector3 pos = new Vector3();
-        Quaternion rot = new Quaternion();
+        //Quaternion rot = new Quaternion();
         Transform lTransform = characterController.transform;
         //---------------------------------------------------
         if (stream.isWriting)

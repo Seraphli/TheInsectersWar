@@ -56,6 +56,7 @@ public class LifeTriggerDetector : zzDetectorBase
             searchFireTargetInList();
     }
 
+    List<Transform> removeList = new List<Transform>();
     protected Transform searchFireTargetInList()
     {
         //避免一帧中多次OnTriggerExit和其他的情况,所以用此方法
@@ -70,8 +71,13 @@ public class LifeTriggerDetector : zzDetectorBase
                 break;
             }
             //若已被消毁,则从表中将其删去
+            removeList.Add(lEnemy);
+        }
+        foreach (var lEnemy in removeList)
+        {
             enemyList.Remove(lEnemy);
         }
+        removeList.Clear();
         return _lockedTarget;
     }
 

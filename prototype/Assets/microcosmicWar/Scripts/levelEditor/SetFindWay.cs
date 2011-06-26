@@ -4,6 +4,12 @@ using System.Collections.Generic;
 public class SetFindWay:MonoBehaviour
 {
     public Transform wayNodeLinkRoot;
+
+    void Start()
+    {
+        ToSet();
+    }
+
     public void ToSet()
     {
         var lWaySearcher = AstarPath.active;
