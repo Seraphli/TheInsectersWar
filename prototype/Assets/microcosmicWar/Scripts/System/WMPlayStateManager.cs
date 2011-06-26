@@ -51,11 +51,13 @@ public class WMPlayStateManager : PlayStateManager
     void getAllSceneObject()
     {
         objectList = new List<Transform>(managerObject.transform.childCount);
-
+        string lDebug = "AllSceneObject:\n";
         foreach (Transform lObject in managerObject.transform)
         {
-            objectList.Add(lObject); ;
+            lDebug += lObject.name + "\n";
+            objectList.Add(lObject);
         }
+        print(lDebug);
 
     }
 
@@ -100,13 +102,29 @@ public class WMPlayStateManager : PlayStateManager
     void directPlayState()
     {
         getAllSceneObject();
-        List<NetworkView> lNetworkViewList = new List<NetworkView>();
-        foreach (var lObject in objectList)
-        {
-            lNetworkViewList.AddRange( lObject.GetComponentsInChildren<NetworkView>() );
-        }
         if (Network.peerType != NetworkPeerType.Disconnected)
         {
+            //List<NetworkView> lNetworkViewList = new List<NetworkView>();
+            //foreach (var lObject in objectList)
+            //{
+            //    lNetworkViewList.AddRange(lObject.GetComponentsInChildren<NetworkView>());
+            //}
+            List<KeyValuePair<int, NetworkView>> lNetworkViewList
+                = new List<KeyValuePair<int, NetworkView>>();
+            foreach (var lObject in objectList)
+            {
+                var lNetworkViews = lObject.GetComponentsInChildren<NetworkView>();
+                if (lNetworkViews.Length>0)
+                {
+                    var lID = lObject.GetComponent<ObjectPropertySetting>().loadId;
+
+                    for (int i = 0; i < lNetworkViews.Length;++i )
+                    {
+                        lNetworkViewList.Add(new KeyValuePair<int, NetworkView>(lID + i, lNetworkViews[i]));
+                    }
+                }
+            }
+
             var lViewIDManager = groupViewIDManager;
             lViewIDManager.setGroupBegin(OnAfterLoaded);
             if (Network.isServer)
@@ -118,10 +136,13 @@ public class WMPlayStateManager : PlayStateManager
                 }
                 for (int i = 0; i < lNetworkViewList.Count; ++i)
                 {
-                    var lNetworkView = lNetworkViewList[i];
+                    var lNetworkViewInfo = lNetworkViewList[i];
+                    var lNetworkView = lNetworkViewInfo.Value;
                     var lID = Network.AllocateViewID();
+                    //lNetworkView.viewID = lID;
                     lNetworkView.viewID = lID;
-                    lViewIDManager.setViewID(i, lNetworkView);
+                    //lViewIDManager.setViewID(i, lNetworkView);
+                    lViewIDManager.setViewID(lNetworkViewInfo.Key, lNetworkViewInfo.Value);
                 }
                 lViewIDManager.setGroupEnd();
             }
@@ -129,8 +150,10 @@ public class WMPlayStateManager : PlayStateManager
             {
                 for (int i = 0; i < lNetworkViewList.Count; ++i)
                 {
-                    var lNetworkView = lNetworkViewList[i];
-                    lViewIDManager.getViewID(i, lNetworkView);
+                    //var lNetworkView = lNetworkViewList[i];
+                    //lViewIDManager.getViewID(i, lNetworkView);
+                    var lNetworkViewInfo = lNetworkViewList[i];
+                    lViewIDManager.getViewID(lNetworkViewInfo.Key, lNetworkViewInfo.Value);
                 }
 
             }

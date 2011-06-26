@@ -79,6 +79,8 @@ public class Stronghold:MonoBehaviour
     public Renderer[] lightRenderers;
     public Renderer[] waterRenderers;
 
+    public GameObject occupantZone;
+
     void toAnimationState(string pAniName)
     {
         var lAniState = strongholdAnimation[pAniName];
@@ -135,6 +137,12 @@ public class Stronghold:MonoBehaviour
             GameSceneManager.Singleton
                 .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
         }
+
+        if (!zzCreatorUtility.isHost())
+        {
+            Destroy(occupantZone);
+            occupantZone = null;
+        }
     }
 
     //public void setSoldierFactory(GameObject pSoldierFactory)
@@ -153,30 +161,24 @@ public class Stronghold:MonoBehaviour
         return null;
     }
 
-    void OnTriggerEnter(Collider pCollider)
+    public void OnOccupantEnter(Collider pCollider)
     {
-        if(zzCreatorUtility.isHost())
-        {
-            var lValue = getValue(pCollider);
-            //print("OnTriggerEnter:" + lValue.name);
-            if (lValue.gameObject.layer == layers.pismire)
-                pismireList.Add(lValue);
-            else
-                beeList.Add(lValue);
-        }
+        var lValue = getValue(pCollider);
+        //print("OnTriggerEnter:" + lValue.name);
+        if (lValue.gameObject.layer == layers.pismire)
+            pismireList.Add(lValue);
+        else if (lValue.gameObject.layer == layers.bee)
+            beeList.Add(lValue);
     }
 
-    void OnTriggerExit(Collider pCollider)
+    public void OnOccupantExit(Collider pCollider)
     {
-        if (zzCreatorUtility.isHost())
-        {
-            var lValue = getValue(pCollider);
-            //print("OnTriggerExit:" + lValue.name);
-            if (lValue.gameObject.layer == layers.pismire)
-                pismireList.Remove(lValue);
-            else
-                beeList.Remove(lValue);
-        }
+        var lValue = getValue(pCollider);
+        //print("OnTriggerExit:" + lValue.name);
+        if (lValue.gameObject.layer == layers.pismire)
+            pismireList.Remove(lValue);
+        else if (lValue.gameObject.layer == layers.bee)
+            beeList.Remove(lValue);
     }
 
     void refreshTriggerInfo(HashSet<Transform>  pList)
@@ -195,12 +197,9 @@ public class Stronghold:MonoBehaviour
 
     void refreshTriggerInfo()
     {
-        if (zzCreatorUtility.isHost())
-        {
-            refreshTriggerInfo(pismireList);
-            refreshTriggerInfo(beeList);
-            refreshDebugInfo();
-        }
+        refreshTriggerInfo(pismireList);
+        refreshTriggerInfo(beeList);
+        refreshDebugInfo();
     }
 
     Transform   getValue(Collider pCollider)
@@ -229,7 +228,8 @@ public class Stronghold:MonoBehaviour
         if (occupied)
             return;
 
-        refreshTriggerInfo();
+        if (occupantZone!=null)
+            refreshTriggerInfo();
 
         //更新占领所属哪方的图标,从none变为占领
         if (owner == Race.eNone)
@@ -355,6 +355,8 @@ public class Stronghold:MonoBehaviour
 
     void lostEvent()
     {
+        nowOccupiedValue = 0.0f;
+        owner = Race.eNone;
         strongholdValueShow.showRace(Race.eNone);
         strongholdBuilding = null;
         playLostAnimation();
@@ -372,8 +374,6 @@ public class Stronghold:MonoBehaviour
     void buildingDestroied()
     {
         //strongholdBuilding = null;
-        nowOccupiedValue = 0.0f;
-        owner = Race.eNone;
 
         if (soldierFactory)
             soldierFactory.GetComponent<Life>().makeDead();
@@ -395,11 +395,22 @@ public class Stronghold:MonoBehaviour
             return Race.eBee;
         return Race.eNone;
     }
+    //public Transform[] debugInfo;
 
     void refreshDebugInfo()
     {
         pismireCount = pismireList.Count;
         beeCount = beeList.Count;
+        //List<Transform> lDebugInfo = new List<Transform>();
+        //foreach (var lObject in pismireList)
+        //{
+        //    lDebugInfo.Add(lObject);
+        //}
+        //foreach (var lObject in beeList)
+        //{
+        //    lDebugInfo.Add(lObject);
+        //}
+        //debugInfo = lDebugInfo.ToArray();
     }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)

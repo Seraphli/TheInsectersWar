@@ -16,15 +16,15 @@ public class UnitFaceDirectionObject:MonoBehaviour
             {
                 setFace(value);
                 if (Network.peerType != NetworkPeerType.Disconnected)
-                    networkView.RPC("RPCSetFace", RPCMode.Others, (char)value);
+                    networkView.RPC("RPCSetFace", RPCMode.Others, UnitFace.toSerializeNetworkView(value));
             }
         }
     }
 
     [RPC]
-    void RPCSetFace(char pFace)
+    void RPCSetFace(int pFaceValue)
     {
-        setFace((UnitFaceDirection)pFace);
+        setFace(UnitFace.fromSerializeNetworkView(pFaceValue));
     }
 
     void setFace(UnitFaceDirection pFace)

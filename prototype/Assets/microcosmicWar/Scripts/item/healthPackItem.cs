@@ -22,19 +22,36 @@ class healthPackItem : IitemObject
 
     public override void use()
     {
-        Life lLife = useObject.GetComponent<Life>();
+        putHealthPack(useObject, duration);
+        if (Network.isServer)
+        {
+            networkView.RPC("RPCPutHealthPack", RPCMode.Others,
+                useObject.networkView.viewID, (float)Network.time);
+        }
+    }
+
+    [RPC]
+    void RPCPutHealthPack(NetworkViewID pViewID,float pServerTime)
+    {
+        var lDuration = duration;
+        var lLostTime = (float)Network.time - pServerTime;
+        if (lLostTime > 0.5f)
+            lDuration -= lLostTime;
+        putHealthPack(NetworkView.Find(pViewID).gameObject, lDuration);
+        //putHealthPack()
+    }
+
+    void putHealthPack(GameObject pObject, float pDuration)
+    {
+        Life lLife = pObject.GetComponent<Life>();
         var lhealthPack = (GameObject)zzCreatorUtility.Instantiate(healthPackObjectPrefab);
         LifeRecoverConstValue lLifeRecover = lhealthPack.GetComponent<LifeRecoverConstValue>();
         lLifeRecover.setLife(lLife);
         lLifeRecover.recoverValue = recoverValue;
-        lLifeRecover.duration = duration;
+        lLifeRecover.duration = pDuration;
 
         var lhealthPackTransform = lhealthPack.transform;
-        lhealthPackTransform.parent = useObject.transform;
+        lhealthPackTransform.parent = pObject.transform;
         lhealthPackTransform.localPosition = Vector3.zero;
-        if(Network.isServer)
-        {
-            lhealthPack.GetComponent<zzSetRemoteAttach>().setData(useObject.transform);
-        }
     }
 };

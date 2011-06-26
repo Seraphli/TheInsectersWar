@@ -101,7 +101,7 @@ public class zzCreatorUtility : MonoBehaviour
 
     static bool host = true;
 
-    public static void resetCreator()
+    public static void resetCreator(zzCreatorUtility pCreator)
     {
         if (Network.peerType == NetworkPeerType.Disconnected)
         {
@@ -112,9 +112,13 @@ public class zzCreatorUtility : MonoBehaviour
         else
         {
             //print("Network.peerType !=NetworkPeerType.Disconnected");
+            pCreator.inNetwork = true;
             zzGenericCreator = new ZzNetCreator();
             if (Network.isServer)
+            {
+                pCreator.isServer = true;
                 host = true;
+            }
             else
                 host = false;
         }
@@ -170,8 +174,11 @@ public class zzCreatorUtility : MonoBehaviour
     void Awake()
     {
         //Debug.LogError("zzCreatorUtility.Awake");
-        resetCreator();
+        resetCreator(this);
     }
+
+    public bool inNetwork = false;
+    public bool isServer = false;
     //void  Update (){
     //}
 }

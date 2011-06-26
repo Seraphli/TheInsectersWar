@@ -121,6 +121,8 @@ public class ItemTypeInfo
     }*/
 
     public GameObject useItem;
+
+    public IitemObject itemObject;
     //string useItemComponentName;
     //protected GameObject useItemObject;
 
@@ -139,6 +141,8 @@ public class ItemTypeInfo
         //Debug.Log(useItemComponentName);
         //Debug.Log(useItemObject!=null);
         //return useItemObject.GetComponent<useItemComponentName>();
+        if (itemObject)
+            return itemObject;
         return useItem.GetComponent<IitemObject>();
     }
 

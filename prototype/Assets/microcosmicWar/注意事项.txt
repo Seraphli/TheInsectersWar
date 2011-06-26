@@ -24,4 +24,5 @@
 3删除EditorSceneManager与SerializeScene中的信号 
 4状态管理器勾选directSetObject 
 5game over 按钮的响应
-6资源管理器中打开压缩图片
+6资源管理器中启用压缩图片
+7将CreateWhenPlay中Clone的勾去掉

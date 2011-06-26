@@ -64,7 +64,7 @@ public class GameScene : MonoBehaviour
         singletonInstance = this;
 
 
-        zzCreatorUtility.resetCreator();
+        //zzCreatorUtility.resetCreator();
 
         //}
     }

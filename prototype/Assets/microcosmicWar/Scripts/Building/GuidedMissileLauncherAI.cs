@@ -22,6 +22,10 @@ public class GuidedMissileLauncherAI : MonoBehaviour
 
     public SphereAreaHarm sphereAreaHarm;
 
+    public float maxFollowDistance = 35f;
+
+    public float maxFollowSqrtDistance = 0f;
+
     public void setAdversaryLayerMask(LayerMask pLayerMask)
     {
         adversaryLayerMask = pLayerMask;
@@ -34,7 +38,7 @@ public class GuidedMissileLauncherAI : MonoBehaviour
             Destroy(this);
             return;
         }
-
+        maxFollowSqrtDistance = maxFollowDistance * maxFollowDistance;
         targetList = new Transform[maxRequired];
         //pathTimer = AddComponent<zzTimer>();
         //emitter.setInitBulletFunc(initBullet);
@@ -55,20 +59,31 @@ public class GuidedMissileLauncherAI : MonoBehaviour
 
     public int resetAndSearchEnemy()
     {
-        targetNowIndex = 0;
         //线投时,已经根据层 过滤掉了死掉的物体,所以不需设置探测过滤
         Collider[] lHits = detector.detect(maxRequired, adversaryLayerMask.value);
-        targetNum = lHits.Length;
-        //print("targetNum:"+targetNum);
-        if (targetNum > 0)
+        //int lAddCount = 0;
+        int lIndex = targetNum;
+        foreach (var lHit in lHits)
         {
-            for (int i = 0; i < targetNum; ++i)
-                targetList[i] = lHits[i].transform;
-
-            //朝第一个目标转动
-            //defenseTower.takeAim(targetList[0].position,fireDeviation);
-            defenseTowerAim.setTarget(targetList[0]);
+            if (!isTarget(lHit.transform))
+                targetList[lIndex++] = lHit.transform;
+            if (lIndex >= maxRequired)
+                break;
         }
+        targetNum = lIndex;
+        //targetNum = lHits.Length;
+        ////print("targetNum:"+targetNum);
+        //if (targetNum > 0)
+        //{
+        //    for (int i = 0; i < targetNum; ++i)
+        //    {
+        //        targetList[i] = lHits[i].transform;
+        //    }
+
+        //    //朝第一个目标转动
+        //    //defenseTower.takeAim(targetList[0].position,fireDeviation);
+        //    defenseTowerAim.setTarget(targetList[0]);
+        //}
         return targetNum;
     }
 
@@ -83,18 +98,49 @@ public class GuidedMissileLauncherAI : MonoBehaviour
 
     public Transform getTargetAndMove()
     {
-        int targetIndex = getNextTagetIndex();
-        if (
-            targetNum > 0 
-            && collisionLayer.isAliveFullCheck( targetList[targetIndex] )
-            )
+        Transform lOut = null;
+        clearDeactiveTarget();
+        if (targetNum < maxRequired)
+            resetAndSearchEnemy();
+        defenseTowerAim.setTarget(targetList[0]);
+        if (targetNum > 0)
         {
-            targetNowIndex = targetIndex;
-            return targetList[targetIndex];
+            int lTargetIndex = getNextTagetIndex();
+            //print(lTargetIndex);
+            //var lTarget = targetList[lTargetIndex];
+            targetNowIndex = lTargetIndex;
+            lOut = targetList[lTargetIndex];
+            //print(lOut.name);
         }
-        if (resetAndSearchEnemy() > 0)
-            return targetList[0];
-        return null;
+        return lOut;
+    }
+
+    public bool isTarget(Transform pTransform)
+    {
+        for (int i = 0; i < targetNum; ++i)
+        {
+            if (targetList[i] == pTransform)
+                return true;
+        }
+        return false;
+    }
+
+    public bool checkTargetActive(Transform pTarget)
+    {
+        return collisionLayer.isAliveFullCheck(pTarget)
+         && (pTarget.position - transform.position).sqrMagnitude < maxFollowSqrtDistance;
+    }
+
+    public void clearDeactiveTarget()
+    {
+        int lSaveIndex = 0;
+        for (int i = 0; i < targetNum; ++i)
+        {
+            if (checkTargetActive(targetList[i]))
+                targetList[lSaveIndex++] = targetList[i];
+        }
+        targetNum = lSaveIndex;
+
     }
 
 }

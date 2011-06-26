@@ -13,7 +13,15 @@ public class zzCharacter
 
     protected Vector3 moveV;
 
-    public void update(UnitActionCommand pUnitActionCommand, int pFaceValue, bool isAlive)
+    public void update2D(float pDeltaTime)
+    {
+        if (!characterController.isGrounded)
+            moveV.y -= gravity * pDeltaTime;
+        Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
+        characterController.Move(lVelocity * pDeltaTime);
+    }
+
+    public void update2D(UnitActionCommand pUnitActionCommand, int pFaceValue, bool isAlive)
     {
         moveV.x = 0;
         moveV.z = 0;
@@ -51,20 +59,54 @@ public class zzCharacter
     public void OnSerializeNetworkView2D(BitStream stream, NetworkMessageInfo info)
     {
         Vector3 pos = new Vector3();
+        char lFaceValue = '0';
+        float lYSpeed = 0f;
         //Quaternion rot = new Quaternion();
         Transform lTransform = characterController.transform;
         //---------------------------------------------------
         if (stream.isWriting)
         {
             pos = lTransform.position;
+            if (moveV.x < 0f)
+                lFaceValue = '2';
+            else if (moveV.x > 0f)
+                lFaceValue = '1';
+            lYSpeed = moveV.y;
         }
         //---------------------------------------------------
         stream.Serialize(ref pos);
-        stream.Serialize(ref moveV);
+        //stream.Serialize(ref moveV);
+        stream.Serialize(ref lFaceValue);
+        stream.Serialize(ref lYSpeed);
         //---------------------------------------------------
         if (stream.isReading)
         {
+            float lIntFaceValue = 0;
+            switch(lFaceValue)
+            {
+                //case '0': break;
+                case '1': lIntFaceValue = 1f; break;
+                case '2': lIntFaceValue = -1f; break;
+            }
+            moveV = new Vector3(lIntFaceValue, lYSpeed, 0f);
             lTransform.position = pos;
+            //if ( (characterController.collisionFlags & CollisionFlags.Sides) == 0)
+            //{
+            //    //四周无碰撞时,通过moveV补偿位移
+            //    characterController.Move(lVelocity * Time.deltaTime);
+            //    pos += moveV * (float)(Network.time - info.timestamp);
+            //}
+
+            //Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
+            //characterController.Move(lVelocity * (float)(Network.time - info.timestamp));
+            var lDeltaTime = (float)(Network.time - info.timestamp);
+            if (lDeltaTime > 0.02f)
+                update2D(lDeltaTime*Time.timeScale);
+            //if (!characterController.isGrounded)
+            //    moveV.y -= gravity * lDeltaTime;
+            //Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
+            //characterController.Move(lVelocity * pDeltaTime);
+
         }
     }
 
@@ -124,6 +166,16 @@ class UnitFace
         if (pValue > 0f)
             return UnitFaceDirection.right;
         return UnitFaceDirection.left;
+    }
+
+    public static int toSerializeNetworkView(UnitFaceDirection pFace)
+    {
+        return pFace == UnitFaceDirection.left ? 0 : 1;
+    }
+
+    public static UnitFaceDirection fromSerializeNetworkView(int pValue)
+    {
+        return pValue == 0 ? UnitFaceDirection.left : UnitFaceDirection.right;
     }
 }
 

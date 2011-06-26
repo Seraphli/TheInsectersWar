@@ -176,7 +176,7 @@ public class Soldier : MonoBehaviour
     //更新characterController
     void FixedUpdate()
     {
-        character.update(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
+        character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
     }
 
 }

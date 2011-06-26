@@ -23,8 +23,8 @@ public class zzGroupViewIDManager:MonoBehaviour
 
     public void getViewID(int pObjectID, NetworkView pNetworkView)
     {
-        //print("getViewID:"+pNetworkView.name + ":"
-        //    + pObjectID);
+        //print("getViewID:" + pNetworkView.name + ":"
+            //+ pObjectID);
         pNetworkView.enabled = false;
         networkViewList.Add(pNetworkView);
 
@@ -40,8 +40,8 @@ public class zzGroupViewIDManager:MonoBehaviour
     //server
     public void setViewID(int pObjectID, NetworkView pNetworkView)
     {
-        //print("setViewID:"+ pNetworkView.name+ ":"
-        //    + pObjectID+" "+pNetworkView.viewID.ToString());
+        //print("setViewID:" + pNetworkView.name + ":"
+            //+ pObjectID + " " + pNetworkView.viewID.ToString());
 
         pNetworkView.enabled = false;
         networkViewList.Add(pNetworkView);
@@ -75,7 +75,8 @@ public class zzGroupViewIDManager:MonoBehaviour
     [RPC]
     void RPCSetObjectCount(int pCount)
     {
-        //print("&&&&&&RPCSetObjectCount&&&&&&&:" + pCount);
+        print("&&&&&&RPCSetObjectCount&&&&&&&:" + pCount);
+        print(haveSetCount);
         objectCount = pCount;
         finishedCheck();
     }
@@ -93,11 +94,13 @@ public class zzGroupViewIDManager:MonoBehaviour
     [RPC]
     void RPCGroupFinish()
     {
-        //print("#####################RPCGroupFinish");
+        string lInfo = "RPCGroupFinish:\n";
         foreach (var lNetworkView in networkViewList)
         {
             lNetworkView.enabled = true;
+            lInfo += lNetworkView.name + " ID:" + lNetworkView.viewID + "\n";
         }
+        print(lInfo);
         networkViewList.Clear();
         groupFinishEvent();
     }

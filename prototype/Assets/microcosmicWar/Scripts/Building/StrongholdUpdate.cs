@@ -45,6 +45,7 @@ public class StrongholdUpdate:MonoBehaviour
         {
             var lAttachmentParent = (GameObject)Network.Instantiate(attachmentPrefab,
                 attachmentParent.position, attachmentParent.rotation,0);
+            attachUpdate(lAttachmentParent.transform);
             networkView.RPC("RPCAttachUpdate", RPCMode.Others,
                 lAttachmentParent.networkView.viewID);
         }

@@ -283,7 +283,7 @@ public class Hero : MonoBehaviour
     //更新characterController
     public void FixedUpdate()
     {
-        character.update(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
+        character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
         /*
             FIXME_VAR_TYPE lActionCommand= actionCommandControl.getCommand();
 	
