@@ -85,7 +85,7 @@ public class Hero : MonoBehaviour
 
     public UnitFaceDirection getFace()
     {
-        return actionCommandControl.getFace();
+        return actionCommandControl.face;
     }
 
     //Transform upBody;
@@ -187,7 +187,7 @@ public class Hero : MonoBehaviour
         //reverseObjectTransform.localScale.x=actionCommandControl.getFaceValue()*Xscale;
         //moveV.x=lMove;
         Vector3 lTemp = reverseObjectTransform.localScale;
-        if (originalFace == actionCommandControl.getFace())
+        if (originalFace == actionCommandControl.face)
             lTemp.x = Xscale;
             //reverseObjectTransform.localScale.x = Xscale;
         else

@@ -10,16 +10,19 @@ public class zzCharacter
     public float runSpeed = 5.0f;
     public float gravity = 15.0f;
     public float jumpSpeed = 10.0f;
+    public float minYVelocity = -10.0f;
 
     protected Vector3 moveV;
 
     public void update2D(float pDeltaTime)
     {
         if (!characterController.isGrounded)
-            moveV.y -= gravity * pDeltaTime;
+            moveV.y = Mathf.Max(moveV.y - gravity * pDeltaTime, minYVelocity);
         Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
         characterController.Move(lVelocity * pDeltaTime);
     }
+
+    public float yVelocity { get { return moveV.y; } }
 
     public void update2D(UnitActionCommand pUnitActionCommand, int pFaceValue, bool isAlive)
     {
@@ -40,7 +43,7 @@ public class zzCharacter
             }
         }
         else
-            moveV.y -= gravity * Time.deltaTime;
+            moveV.y = Mathf.Max(moveV.y - gravity * Time.deltaTime, minYVelocity);
         if (moveV.y > 0
             && (characterController.collisionFlags & CollisionFlags.Above)>0)
             moveV.y = 0;
@@ -328,18 +331,18 @@ public class ActionCommandControl : MonoBehaviour
 {
 
     [SerializeField]
-    protected UnitFaceDirection face = UnitFaceDirection.left;
+    protected UnitFaceDirection _face = UnitFaceDirection.left;
 
     //返回在x上的值
     public int getFaceValue()
     {
         //Debug.Log("face:"+face+" "+UnitFace.getValue(face));
-        return UnitFace.getValue(face);
+        return UnitFace.getValue(_face);
     }
 
-    public UnitFaceDirection getFace()
+    public UnitFaceDirection face
     {
-        return face;
+        get { return _face; }
     }
 
 
@@ -369,15 +372,15 @@ public class ActionCommandControl : MonoBehaviour
     {
         if (unitActionCommand.FaceLeft != unitActionCommand.FaceRight)
         {
-            if (unitActionCommand.FaceLeft && face == UnitFaceDirection.right)
+            if (unitActionCommand.FaceLeft && _face == UnitFaceDirection.right)
             {
-                face = UnitFaceDirection.left;
+                _face = UnitFaceDirection.left;
                 //Debug.Log("Change to left");
                 return true;
             }
-            if (unitActionCommand.FaceRight && face == UnitFaceDirection.left)
+            if (unitActionCommand.FaceRight && _face == UnitFaceDirection.left)
             {
-                face = UnitFaceDirection.right;
+                _face = UnitFaceDirection.right;
                 //Debug.Log("Change to right");
                 return true;
             }

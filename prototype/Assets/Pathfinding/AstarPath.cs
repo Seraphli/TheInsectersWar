@@ -506,6 +506,17 @@ public class AstarPath : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        totalNodeAmount = 0;
+        activePath = false;
+
+        //The previous calculated path
+        prevPath = null;
+
+        cache = null;
+        active = null;
+    }
 
     //From global position to local position, i.e index in the node array
 

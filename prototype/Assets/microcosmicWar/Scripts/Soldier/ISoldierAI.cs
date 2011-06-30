@@ -172,9 +172,9 @@ public abstract class ISoldierAI:MonoBehaviour
         lFollowDetectorTimer.setImpFunction(this.detectFollowed);
 
         //障碍探测
-        barrierDetectTimer = gameObject.AddComponent<zzCoroutineTimer>();
-        barrierDetectTimer.setInterval(barrierDetectInterval);
-        barrierDetectTimer.setImpFunction(detectBarrier);
+        //barrierDetectTimer = gameObject.AddComponent<zzCoroutineTimer>();
+        //barrierDetectTimer.setInterval(barrierDetectInterval);
+        //barrierDetectTimer.setImpFunction(detectBarrier);
 
         if (!actionCommandControl)
             actionCommandControl = gameObject.GetComponentInChildren<ActionCommandControl>();
@@ -241,20 +241,24 @@ public abstract class ISoldierAI:MonoBehaviour
     public zzDetectorBase barrierDetector;
     zzCoroutineTimer barrierDetectTimer;
 
-    protected bool haveBarrier = false;
-    protected void detectBarrier()
+    //protected bool haveBarrier = false;
+    protected bool haveBarrier
     {
-        if (barrierDetector.detect(1, layers.moveableObjectValue).Length > 0)
-        {
-            haveBarrier = true;
-            barrierDetectTimer.setInterval(actionCommandUpdateInterval);
-        }
-        else
-        {
-            haveBarrier = false;
-            barrierDetectTimer.setInterval(barrierDetectInterval);
-        }
+        get { return (character.collisionFlags & CollisionFlags.Sides) != 0; }
     }
+    //protected void detectBarrier()
+    //{
+    //    if (barrierDetector.detect(1, layers.moveableObjectValue).Length > 0)
+    //    {
+    //        haveBarrier = true;
+    //        barrierDetectTimer.setInterval(actionCommandUpdateInterval);
+    //    }
+    //    else
+    //    {
+    //        haveBarrier = false;
+    //        barrierDetectTimer.setInterval(barrierDetectInterval);
+    //    }
+    //}
 
     /// <summary>
     /// 

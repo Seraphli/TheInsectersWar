@@ -75,8 +75,13 @@ public class HeroSpawn : MonoBehaviour
 
     public void setOwer(NetworkPlayer pOwner)
     {
-        //owner = pOwner;
-        zzCreatorUtility.sendMessage(gameObject, "setOwerImp", pOwner);
+        owner = pOwner;
+        if(Network.peerType!= NetworkPeerType.Disconnected)
+        {
+            networkView.RPC("setOwerImp", RPCMode.Others, pOwner);
+            GetComponent<BoundNetworkScope>().networkPlayer = pOwner;
+        }
+        //zzCreatorUtility.sendMessage(gameObject, "setOwerImp", pOwner);
     }
 
     public void releaseHeroControl()
@@ -224,9 +229,18 @@ public class HeroSpawn : MonoBehaviour
         else
         {
             if (Network.player == owner)//服务器端
+            {
                 createNetControl(lHeroObject);
+
+            }
             else
+            {
                 networkView.RPC("RPCcreateNetControl", owner, lHeroObject.networkView.viewID);
+                var lPlayerScope = GetComponent<PlayerScope>();
+                lPlayerScope.actionCommandControl = lHeroObject.GetComponent<ActionCommandControl>();
+                lPlayerScope.playerTransform = lHeroObject.transform;
+                lPlayerScope.enabled = true;
+            }
         }
 
         IobjectListener lRemoveCall = (IobjectListener)lHeroObject.GetComponent<IobjectListener>();
@@ -255,6 +269,11 @@ public class HeroSpawn : MonoBehaviour
 
     protected void createControl(GameObject pHeroObject)
     {
+        //for debug
+        var lPlayerScope = GetComponent<PlayerScope>();
+        lPlayerScope.actionCommandControl = pHeroObject.GetComponent<ActionCommandControl>();
+        lPlayerScope.playerTransform = pHeroObject.transform;
+
         //绑定输入
         //GameObject lSystem = GameObject.Find("System");
         mainInput lMainInput = SystemObject.GetComponent<mainInput>();

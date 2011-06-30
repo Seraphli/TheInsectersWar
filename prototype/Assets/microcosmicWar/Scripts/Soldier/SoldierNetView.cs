@@ -11,6 +11,9 @@ public class SoldierNetView : MonoBehaviour
     public zzCharacter character;
     public ActionCommandControl actionCommandControl;
     //FIXME_VAR_TYPE transform;
+    public float disappearTime = 3f;
+    public zzTimer disappearTimer;
+    public MonoBehaviour[] disenableWhenDisappear;
 
     void Awake()
     {
@@ -24,9 +27,16 @@ public class SoldierNetView : MonoBehaviour
         if (!life)
             life = gameObject.GetComponentInChildren<Life>();
 
-        if (!zzCreatorUtility.isHost())
+        if (Network.isClient)
         {
             Destroy(soldier.GetComponentInChildren<SoldierAI>());
+            disappearTimer = gameObject.AddComponent<zzTimer>();
+            disappearTimer.setInterval(disappearTime);
+            disappearTimer.addImpFunction(disappear);
+        }
+        if(disenableWhenDisappear ==null||disenableWhenDisappear.Length==0)
+        {
+            disenableWhenDisappear = new MonoBehaviour[] { soldier };
         }
         //if( !zzCreatorUtility.isMine(gameObject.networkView ) )
         //{
@@ -36,8 +46,31 @@ public class SoldierNetView : MonoBehaviour
         //	Debug.LogError(gameObject.name);
     }
 
+    readonly Vector3 disappearPostion = new Vector3(-100f, -100f, 0f);
+
+    void disappear()
+    {
+        gameObject.transform.position = disappearPostion;
+        disappearTimer.enabled = false;
+        foreach (var lScript in disenableWhenDisappear)
+        {
+            lScript.enabled = false;
+        }
+    }
+
+    void appear()
+    {
+        disappearTimer.timePos = 0f;
+        foreach (var lScript in disenableWhenDisappear)
+        {
+            lScript.enabled = true;
+        }
+    }
+
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
+        if (stream.isReading)
+            appear();
         life.OnSerializeNetworkView(stream, info);
         actionCommandControl.OnSerializeNetworkView(stream, info);
         character.OnSerializeNetworkView2D(stream, info);

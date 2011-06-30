@@ -95,6 +95,8 @@ public class GameScene : MonoBehaviour
             adversaryPlayerSpawn.createHeroFirstTime();
     }
 
+    public int clientNetworkSendRate = 30;
+
     void Start()
     {
         initEvent();
@@ -130,6 +132,8 @@ public class GameScene : MonoBehaviour
                 CreatePlayer();
             }
         }
+        else
+            Network.sendRate = clientNetworkSendRate;
 
     }
 
