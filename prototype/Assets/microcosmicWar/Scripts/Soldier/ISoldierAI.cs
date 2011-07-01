@@ -278,12 +278,11 @@ public abstract class ISoldierAI:MonoBehaviour
         //    lTooCloseToFinalPos = true;
         //else
         //    lTooCloseToFinalPos = false;
-
         //离目标太近时,不改变方向
         if (lTooCloseToFinalPos)
             lFaceValue = actionCommandControl.getFaceValue();
-        else
-            lFaceValue = (int)(pAimPos.x - lPosition.x);
+        else//否则继续接近下一个目标(寻路)点
+            lFaceValue = Mathf.RoundToInt(pAimPos.x - lPosition.x);
 
         lActionCommand.GoForward = true;
 
@@ -334,18 +333,18 @@ public abstract class ISoldierAI:MonoBehaviour
         return lActionCommand;
     }
 
-    public int getFaceValue(UnitActionCommand pActionCommand)
-    {
-        if (pActionCommand.FaceLeft)
-        {
-            return -1;
-        }
-        else if (pActionCommand.FaceRight)
-        {
-            return 1;
-        }
-        return 0;
-    }
+    //public int getFaceValue(UnitActionCommand pActionCommand)
+    //{
+    //    if (pActionCommand.FaceLeft)
+    //    {
+    //        return -1;
+    //    }
+    //    else if (pActionCommand.FaceRight)
+    //    {
+    //        return 1;
+    //    }
+    //    return 0;
+    //}
 
     public void setFaceCommand(UnitActionCommand pActionCommand, int face)
     {

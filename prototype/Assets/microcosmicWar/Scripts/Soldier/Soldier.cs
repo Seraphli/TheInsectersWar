@@ -52,6 +52,11 @@ public class Soldier : MonoBehaviour
         return actionCommandControl.getFaceValue();
     }
 
+    void Awake()
+    {
+        character.lastUpdateTime = Time.time;
+    }
+
     void Start()
     {
 
@@ -171,11 +176,11 @@ public class Soldier : MonoBehaviour
         }
         else
             boardDetector.recover();
-    }
+    //}
 
-    //更新characterController
-    void FixedUpdate()
-    {
+    ////更新characterController
+    //void FixedUpdate()
+    //{
         character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
     }
 

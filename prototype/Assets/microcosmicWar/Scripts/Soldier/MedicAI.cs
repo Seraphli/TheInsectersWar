@@ -149,11 +149,14 @@ class MedicAI:ISoldierAI
             {
                 //探测需救助者
                 var lTreat = treatDetect(treatedLayerValue);
-
                 if (lTreat)
-                    actionCommand = moveToAim(aimPosition, lTreat);
-
-                actionCommand = moveToAim(aimPosition, lAim);
+                {
+                    treatAimLife = lTreat.GetComponent<Life>();
+                    //actionCommand = moveToAim(aimPosition, lTreat);
+                    actionCommand = moveToAim(lTreat.position, lTreat);
+                }
+                else
+                    actionCommand = moveToAim(aimPosition, lAim);
             }
 
             actionCommandControl.setCommand(getCommand());

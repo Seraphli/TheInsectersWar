@@ -35,7 +35,7 @@ public class LifeRateRangeEvent:MonoBehaviour
     void lifeChangedFunc(Life pLife)
     {
         bool lIsOn = false; ;
-        float lLifeRate = pLife.getRate();
+        float lLifeRate = pLife.rate;
         if(minRange<=lLifeRate&&lLifeRate<=maxRange)
         {
             lIsOn = true;

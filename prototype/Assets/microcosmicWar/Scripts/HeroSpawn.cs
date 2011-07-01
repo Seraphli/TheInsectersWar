@@ -40,7 +40,7 @@ public class HeroSpawn : MonoBehaviour
 
     void updateBloodBar(Life life)
     {
-        bloodBar.rate = life.getRate();
+        bloodBar.rate = life.rate;
     }
 
     void getUI()
@@ -291,7 +291,9 @@ public class HeroSpawn : MonoBehaviour
         pHeroObject.AddComponent<SoldierFactoryStateUIInput>();
 
         //使用血条UI
-        GameObject.Destroy( pHeroObject.transform.FindChild("bloodBar").gameObject );
+        //GameObject.Destroy( pHeroObject.transform.FindChild("bloodBar").gameObject );
+        //防止血值改变时,回调bloodBar导致错误
+        pHeroObject.transform.FindChild("bloodBar").renderer.enabled = false;
         Life lLife = pHeroObject.GetComponent<Life>();
         if (bloodBar)
             updateBloodBar(lLife);

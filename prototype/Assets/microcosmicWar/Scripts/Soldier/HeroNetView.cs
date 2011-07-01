@@ -8,6 +8,7 @@ public class HeroNetView : MonoBehaviour
     public zzCharacter character;
     public ActionCommandControl actionCommandControl;
     public GameObject owner;
+    public Life life;
     //FIXME_VAR_TYPE transform;
 
     void Start()
@@ -18,6 +19,7 @@ public class HeroNetView : MonoBehaviour
         Hero lHero = owner.GetComponentInChildren<Hero>();
         character = lHero.getCharacter();
         actionCommandControl = owner.GetComponentInChildren<ActionCommandControl>();
+        life = owner.GetComponent<Life>();
 
         if (Network.peerType != NetworkPeerType.Disconnected && networkView.isMine)
         {
@@ -47,12 +49,16 @@ public class HeroNetView : MonoBehaviour
         Hero lHero = owner.GetComponentInChildren<Hero>();
         character = lHero.getCharacter();
         actionCommandControl = owner.GetComponentInChildren<ActionCommandControl>();
+        life = owner.GetComponent<Life>();
     }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
-        character.OnSerializeNetworkView2D(stream, info);
+        //life.OnSerializeNetworkView(stream, info);
         actionCommandControl.OnSerializeNetworkView(stream, info);
+        character.OnSerializeNetworkView2D(stream, info,
+            actionCommandControl.getCommand(), life.isAlive());
+        character.lastUpdateTime = Time.time;
     }
 
     //void  Update (){

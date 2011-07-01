@@ -88,6 +88,11 @@ public class Hero : MonoBehaviour
         return actionCommandControl.face;
     }
 
+    void Awake()
+    {
+        character.lastUpdateTime = Time.time;
+    }
+
     //Transform upBody;
 
     void Start()
@@ -247,6 +252,7 @@ public class Hero : MonoBehaviour
             updatePosture(lActionCommand.FaceUp, lActionCommand.FaceDown, lActionCommand.GoForward);
             //print(""+actionCommand.FaceUp+actionCommand.FaceDown+actionCommand.GoForward);
         }
+        character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
     }
 
     public void updatePosture(bool pUp, bool pDwon, bool pForward)
@@ -273,39 +279,11 @@ public class Hero : MonoBehaviour
         }
     }
 
-    //FIXME_VAR_TYPE preIsGrounded= true;
-
-    //function isGrounded()
-    //{
-    //	return preIsGrounded==true || characterController.isGrounded==true;
-    //}
-
     //更新characterController
-    public void FixedUpdate()
-    {
-        character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
-        /*
-            FIXME_VAR_TYPE lActionCommand= actionCommandControl.getCommand();
-	
-            if(life.isAlive() && characterController.isGrounded)
-            {
-                if( !lActionCommand.FaceDown)
-                {
-                    if(lActionCommand.Jump)
-                        moveV.y = jumpSpeed;
-                    else
-                        moveV.y = -0.1f;	//以免飞起来
-                }
-            }
-            else
-                moveV.y -= gravity* Time.deltaTime;
-		
-            // Move the controller
-            FIXME_VAR_TYPE lVelocity=Vector3(moveV.x * runSpeed,moveV.y,0);
+    //public void FixedUpdate()
+    //{
+    //    character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
 
-            CollisionFlags flags=characterController.Move(lVelocity* Time.deltaTime);
-        */
-
-    }
+    //}
 
 }

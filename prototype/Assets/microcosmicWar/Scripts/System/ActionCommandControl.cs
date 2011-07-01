@@ -12,46 +12,53 @@ public class zzCharacter
     public float jumpSpeed = 10.0f;
     public float minYVelocity = -10.0f;
 
-    protected Vector3 moveV;
+    //因为网络同步中也有update(推进了时间),所以不能用Time.DeltaTime
+    public float lastUpdateTime = 0f;
 
-    public void update2D(float pDeltaTime)
-    {
-        if (!characterController.isGrounded)
-            moveV.y = Mathf.Max(moveV.y - gravity * pDeltaTime, minYVelocity);
-        Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
-        characterController.Move(lVelocity * pDeltaTime);
-    }
+    //protected Vector3 moveV;
 
-    public float yVelocity { get { return moveV.y; } }
+    //public void update2D(float pDeltaTime)
+    //{
+    //    if (!characterController.isGrounded)
+    //        moveV.y = Mathf.Max(moveV.y - gravity * pDeltaTime, minYVelocity);
+    //    Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
+    //    characterController.Move(lVelocity * pDeltaTime);
+    //}
+
+    public float yVelocity;
 
     public void update2D(UnitActionCommand pUnitActionCommand, int pFaceValue, bool isAlive)
     {
-        moveV.x = 0;
-        moveV.z = 0;
+        update2D(pUnitActionCommand, pFaceValue, isAlive, Time.time - lastUpdateTime);
+        lastUpdateTime = Time.time;
+    }
 
-        if (isAlive && pUnitActionCommand.GoForward)
-            moveV.x = pFaceValue;
+    public void update2D(UnitActionCommand pUnitActionCommand, int pFaceValue, bool isAlive, float pDeltaTime)
+    {
+
+        if (!isAlive |!pUnitActionCommand.GoForward)
+            pFaceValue = 0;
 
         if (isAlive && characterController.isGrounded)
         {
             if (!pUnitActionCommand.FaceDown)
             {
                 if (pUnitActionCommand.Jump)
-                    moveV.y = jumpSpeed;
+                    yVelocity = jumpSpeed;
                 else
-                    moveV.y = -0.01f;	//以免飞起来
+                    yVelocity = -0.01f;	//以免飞起来
             }
         }
         else
-            moveV.y = Mathf.Max(moveV.y - gravity * Time.deltaTime, minYVelocity);
-        if (moveV.y > 0
+            yVelocity = Mathf.Max(yVelocity - gravity * pDeltaTime, minYVelocity);
+        if (yVelocity > 0
             && (characterController.collisionFlags & CollisionFlags.Above)>0)
-            moveV.y = 0;
+            yVelocity = 0;
 
         // Move the controller
-        Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
+        Vector3 lVelocity = new Vector3(pFaceValue * runSpeed, yVelocity, 0);
 
-        characterController.Move(lVelocity * Time.deltaTime);
+        characterController.Move(lVelocity * pDeltaTime);
     }
 
     public bool isGrounded()
@@ -59,82 +66,56 @@ public class zzCharacter
         return characterController.isGrounded;
     }
 
-    public void OnSerializeNetworkView2D(BitStream stream, NetworkMessageInfo info)
+    public void OnSerializeNetworkView2D(BitStream stream, NetworkMessageInfo info,
+        UnitActionCommand pUnitActionCommand, bool pIsAlive)
     {
-        Vector3 pos = new Vector3();
-        char lFaceValue = '0';
-        float lYSpeed = 0f;
-        //Quaternion rot = new Quaternion();
         Transform lTransform = characterController.transform;
+        Vector3 lData = Vector3.zero;
         //---------------------------------------------------
         if (stream.isWriting)
         {
-            pos = lTransform.position;
-            if (moveV.x < 0f)
-                lFaceValue = '2';
-            else if (moveV.x > 0f)
-                lFaceValue = '1';
-            lYSpeed = moveV.y;
+            lData = lTransform.position;
+            lData.z = yVelocity;
         }
         //---------------------------------------------------
-        stream.Serialize(ref pos);
-        //stream.Serialize(ref moveV);
-        stream.Serialize(ref lFaceValue);
-        stream.Serialize(ref lYSpeed);
+        stream.Serialize(ref lData);
         //---------------------------------------------------
         if (stream.isReading)
         {
-            float lIntFaceValue = 0;
-            switch(lFaceValue)
-            {
-                //case '0': break;
-                case '1': lIntFaceValue = 1f; break;
-                case '2': lIntFaceValue = -1f; break;
-            }
-            moveV = new Vector3(lIntFaceValue, lYSpeed, 0f);
-            lTransform.position = pos;
-            //if ( (characterController.collisionFlags & CollisionFlags.Sides) == 0)
-            //{
-            //    //四周无碰撞时,通过moveV补偿位移
-            //    characterController.Move(lVelocity * Time.deltaTime);
-            //    pos += moveV * (float)(Network.time - info.timestamp);
-            //}
-
-            //Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
-            //characterController.Move(lVelocity * (float)(Network.time - info.timestamp));
+            yVelocity = lData.z;
+            lData.z = 0f;
+            lTransform.position = lData;
+            
             var lDeltaTime = (float)(Network.time - info.timestamp);
             if (lDeltaTime > 0.02f)
-                update2D(lDeltaTime*Time.timeScale);
-            //if (!characterController.isGrounded)
-            //    moveV.y -= gravity * lDeltaTime;
-            //Vector3 lVelocity = new Vector3(moveV.x * runSpeed, moveV.y, 0);
-            //characterController.Move(lVelocity * pDeltaTime);
+                update2D(pUnitActionCommand, UnitFace.getValue(pUnitActionCommand.face),
+                    pIsAlive,lDeltaTime * Time.timeScale);
 
         }
     }
 
-    public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
-    {
-        Vector3 pos = new Vector3();
-        Quaternion rot = new Quaternion();
-        Transform lTransform = characterController.transform;
-        //---------------------------------------------------
-        if (stream.isWriting)
-        {
-            pos = lTransform.position;
-            rot = lTransform.rotation;
-        }
-        //---------------------------------------------------
-        stream.Serialize(ref pos);
-        stream.Serialize(ref rot);
-        stream.Serialize(ref moveV);
-        //---------------------------------------------------
-        if (stream.isReading)
-        {
-            lTransform.position = pos;
-            lTransform.rotation = rot;
-        }
-    }
+    //public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    //{
+    //    Vector3 pos = new Vector3();
+    //    Quaternion rot = new Quaternion();
+    //    Transform lTransform = characterController.transform;
+    //    //---------------------------------------------------
+    //    if (stream.isWriting)
+    //    {
+    //        pos = lTransform.position;
+    //        rot = lTransform.rotation;
+    //    }
+    //    //---------------------------------------------------
+    //    stream.Serialize(ref pos);
+    //    stream.Serialize(ref rot);
+    //    stream.Serialize(ref moveV);
+    //    //---------------------------------------------------
+    //    if (stream.isReading)
+    //    {
+    //        lTransform.position = pos;
+    //        lTransform.rotation = rot;
+    //    }
+    //}
 
 };
 
@@ -205,27 +186,91 @@ public class UnitActionCommand
     //只网络同步后8位
     public int command;
 
-    const int faceLeftCommand = 1 << 0;
+    const int faceLeftCommand = 1 << 30;
     const int negFaceLeftCommand = ~faceLeftCommand;
 
-    const int faceRightCommand      = 1 << 1;
+    const int faceRightCommand      = 1 << 31;
     const int negFaceRightCommand = ~faceRightCommand;
 
-    const int faceUpCommand         = 1 << 2;
+    const int faceLeftValue = 1 << 0;
+    const int faceRightValue = ~faceLeftValue;
+
+    const int faceUpCommand         = 1 << 1;
     const int negFaceUpCommand = ~faceUpCommand;
 
-    const int faceDownCommand       = 1 << 3;
+    const int faceDownCommand       = 1 << 2;
     const int negFaceDownCommand = ~faceDownCommand;
 
-    const int goForwardCommand      = 1 << 4;
+    const int goForwardCommand      = 1 << 3;
     const int negGoForwardCommand = ~goForwardCommand;
 
-    const int fireCommand           = 1 << 5;
+    const int fireCommand           = 1 << 4;
     const int negFireCommand = ~fireCommand;
 
-    const int jumpCommand           = 1 << 6;
+    const int jumpCommand           = 1 << 5;
     const int negJumpCommand = ~jumpCommand;
 
+
+    public UnitFaceDirection face
+    {
+        get
+        {
+            return (command & faceLeftValue) != 0 ?
+                UnitFaceDirection.left : UnitFaceDirection.right;
+        }
+        set
+        {
+            //Debug.Log("UnitFaceDirection");
+            //Debug.Log(value);
+            //Debug.Log(System.Convert.ToString(command, 2));
+            switch (value)
+            {
+                case UnitFaceDirection.left:
+                    command |= faceLeftValue;
+                    break;
+                case UnitFaceDirection.right:
+                    command &= faceRightValue;
+                    break;
+            }
+            //Debug.Log(System.Convert.ToString(command, 2));
+            //Debug.Log(face);
+        }
+    }
+
+    public void calculateFace(UnitFaceDirection pLastFace)
+    {
+        //if (FaceLeft != FaceRight)
+        //{
+        //    if (FaceLeft && pLastFace == UnitFaceDirection.right)
+        //    {
+        //        face = UnitFaceDirection.left;
+        //        //Debug.Log("Change to left");
+        //        return true;
+        //    }
+        //    if (FaceRight && pLastFace == UnitFaceDirection.left)
+        //    {
+        //        face = UnitFaceDirection.right;
+        //        //Debug.Log("Change to right");
+        //        return true;
+        //    }
+        //}
+        //face = pLastFace;
+        //return false;
+        if (FaceLeft != FaceRight)
+        {
+            if (FaceLeft)
+            {
+                face = UnitFaceDirection.left;
+                return ;
+            }
+            else//if (FaceRight)
+            {
+                face = UnitFaceDirection.right;
+                return ;
+            }
+        }
+        face = pLastFace;
+    }
 
     //朝向左
     public bool FaceLeft
@@ -331,21 +376,24 @@ public class ActionCommandControl : MonoBehaviour
 {
 
     [SerializeField]
-    protected UnitFaceDirection _face = UnitFaceDirection.left;
+    protected UnitFaceDirection _lastFace = UnitFaceDirection.left;
 
     //返回在x上的值
     public int getFaceValue()
     {
         //Debug.Log("face:"+face+" "+UnitFace.getValue(face));
-        return UnitFace.getValue(_face);
+        return UnitFace.getValue(face);
     }
 
     public UnitFaceDirection face
     {
-        get { return _face; }
+        get { return unitActionCommand.face; }
     }
 
-
+    void Awake()
+    {
+        unitActionCommand.face = _lastFace;
+    }
 
     public UnitActionCommand unitActionCommand = new UnitActionCommand();
 
@@ -359,7 +407,8 @@ public class ActionCommandControl : MonoBehaviour
                 print(pUnitActionCommand);
             }
         */
-        unitActionCommand = pUnitActionCommand;
+        pUnitActionCommand.calculateFace(unitActionCommand.face);
+        unitActionCommand.command = pUnitActionCommand.command;
     }
 
     public UnitActionCommand getCommand()
@@ -370,22 +419,10 @@ public class ActionCommandControl : MonoBehaviour
     //根据现在命令的方向更新朝向,若朝向有变则返回true
     public bool updateFace()
     {
-        if (unitActionCommand.FaceLeft != unitActionCommand.FaceRight)
-        {
-            if (unitActionCommand.FaceLeft && _face == UnitFaceDirection.right)
-            {
-                _face = UnitFaceDirection.left;
-                //Debug.Log("Change to left");
-                return true;
-            }
-            if (unitActionCommand.FaceRight && _face == UnitFaceDirection.left)
-            {
-                _face = UnitFaceDirection.right;
-                //Debug.Log("Change to right");
-                return true;
-            }
-        }
-        return false;
+        if (_lastFace == unitActionCommand.face)
+            return false;
+        _lastFace = unitActionCommand.face;
+        return true;
     }
 
 

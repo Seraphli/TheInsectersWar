@@ -23,17 +23,16 @@ public class MedicEffectDetector:MonoBehaviour
 
     void OnDestroy()
     {
-        try
+        foreach (var lDictionary in soldierToEffect)
         {
-            foreach (var lDictionary in soldierToEffect)
+            try
             {
                 offEffect(lDictionary.Value);
             }
+            catch
+            {
+            }
         }
-        catch
-        {
-        }
-
     }
 
     void OnSoldierEnter(Collider other)

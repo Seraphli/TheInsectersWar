@@ -339,7 +339,7 @@ public class Stronghold:MonoBehaviour
         lBuildingTransform.parent = strongholdTransform;
         var lLifeValueShow = strongholdValueShow.nowValueShow;
         strongholdBuilding.GetComponent<Life>()
-            .addBloodValueChangeCallback((x) => lLifeValueShow.rate = x.getRate());
+            .addBloodValueChangeCallback((x) => lLifeValueShow.rate = x.rate);
         updateRaceShow();
 
         //据点升级设置

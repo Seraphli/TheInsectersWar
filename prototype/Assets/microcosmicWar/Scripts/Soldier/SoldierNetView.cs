@@ -61,9 +61,13 @@ public class SoldierNetView : MonoBehaviour
     void appear()
     {
         disappearTimer.timePos = 0f;
-        foreach (var lScript in disenableWhenDisappear)
+        if (!disappearTimer.enabled)
         {
-            lScript.enabled = true;
+            disappearTimer.enabled = true;
+            foreach (var lScript in disenableWhenDisappear)
+            {
+                lScript.enabled = true;
+            }
         }
     }
 
@@ -73,7 +77,9 @@ public class SoldierNetView : MonoBehaviour
             appear();
         life.OnSerializeNetworkView(stream, info);
         actionCommandControl.OnSerializeNetworkView(stream, info);
-        character.OnSerializeNetworkView2D(stream, info);
+        character.OnSerializeNetworkView2D(stream, info,
+            actionCommandControl.getCommand(), life.isAlive());
+        character.lastUpdateTime = Time.time;
         /*
         FIXME_VAR_TYPE pos=Vector3();
         FIXME_VAR_TYPE rot=Quaternion();

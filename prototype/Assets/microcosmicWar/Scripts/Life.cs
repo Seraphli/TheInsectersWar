@@ -70,6 +70,8 @@ public class Life : MonoBehaviour
         return injureInfo;
     }
 
+    public bool netSendPositionWhenDie = true;
+
     public void setBloodValue(int pValue)
     {
         if (pValue > fullBloodValue)
@@ -81,10 +83,14 @@ public class Life : MonoBehaviour
             if (bloodValue <= 0)
             {
                 //zzCreatorUtility.sendMessage(gameObject, "Life_die");
-                Life_die();
-                if (Network.peerType != NetworkPeerType.Disconnected)
-                    networkView.RPC("Life_die", RPCMode.Others);
-                    //NetworkHelper.makeDead(networkView);
+                dieCallbackList(this);
+                if (Network.isServer)
+                {
+                    if (netSendPositionWhenDie)
+                        networkView.RPC("RPCMakeDeadPos", RPCMode.Others, transform.position);
+                    else
+                        networkView.RPC("RPCMakeDead", RPCMode.Others);
+                }
             }
         }
     }
@@ -95,11 +101,22 @@ public class Life : MonoBehaviour
     }
 
     [RPC]
-    public void Life_die()
+    public void RPCMakeDeadPos(Vector3 pPos)
     {
-        bloodValue = 0;
-        dieCallbackList(this);
+        transform.position = pPos;
+        makeDead();
     }
+
+    [RPC]
+    public void RPCMakeDead()
+    {
+        makeDead();
+    }
+
+    //public void Life_die()
+    //{
+    //    dieCallbackList(this);
+    //}
 
     public void setFullBloodValue(int lValue)
     {
@@ -127,14 +144,33 @@ public class Life : MonoBehaviour
         return bloodValue <= 0;
     }
 
-    public float getRate()
+    public byte rateInByte
     {
-        float lFullBloodValue = getFullBloodValue();
-        float lRate = getBloodValue() / lFullBloodValue;
-        if (lRate < 0)
-            return 0.0f;
-        else
-            return lRate;
+        get 
+        { 
+            return (byte)(byte.MaxValue * rate); 
+        }
+        set
+        {
+            rate = (float)value/(float)byte.MaxValue;
+        }
+    }
+
+    public float rate
+    {
+        get
+        {
+            float lFullBloodValue = getFullBloodValue();
+            float lRate = getBloodValue() / lFullBloodValue;
+            if (lRate < 0)
+                return 0.0f;
+            else
+                return lRate;
+        }
+        set
+        {
+            setBloodValue((int)(getFullBloodValue()*value));
+        }
     }
 
     public bool isFull()
@@ -143,9 +179,28 @@ public class Life : MonoBehaviour
     }
 
 
+    //public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    //{
+    //    int lBloodValue = getBloodValue();
+
+    //    //---------------------------------------------------
+    //    //if (stream.isWriting)
+    //    //{
+    //    //	lBloodValue=getBloodValue();
+    //    //}
+
+    //    stream.Serialize(ref lBloodValue);
+
+    //    if (stream.isReading)
+    //    {
+    //        setBloodValue(lBloodValue);
+    //    }
+    //}
+
+
     public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
-        int lBloodValue = getBloodValue();
+        char lRateInByte = (char)rateInByte;
 
         //---------------------------------------------------
         //if (stream.isWriting)
@@ -153,11 +208,11 @@ public class Life : MonoBehaviour
         //	lBloodValue=getBloodValue();
         //}
 
-        stream.Serialize(ref lBloodValue);
+        stream.Serialize(ref lRateInByte);
 
         if (stream.isReading)
         {
-            setBloodValue(lBloodValue);
+            rateInByte = (byte)lRateInByte;
         }
     }
 
