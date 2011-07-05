@@ -33,6 +33,8 @@ public class zzCharacter
         lastUpdateTime = Time.time;
     }
 
+    public const float yNullVelocity = -0.01f;
+
     public void update2D(UnitActionCommand pUnitActionCommand, int pFaceValue, bool isAlive, float pDeltaTime)
     {
 
@@ -46,7 +48,7 @@ public class zzCharacter
                 if (pUnitActionCommand.Jump)
                     yVelocity = jumpSpeed;
                 else
-                    yVelocity = -0.01f;	//以免飞起来
+                    yVelocity = yNullVelocity;	//以免飞起来
             }
         }
         else
@@ -89,7 +91,8 @@ public class zzCharacter
             var lDeltaTime = (float)(Network.time - info.timestamp);
             if (lDeltaTime > 0.02f)
                 update2D(pUnitActionCommand, UnitFace.getValue(pUnitActionCommand.face),
-                    pIsAlive,lDeltaTime * Time.timeScale);
+                    pIsAlive, lDeltaTime * Time.timeScale);
+            lastUpdateTime = Time.time;
 
         }
     }
@@ -425,6 +428,11 @@ public class ActionCommandControl : MonoBehaviour
         return true;
     }
 
+    public int commandValue
+    {
+        get { return unitActionCommand.command; }
+        set { unitActionCommand.command = value; }
+    }
 
     public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {

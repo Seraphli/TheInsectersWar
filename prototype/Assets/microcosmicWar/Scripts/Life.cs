@@ -74,6 +74,8 @@ public class Life : MonoBehaviour
 
     public void setBloodValue(int pValue)
     {
+        if (isDead())
+            return;
         if (pValue > fullBloodValue)
             pValue = fullBloodValue;
         if (bloodValue != pValue)

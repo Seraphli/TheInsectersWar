@@ -15,15 +15,15 @@ public class DefenseTower : MonoBehaviour
     public float angularVelocity = 20.0f;
 
     //会在update中同步到物体,以原始角度为0度
-    public float nowAngular = 0.0f;
+    public float nowAngle = 0.0f;
 
     //剩余要移动的角度,用于平滑的移动
     //float wantToTurn;
 
 
-    const float NULL_aimAngular = 1000.0f;
-    //设置一个不会用到的值,作为不是用时的值
-    public float aimAngular = NULL_aimAngular;
+    //const float NULL_aimAngular = 1000.0f;
+    ////设置一个不会用到的值,作为不是用时的值
+    public float aimAngle = 0f;
 
     public Transform turnObject;
 
@@ -33,6 +33,8 @@ public class DefenseTower : MonoBehaviour
 
     public bool _fire = false;
 
+    public bool netSendFireSwitchAction = false;
+
     public bool fire
     {
         get { return _fire; }
@@ -41,7 +43,8 @@ public class DefenseTower : MonoBehaviour
             if(_fire!=value)
             {
                 fireSwitchAction(value);
-                if (Network.peerType != NetworkPeerType.Disconnected)
+                if (netSendFireSwitchAction
+                    &&Network.peerType != NetworkPeerType.Disconnected)
                     networkView.RPC("fireSwitchAction", RPCMode.Others, value);
             }
         }
@@ -169,7 +172,7 @@ public class DefenseTower : MonoBehaviour
 
         //执行平滑旋转,计算 nowAngular
         impSmoothTurn(Time.deltaTime);
-        setAngle(nowAngular);
+        setAngle(nowAngle);
     }
 
     public void EmitBullet()
@@ -185,9 +188,9 @@ public class DefenseTower : MonoBehaviour
 
     protected void impSmoothTurn(float pElapseTime)
     {
-        if (aimAngular != NULL_aimAngular)
+        if (aimAngle != nowAngle)
         {
-            float lRemainAngular = aimAngular - nowAngular;
+            float lRemainAngular = aimAngle - nowAngle;
             //print("b:"+lRemainAngular);
             //转过一周后的处理办法,虽然和目标角度离得很近,但是值却差很多
             if (Mathf.Abs(lRemainAngular) > 180)
@@ -197,48 +200,49 @@ public class DefenseTower : MonoBehaviour
             float lTurnAngular = angularVelocity * pElapseTime;
             //print("lTurnAngular:"+lTurnAngular+"lRemainAngularAbs:"+lRemainAngularAbs);
             if (lTurnAngular < lRemainAngularAbs)
-                nowAngular += lTurnAngular * (lRemainAngular / lRemainAngularAbs);
+                nowAngle += lTurnAngular * (lRemainAngular / lRemainAngularAbs);
             else
             {
                 //到达目标位置,并停止转动
-                nowAngular += lRemainAngular;
+                //nowAngle += lRemainAngular;
+                nowAngle = aimAngle;
                 //print("final:"+nowAngular);
-                aimAngular = NULL_aimAngular;
+                //aimAngle = NULL_aimAngular;
             }
 
-            nowAngular = nowAngular % 360;
+            nowAngle = nowAngle % 360;
         }
     }
 
     public float _getSmoothAngle()
     {
-        return aimAngular;
+        return aimAngle;
     }
 
     public void _setSmoothAngle(float pAimAngular)
     {
-        aimAngular = pAimAngular;
+        aimAngle = pAimAngular;
     }
 
     //以转速转到此角度
     public void smoothTurnToAngle(float pAimAngular)
     {
         //print("smoothTurnToAngle"+pAimAngular);
-        if (pAimAngular == NULL_aimAngular)
-            return;
+        //if (pAimAngular == NULL_aimAngular)
+        //    return;
         pAimAngular = pAimAngular % 360.0f;
         //print("pAimAngular%360.0f:"+pAimAngular);
 
         if (pAimAngular > maxUpAngle)
         {
-            aimAngular = maxUpAngle;
+            aimAngle = maxUpAngle;
         }
         else if (pAimAngular < maxDownAngle)
         {
-            aimAngular = maxDownAngle;
+            aimAngle = maxDownAngle;
         }
         else
-            aimAngular = pAimAngular;
+            aimAngle = pAimAngular;
         //print("aimAngular:"+aimAngular);
     }
 
@@ -279,16 +283,16 @@ public class DefenseTower : MonoBehaviour
             if (lCross.z > 0)
             {
                 //print("lEmitterToAim.y>lFireRay.direction.y");
-                smoothTurnToAngle(nowAngular + lAngle);
+                smoothTurnToAngle(nowAngle + lAngle);
             }
             else
             {
                 //print("lEmitterToAim.y<=lFireRay.direction.y");
-                smoothTurnToAngle(nowAngular - lAngle);
+                smoothTurnToAngle(nowAngle - lAngle);
             }
         }
-        else
-            smoothTurnToAngle(NULL_aimAngular);
+        //else
+        //    smoothTurnToAngle(NULL_aimAngular);
     }
 
 
@@ -308,13 +312,13 @@ public class DefenseTower : MonoBehaviour
     //角度向上转为正
     public float getAngle()
     {
-        return nowAngular;
+        return nowAngle;
     }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
         //stream.Serialize(ref nowAngular);
-        stream.Serialize(ref aimAngular);
+        stream.Serialize(ref aimAngle);
     }
 
 }

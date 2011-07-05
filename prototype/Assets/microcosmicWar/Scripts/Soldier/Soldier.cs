@@ -137,50 +137,39 @@ public class Soldier : MonoBehaviour
     //更新动画
     void Update()
     {
-        if (life.isDead())
+        if (life.isAlive())
         {
-            return;
-        }
+            if (actionCommandControl.updateFace())
+                UpdateFaceShow();
 
-        if (actionCommandControl.updateFace())
-            UpdateFaceShow();
+            UnitActionCommand lActionCommand = actionCommandControl.getCommand();
 
-        UnitActionCommand lActionCommand = actionCommandControl.getCommand();
-
-        //设置动画 动作
-        if (lActionCommand.Fire)
-        {
-            characterAnimation.CrossFade("fire", 0.2f);
-        }
-        else
-        {
-            if (lActionCommand.GoForward)
+            //设置动画 动作
+            if (lActionCommand.Fire)
             {
-                characterAnimation.CrossFade("run", 0.1f);
-                //moveV.x=face;
-                //print("run");
+                characterAnimation.CrossFade("fire", 0.2f);
             }
             else
             {
-                characterAnimation.CrossFade("stand", 0.2f);
-                //print(gameObject.name);
-                //print("stand");
-                //print(lActionCommand);
+                if (lActionCommand.GoForward)
+                {
+                    characterAnimation.CrossFade("run", 0.1f);
+                }
+                else
+                {
+                    characterAnimation.CrossFade("stand", 0.2f);
+                }
+
             }
 
+            if (lActionCommand.Jump && lActionCommand.FaceDown)
+            {
+                boardDetector.down();
+            }
+            else
+                boardDetector.recover();
         }
 
-        if (lActionCommand.Jump && lActionCommand.FaceDown)
-        {
-            boardDetector.down();
-        }
-        else
-            boardDetector.recover();
-    //}
-
-    ////更新characterController
-    //void FixedUpdate()
-    //{
         character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
     }
 

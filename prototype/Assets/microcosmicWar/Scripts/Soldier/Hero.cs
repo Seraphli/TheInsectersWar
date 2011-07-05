@@ -209,11 +209,7 @@ public class Hero : MonoBehaviour
         //moveV.z=0;
         UnitActionCommand lActionCommand;
 
-        if (life.isDead())
-        {
-            return;
-        }
-        else
+        if (life.isAlive())
         {
 
             if (actionCommandControl.updateFace())

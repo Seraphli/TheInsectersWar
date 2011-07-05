@@ -15,6 +15,7 @@ public class OffNetStateSynWhenDie : MonoBehaviour
     //在死亡的回调中使用
     void deadAction(Life p)
     {
-        networkView.stateSynchronization = NetworkStateSynchronization.Off;
+        //networkView.stateSynchronization = NetworkStateSynchronization.Off;
+        networkView.enabled = false;
     }
 }
