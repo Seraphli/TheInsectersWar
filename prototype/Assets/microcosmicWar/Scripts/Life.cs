@@ -51,6 +51,8 @@ public class Life : MonoBehaviour
 
     public void injure(int value, Hashtable pInjureInfo)
     {
+        if (Network.isClient)
+            Debug.LogError("do injure in client");
         injureInfo = pInjureInfo;
         if (bloodValue > 0)
         {

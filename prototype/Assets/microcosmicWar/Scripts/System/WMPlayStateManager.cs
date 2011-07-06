@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 public class WMPlayStateManager : PlayStateManager
 {
-    void Awake()
-    {
-        Network.isMessageQueueRunning = true;
-    }
+    //void Awake()
+    //{
+    //    Network.isMessageQueueRunning = true;
+    //}
 
     public zzGroupViewIDManager groupViewIDManager;
     public GameObject managerObject;

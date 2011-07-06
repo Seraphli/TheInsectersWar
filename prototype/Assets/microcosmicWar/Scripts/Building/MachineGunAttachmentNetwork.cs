@@ -20,7 +20,7 @@ public class MachineGunAttachmentNetwork:MonoBehaviour
         {
             while(true)
             {
-                if (transform.parent.GetComponent<StrongholdUpdate>())
+                if (transform.parent && transform.parent.GetComponent<StrongholdUpdate>())
                     break;
                 yield return null;
             }
