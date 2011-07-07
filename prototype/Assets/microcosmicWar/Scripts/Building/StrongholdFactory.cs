@@ -11,15 +11,31 @@ public class StrongholdFactory : MonoBehaviour, SoldierFactory.Listener
             case UnitFaceDirection.left:
                 nowProduceDirection = UnitFaceDirection.right;
                 strongholdAnimation.CrossFade("leftProduce",0.1f);
+                if (Network.isServer)
+                    networkView.RPC("RPCLeftProduce", RPCMode.Others);
                 return leftProduceTransform;
             case UnitFaceDirection.right:
                 nowProduceDirection = UnitFaceDirection.left;
                 strongholdAnimation.CrossFade("rightProduce", 0.1f);
+                if (Network.isServer)
+                    networkView.RPC("RPCRightProduce", RPCMode.Others);
                 return rightProduceTransform;
             default:
                 Debug.LogError("no the direction");
                 return null;
         }
+    }
+
+    [RPC]
+    void RPCLeftProduce()
+    {
+        strongholdAnimation.CrossFade("leftProduce", 0.1f);
+    }
+
+    [RPC]
+    void RPCRightProduce()
+    {
+        strongholdAnimation.CrossFade("rightProduce", 0.1f);
     }
 
     public Transform[] finalAims

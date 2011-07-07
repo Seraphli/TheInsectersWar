@@ -7,6 +7,7 @@ public class SoldierNetView : MonoBehaviour
 
 
     public Soldier soldier;
+    public SoldierModelSmoothMove soldierModelSmoothMove;
     public Life life;
     public zzCharacter character;
     public ActionCommandControl actionCommandControl;
@@ -15,6 +16,22 @@ public class SoldierNetView : MonoBehaviour
     public zzTimer disappearTimer;
     public MonoBehaviour[] disenableWhenDisappear;
 
+    //class NetData
+    //{
+    //    public NetData(int p1,int p2,double pTimestamp)
+    //    {
+    //        part1 = p1;
+    //        part2 = p2;
+    //        timestamp = pTimestamp;
+    //    }
+    //    public int part1;
+    //    public int part2;
+    //    public double timestamp;
+    //}
+
+    //System.Collections.Generic.Queue<NetData> netDataQueue
+    //    = new System.Collections.Generic.Queue<NetData>();
+
     void Awake()
     {
         if (!soldier)
@@ -22,6 +39,7 @@ public class SoldierNetView : MonoBehaviour
         //if(!soldier)
         //	soldier=gameObject.GetComponentInChildren<Soldier>().getCharacter();
         //character = gameObject.GetComponentInChildren<Soldier>().getCharacter();
+        soldierModelSmoothMove = GetComponent<SoldierModelSmoothMove>();
         character = soldier.getCharacter();
         actionCommandControl = gameObject.GetComponentInChildren<ActionCommandControl>();
         if (!life)
@@ -33,6 +51,7 @@ public class SoldierNetView : MonoBehaviour
             disappearTimer = gameObject.AddComponent<zzTimer>();
             disappearTimer.setInterval(disappearTime);
             disappearTimer.addImpFunction(disappear);
+            life.addDieCallback((x) => disappearTimer.enabled = false);
         }
         if(disenableWhenDisappear ==null||disenableWhenDisappear.Length==0)
         {
@@ -84,13 +103,6 @@ public class SoldierNetView : MonoBehaviour
     //|<---7--->|<---8--->|<-----17----->|<-----17----->|<-----14----->|<-1->|
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
-        //if (stream.isReading)
-        //    appear();
-        //life.OnSerializeNetworkView(stream, info);
-        //actionCommandControl.OnSerializeNetworkView(stream, info);
-        //character.OnSerializeNetworkView2D(stream, info,
-        //    actionCommandControl.getCommand(), life.isAlive());
-        ////character.lastUpdateTime = Time.time;
 
         Vector3 lPostion = Vector3.zero;
         int lPart1 = 0;
@@ -135,6 +147,27 @@ public class SoldierNetView : MonoBehaviour
 
         if (stream.isReading)
         {
+            double lTimestamp = info.timestamp;
+            //{
+            //    double lDelay = 0.4;
+            //    float lPacketLossRatio = 0.4f;
+            //    NetData lData = null;
+            //    if (Random.value > lPacketLossRatio)
+            //        netDataQueue.Enqueue(new NetData(lPart1, lPart2, info.timestamp));
+            //    while (netDataQueue.Count>0
+            //        && Network.time - netDataQueue.Peek().timestamp > lDelay)
+            //    {
+            //        lData = netDataQueue.Dequeue();
+            //    }
+            //    if (lData != null)
+            //    {
+            //        lPart1 = lData.part1;
+            //        lPart2 = lData.part2;
+            //        lTimestamp = lData.timestamp;
+            //    }
+            //    else
+            //        return;
+            //}
             appear();
             var lBitOut = new zz.LongBitIO(0);
             lBitOut.write(lPart2, 32);
@@ -168,15 +201,17 @@ public class SoldierNetView : MonoBehaviour
                 lPostion.y = (float)((double)lYValue / (double)max24BitPosValue * posRange);
                 character.yVelocity = zzCharacter.yNullVelocity;
             }
+            soldierModelSmoothMove.beginMove();
             transform.position = lPostion;
-            var lDeltaTime = (float)(Network.time - info.timestamp);
-            if (lDeltaTime > 0.02f)
-            {
+            var lDeltaTime = (float)(Network.time - lTimestamp);
+            //if (lDeltaTime > 0.02f)
+            //{
                 character.update2D(actionCommandControl.getCommand(),
                     UnitFace.getValue(actionCommandControl.face),
                     life.isAlive(), lDeltaTime * Time.timeScale);
                 character.lastUpdateTime = Time.time;
-            }
+                //}
+            soldierModelSmoothMove.endMove();
         }
 
     }

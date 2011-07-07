@@ -41,6 +41,8 @@ public class zzCharacter
         if (!isAlive |!pUnitActionCommand.GoForward)
             pFaceValue = 0;
 
+        var lLastYVelocity = yVelocity;
+
         if (isAlive && characterController.isGrounded)
         {
             if (!pUnitActionCommand.FaceDown)
@@ -58,9 +60,10 @@ public class zzCharacter
             yVelocity = 0;
 
         // Move the controller
-        Vector3 lVelocity = new Vector3(pFaceValue * runSpeed, yVelocity, 0);
+        Vector3 lMove = new Vector3(pFaceValue * runSpeed * pDeltaTime,
+            (yVelocity + lLastYVelocity) / 2f * pDeltaTime, 0);
 
-        characterController.Move(lVelocity * pDeltaTime);
+        characterController.Move(lMove);
     }
 
     public bool isGrounded()
