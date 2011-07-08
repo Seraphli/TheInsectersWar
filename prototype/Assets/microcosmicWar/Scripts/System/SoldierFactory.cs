@@ -18,12 +18,14 @@ public class SoldierFactory : MonoBehaviour
     //}
 
     static public SoldierFactory addFactory(GameObject factoryObject,
-        GameObject armyPrefab, float pProduceInterval, float pfirstTimeOffset)
+        GameObject armyPrefab, float pProduceInterval, float pfirstTimeOffset,
+        AiAimList pAiAimList)
     {
         SoldierFactory lSoldierFactory = factoryObject.AddComponent<SoldierFactory>();
         lSoldierFactory.soldierToProduce = armyPrefab;
         lSoldierFactory.produceInterval = pProduceInterval;
         lSoldierFactory.firstTimeOffset = pfirstTimeOffset;
+        lSoldierFactory.aiAimList = pAiAimList;
         return lSoldierFactory;
     }
 
@@ -75,6 +77,8 @@ public class SoldierFactory : MonoBehaviour
     public HashSet<Soldier> soldierList = new HashSet<Soldier>();
 
     public float firstTimeOffset = 0f;
+
+    public AiAimList aiAimList;
 
     [SerializeField]
     protected float timePos = 0.0f;
@@ -188,6 +192,8 @@ public class SoldierFactory : MonoBehaviour
             //{
             soldierAI.setHome(transform);
             soldierAI.AddPresetAim(listener.finalAims, zzAimTranformList.AimType.aliveAim);
+            if (aiAimList)
+                aiAimList.addAim(soldierAI);
 
             if (randomPath && randomPath.totalWeigth>0)
             {

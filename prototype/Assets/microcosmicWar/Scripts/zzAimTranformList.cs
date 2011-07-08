@@ -30,8 +30,8 @@ public class zzAimTranformList
         public Transform aimTransform = null;
     }
 
-    const float checkPointRadius = 1.0f;
-    const float sqrCheckPointRadius = 1.0f;
+    const float checkPointRadius = 2f;
+    const float sqrCheckPointRadius = checkPointRadius * checkPointRadius;
 
     //目标列表
     List<AimInfo> mAimList = new List<AimInfo>();
@@ -55,7 +55,7 @@ public class zzAimTranformList
             switch(pAimInfo.aimType)
             {
                 case AimType.checkPoint:
-                    return true;
+                    return pAimInfo.aimTransform;
                     //break;
 
                 case AimType.aliveAim:
@@ -88,11 +88,16 @@ public class zzAimTranformList
             switch (pAimInfo.aimType)
             {
                 case AimType.checkPoint:
-                    Vector3 lLengthVector
-                        = pAimInfo.aimTransform.position - pSearcher.position;
+                    if (pAimInfo.aimTransform)
+                    {
+                        Vector3 lLengthVector
+                            = pAimInfo.aimTransform.position - pSearcher.position;
 
-                    //Debug.Log("" + lLengthVector.sqrMagnitude + ">" + sqrCheckPointRadius);
-                    return lLengthVector.sqrMagnitude > sqrCheckPointRadius;
+                        //Debug.Log("" + lLengthVector.sqrMagnitude + ">" + sqrCheckPointRadius);
+                        return lLengthVector.sqrMagnitude > sqrCheckPointRadius;
+                    }
+                    else
+                        return false;
 
                 case AimType.aliveAim:
                     //Debug.Log(AimType.aliveAim);

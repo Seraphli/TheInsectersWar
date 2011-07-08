@@ -241,10 +241,15 @@ public abstract class ISoldierAI:MonoBehaviour
     public zzDetectorBase barrierDetector;
     zzCoroutineTimer barrierDetectTimer;
 
-    //protected bool haveBarrier = false;
+    [SerializeField]
+    bool _haveBarrier = false;
     protected bool haveBarrier
     {
-        get { return (character.collisionFlags & CollisionFlags.Sides) != 0; }
+        get 
+        {
+            _haveBarrier = (character.collisionFlags & CollisionFlags.Sides) != 0;
+            return _haveBarrier;
+        }
     }
     //protected void detectBarrier()
     //{

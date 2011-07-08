@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-class zzRandomObjectByWeight<T>
+public class zzRandomObjectByWeight<T>
 {
     List<T> objectList = new List<T>();
     public void addRandomObject(T pObject,int weight)

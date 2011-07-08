@@ -133,7 +133,7 @@ public class SingleSoldierFactoryObject : zzEditableObject
             }
 
             return SoldierFactory.addFactory(pObject, lDefaultInfo.soldierPrefab,
-                lProduceInterval, lFirstTimeOffset);
+                lProduceInterval, lFirstTimeOffset, lDefaultInfo.aiAimList);
         }
     }
 

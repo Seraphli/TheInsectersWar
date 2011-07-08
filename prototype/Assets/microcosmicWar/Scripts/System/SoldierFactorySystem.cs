@@ -17,6 +17,7 @@ public class SoldierFactorySystem:MonoBehaviour
         public Texture activeImage;
         public Texture inactivityImage;
         public GameObject signPrefab;
+        public AiAimList aiAimList;
 
         [System.NonSerialized]
         public string armyBaseName;
