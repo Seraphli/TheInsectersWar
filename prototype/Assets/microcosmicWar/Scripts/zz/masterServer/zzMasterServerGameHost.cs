@@ -30,7 +30,7 @@ public class zzMasterServerGameHost : zzNetworkHost
 
     System.Action registerFailEvent;
 
-    public zzNatStun stun;
+    //public zzNatStun stun;
 
     public override void addRegisterSucceedReceiver(System.Action pReceiver)
     {
@@ -44,9 +44,9 @@ public class zzMasterServerGameHost : zzNetworkHost
 
     void stunSucceedRespone()
     {
-        hostData.IP = stun.publicIP;
-        hostData.port = stun.publicPort;
-        registerSucceedEvent();
+        hostData.IP = Network.player.externalIP;
+        hostData.port = Network.player.externalPort;
+        //registerSucceedEvent();
         RegisterHost();
     }
 
@@ -61,8 +61,8 @@ public class zzMasterServerGameHost : zzNetworkHost
             registerSucceedEvent = zzUtilities.nullFunction;
         if (registerFailEvent == null)
             registerFailEvent = zzUtilities.nullFunction;
-        stun.addSucceedEventReceiver(stunSucceedRespone);
-        stun.addFailEventReceiver(stunFailRespone);
+        //stun.addSucceedEventReceiver(stunSucceedRespone);
+        //stun.addFailEventReceiver(stunFailRespone);
     }
 
     //------------------------host begin------------------------
@@ -70,8 +70,8 @@ public class zzMasterServerGameHost : zzNetworkHost
 
     public override void RegisterHost(zzHostInfo pHostInfo)
     {
-        if (stun.inProcessing)
-            return;
+        //if (stun.inProcessing)
+        //    return;
         _gameType = pHostInfo.gameType;
         hostData.gameType = pHostInfo.gameType;
 
@@ -82,8 +82,65 @@ public class zzMasterServerGameHost : zzNetworkHost
         hostData.comment = pHostInfo.comment;
 
         hostData.guid = pHostInfo.guid;
-        stun.query(pHostInfo);
+        //stun.query(pHostInfo);
+        registerSucceedEvent();
     }
+
+    void OnServerInitialized()
+    {
+        enabled = true;
+        StartCoroutine(NatPunchThroughCheck());
+    }
+
+    IEnumerator  NatPunchThroughCheck()
+    {
+        int lNatRetries = 0;
+        while (
+            Network.isServer
+            && Network.player.externalIP == "UNASSIGNED_SYSTEM_ADDRESS"
+            && lNatRetries < maxNatRetry)
+        {
+            yield return new WaitForSeconds(1f);
+            ++lNatRetries;
+        }
+        if (Network.player.externalIP == "UNASSIGNED_SYSTEM_ADDRESS")
+        {
+            Debug.LogError("externalIP == UNASSIGNED_SYSTEM_ADDRESS");
+            stunFailRespone();
+        }
+        else
+        {
+            Debug.Log(Network.player.externalIP + ":" + Network.player.externalPort);
+            stunSucceedRespone();
+        }
+    }
+
+    //void Update()
+    //{
+    //    processTesterStatus(Network.TestConnectionNAT());
+    //}
+
+    //void processTesterStatus(ConnectionTesterStatus pStatus)
+    //{
+    //    switch (pStatus)
+    //    {
+    //        case ConnectionTesterStatus.Undetermined:
+    //            break;
+    //        case ConnectionTesterStatus.Error:
+    //        case ConnectionTesterStatus.PublicIPPortBlocked:
+    //        case ConnectionTesterStatus.LimitedNATPunchthroughSymmetric:
+    //            enabled = false;
+    //            Debug.LogError("Network.TestConnectionNAT:" + pStatus);
+    //            stunFailRespone();
+    //            break;
+    //        default:
+    //            enabled = false;
+    //            Debug.Log("Network.TestConnectionNAT:" + pStatus
+    //                + " " + Network.player.externalIP + ":" + Network.player.port);
+    //            stunSucceedRespone();
+    //            break;
+    //    }
+    //}
 
     public void RegisterHost()
     {
@@ -134,7 +191,7 @@ public class zzMasterServerGameHost : zzNetworkHost
     public override void UnregisterHost()
     {
         inHosting = false;
-        stun.stunEnd();
+        //stun.stunEnd();
         StartCoroutine(_UnregisterHost());
     }
 

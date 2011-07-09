@@ -56,6 +56,15 @@ public class HeroSpawn : MonoBehaviour
         if (!rebirthClockUI)
             rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
 
+        var lManagerTransform = GameSceneManager.Singleton.getManager( PlayerInfo.getRace(heroPrefab.layer),
+            GameSceneManager.UnitManagerType.raceBase).managerRoot;
+        if(lManagerTransform.childCount>0)
+        {
+            var lRaceBaseBloodRateUI = mUIObjectMap.getObject("coreValue").GetComponent<zzGUIProgressBarBase>();
+            lManagerTransform.GetChild(0).GetComponent<Life>().addBloodValueChangeCallback(
+                (x) => lRaceBaseBloodRateUI.rate = x.rate);
+        }
+
     }
 
     void Start()
@@ -287,7 +296,7 @@ public class HeroSpawn : MonoBehaviour
         pHeroObject.AddComponent<bagItemUIInput>();
         var lSoldierFactoryStateUI = pHeroObject.AddComponent<SoldierFactoryStateUI>();
         lSoldierFactoryStateUI.race = PlayerInfo.getRace(pHeroObject.layer);
-        lSoldierFactoryStateUI.onwer = pHeroObject;
+        lSoldierFactoryStateUI.owner = pHeroObject;
         pHeroObject.AddComponent<SoldierFactoryStateUIInput>();
 
         //使用血条UI

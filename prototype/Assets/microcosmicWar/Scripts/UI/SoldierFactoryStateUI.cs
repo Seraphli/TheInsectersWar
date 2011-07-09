@@ -18,7 +18,7 @@ public class SoldierFactoryStateUI:MonoBehaviour
     float maxIconSize;
 
     public Race race;
-    public GameObject onwer;
+    public GameObject owner;
 
     SoldierFactoryState soldierFactoryState;
 
@@ -185,7 +185,7 @@ public class SoldierFactoryStateUI:MonoBehaviour
         if (selectedIndex > 0)
         {
             int lIndex = selectedIndex - 1;
-            soldierFactoryState.tryCreateFactory(race, lIndex, onwer);
+            soldierFactoryState.tryCreateFactory(race, lIndex, owner);
         }
     }
 }

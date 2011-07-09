@@ -210,13 +210,13 @@ public class SoldierFactoryState : MonoBehaviour
 
     public int createFactoryNeedEnergy = 5;
 
-    public void tryCreateFactory(Race race,int index,GameObject onwer)
+    public void tryCreateFactory(Race race,int index,GameObject owner)
     {
         if (zzCreatorUtility.isHost())
-            _tryCreateFactory(race, index, onwer);
+            _tryCreateFactory(race, index, owner);
         else
             networkView.RPC("_RPCTryCreateFactory", RPCMode.Others,
-                (int)race,index,onwer.networkView.viewID);
+                (int)race,index,owner.networkView.viewID);
     }
 
     [RPC]
