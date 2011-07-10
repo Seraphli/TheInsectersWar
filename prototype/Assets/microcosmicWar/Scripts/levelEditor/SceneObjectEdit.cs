@@ -2,6 +2,8 @@
 
 public class SceneObjectEdit:MonoBehaviour
 {
+    public Transform recycleBin;
+
     public delegate void AddObjectEvent(GameObject pObject);
 
     AddObjectEvent addObjectEvent;
@@ -34,7 +36,11 @@ public class SceneObjectEdit:MonoBehaviour
         foreach (var lObject in selectedObjects)
         {
             if (lObject.active && lObject.GetComponent<EditorObject>() == null)
-                Destroy(lObject);
+            {
+                zzUndo.registerUndo(lObject);
+                lObject.SetActiveRecursively(false);
+                lObject.transform.parent = recycleBin;
+            }
         }
         selectedObjects = new GameObject[0] { };
     }
