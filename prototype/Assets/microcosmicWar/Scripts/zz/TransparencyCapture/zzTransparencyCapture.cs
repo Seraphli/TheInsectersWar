@@ -1,8 +1,25 @@
 ﻿using UnityEngine;
 using System.IO;
 
-public class zzTransparencyCapture
+public class zzTransparencyCapture:MonoBehaviour
 {
+    public string captureFolder;
+
+    [ContextMenu("Save Screenshot")]
+    public void saveScreenshot()
+    {
+        if (captureFolder.Length>0 && !Directory.Exists(captureFolder))
+            Directory.CreateDirectory(captureFolder);
+        var lImageFileName = captureFolder+Path.DirectorySeparatorChar+System.DateTime.Now.ToString("yyyyMMddhhmmss") + ".png";
+        var lScreenshot = captureScreenshot();
+        using (var lFile = new FileStream(lImageFileName, FileMode.Create))
+        {
+            BinaryWriter lWriter = new BinaryWriter(lFile);
+            lWriter.Write(lScreenshot.EncodeToPNG());
+        }
+        Object.Destroy(lScreenshot);
+    }
+
     public static Texture2D  capture(Rect pRect)
     {
         Camera lCamera = Camera.mainCamera;

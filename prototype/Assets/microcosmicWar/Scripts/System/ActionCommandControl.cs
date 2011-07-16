@@ -192,30 +192,41 @@ public class UnitActionCommand
     //只网络同步后8位
     public int command;
 
-    const int faceLeftCommand = 1 << 30;
-    const int negFaceLeftCommand = ~faceLeftCommand;
+    public const int faceLeftCommand = 1 << 30;
+    public const int negFaceLeftCommand = ~faceLeftCommand;
 
-    const int faceRightCommand      = 1 << 31;
-    const int negFaceRightCommand = ~faceRightCommand;
+    public const int faceRightCommand = 1 << 31;
+    public const int negFaceRightCommand = ~faceRightCommand;
 
-    const int faceLeftValue = 1 << 0;
-    const int faceRightValue = ~faceLeftValue;
+    public const int faceLeftValue = 1 << 0;
+    public const int faceRightValue = ~faceLeftValue;
 
-    const int faceUpCommand         = 1 << 1;
-    const int negFaceUpCommand = ~faceUpCommand;
+    public const int faceUpCommand = 1 << 1;
+    public const int negFaceUpCommand = ~faceUpCommand;
 
-    const int faceDownCommand       = 1 << 2;
-    const int negFaceDownCommand = ~faceDownCommand;
+    public const int faceDownCommand = 1 << 2;
+    public const int negFaceDownCommand = ~faceDownCommand;
 
-    const int goForwardCommand      = 1 << 3;
-    const int negGoForwardCommand = ~goForwardCommand;
+    public const int goForwardCommand = 1 << 3;
+    public const int negGoForwardCommand = ~goForwardCommand;
 
-    const int fireCommand           = 1 << 4;
-    const int negFireCommand = ~fireCommand;
+    public const int fireCommand = 1 << 4;
+    public const int negFireCommand = ~fireCommand;
 
-    const int jumpCommand           = 1 << 5;
-    const int negJumpCommand = ~jumpCommand;
+    public const int jumpCommand = 1 << 5;
+    public const int negJumpCommand = ~jumpCommand;
 
+    public const int action1Command = 1 << 6;
+    public const int negAction1Command = ~action1Command;
+
+    public const int action2Command = 1 << 7;
+    public const int negAction2Command = ~action2Command;
+
+    public const int negFaceCommand
+                    = negFaceRightCommand
+                    & negFaceRightCommand
+                    & negFaceUpCommand
+                    & negGoForwardCommand;
 
     public UnitFaceDirection face
     {
@@ -354,6 +365,30 @@ public class UnitActionCommand
         }
     }
 
+    public bool Action1
+    {
+        get { return (command & action1Command) != 0; }
+        set
+        {
+            if (value)
+                command |= action1Command;
+            else
+                command &= negAction1Command;
+        }
+    }
+
+    public bool Action2
+    {
+        get { return (command & action2Command) != 0; }
+        set
+        {
+            if (value)
+                command |= action2Command;
+            else
+                command &= negAction2Command;
+        }
+    }
+
     //跳跃
     public bool Jump
     {
@@ -380,6 +415,14 @@ public class UnitActionCommand
 }
 public class ActionCommandControl : MonoBehaviour
 {
+    System.Action<UnitActionCommand> commandChangedReceiver;
+
+    public void addCommandChangedReciver(System.Action<UnitActionCommand> pReceiver)
+    {
+        commandChangedReceiver += pReceiver;
+    }
+
+    static void nullCommandChangedReciver(UnitActionCommand p) { }
 
     [SerializeField]
     protected UnitFaceDirection _lastFace = UnitFaceDirection.left;
@@ -401,6 +444,12 @@ public class ActionCommandControl : MonoBehaviour
         unitActionCommand.face = _lastFace;
     }
 
+    void Start()
+    {
+        if (commandChangedReceiver == null)
+            commandChangedReceiver = nullCommandChangedReciver;
+    }
+
     public UnitActionCommand unitActionCommand = new UnitActionCommand();
 
     public void setCommand(UnitActionCommand pUnitActionCommand)
@@ -413,6 +462,7 @@ public class ActionCommandControl : MonoBehaviour
                 print(pUnitActionCommand);
             }
         */
+        commandChangedReceiver(pUnitActionCommand);
         pUnitActionCommand.calculateFace(unitActionCommand.face);
         unitActionCommand.command = pUnitActionCommand.command;
     }

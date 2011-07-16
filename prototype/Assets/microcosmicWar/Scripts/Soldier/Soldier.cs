@@ -8,6 +8,8 @@ public class Soldier : MonoBehaviour
 
     public zzCharacter character = new zzCharacter();
 
+    public Character2D character2D;
+
     //UnitActionCommand actionCommand;
 
     //public bool clearCommandEveryFrame = true;
@@ -42,9 +44,9 @@ public class Soldier : MonoBehaviour
         return actionCommandControl;
     }
 
-    public zzCharacter getCharacter()
+    public Character2D getCharacter()
     {
-        return character;
+        return character2D;
     }
 
     public int getFaceDirection()
@@ -52,18 +54,25 @@ public class Soldier : MonoBehaviour
         return actionCommandControl.getFaceValue();
     }
 
+    public SoldierAction action1;
+
+    public SoldierAction action2;
+
+    [SerializeField]
+    SoldierAction _nowAction;
+
     void Awake()
     {
-        character.lastUpdateTime = Time.time;
+        action1.commandValue = UnitActionCommand.action1Command;
+        action2.commandValue = UnitActionCommand.action2Command;
     }
+
 
     void Start()
     {
 
         if (!characterAnimation)
             characterAnimation = GetComponentInChildren<Animation>();
-
-        character.characterController = GetComponentInChildren<CharacterController>();
 
         emitter = GetComponentInChildren<Emitter>();
         life = GetComponentInChildren<Life>();
@@ -110,11 +119,34 @@ public class Soldier : MonoBehaviour
 
     }
 
-    //public void disappear()
-    //{
-    //    //zzCreatorUtility.Destroy(gameObject);
-    //    Destroy(gameObject);
-    //}
+
+    public SoldierAction nowAction
+    {
+        get { return _nowAction; }
+        set
+        {
+            if (_nowAction && _nowAction != value)
+            {
+                _nowAction.inActing = false;
+            }
+            _nowAction = value;
+            _nowAction.inActing = true;
+        }
+    }
+
+    void OnCommand(UnitActionCommand pCommand)
+    {
+        //pCommand.Fire = fireAction.inActing;
+        if (nowAction)
+        {
+            pCommand.Action1 = action1.inActing;
+            pCommand.Action2 = action2.inActing;
+            if (!nowAction.canMove)
+                pCommand.command &= UnitActionCommand.negFaceCommand;
+        }
+        else if (pCommand.Action1 && pCommand.Action2)
+            pCommand.Action2 = false;
+    }
 
     /// <summary>
     /// 更新朝向
@@ -143,34 +175,55 @@ public class Soldier : MonoBehaviour
                 UpdateFaceShow();
 
             UnitActionCommand lActionCommand = actionCommandControl.getCommand();
-
-            //设置动画 动作
-            if (lActionCommand.Fire)
+            //if (nowAction && (lActionCommand.command & nowAction.commandValue) == 0)
+            if (nowAction && nowAction.inActing)
             {
-                characterAnimation.CrossFade("fire", 0.2f);
+                nowAction = null;
+            }
+            if (nowAction)
+            {
+                nowAction.processCommand(lActionCommand);
+            }
+            else if (lActionCommand.Action1)
+            {
+                nowAction = action1;
+            }
+            else if (lActionCommand.Action2)
+            {
+                nowAction = action2;
             }
             else
             {
-                if (lActionCommand.GoForward)
+                //设置动画 动作
+                if (lActionCommand.Fire)
                 {
-                    characterAnimation.CrossFade("run", 0.1f);
+                    characterAnimation.CrossFade("fire", 0.2f);
                 }
                 else
                 {
-                    characterAnimation.CrossFade("stand", 0.2f);
+                    if (lActionCommand.GoForward)
+                    {
+                        characterAnimation.CrossFade("run", 0.1f);
+                    }
+                    else
+                    {
+                        characterAnimation.CrossFade("stand", 0.2f);
+                    }
+
                 }
 
+                if (lActionCommand.Jump && lActionCommand.FaceDown)
+                {
+                    boardDetector.down();
+                }
+                else
+                    boardDetector.recover();
+
             }
 
-            if (lActionCommand.Jump && lActionCommand.FaceDown)
-            {
-                boardDetector.down();
-            }
-            else
-                boardDetector.recover();
         }
 
-        character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
+        character2D.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
     }
 
 }

@@ -9,7 +9,7 @@ public class SoldierNetView : MonoBehaviour
     public Soldier soldier;
     public SoldierModelSmoothMove soldierModelSmoothMove;
     public Life life;
-    public zzCharacter character;
+    public Character2D character;
     public ActionCommandControl actionCommandControl;
     //FIXME_VAR_TYPE transform;
     public float disappearTime = 3f;

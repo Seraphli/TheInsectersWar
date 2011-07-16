@@ -1,0 +1,188 @@
+fileFormatVersion: 1
+guid: ba7050b79aabd8e4f986f23d41ed6477
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Bone39:
+    - 100002
+    - 400002
+    Bone19:
+    - 100004
+    - 400004
+    Bone11:
+    - 100006
+    - 400006
+    Bone15:
+    - 100008
+    - 400008
+    Plane02:
+    - 100010
+    - 400010
+    - 3300000
+    - 2300000
+    Bone02:
+    - 100012
+    - 400012
+    Bone27:
+    - 100014
+    - 400014
+    Bone13:
+    - 100016
+    - 400016
+    Bone12:
+    - 100018
+    - 400018
+    Bone20:
+    - 100020
+    - 400020
+    Bone42:
+    - 100022
+    - 400022
+    Bone29:
+    - 100024
+    - 400024
+    Bone05:
+    - 100026
+    - 400026
+    Bone08:
+    - 100028
+    - 400028
+    Bone23:
+    - 100030
+    - 400030
+    Bone18:
+    - 100032
+    - 400032
+    Bone35:
+    - 100034
+    - 400034
+    Bone34:
+    - 100036
+    - 400036
+    Bone28:
+    - 100038
+    - 400038
+    IK Chain04:
+    - 100040
+    - 400040
+    Bone10:
+    - 100042
+    - 400042
+    Bone38:
+    - 100044
+    - 400044
+    Bone45:
+    - 100046
+    - 400046
+    Bone41:
+    - 100048
+    - 400048
+    Bone31:
+    - 100050
+    - 400050
+    Bone40:
+    - 100052
+    - 400052
+    Bone03:
+    - 100054
+    - 400054
+    Bone36:
+    - 100056
+    - 400056
+    IK Chain02:
+    - 100058
+    - 400058
+    Bone16:
+    - 100060
+    - 400060
+    Bone17:
+    - 100062
+    - 400062
+    Bone25:
+    - 100064
+    - 400064
+    IK Chain03:
+    - 100066
+    - 400066
+    Bone33:
+    - 100068
+    - 400068
+    Bone09:
+    - 100070
+    - 400070
+    Bone32:
+    - 100072
+    - 400072
+    Bone14:
+    - 100074
+    - 400074
+    Bone26:
+    - 100076
+    - 400076
+    Bone01:
+    - 100078
+    - 400078
+    Bone37:
+    - 100080
+    - 400080
+    Bone43:
+    - 100082
+    - 400082
+    Line01:
+    - 100084
+    - 400084
+    Bone04:
+    - 100086
+    - 400086
+    IK Chain01:
+    - 100088
+    - 400088
+    Bone44:
+    - 100090
+    - 400090
+    Bone22:
+    - 100092
+    - 400092
+    Bone07:
+    - 100094
+    - 400094
+    Bone30:
+    - 100096
+    - 400096
+    Bone06:
+    - 100098
+    - 400098
+    Bone21:
+    - 100100
+    - 400100
+    Bone24:
+    - 100102
+    - 400102
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Plane02
+    7400000: Take 001 //// variationBee@run(old)

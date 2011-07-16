@@ -16,7 +16,7 @@ public class ArmouredPismire:MonoBehaviour
     public float fireDeviation = 4.0f;
 
     public Soldier soldier;
-    public zzCharacter character;
+    public Character2D character;
 
     public float speedOnGround;
     public float speedOnAir;
@@ -25,7 +25,7 @@ public class ArmouredPismire:MonoBehaviour
 
     void Start()
     {
-        character = soldier.character;
+        character = soldier.character2D;
         jumpJetEffectzzTimer = gameObject.AddComponent<zzTimer>();
         jumpJetEffectzzTimer.setInterval(jumpJetTime);
         jumpJetEffectzzTimer.addImpFunction(OffJumpJetEffect);

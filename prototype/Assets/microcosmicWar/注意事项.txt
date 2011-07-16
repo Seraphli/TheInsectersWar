@@ -6,7 +6,7 @@
 建筑 0.5 ,  如基地
 小兵0
 蚂蚁0- -0.2 :pismirePrefab:-0.01,shieldPismire:-0.02,shrapnelPismire:-0.03,armouredPismire-0.04
-蜜蜂0- +0.2: beePrefab:0.01,firepowerBee:0.02,medicBee:0.03
+蜜蜂0- +0.2: beePrefab:0.01,firepowerBee:0.02,medicBee:0.03,variationBee:0.04
 交通工具 0
 不可穿透物体 0
 英雄-0.5

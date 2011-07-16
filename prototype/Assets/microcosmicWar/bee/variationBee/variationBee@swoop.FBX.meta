@@ -1,0 +1,195 @@
+fileFormatVersion: 1
+guid: ef16c7f7c629f5449957b99f89a19bc2
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      swoop:
+        firstFrame: 0
+        lastFrame: 60
+        loop: 0
+        wrapMode: 0
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Line01:
+    - 100002
+    - 400002
+    Bone08:
+    - 100004
+    - 400004
+    Bone07:
+    - 100006
+    - 400006
+    Bone45:
+    - 100008
+    - 400008
+    Bone44:
+    - 100010
+    - 400010
+    Bone06:
+    - 100012
+    - 400012
+    Bone05:
+    - 100014
+    - 400014
+    Bone04:
+    - 100016
+    - 400016
+    Bone37:
+    - 100018
+    - 400018
+    Bone36:
+    - 100020
+    - 400020
+    Bone39:
+    - 100022
+    - 400022
+    Bone38:
+    - 100024
+    - 400024
+    Bone41:
+    - 100026
+    - 400026
+    Bone40:
+    - 100028
+    - 400028
+    Bone43:
+    - 100030
+    - 400030
+    Bone42:
+    - 100032
+    - 400032
+    Bone35:
+    - 100034
+    - 400034
+    Bone34:
+    - 100036
+    - 400036
+    Bone33:
+    - 100038
+    - 400038
+    Bone32:
+    - 100040
+    - 400040
+    Bone31:
+    - 100042
+    - 400042
+    Bone16:
+    - 100044
+    - 400044
+    Bone15:
+    - 100046
+    - 400046
+    Bone14:
+    - 100048
+    - 400048
+    Bone13:
+    - 100050
+    - 400050
+    Bone12:
+    - 100052
+    - 400052
+    Bone11:
+    - 100054
+    - 400054
+    Bone20:
+    - 100056
+    - 400056
+    Bone19:
+    - 100058
+    - 400058
+    Bone18:
+    - 100060
+    - 400060
+    Bone17:
+    - 100062
+    - 400062
+    Bone10:
+    - 100064
+    - 400064
+    Bone09:
+    - 100066
+    - 400066
+    Bone03:
+    - 100068
+    - 400068
+    Bone02:
+    - 100070
+    - 400070
+    Bone30:
+    - 100072
+    - 400072
+    Bone29:
+    - 100074
+    - 400074
+    Bone28:
+    - 100076
+    - 400076
+    Bone27:
+    - 100078
+    - 400078
+    Bone26:
+    - 100080
+    - 400080
+    Bone25:
+    - 100082
+    - 400082
+    Bone24:
+    - 100084
+    - 400084
+    Bone23:
+    - 100086
+    - 400086
+    Bone22:
+    - 100088
+    - 400088
+    Bone21:
+    - 100090
+    - 400090
+    Bone01:
+    - 100092
+    - 400092
+    IK Chain01:
+    - 100094
+    - 400094
+    IK Chain02:
+    - 100096
+    - 400096
+    IK Chain03:
+    - 100098
+    - 400098
+    IK Chain04:
+    - 100100
+    - 400100
+    Plane02:
+    - 100102
+    - 400102
+    - 3300000
+    - 2300000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Plane02
+    7400000: Take 001 //// variationBee@swoop
+    7400002: swoop //// variationBee@swoop
