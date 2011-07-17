@@ -224,7 +224,7 @@ public class UnitActionCommand
 
     public const int negFaceCommand
                     = negFaceRightCommand
-                    & negFaceRightCommand
+                    & negFaceLeftCommand
                     & negFaceUpCommand
                     & negGoForwardCommand;
 
@@ -252,6 +252,11 @@ public class UnitActionCommand
             //Debug.Log(System.Convert.ToString(command, 2));
             //Debug.Log(face);
         }
+    }
+
+    public bool isNullCommand
+    {
+        get { return command == 0; }
     }
 
     public void calculateFace(UnitFaceDirection pLastFace)

@@ -2,41 +2,76 @@
 
 public class VariationBeeAction : SoldierAction
 {
-    public Animation characterAnimation;
+    //public Animation characterAnimation;
 
     public float delayAfterAniEnd = 0.5f;
 
-    public string animationName = "action1";
+    //public string animationName = "action1";
 
-    public override bool inActing
+    public float speedInAir = 4f;
+
+    public float downJumpSpeed = 8f;
+
+    public zzDetectorBase landingPointDetector;
+
+    //public LayerMask groundMask;
+
+    public float speedOnGround;
+
+    public float originalJumpSpeed;
+
+    public float halfHeight;
+
+    //public override bool inActing
+    //{
+    //    set 
+    //    {
+    //        if (_inActing==value)
+    //            return;
+    //        _inActing = value;
+    //        if (_inActing)
+    //        {
+    //            OnActionStart();
+    //        }
+    //        else
+    //        {
+    //            OnActionEnd();
+    //        }
+    //    }
+    //}
+
+    void Awake()
     {
-        set 
-        {
-            if (_inActing==value)
-                return;
-            _inActing = value;
-            if (_inActing)
-            {
-                OnActionStart();
-            }
-            else
-            {
-                OnActionEnd();
-            }
-        }
+        //enabled = false;
+        //timer.setInterval(delayAfterAniEnd);
+        //timer.addImpFunction(OnActionEnd);
+        //characterController = character.characterController;
+        base.Awake();
+        speedOnGround = character.runSpeed;
+        originalJumpSpeed = character.jumpSpeed;
+        halfHeight = characterController.height
+            * characterController.transform.localScale.y / 2f;
     }
 
-    //void Awake()
-    //{
-    //    //enabled = false;
-    //    //timer.setInterval(delayAfterAniEnd);
-    //    //timer.addImpFunction(OnActionEnd);
-    //    characterController = character.characterController;
-    //}
+    public override void OnActionStart()
+    {
+        base.OnActionStart();
+        var lHit = landingPointDetector._impDetect(layers.standPlaceValue);
+        //print(lHit.Length);
+        if(lHit.Length>0)
+        {
+            //print(lHit[0].transform.name);
+            var landingPointY = lHit[0].point.y;
+            if (transform.position.y - halfHeight >= landingPointY)
+                character.jumpSpeed = downJumpSpeed;
+        }
+        else
+            character.jumpSpeed = downJumpSpeed;
+    }
 
     public override void processCommand(UnitActionCommand pUnitActionCommand)
     {
-        pUnitActionCommand.face = actionFace;
+        //pUnitActionCommand.face = actionFace;
         pUnitActionCommand.GoForward = !characterController.isGrounded;
         if(actionJump)
         {
@@ -45,8 +80,8 @@ public class VariationBeeAction : SoldierAction
         }
     }
 
-    [SerializeField]
-    UnitFaceDirection actionFace;
+    //[SerializeField]
+    //UnitFaceDirection actionFace;
 
     //public override bool beginAction()
     //{
@@ -64,6 +99,7 @@ public class VariationBeeAction : SoldierAction
     public void OnActionJump()
     {
         actionJump = true;
+        character.runSpeed = speedInAir;
     }
 
     //void OnActionTouchdown()
@@ -73,7 +109,7 @@ public class VariationBeeAction : SoldierAction
 
     public void OnActionAttack()
     {
-
+        character.runSpeed = speedOnGround;
     }
 
     //public override void interruptAction() 
@@ -88,18 +124,23 @@ public class VariationBeeAction : SoldierAction
     //    _inActing = false;
     //}
 
-    public void OnActionStart()
-    {
-        actionFace = actionCommandControl.face;
-        characterAnimation.CrossFade(animationName, 0.2f);
-    }
+    //public override void OnActionStart()
+    //{
+    //    //_inActing = true;
+    //    //actionFace = actionCommandControl.face;
+    //    characterAnimation.CrossFade(animationName, 0.2f);
+    //}
 
-    public void OnActionEnd()
+    //自行终止 和 强制终止
+    public override void OnActionEnd()
     {
-        _inActing = false;
-        actionCommandControl.commandValue &= ~commandValue;
+        //_inActing = false;
+        //actionCommandControl.commandValue &= ~commandValue;
         //enabled = false;
         //timer.timePos = 0f;
+        base.OnActionEnd();
+        character.runSpeed = speedOnGround;
+        character.jumpSpeed = originalJumpSpeed;
     }
 
     //zzTimerClass timer = new zzTimerClass();

@@ -14,6 +14,8 @@ public class ActionCommandInput : MonoBehaviour
 
     public KeyCode fire;
     public KeyCode jump;
+    public KeyCode action1;
+    public KeyCode action2;
 
     public void setToControl(ActionCommandControl pActionCommandControl)
     {
@@ -33,19 +35,21 @@ public class ActionCommandInput : MonoBehaviour
             lActionCommand.FaceRight = true;
             lActionCommand.GoForward = true;
         }
-        if (Input.GetKey(down))
-            lActionCommand.FaceDown = true;
-        if (Input.GetKey(up))
-            lActionCommand.FaceUp = true;
+        lActionCommand.FaceDown = Input.GetKey(down);
+        lActionCommand.FaceUp = Input.GetKey(up);
 
         lActionCommand.Fire = Input.GetKey(fire);
         lActionCommand.Jump = Input.GetKey(jump);
+        lActionCommand.Action1 = Input.GetKey(action1);
+        lActionCommand.Action2 = Input.GetKey(action2);
         return lActionCommand;
     }
 
     void Update()
     {
         if (actionCommandControl)
+        {
             actionCommandControl.setCommand(GetActionCommandFromInput());
+        }
     }
 }

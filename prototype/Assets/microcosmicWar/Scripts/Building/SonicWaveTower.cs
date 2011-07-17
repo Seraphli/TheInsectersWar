@@ -21,6 +21,45 @@ public class SonicWaveTower : MonoBehaviour
     public float harmValueInCentre = 400.0f;
     public int harmLayerMask;
 
+    public float restTimeLong = 4.1f;
+    public float fireTimeLong = 4.1f;
+
+    public float timeOffset = 3f;
+
+    [RPC]
+    void RPCSonicWaveTowerOnFire(NetworkMessageInfo pInfo )
+    {
+        fireOn((float)(Network.time - pInfo.timestamp));
+    }
+
+    void fireOn()
+    {
+        fireOn(0f);
+    }
+
+    void fireOn(float pTimeOffset)
+    {
+        waveTimer.enabled = true;
+        waveTimer.timePos = pTimeOffset;
+        fireTimer.setInterval(fireTimeLong);
+        fireTimer.setImpFunction((zzUtilities.voidFunction)fireOff);
+        if (Network.isServer)
+            networkView.RPC("RPCSonicWaveTowerOnFire", RPCMode.Others);
+    }
+
+    void fireOff()
+    {
+        fireOff(0f);
+    }
+
+    void fireOff(float pTimeOffset)
+    {
+        waveTimer.enabled = false;
+        waveTimer.timePos = pTimeOffset;
+        fireTimer.setInterval(restTimeLong);
+        fireTimer.setImpFunction((zzUtilities.voidFunction)fireOn);
+    }
+
     void Awake()
     {
         initRace(race);
@@ -46,7 +85,9 @@ public class SonicWaveTower : MonoBehaviour
     //    SonicAttack sonicAttackAI = gameObject.GetComponentInChildren<SonicAttack>();
     //    sonicAttackAI.Attack();
     //}
+    zzTimer waveTimer;
 
+    zzTimer fireTimer;
     void Start()
     {
         if (zzCreatorUtility.isHost())
@@ -57,9 +98,11 @@ public class SonicWaveTower : MonoBehaviour
             lAttackTimer.addImpFunction(Attack);
         }
 
-        zzTimer lWaveTimer = gameObject.AddComponent<zzTimer>();
-        lWaveTimer.setInterval(waveCreatedInterval);
-        lWaveTimer.addImpFunction(createWave);
+        waveTimer = gameObject.AddComponent<zzTimer>();
+        waveTimer.setInterval(waveCreatedInterval);
+        waveTimer.addImpFunction(createWave);
+        fireTimer = gameObject.AddComponent<zzTimer>();
+        fireOff(timeOffset);
     }
 
     public void initRace(Race pRace)

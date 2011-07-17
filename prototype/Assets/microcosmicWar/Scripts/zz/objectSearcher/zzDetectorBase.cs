@@ -15,6 +15,13 @@ public abstract class zzDetectorBase : MonoBehaviour
 
     //越高的优先级 越被先处理
     public int priority = 0;
+    public int maxRequired;
+    public LayerMask layerMask;
+    
+    public Collider[] detect()
+    {
+        return detect(maxRequired, layerMask, null);
+    }
 
     public Collider[] detect(int pMaxRequired, LayerMask pLayerMask)
     {
@@ -29,6 +36,11 @@ public abstract class zzDetectorBase : MonoBehaviour
     {
         Debug.LogError("public virtual RaycastHit[] _impDetect()");
         return null;
+    }
+
+    public RaycastHit[] _impDetect()
+    {
+        return _impDetect(layerMask);
     }
 
     public virtual Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc)

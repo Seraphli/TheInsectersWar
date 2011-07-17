@@ -27,14 +27,14 @@ public class mainInput : MonoBehaviour
             lActionCommand.FaceRight = true;
             lActionCommand.GoForward = true;
         }
-        if (Input.GetButton("down"))
-            lActionCommand.FaceDown = true;
-        if (Input.GetButton("up"))
-            lActionCommand.FaceUp = true;
+        lActionCommand.FaceDown = Input.GetButton("down");
+        lActionCommand.FaceUp = Input.GetButton("up");
 
         lActionCommand.Fire = Input.GetButton("fire");
         //lActionCommand.Jump=Input.GetButtonDown("jump");
         lActionCommand.Jump = Input.GetButton("jump");
+        lActionCommand.Action1 = Input.GetButton("action1");
+        lActionCommand.Action2 = Input.GetButton("action2");
         return lActionCommand;
     }
 

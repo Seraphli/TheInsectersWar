@@ -26,7 +26,7 @@ ModelImporter:
         firstFrame: 0
         lastFrame: 60
         loop: 0
-        wrapMode: 0
+        wrapMode: 2
   nodeInfo:
     //RootNode:
     - 100000

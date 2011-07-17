@@ -65,6 +65,7 @@ public class Soldier : MonoBehaviour
     {
         action1.commandValue = UnitActionCommand.action1Command;
         action2.commandValue = UnitActionCommand.action2Command;
+        actionCommandControl.addCommandChangedReciver(OnCommand);
     }
 
 
@@ -125,12 +126,14 @@ public class Soldier : MonoBehaviour
         get { return _nowAction; }
         set
         {
+            //print("_nowAction:" + (_nowAction == null) + " value:" + (value == null));
             if (_nowAction && _nowAction != value)
             {
                 _nowAction.inActing = false;
             }
             _nowAction = value;
-            _nowAction.inActing = true;
+            if (_nowAction)
+                _nowAction.inActing = true;
         }
     }
 
@@ -141,8 +144,11 @@ public class Soldier : MonoBehaviour
         {
             pCommand.Action1 = action1.inActing;
             pCommand.Action2 = action2.inActing;
-            if (!nowAction.canMove)
+            //print(!nowAction.canMove);
+            if (!nowAction.canChangeFace)
                 pCommand.command &= UnitActionCommand.negFaceCommand;
+            if (!nowAction.canMove)
+                pCommand.command &= UnitActionCommand.negGoForwardCommand;
         }
         else if (pCommand.Action1 && pCommand.Action2)
             pCommand.Action2 = false;
@@ -169,14 +175,14 @@ public class Soldier : MonoBehaviour
     //更新动画
     void Update()
     {
+        UnitActionCommand lActionCommand = actionCommandControl.getCommand();
         if (life.isAlive())
         {
             if (actionCommandControl.updateFace())
                 UpdateFaceShow();
 
-            UnitActionCommand lActionCommand = actionCommandControl.getCommand();
             //if (nowAction && (lActionCommand.command & nowAction.commandValue) == 0)
-            if (nowAction && nowAction.inActing)
+            if (nowAction && !nowAction.inActing)
             {
                 nowAction = null;
             }
@@ -223,7 +229,7 @@ public class Soldier : MonoBehaviour
 
         }
 
-        character2D.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
+        character2D.update2D(lActionCommand, actionCommandControl.getFaceValue(), life.isAlive());
     }
 
 }

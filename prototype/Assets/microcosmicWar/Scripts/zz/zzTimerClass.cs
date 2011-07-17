@@ -32,6 +32,11 @@ public class zzTimerClass
         impFunction += pFunc;
     }
 
+    public void setImpFunction(zzUtilities.voidFunction pFunc)
+    {
+        impFunction = pFunc;
+    }
+
     public void Update()
     {
         timePos += Time.deltaTime;

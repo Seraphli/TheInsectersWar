@@ -21,6 +21,11 @@ public class zzTimer : MonoBehaviour
         setInterval(interval);
     }
 
+    public void setImpFunction(zzUtilities.voidFunction pFunc)
+    {
+        timer.setImpFunction(pFunc);
+    }
+
     public void addImpFunction(zzUtilities.voidFunction pFunc)
     {
         timer.addImpFunction(pFunc);
