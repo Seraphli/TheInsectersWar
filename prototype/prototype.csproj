@@ -124,6 +124,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\GuidedMissileLauncher.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\GuidedMissileLauncherAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\GuidedMissileLauncherHelp.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Building\MachineGunAttachmentNetwork.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\OldAiMachineGun.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\OldAiMachineGunAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Building\RaceValueShow.cs" />
@@ -140,6 +141,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Building\StrongholdValueShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\AutoSetGameObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\BoardEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Editor\SoldierCharacterConver.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Editor\TestEditor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\awakeShooterWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\createObjectWhenDie.cs" />
@@ -162,6 +164,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\item\shieldItem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\Editor\MakeEditableObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\setting\RaceChooseSetting.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\undo\ParentUndoMementoFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSelfWhenDestroy.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CombineImagePlane.cs" />
@@ -190,10 +193,13 @@
      <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ServerList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\recycle\FadeShield.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\SoldierAction.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\VariationBeeAction.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ArmouredPismire.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Bullet.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFaceVelocity.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFollowAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Character2D.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Hero.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\HeroNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ISoldierAI.cs" />
@@ -203,15 +209,19 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Soldier.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierEvent.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierModelSmoothMove.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\SoldierNetView.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\VariationBeeAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\ActionCommandControl.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\ActionCommandInput.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\AiAimList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\AutoSupplyAirplane.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\AutoWMGameObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\BoundNetworkScope.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\collisionLayer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameScene.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameSceneManager.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\NetworkScopeObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\PlayerInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\PlayerScope.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\RaceObject.cs" />
@@ -420,6 +430,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAllocateViewID.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAllocateViewIDManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAnimationConfig.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzBitIO.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCopyProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCoroutineTimer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzCreatorUtility.cs" />
@@ -553,6 +564,7 @@
      <None Include="Assets\StrumpyShaderEditor\Editor\Resources\Internal\TextureCopy.shader" />
      <Compile Include="Assets\StrumpyShaderEditor\Editor\Scripts\NodeEditorWindow.cs" />
      <Compile Include="Assets\StrumpyShaderEditor\Editor\Scripts\StrumpyPreviewWindow.cs" />
+     <Compile Include="Assets\Soldier2.cs" />
  <Reference Include="AssetStoreTools">
  <HintPath>Assets\AssetStoreTools\Editor\AssetStoreTools.dll</HintPath>
  </Reference>

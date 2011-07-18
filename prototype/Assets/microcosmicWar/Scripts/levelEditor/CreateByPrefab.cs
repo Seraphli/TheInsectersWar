@@ -13,6 +13,8 @@ public class CreateByPrefab: MonoBehaviour
 
     AddObjectEvent addObjectEvent;
 
+    public bool onlyCreateInHost = false;
+
     void Start()
     {
         if (addObjectEvent == null)
@@ -26,6 +28,8 @@ public class CreateByPrefab: MonoBehaviour
 
     public void create()
     {
+        if (onlyCreateInHost && Network.isClient)
+            return;
         var lObject = (GameObject)Instantiate(prefab,
             createObjectTransform.position, createObjectTransform.rotation);
 

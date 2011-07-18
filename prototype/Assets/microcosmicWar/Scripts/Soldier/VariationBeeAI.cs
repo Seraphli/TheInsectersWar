@@ -2,18 +2,43 @@
 
 public class VariationBeeAI : SoldierAI
 {
-    public zzDetectorBase swoopDetector;
+    public Soldier soldier;
+    public zzDetectorBase[] swoopDetectors;
     public zzDetectorBase swoopAbleDetector;
+    public Transform swoopPoint;
 
     public SoldierAction swoopAction;
 
     public float overaweRate = 0.1f;
 
+    bool swoopCheck()
+    {
+        if (swoopAbleDetector.detect(1, layers.standPlaceValue).Length > 0)
+            return false;
+        var lSwoopPoint = swoopPoint.position;
+        foreach (var lSwoopDetector in swoopDetectors)
+        {
+            var lColliders = lSwoopDetector.detect(1, adversaryLayerMask);
+            if (lColliders.Length > 0)
+            {
+                var lSwoopPointToTarget = lColliders[0].transform.position - lSwoopPoint;
+
+                //检测之间是否有障碍
+                if (!Physics.Raycast(lSwoopPoint,
+                    lSwoopPointToTarget,
+                    lSwoopPointToTarget.magnitude,
+                    layers.standPlaceValue))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     protected override void actionCommandUpdate()
     {
 
         Transform lAim = getNowAimTransform();
-        if (enable && lAim && !swoopAction.inActing)
+        if (enable && lAim && !soldier.nowAction)
         {
             int lFireTaget = needFire();
             actionCommand.clear();
@@ -27,8 +52,7 @@ public class VariationBeeAI : SoldierAI
                     setFaceCommand(actionCommand, lFireTaget);
                 }
             }
-            else if (swoopDetector.detect(1, adversaryLayerMask).Length>0
-                && swoopAbleDetector.detect(1, layers.standPlaceValue).Length==0)
+            else if (swoopCheck())
             {
                 if (Random.value < overaweRate)
                     actionCommand.Action2 = true;

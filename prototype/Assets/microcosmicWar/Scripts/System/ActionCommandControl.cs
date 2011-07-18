@@ -427,6 +427,11 @@ public class ActionCommandControl : MonoBehaviour
         commandChangedReceiver += pReceiver;
     }
 
+    public void setNullCommandChangedReciver()
+    {
+        commandChangedReceiver = nullCommandChangedReciver;
+    }
+
     static void nullCommandChangedReciver(UnitActionCommand p) { }
 
     [SerializeField]

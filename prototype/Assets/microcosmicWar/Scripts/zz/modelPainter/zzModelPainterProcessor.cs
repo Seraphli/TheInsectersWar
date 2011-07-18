@@ -52,11 +52,16 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
 
         //存储结果
         concaves = new List<zz2DConcave>();
-        foreach (var lSweeperResult in lSweeperResults)
+        var lNewImagePatterns =new List<Texture2D>(lPatternResult.Count);
+        var lNewPatternBounds = new List<zzPointBounds>(lPatternResult.Count);
+        for (int i = 0; i < lSweeperResults.Count; ++i)
         {
-            if (lSweeperResult.edge.Length < 2)
+            var lSweeperResult = lSweeperResults[i];
+            var lImage = imagePatterns[i];
+            if (lSweeperResult.edge.Length < 2 || lImage.width < 3 || lImage.height<3)
                 continue;
-
+            lNewImagePatterns.Add(lImage);
+            lNewPatternBounds.Add(imagePatternBounds[i]);
             zzSimplyPolygon lPolygon = new zzSimplyPolygon();
             lPolygon.setShape(lSweeperResult.edge);
 
@@ -76,6 +81,9 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
 
             concaves.Add(lConcave);
         }
+
+        imagePatterns = lNewImagePatterns.ToArray();
+        imagePatternBounds = lNewPatternBounds.ToArray();
     }
 
     public override void pickPicture()
@@ -160,11 +168,22 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
         foreach (var lConvexs in convexesList)
         {
             var lSurfaceList = new List<Vector2[]>(lConvexs.Length);
-            var lImage = imagePatterns[i];
+            bool lAvailable = false;
             foreach (var lConvex in lConvexs)
             {
-                lSurfaceList.Add(lConvex.getShape());
+                var lConvexShape = lConvex.getShape();
+                if (lConvexShape.Length > 2)
+                    lAvailable = true;
+                lSurfaceList.Add(lConvexShape);
             }
+            //不生成不可用的模型,对之前步骤的失败的处理
+            if(!lAvailable)
+            {
+                Debug.LogError("failed model index:" + i);
+                ++i;
+                continue;
+            }
+            var lImage = imagePatterns[i];
 
             string lPolygonName = "polygon" + i;
             GameObject lConvexsObject = new GameObject(lPolygonName);
@@ -227,7 +246,7 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
     GameObject createFlatMesh(zz2DConcave pConcave, List<Vector2[]> pSurfaceList,
         string pName, Vector2 pPointOffset, float zThickness, Vector2 pUvScale)
     {
-        Debug.Log(pUvScale);
+        Debug.Log(pName+" UvScale:"+pUvScale.ToString("f8")+" PointOffset:"+pPointOffset.ToString("f8"));
         GameObject lOut = new GameObject(pName);
         MeshFilter lMeshFilter = lOut.AddComponent<MeshFilter>();
         MeshRenderer lMeshRenderer = lOut.AddComponent<MeshRenderer>();

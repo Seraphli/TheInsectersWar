@@ -63,6 +63,11 @@ public class Soldier : MonoBehaviour
 
     void Awake()
     {
+        if (!action1 || !action2)
+        {
+            actionCommandControl.setNullCommandChangedReciver();
+            return;
+        }
         action1.commandValue = UnitActionCommand.action1Command;
         action2.commandValue = UnitActionCommand.action2Command;
         actionCommandControl.addCommandChangedReciver(OnCommand);
@@ -78,8 +83,8 @@ public class Soldier : MonoBehaviour
         emitter = GetComponentInChildren<Emitter>();
         life = GetComponentInChildren<Life>();
 
-        if (!actionCommandControl)
-            actionCommandControl = GetComponentInChildren<ActionCommandControl>();
+        //if (!actionCommandControl)
+        //    actionCommandControl = GetComponentInChildren<ActionCommandControl>();
 
         life.addDieCallback(deadAction);
 

@@ -40,7 +40,7 @@ public class SonicWaveTower : MonoBehaviour
     void fireOn(float pTimeOffset)
     {
         waveTimer.enabled = true;
-        waveTimer.timePos = pTimeOffset;
+        fireTimer.timePos = pTimeOffset;
         fireTimer.setInterval(fireTimeLong);
         fireTimer.setImpFunction((zzUtilities.voidFunction)fireOff);
         if (Network.isServer)
@@ -55,7 +55,7 @@ public class SonicWaveTower : MonoBehaviour
     void fireOff(float pTimeOffset)
     {
         waveTimer.enabled = false;
-        waveTimer.timePos = pTimeOffset;
+        fireTimer.timePos = pTimeOffset;
         fireTimer.setInterval(restTimeLong);
         fireTimer.setImpFunction((zzUtilities.voidFunction)fireOn);
     }
