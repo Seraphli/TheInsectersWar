@@ -209,7 +209,6 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
             //lPlanePos.z = thickness / 2f;
             lRenderObject.transform.position = lPlanePos;
 
-            ++i;
 
             int lSubIndex = 0;
             string lSubName = "Collider";
@@ -222,6 +221,7 @@ public abstract class zzModelPainterProcessor : zzIModelPainterProcessor
                 ++lSubIndex;
             }
             lRenderObject.transform.parent = lConvexsObject.transform;
+            ++i;
         }
 
     }

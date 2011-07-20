@@ -70,15 +70,21 @@ public class SoldierAction:MonoBehaviour
         actionCommandControl.commandValue &= ~commandValue;
     }
 
-    protected void Awake()
+    public void init()
     {
         characterController = character.characterController;
         timer = gameObject.AddComponent<zzTimer>();
         timer.addImpFunction(OnActionEnd);
         timer.enabled = false;
         _inActing = false;
-        if(characterAnimation)
+        if (characterAnimation)
             animationState = characterAnimation[animationName];
+    }
+
+    protected void Awake()
+    {
+        if (character)
+            init();
     }
     //public virtual bool canInterrupt
     //{

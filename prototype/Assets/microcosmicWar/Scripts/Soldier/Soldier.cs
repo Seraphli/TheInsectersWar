@@ -54,6 +54,8 @@ public class Soldier : MonoBehaviour
         return actionCommandControl.getFaceValue();
     }
 
+    public SoldierAction fireAction;
+
     public SoldierAction action1;
 
     public SoldierAction action2;
@@ -63,11 +65,22 @@ public class Soldier : MonoBehaviour
 
     void Awake()
     {
-        if (!action1 || !action2)
+        if (!fireAction)
         {
-            actionCommandControl.setNullCommandChangedReciver();
-            return;
+            fireAction = gameObject.AddComponent<SoldierAction>();
+            fireAction.characterAnimation = characterAnimation;
+            fireAction.animationName = "fire";
+            fireAction.character = character2D;
+            fireAction.actionCommandControl = actionCommandControl;
+            fireAction.canChangeFace = true;
+            fireAction.canMove = false;
+            fireAction.init();
         }
+        fireAction.commandValue = UnitActionCommand.fireCommand;
+        if (!action1)
+            action1 = gameObject.AddComponent<SoldierAction>();
+        if (!action2)
+            action2 = gameObject.AddComponent<SoldierAction>();
         action1.commandValue = UnitActionCommand.action1Command;
         action2.commandValue = UnitActionCommand.action2Command;
         actionCommandControl.addCommandChangedReciver(OnCommand);
@@ -117,7 +130,7 @@ public class Soldier : MonoBehaviour
     void deadAction(Life p)
     {
         //mZZSprite.playAnimation("dead");
-        characterAnimation.CrossFade("dead", 0.3f);
+        //characterAnimation.CrossFade("dead", 0.3f);
         gameObject.layer = layers.deadObject;
         //transform.Find("CubeReact").gameObject.layer = layers.deadObject;
 
@@ -149,14 +162,15 @@ public class Soldier : MonoBehaviour
         {
             pCommand.Action1 = action1.inActing;
             pCommand.Action2 = action2.inActing;
+            pCommand.Fire = fireAction.inActing;
             //print(!nowAction.canMove);
             if (!nowAction.canChangeFace)
                 pCommand.command &= UnitActionCommand.negFaceCommand;
             if (!nowAction.canMove)
                 pCommand.command &= UnitActionCommand.negGoForwardCommand;
         }
-        else if (pCommand.Action1 && pCommand.Action2)
-            pCommand.Action2 = false;
+        //else if (pCommand.Action1 && pCommand.Action2)
+        //    pCommand.Action2 = false;
     }
 
     /// <summary>
@@ -195,6 +209,10 @@ public class Soldier : MonoBehaviour
             {
                 nowAction.processCommand(lActionCommand);
             }
+            else if (lActionCommand.Fire)
+            {
+                nowAction = fireAction;
+            }
             else if (lActionCommand.Action1)
             {
                 nowAction = action1;
@@ -205,23 +223,23 @@ public class Soldier : MonoBehaviour
             }
             else
             {
-                //设置动画 动作
-                if (lActionCommand.Fire)
+                ////设置动画 动作
+                //if (lActionCommand.Fire)
+                //{
+                //    characterAnimation.CrossFade("fire", 0.2f);
+                //}
+                //else
+                //{
+                if (lActionCommand.GoForward)
                 {
-                    characterAnimation.CrossFade("fire", 0.2f);
+                    characterAnimation.CrossFade("run", 0.1f);
                 }
                 else
                 {
-                    if (lActionCommand.GoForward)
-                    {
-                        characterAnimation.CrossFade("run", 0.1f);
-                    }
-                    else
-                    {
-                        characterAnimation.CrossFade("stand", 0.2f);
-                    }
-
+                    characterAnimation.CrossFade("stand", 0.2f);
                 }
+
+                //}
 
                 if (lActionCommand.Jump && lActionCommand.FaceDown)
                 {
@@ -233,6 +251,8 @@ public class Soldier : MonoBehaviour
             }
 
         }
+        else
+            nowAction = null;
 
         character2D.update2D(lActionCommand, actionCommandControl.getFaceValue(), life.isAlive());
     }

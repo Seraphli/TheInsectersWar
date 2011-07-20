@@ -56,7 +56,7 @@ public class HeroSpawn : MonoBehaviour
         if (!rebirthClockUI)
             rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
 
-        var lManagerTransform = GameSceneManager.Singleton.getManager( PlayerInfo.getRace(heroPrefab.layer),
+        var lManagerTransform = GameSceneManager.Singleton.getManager(GameScene.Singleton.playerInfo.race,
             GameSceneManager.UnitManagerType.raceBase).managerRoot;
         if(lManagerTransform.childCount>0)
         {
@@ -77,14 +77,14 @@ public class HeroSpawn : MonoBehaviour
                 createHero();
             }
         */
-        getUI();
+        //getUI();
         if (autoCreatePlayer)
             createHeroFirstTime();
     }
 
     public void setOwer(NetworkPlayer pOwner)
     {
-        owner = pOwner;
+        setOwerImp(pOwner);
         if(Network.peerType!= NetworkPeerType.Disconnected)
         {
             networkView.RPC("setOwerImp", RPCMode.Others, pOwner);
@@ -102,6 +102,8 @@ public class HeroSpawn : MonoBehaviour
     public void setOwerImp(NetworkPlayer pOwner)
     {
         owner = pOwner;
+        if (HeroBelongToThePlayer())
+            getUI();
     }
 
     public void createHeroFirstTime()

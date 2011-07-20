@@ -1,0 +1,145 @@
+fileFormatVersion: 1
+guid: 41579f76ba7d57c46b1f3053b0f52571
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      fire:
+        firstFrame: 0
+        lastFrame: 203
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Line01:
+    - 100002
+    - 400002
+    Bone28:
+    - 100004
+    - 400004
+    Bone27:
+    - 100006
+    - 400006
+    Bone26:
+    - 100008
+    - 400008
+    Bone25:
+    - 100010
+    - 400010
+    Bone24:
+    - 100012
+    - 400012
+    Bone23:
+    - 100014
+    - 400014
+    Bone22:
+    - 100016
+    - 400016
+    Bone21:
+    - 100018
+    - 400018
+    Bone20:
+    - 100020
+    - 400020
+    Bone19:
+    - 100022
+    - 400022
+    Bone18:
+    - 100024
+    - 400024
+    Bone17:
+    - 100026
+    - 400026
+    Bone16:
+    - 100028
+    - 400028
+    Bone15:
+    - 100030
+    - 400030
+    Bone14:
+    - 100032
+    - 400032
+    Bone13:
+    - 100034
+    - 400034
+    Bone12:
+    - 100036
+    - 400036
+    Bone11:
+    - 100038
+    - 400038
+    Bone10:
+    - 100040
+    - 400040
+    Bone09:
+    - 100042
+    - 400042
+    Bone08:
+    - 100044
+    - 400044
+    Bone07:
+    - 100046
+    - 400046
+    Bone06:
+    - 100048
+    - 400048
+    Bone05:
+    - 100050
+    - 400050
+    Bone04:
+    - 100052
+    - 400052
+    Bone03:
+    - 100054
+    - 400054
+    Bone02:
+    - 100056
+    - 400056
+    Bone01:
+    - 100058
+    - 400058
+    IK Chain03:
+    - 100060
+    - 400060
+    IK Chain04:
+    - 100062
+    - 400062
+    IK Chain02:
+    - 100064
+    - 400064
+    IK Chain01:
+    - 100066
+    - 400066
+    Plane02:
+    - 100068
+    - 400068
+    - 3300000
+    - 2300000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Plane02
+    7400000: Take 001 //// firebatPismire@fire
+    7400002: fireStart //// firebatPismire@fire
+    7400004: fire //// firebatPismire@fire

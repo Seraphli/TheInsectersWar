@@ -1,0 +1,235 @@
+fileFormatVersion: 1
+guid: 5b87443db8db4514c83b93424d2ecbe7
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      stand:
+        firstFrame: 0
+        lastFrame: 35
+        loop: 0
+        wrapMode: 2
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Line01:
+    - 100002
+    - 400002
+    YDtui:
+    - 100004
+    - 400004
+    - 3300000
+    - 2300000
+    YXtui:
+    - 100006
+    - 400006
+    - 3300002
+    - 2300002
+    Yjiao:
+    - 100008
+    - 400008
+    - 3300004
+    - 2300004
+    Bone28:
+    - 100010
+    - 400010
+    Bone27:
+    - 100012
+    - 400012
+    Bone26:
+    - 100014
+    - 400014
+    Bone25:
+    - 100016
+    - 400016
+    Bone24:
+    - 100018
+    - 400018
+    ZDtui:
+    - 100020
+    - 400020
+    - 3300006
+    - 2300006
+    ZXtui:
+    - 100022
+    - 400022
+    - 3300008
+    - 2300008
+    Zjiao:
+    - 100024
+    - 400024
+    - 3300010
+    - 2300010
+    Bone23:
+    - 100026
+    - 400026
+    Bone22:
+    - 100028
+    - 400028
+    Bone21:
+    - 100030
+    - 400030
+    Bone20:
+    - 100032
+    - 400032
+    Bone19:
+    - 100034
+    - 400034
+    shenti:
+    - 100036
+    - 400036
+    - 3300012
+    - 2300012
+    YSb:
+    - 100038
+    - 400038
+    - 3300014
+    - 2300014
+    Yxb:
+    - 100040
+    - 400040
+    - 3300016
+    - 2300016
+    Yshou:
+    - 100042
+    - 400042
+    - 3300018
+    - 2300018
+    Bone18:
+    - 100044
+    - 400044
+    Bone17:
+    - 100046
+    - 400046
+    Bone16:
+    - 100048
+    - 400048
+    Bone15:
+    - 100050
+    - 400050
+    Bone14:
+    - 100052
+    - 400052
+    ZSb:
+    - 100054
+    - 400054
+    - 3300020
+    - 2300020
+    ZXb:
+    - 100056
+    - 400056
+    - 3300022
+    - 2300022
+    Zshou:
+    - 100058
+    - 400058
+    - 3300024
+    - 2300024
+    qiang:
+    - 100060
+    - 400060
+    - 3300026
+    - 2300026
+    Bone13:
+    - 100062
+    - 400062
+    Bone12:
+    - 100064
+    - 400064
+    Bone11:
+    - 100066
+    - 400066
+    Bone10:
+    - 100068
+    - 400068
+    Bone09:
+    - 100070
+    - 400070
+    Bone08:
+    - 100072
+    - 400072
+    Bone07:
+    - 100074
+    - 400074
+    tou:
+    - 100076
+    - 400076
+    - 3300028
+    - 2300028
+    Bone06:
+    - 100078
+    - 400078
+    Bone05:
+    - 100080
+    - 400080
+    Bone04:
+    - 100082
+    - 400082
+    Bone03:
+    - 100084
+    - 400084
+    Bone02:
+    - 100086
+    - 400086
+    Bone01:
+    - 100088
+    - 400088
+    IK Chain03:
+    - 100090
+    - 400090
+    IK Chain04:
+    - 100092
+    - 400092
+    IK Chain02:
+    - 100094
+    - 400094
+    IK Chain01:
+    - 100096
+    - 400096
+    Plane02:
+    - 100098
+    - 400098
+    - 3300030
+    - 2300030
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Plane01
+    4300002: Plane02
+    4300004: tou
+    4300006: qiang
+    4300008: Zshou
+    4300010: ZXb
+    4300012: ZSb
+    4300014: Yshou
+    4300016: Yxb
+    4300018: YSb
+    4300020: shenti
+    4300022: Zjiao
+    4300024: ZXtui
+    4300026: ZDtui
+    4300028: Yjiao
+    4300030: YXtui
+    4300032: YDtui
+    7400000: Take 001 //// firebatPismire@stand
+    7400002: stand //// firebatPismire@stand

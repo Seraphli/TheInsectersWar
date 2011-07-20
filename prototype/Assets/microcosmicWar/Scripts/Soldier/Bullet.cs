@@ -116,7 +116,7 @@ public class Bullet : MonoBehaviour
             _touch(collider.transform);
     }
 
-    void _touch(Transform pOther)
+    protected virtual void _touch(Transform pOther)
     {
 
         //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
