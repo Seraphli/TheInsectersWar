@@ -86,6 +86,7 @@ public class Life : MonoBehaviour
             bloodValueChangeCallback(this);
             if (bloodValue <= 0)
             {
+                bloodValue = 0;
                 //zzCreatorUtility.sendMessage(gameObject, "Life_die");
                 dieCallbackList(this);
                 if (Network.isServer)

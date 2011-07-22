@@ -132,7 +132,7 @@ public class Bullet : MonoBehaviour
         lifeEnd();
     }
 
-    void lifeEnd()
+    protected void lifeEnd()
     {
         //	zzCreatorUtility.sendMessage(gameObject,"lifeEndImp");
         bulletLife.setBloodValue(0);
