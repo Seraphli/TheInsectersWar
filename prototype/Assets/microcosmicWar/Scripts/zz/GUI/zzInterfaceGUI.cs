@@ -330,16 +330,8 @@ public abstract class zzInterfaceGUI : MonoBehaviour
             );
     }
 
-    public virtual Rect calculatePosition()
+    protected void calculatePosition(ref Rect lOut)
     {
-        Rect lOut = new Rect();
-
-
-        lOut.width = calculateWidth();
-        //print(gameObject.name);
-        //print(relativeWidth.useRelative);
-        //print(lOut.width);
-        lOut.height = calculateHeight();
         //horizontal
         switch (horizontalDockPosition)
         {
@@ -373,7 +365,18 @@ public abstract class zzInterfaceGUI : MonoBehaviour
                 lOut.y = getPosY();
                 break;
         }
+    }
 
+    public virtual Rect calculatePosition()
+    {
+        Rect lOut = new Rect();
+
+        lOut.width = calculateWidth();
+        //print(gameObject.name);
+        //print(relativeWidth.useRelative);
+        //print(lOut.width);
+        lOut.height = calculateHeight();
+        calculatePosition(ref lOut);
         return lOut;
     }
 
