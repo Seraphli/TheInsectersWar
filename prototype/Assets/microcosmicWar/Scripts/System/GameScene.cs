@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 [RequireComponent(typeof(NetworkView))]
@@ -16,6 +17,52 @@ public class GameScene : MonoBehaviour
 
     public GameObject sceneData;
 
+    List<KeyValuePair<NetworkPlayer, HeroSpawn>> playerSpawnList
+        = new List<KeyValuePair<NetworkPlayer,HeroSpawn>>();
+    public PlayerSpawn[] pismirePlayerSpawns;
+    public PlayerSpawn[] beePlayerSpawns;
+
+    PlayerSpawn[] getSortedSpawns( Race pRace )
+    {
+        var lSpawnRoot = GameSceneManager.Singleton
+            .getManager(pRace, GameSceneManager.UnitManagerType.heroSpawn).managerRoot;
+        List<PlayerSpawn> lPlayerSpawns = new List<PlayerSpawn>(lSpawnRoot.childCount);
+        foreach (Transform lSpawn in lSpawnRoot)
+        {
+            lPlayerSpawns.Add(lSpawn.GetComponent<PlayerSpawn>());
+        }
+        lPlayerSpawns.Sort(
+            delegate(PlayerSpawn x, PlayerSpawn y)
+            {
+                if (x._index == y._index)
+                    return 0;
+                if (x._index > y._index)
+                    return 1;
+                return -1;
+            }
+            );
+        return lPlayerSpawns.ToArray();
+    }
+
+    PlayerSpawn[] getSpawns(Race pRace)
+    {
+        if (pRace == Race.ePismire)
+            return pismirePlayerSpawns;
+        else if(pRace == Race.eBee)
+            return beePlayerSpawns;
+        return null;
+    }
+
+    PlayerSpawn getSpawn(PlayerSpawn[] lPlayerSpawns,int pIndex)
+    {
+        return lPlayerSpawns[pIndex % lPlayerSpawns.Length];
+
+    }
+
+    PlayerSpawn getSpawn(PlayerElement pPlayerElement)
+    {
+        return getSpawn(getSpawns(pPlayerElement.race), pPlayerElement.spawnIndex);
+    }
 
     public HeroSpawn pismirePlayerSpawn;
     public HeroSpawn beePlayerSpawn;
@@ -44,19 +91,18 @@ public class GameScene : MonoBehaviour
 
     static void nullEvent(){}
 
-    void setSpawn(ref HeroSpawn pSpawn, Race pRace)
-    {
-        if(!pSpawn)
-        {
-            foreach (Transform lSpawn in GameSceneManager.Singleton
-                .getManager(pRace, GameSceneManager.UnitManagerType.heroSpawn))
-            {
-                pSpawn = lSpawn.GetComponent<HeroSpawn>();
-                break;
-            }
-        }
-
-    }
+    //void setSpawn(ref HeroSpawn pSpawn, Race pRace)
+    //{
+    //    if(!pSpawn)
+    //    {
+    //        foreach (Transform lSpawn in GameSceneManager.Singleton
+    //            .getManager(pRace, GameSceneManager.UnitManagerType.heroSpawn))
+    //        {
+    //            pSpawn = lSpawn.GetComponent<HeroSpawn>();
+    //            break;
+    //        }
+    //    }
+    //}
 
     void Awake()
     {
@@ -69,13 +115,13 @@ public class GameScene : MonoBehaviour
         //}
     }
 
-    void init()
-    {
+    //void init()
+    //{
 
-        setSpawn(ref pismirePlayerSpawn, Race.ePismire);
-        setSpawn(ref beePlayerSpawn, Race.eBee);
+    //    setSpawn(ref pismirePlayerSpawn, Race.ePismire);
+    //    setSpawn(ref beePlayerSpawn, Race.eBee);
 
-    }
+    //}
 
     public static GameScene getSingleton()
     {
@@ -89,51 +135,80 @@ public class GameScene : MonoBehaviour
 
     public void CreatePlayer()
     {
-        playerSpawn.createHeroFirstTime();
-
-        if (Network.connections.Length > 0)
-            adversaryPlayerSpawn.createHeroFirstTime();
+        foreach (var lPlayerSpawn in playerSpawnList)
+        {
+            lPlayerSpawn.Value.createHeroFirstTime();
+        }
     }
 
     public int clientNetworkSendRate = 30;
 
+    void addPlayerSpawn(NetworkPlayer pPlayer,HeroSpawn pHeroSpawn)
+    {
+        playerSpawnList.Add(new KeyValuePair<NetworkPlayer, HeroSpawn>(
+            pPlayer, pHeroSpawn));
+    }
+
     void Start()
     {
         initEvent();
-        init();
+        //init();
+        pismirePlayerSpawns = getSortedSpawns(Race.ePismire);
+        beePlayerSpawns = getSortedSpawns(Race.eBee);
         PlayerInfo lPlayerInfo = playerInfo;
         //print(playerInfo.getRace());
         //Race race=playerInfo.getRace();
 
-        if (lPlayerInfo.getRace() == Race.ePismire)
-        {
-            playerSpawn = pismirePlayerSpawn;
-            adversaryPlayerSpawn = beePlayerSpawn;
-        }
-        else
-        {
-            playerSpawn = beePlayerSpawn;
-            adversaryPlayerSpawn = pismirePlayerSpawn;
-        }
+        //if (lPlayerInfo.getRace() == Race.ePismire)
+        //{
+        //    playerSpawn = pismirePlayerSpawn;
+        //    adversaryPlayerSpawn = beePlayerSpawn;
+        //}
+        //else
+        //{
+        //    playerSpawn = beePlayerSpawn;
+        //    adversaryPlayerSpawn = pismirePlayerSpawn;
+        //}
 
         //adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
-        if (zzCreatorUtility.isHost())
+        if(Network.isServer)
         {
-            if (needCreatePlayer)
+            var lPlayers = lPlayerInfo.GetComponent<PlayerListInfo>().players;
+            foreach (var lPlayElement in lPlayers)
             {
-                playerSpawn.setOwer(Network.player);
-
-                if (Network.connections.Length > 0)
-                {
-                    int lIntRace = (int)PlayerInfo.getAdversaryRace(lPlayerInfo.getRace());
-                    //networkView.RPC("RPCSetRace", Network.connections[0], lIntRace);
-                    adversaryPlayerSpawn.setOwer(Network.connections[0]);
-                }
-                CreatePlayer();
+                var lSpawn = getSpawn(lPlayElement).addPlayer(lPlayElement.networkPlayer);
+                addPlayerSpawn(lPlayElement.networkPlayer, lSpawn);
             }
         }
-        else
+        else if (Network.isClient)
+        {
             Network.sendRate = clientNetworkSendRate;
+        }
+        else
+        {
+            var lSpawn = getSpawn(getSpawns(lPlayerInfo.race), 0).addPlayer(Network.player);
+            addPlayerSpawn(Network.player, lSpawn);
+
+        }
+        CreatePlayer();
+
+        //if (zzCreatorUtility.isHost())
+        //{
+        //    if (needCreatePlayer)
+        //    {
+        //        playerSpawn.setOwer(Network.player);
+
+        //        if (Network.connections.Length > 0)
+        //        {
+        //            int lIntRace = (int)PlayerInfo.getAdversaryRace(lPlayerInfo.getRace());
+        //            //networkView.RPC("RPCSetRace", Network.connections[0], lIntRace);
+        //            adversaryPlayerSpawn.setOwer(Network.connections[0]);
+        //        }
+        //        CreatePlayer();
+        //    }
+        //}
+        //else
+        //    Network.sendRate = clientNetworkSendRate;
 
     }
 

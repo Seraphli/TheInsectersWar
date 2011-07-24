@@ -15,7 +15,11 @@ public class NetworkScopeObject:MonoBehaviour
     {
         foreach (Transform lSub in pTransform)
         {
-            lSub.GetComponent<BoundNetworkScope>().addScopeNetView(networkView);
+            foreach (var lBoundNetworkScope in 
+                lSub.GetComponentsInChildren<BoundNetworkScope>())
+            {
+                lBoundNetworkScope.addScopeNetView(networkView);
+            }
         }
     }
 }

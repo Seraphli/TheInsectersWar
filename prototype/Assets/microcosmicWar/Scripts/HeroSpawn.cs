@@ -8,7 +8,7 @@ public class HeroSpawn : MonoBehaviour
     public GameObject heroPrefab;
     public GameObject netSysnPrefab;
 
-    public NetworkPlayer owner;
+    public NetworkPlayer _owner;
     public bool autoCreatePlayer = false;
     public int itemBagID;
 
@@ -82,14 +82,18 @@ public class HeroSpawn : MonoBehaviour
             createHeroFirstTime();
     }
 
-    public void setOwer(NetworkPlayer pOwner)
+    public NetworkPlayer owner
     {
-        setOwerImp(pOwner);
-        if(Network.peerType!= NetworkPeerType.Disconnected)
+        set
         {
-            networkView.RPC("setOwerImp", RPCMode.Others, pOwner);
-            GetComponent<BoundNetworkScope>().networkPlayer = pOwner;
+            setOwerImp(value);
+            if(Network.isServer)
+            {
+                GetComponent<BoundNetworkScope>().networkPlayer = value;
+            }
         }
+
+        get { return _owner; }
         //zzCreatorUtility.sendMessage(gameObject, "setOwerImp", pOwner);
     }
 
@@ -98,10 +102,9 @@ public class HeroSpawn : MonoBehaviour
         _releaseControl(hero);
     }
 
-    [RPC]
     public void setOwerImp(NetworkPlayer pOwner)
     {
-        owner = pOwner;
+        _owner = pOwner;
         if (HeroBelongToThePlayer())
             getUI();
     }
@@ -160,7 +163,7 @@ public class HeroSpawn : MonoBehaviour
             return true;
         }
 
-        if (Network.player == owner)
+        if (Network.player == _owner)
             return true;
 
         return false;
@@ -183,7 +186,7 @@ public class HeroSpawn : MonoBehaviour
         if (HeroBelongToThePlayer())
             RPCCreateHeroRebirthClock();
         else
-            networkView.RPC("RPCCreateHeroRebirthClock", owner);
+            networkView.RPC("RPCCreateHeroRebirthClock", _owner);
     }
 
     [RPC]
@@ -239,14 +242,14 @@ public class HeroSpawn : MonoBehaviour
             createControl(lHeroObject);
         else
         {
-            if (Network.player == owner)//服务器端
+            if (Network.player == _owner)//服务器端
             {
                 createNetControl(lHeroObject);
 
             }
             else
             {
-                networkView.RPC("RPCcreateNetControl", owner, lHeroObject.networkView.viewID);
+                networkView.RPC("RPCcreateNetControl", _owner, lHeroObject.networkView.viewID);
                 var lPlayerScope = GetComponent<PlayerScope>();
                 lPlayerScope.actionCommandControl = lHeroObject.GetComponent<ActionCommandControl>();
                 lPlayerScope.playerTransform = lHeroObject.transform;

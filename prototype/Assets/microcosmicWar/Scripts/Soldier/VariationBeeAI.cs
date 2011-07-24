@@ -13,7 +13,8 @@ public class VariationBeeAI : SoldierAI
 
     bool swoopCheck()
     {
-        if (swoopAbleDetector.detect(1, layers.standPlaceValue).Length > 0)
+        if (character.isGrounded
+            ||swoopAbleDetector.detect(1, layers.standPlaceValue).Length > 0)
             return false;
         var lSwoopPoint = swoopPoint.position;
         foreach (var lSwoopDetector in swoopDetectors)
