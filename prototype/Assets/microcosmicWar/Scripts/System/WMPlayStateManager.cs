@@ -19,7 +19,7 @@ public class WMPlayStateManager : PlayStateManager
         if (pIsPlay)//stop=>play
         {
             applyPlayState();
-            //changedToPlayEvent();
+            //doChangedToPlayEvent();已在applyPlayState中
         }
         else//play=>stop
         {

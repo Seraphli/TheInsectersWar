@@ -120,7 +120,7 @@ public class Bullet : MonoBehaviour
     {
 
         //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
-        if (bulletLife.getBloodValue() <= 0 || !zzCreatorUtility.isHost())
+        if (bulletLife.getBloodValue() <= 0 || Network.isClient)
             return;
 
         Life lLife = Life.getLifeFromTransform(pOther);

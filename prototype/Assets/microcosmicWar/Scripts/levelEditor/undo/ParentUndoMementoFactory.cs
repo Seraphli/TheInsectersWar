@@ -18,12 +18,14 @@ public class ParentUndoMementoFactory : zzUndo.UndoMementoFactory
         bool objectActive;
         public void save(object pObject)
         {
+            //print("ParentUndoMemento.save:" + pObject.ToString());
             undoObject = ((GameObject)pObject);
             objectActive = undoObject.active;
             parent = undoObject.transform.parent;
         }
         public void restore(object pObject)
         {
+            //print("ParentUndoMemento.restore:" + undoObject.ToString());
             undoObject.transform.parent = parent;
             undoObject.SetActiveRecursively(objectActive);
         }

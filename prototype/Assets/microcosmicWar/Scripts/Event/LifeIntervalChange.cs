@@ -15,6 +15,8 @@ public class LifeIntervalChange:MonoBehaviour
 
     void Awake()
     {
+        if (Network.isClient)
+            return;
         if (!recoverTimer)
         {
             recoverTimer = gameObject.AddComponent<zzTimer>();

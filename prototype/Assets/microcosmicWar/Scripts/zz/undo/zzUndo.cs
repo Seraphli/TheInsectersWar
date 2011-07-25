@@ -88,15 +88,21 @@ public class zzUndo:MonoBehaviour
         typeToUndo[pUndoType] = pFunc;
     }
 
-    struct UndoObject
+    class UndoObject
     {
-        public Object objectToUndo;
-        public UndoMemento undoMemento;
-        public UndoMemento oppositeUndoMemento;
-        public System.Func<UndoMemento> createMementoFunc;
+        Object objectToUndo;
+        UndoMemento undoMemento;
+        UndoMemento oppositeUndoMemento;
+        System.Func<UndoMemento> createMementoFunc;
+
+        public void clear()
+        {
+            undoMemento.clear();
+        }
 
         public UndoObject(Object pObjectToUndo, System.Func<UndoMemento> pCreateMementoFunc)
         {
+            //Debug.Log("UndoObject:" + pObjectToUndo.name);
             createMementoFunc = pCreateMementoFunc;
             objectToUndo = pObjectToUndo;
             undoMemento = createMementoFunc();
@@ -106,6 +112,8 @@ public class zzUndo:MonoBehaviour
 
         public void swapUndo()
         {
+            //Debug.Log("swapUndo:" + objectToUndo.name);
+            //Debug.Log(oppositeUndoMemento == null);
             if (oppositeUndoMemento == null)
             {
                 oppositeUndoMemento = createMementoFunc();
@@ -115,6 +123,7 @@ public class zzUndo:MonoBehaviour
             var lTemp = undoMemento;
             undoMemento = oppositeUndoMemento;
             oppositeUndoMemento = lTemp;
+            //Debug.Log(oppositeUndoMemento == null);
         }
     }
 
@@ -131,6 +140,8 @@ public class zzUndo:MonoBehaviour
     public int nowUndoCount = 0;
     void _registerUndo(object[] pObjectsToUndo)
     {
+        if (!enabled)
+            return;
         List<UndoObject> lUndoObjects = new List<UndoObject>(pObjectsToUndo.Length);
         foreach (var lObjectToUndo in pObjectsToUndo)
         {
@@ -143,7 +154,7 @@ public class zzUndo:MonoBehaviour
         {
             foreach (var lUndoObject in undoList.First.Value)
             {
-                lUndoObject.undoMemento.clear();
+                lUndoObject.clear();
             }
 
             undoList.RemoveFirst();
@@ -153,7 +164,8 @@ public class zzUndo:MonoBehaviour
 
     void _registerUndo(object pObjectToUndo)
     {
-        _registerUndo(new object[] { pObjectToUndo });
+        if(enabled)
+            _registerUndo(new object[] { pObjectToUndo });
         //undoList.AddLast(new UndoObject((Object)pObjectToUndo, 
         //    getUndoMementoCreateFun(pObjectToUndo.GetType())));
         //redoList.Clear();
@@ -177,7 +189,7 @@ public class zzUndo:MonoBehaviour
 
     void transportUndo(LinkedList<List<UndoObject>> pFrom, LinkedList<List<UndoObject>> pTo)
     {
-        if (pFrom.Count < 1)
+        if (!enabled || pFrom.Count < 1)
             return;
         var lUndoObjects = pFrom.Last.Value;
         pFrom.RemoveLast();
