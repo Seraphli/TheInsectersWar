@@ -16,21 +16,21 @@ public class SoldierNetView : MonoBehaviour
     public zzTimer disappearTimer;
     public MonoBehaviour[] disenableWhenDisappear;
 
-    class NetData
-    {
-        public NetData(int p1, int p2, double pTimestamp)
-        {
-            part1 = p1;
-            part2 = p2;
-            timestamp = pTimestamp;
-        }
-        public int part1;
-        public int part2;
-        public double timestamp;
-    }
+    //class NetData
+    //{
+    //    public NetData(int p1, int p2, double pTimestamp)
+    //    {
+    //        part1 = p1;
+    //        part2 = p2;
+    //        timestamp = pTimestamp;
+    //    }
+    //    public int part1;
+    //    public int part2;
+    //    public double timestamp;
+    //}
 
-    System.Collections.Generic.Queue<NetData> netDataQueue
-        = new System.Collections.Generic.Queue<NetData>();
+    //System.Collections.Generic.Queue<NetData> netDataQueue
+    //    = new System.Collections.Generic.Queue<NetData>();
 
     void Awake()
     {
@@ -148,26 +148,26 @@ public class SoldierNetView : MonoBehaviour
         if (stream.isReading)
         {
             double lTimestamp = info.timestamp;
-            {
-                double lDelay = 0.2;
-                float lPacketLossRatio = 0.4f;
-                NetData lData = null;
-                if (Random.value > lPacketLossRatio)
-                    netDataQueue.Enqueue(new NetData(lPart1, lPart2, info.timestamp));
-                while (netDataQueue.Count > 0
-                    && Network.time - netDataQueue.Peek().timestamp > lDelay)
-                {
-                    lData = netDataQueue.Dequeue();
-                }
-                if (lData != null)
-                {
-                    lPart1 = lData.part1;
-                    lPart2 = lData.part2;
-                    lTimestamp = lData.timestamp;
-                }
-                else
-                    return;
-            }
+            //{
+            //    double lDelay = 0.2;
+            //    float lPacketLossRatio = 0.4f;
+            //    NetData lData = null;
+            //    if (Random.value > lPacketLossRatio)
+            //        netDataQueue.Enqueue(new NetData(lPart1, lPart2, info.timestamp));
+            //    while (netDataQueue.Count > 0
+            //        && Network.time - netDataQueue.Peek().timestamp > lDelay)
+            //    {
+            //        lData = netDataQueue.Dequeue();
+            //    }
+            //    if (lData != null)
+            //    {
+            //        lPart1 = lData.part1;
+            //        lPart2 = lData.part2;
+            //        lTimestamp = lData.timestamp;
+            //    }
+            //    else
+            //        return;
+            //}
             appear();
             var lBitOut = new zz.LongBitIO(0);
             lBitOut.write(lPart2, 32);

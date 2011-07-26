@@ -138,8 +138,29 @@ public class NetworkMenu : MonoBehaviour
         //Network.useNat = false;
     }
 
+    public bool useNetworkRoom = true;
+    public string networkRoomName;
+
+    void OnConnectedToServer()
+    {
+        if (useNetworkRoom)
+        {
+            Network.SetSendingEnabled(0, false);
+
+            Network.isMessageQueueRunning = false;
+
+            Network.SetLevelPrefix(levelPrefix);
+            Application.LoadLevel(networkRoomName);
+
+            Network.isMessageQueueRunning = true;
+            Network.SetSendingEnabled(0, true);
+        }
+    }
+
     void OnPlayerConnected(NetworkPlayer player)
     {
+        if (useNetworkRoom)
+            return;
         print("OnPlayerConnected");
         Race lServerRace = raceSelect;
         //networkView.RPC( "LoadMyLevel", RPCMode.AllBuffered, "", 0);
@@ -208,6 +229,8 @@ public class NetworkMenu : MonoBehaviour
         return false;
     }
 
+    public bool _server = false;
+
     public bool isServer
     {
         set
@@ -239,6 +262,9 @@ public class NetworkMenu : MonoBehaviour
             () => Network.InitializeServer(32, _remotePort, useNat));
 
         networkHost.addRegisterFailReceiver(() => serverEvent("失败"));
+
+        if(!Network.isClient)
+            isServer = _server;
     }
 
     [SerializeField]
