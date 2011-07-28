@@ -51,10 +51,12 @@ public class NetworkRoomGUI : MonoBehaviour
         setVisible(pismirePlayerButton, true);
         setVisible(beePlayerButton, true);
 
-        int i = 0;
-        foreach (var lPlayerInfo in networkRoom.playersInfo)
+        for (int i = 0; i < networkRoom.playersInfo.Length;++i )
         {
-            string lShowName = (i+1) + "." + lPlayerInfo.playerName;
+            var lPlayerInfo = networkRoom.playersInfo[i];
+            if (lPlayerInfo == null)
+                continue;
+            string lShowName = (i + 1) + "." + lPlayerInfo.playerName;
             playerListLabel[i].setText(lShowName);
             playerListLabel[i].visible = true;
             if (lPlayerInfo.race == Race.ePismire)
@@ -69,7 +71,6 @@ public class NetworkRoomGUI : MonoBehaviour
                 beePlayerSelected[lPlayerInfo.spawnIndex].visible = true;
                 beePlayerLabel[lPlayerInfo.spawnIndex].setText(lShowName);
             }
-            ++i;
         }
     }
 }

@@ -17,7 +17,7 @@ public class zzGUITextField : zzInterfaceGUI
             textChangedEvent = nullStringCallFunc;
     }
 
-    public string text;
+    public string text = string.Empty;
 
     [SerializeField]
     private bool useDefaultStyle = false;

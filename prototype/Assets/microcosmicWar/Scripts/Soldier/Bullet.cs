@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
     public void setLayer(int pLayer)
     {
         _setLayer(pLayer);
-        if (Network.peerType != NetworkPeerType.Disconnected)
+        if (Network.isServer && networkView)
         {
             networkView.RPC("_setLayer", RPCMode.Others, pLayer);
         }

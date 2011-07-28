@@ -244,8 +244,7 @@ public class HeroSpawn : MonoBehaviour
         {
             if (Network.player == _owner)//服务器端
             {
-                createNetControl(lHeroObject);
-
+                RPCcreateNetControl(lHeroObject.networkView.viewID);
             }
             else
             {
@@ -264,21 +263,35 @@ public class HeroSpawn : MonoBehaviour
         return lHeroObject;
     }
 
+    //client
     [RPC]
     protected void RPCcreateNetControl(NetworkViewID pHeroID)
     {
         GameObject lHeroObject = NetworkView.Find(pHeroID).gameObject;
-        createNetControl(lHeroObject);
+        var lViewID = Network.AllocateViewID();
+        createNetControl(lHeroObject, lViewID);
+        networkView.RPC("HeroSpawnLinkControl", RPCMode.Others, pHeroID, lViewID);
     }
 
-    protected void createNetControl(GameObject pHeroObject)
+    //all
+    [RPC]
+    void HeroSpawnLinkControl(NetworkViewID pHeroID, NetworkViewID pNetSysnID)
+    {
+        GameObject lHeroObject = NetworkView.Find(pHeroID).gameObject;
+        createNetControl(lHeroObject, pNetSysnID);
+    }
+
+    protected void createNetControl(GameObject pHeroObject, NetworkViewID pNetSysnID)
     {
         //创建同步组件
-        GameObject lnetSysn = zzCreatorUtility.Instantiate(netSysnPrefab, new Vector3(), new Quaternion(), 0);
+        GameObject lnetSysn = (GameObject)Instantiate(netSysnPrefab);
+        lnetSysn.networkView.viewID = pNetSysnID;
         HeroNetView lHeroNetView = lnetSysn.GetComponent<HeroNetView>();
         lHeroNetView.setOwner(pHeroObject);
-
-        createControl(pHeroObject);
+        //在start化后再开启
+        //lHeroNetView.networkView.enabled = false;
+        if(_owner==Network.player)
+            createControl(pHeroObject);
     }
 
     protected void createControl(GameObject pHeroObject)

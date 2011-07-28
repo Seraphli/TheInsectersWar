@@ -176,8 +176,18 @@ public class GameScene : MonoBehaviour
             var lPlayers = lPlayerInfo.GetComponent<PlayerListInfo>().players;
             foreach (var lPlayElement in lPlayers)
             {
-                var lSpawn = getSpawn(lPlayElement).addPlayer(lPlayElement.networkPlayer);
+                if (lPlayElement == null
+                    || lPlayElement.isNull)
+                    continue;
+                var lNetworkPlayer = lPlayElement.networkPlayer;
+                var lSpawn = getSpawn(lPlayElement).addPlayer(lNetworkPlayer);
                 addPlayerSpawn(lPlayElement.networkPlayer, lSpawn);
+                if (lNetworkPlayer == Network.player)
+                    playerSpawn = lSpawn;
+                else
+                    networkView.RPC("GameSceneSetPlayerSpawn",
+                        lNetworkPlayer,
+                        lSpawn.networkView.viewID);
             }
         }
         else if (Network.isClient)
@@ -210,6 +220,12 @@ public class GameScene : MonoBehaviour
         //else
         //    Network.sendRate = clientNetworkSendRate;
 
+    }
+
+    [RPC]
+    void GameSceneSetPlayerSpawn(NetworkViewID pSpawn)
+    {
+        playerSpawn = NetworkView.Find(pSpawn).GetComponent<HeroSpawn>();
     }
 
     //[RPC]
@@ -263,7 +279,8 @@ public class GameScene : MonoBehaviour
 
     void OnPlayerDisconnected(NetworkPlayer player)
     {
-        interruptGame("Network Player Disconnection");
+        if(Network.connections.Length==0)
+            interruptGame("All Network Player Disconnection");
     }
 
     public void gameResult(string pRaceName,bool pIsWiner)

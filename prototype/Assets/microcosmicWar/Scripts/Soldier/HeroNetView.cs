@@ -12,48 +12,50 @@ public class HeroNetView : MonoBehaviour
     public SoldierModelSmoothMove soldierModelSmoothMove;
     //FIXME_VAR_TYPE transform;
 
-    void Start()
-    {
-        //GameObject lOwner  = transform.parent.gameObject;
-        if (!owner)
-            return;
-        Hero lHero = owner.GetComponentInChildren<Hero>();
-        character = lHero.getCharacter();
-        actionCommandControl = owner.GetComponentInChildren<ActionCommandControl>();
-        life = owner.GetComponent<Life>();
-        soldierModelSmoothMove = owner.GetComponent<SoldierModelSmoothMove>();
+    //void Start()
+    //{
+    //    //GameObject lOwner  = transform.parent.gameObject;
+    //    if (!owner)
+    //        return;
 
-        if (Network.peerType != NetworkPeerType.Disconnected && networkView.isMine)
-        {
-            networkView.RPC("RPCSetOwner", RPCMode.Others, owner.networkView.viewID);
-        }
+    //    if (Network.peerType != NetworkPeerType.Disconnected && networkView.isMine)
+    //    {
+    //        networkView.RPC("RPCSetOwner", RPCMode.Others, owner.networkView.viewID);
+    //        networkView.enabled = true;
+    //    }
 
-    }
+    //}
 
     public void setOwner(GameObject pOwner)
     {
         gameObject.name = "NS";
         transform.parent = pOwner.transform;
+        transform.localPosition = Vector3.zero;
         owner = pOwner;
-
-    }
-
-    [RPC]
-    public void RPCSetOwner(NetworkViewID pOwnerID)
-    {
-        GameObject lOwnerHeroObject = NetworkView.Find(pOwnerID).gameObject;
-
-        gameObject.name = "NS";
-        transform.parent = lOwnerHeroObject.transform;
-        owner = lOwnerHeroObject;
-
-        //-------------------------------------------
         Hero lHero = owner.GetComponentInChildren<Hero>();
         character = lHero.getCharacter();
         actionCommandControl = owner.GetComponentInChildren<ActionCommandControl>();
         life = owner.GetComponent<Life>();
         soldierModelSmoothMove = owner.GetComponent<SoldierModelSmoothMove>();
+
     }
+
+    //[RPC]
+    //public void RPCSetOwner(NetworkViewID pOwnerID)
+    //{
+    //    GameObject lOwnerHeroObject = NetworkView.Find(pOwnerID).gameObject;
+
+    //    gameObject.name = "NS";
+    //    transform.parent = lOwnerHeroObject.transform;
+    //    owner = lOwnerHeroObject;
+
+    //    //-------------------------------------------
+    //    Hero lHero = owner.GetComponentInChildren<Hero>();
+    //    character = lHero.getCharacter();
+    //    actionCommandControl = owner.GetComponentInChildren<ActionCommandControl>();
+    //    life = owner.GetComponent<Life>();
+    //    soldierModelSmoothMove = owner.GetComponent<SoldierModelSmoothMove>();
+    //}
 
     //class NetData
     //{

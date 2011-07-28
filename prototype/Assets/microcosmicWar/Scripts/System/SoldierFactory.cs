@@ -115,7 +115,10 @@ public class SoldierFactory : MonoBehaviour
             foreach (var lSoldier in soldierList)
             {
                 if (collisionLayer.isAliveFullCheck(lSoldier))
+                {
                     usedPoint += lSoldier.pointCount;
+                    lSoldier.GetComponent<Life>().addDieCallback(soldierDeadCall);
+                }
                 else
                     lRemoveList.Add(lSoldier);
             }

@@ -221,7 +221,18 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    public string playerName = "player";
+    [SerializeField]
+    string _playerName = "player";
+
+    public string playerName
+    {
+        get { return _playerName; }
+        set
+        {
+            _playerName = value;
+            sPlayerName = value;
+        }
+    }
 
     public GameObject topUi;
 
@@ -233,6 +244,10 @@ public class PlayerInfo : MonoBehaviour
 
     void Awake()
     {
+        if (sPlayerName.Length > 0)
+            _playerName = sPlayerName;
+        else
+            sPlayerName = _playerName;
         //if(teamName=="")
         //	teamName=eRaceToString(race);
     }
@@ -246,6 +261,10 @@ public class PlayerInfo : MonoBehaviour
     {
         race = pOther.race;
         playerName = pOther.playerName;
+        if (pOther.GetComponent<PlayerListInfo>()
+            && GetComponent<PlayerListInfo>())
+            GetComponent<PlayerListInfo>().players
+                = pOther.GetComponent<PlayerListInfo>().players;
         if (pOther.destroyAfterCollectData)
             Destroy(pOther.gameObject);
     }
@@ -283,6 +302,8 @@ public class PlayerInfo : MonoBehaviour
         //return teamName;
         return getRaceName();
     }
+
+    static string sPlayerName = string.Empty;
 
     //void  Update (){
     //}

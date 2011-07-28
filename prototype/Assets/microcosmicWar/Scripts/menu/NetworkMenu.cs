@@ -22,18 +22,20 @@ public class NetworkMenu : MonoBehaviour
     //玩家信息
     public Race raceSelect = Race.ePismire;
 
-    [SerializeField]
-    string _playerName = "player";
+    public PlayerInfo playerInfo;
+
+    //[SerializeField]
+    //string _playerName = "player";
 
     public string playerName
     {
         get
         {
-            return _playerName;
+            return playerInfo.playerName;
         }
         set
         {
-            _playerName = value;
+            playerInfo.playerName = value;
         }
     }
 
@@ -126,9 +128,13 @@ public class NetworkMenu : MonoBehaviour
         return Race.eNone;
     }
 
+    [SerializeField]
+    bool disconnectWhenAwake = true;
+
     void Awake()
     {
-        Network.Disconnect();
+        if (disconnectWhenAwake)
+            Network.Disconnect();
     }
 
     void OnFailedToConnect(NetworkConnectionError error)
@@ -141,15 +147,21 @@ public class NetworkMenu : MonoBehaviour
     public bool useNetworkRoom = true;
     public string networkRoomName;
 
+    void OnPlayerDisconnected()
+    {
+        print("OnPlayerDisconnected");
+    }
+
     void OnConnectedToServer()
     {
+        print("OnConnectedToServer");
         if (useNetworkRoom)
         {
             Network.SetSendingEnabled(0, false);
 
             Network.isMessageQueueRunning = false;
 
-            Network.SetLevelPrefix(levelPrefix);
+            //Network.SetLevelPrefix(levelPrefix);
             Application.LoadLevel(networkRoomName);
 
             Network.isMessageQueueRunning = true;
@@ -157,36 +169,43 @@ public class NetworkMenu : MonoBehaviour
         }
     }
 
-    void OnPlayerConnected(NetworkPlayer player)
+    public void loadGame()
     {
-        if (useNetworkRoom)
+        if (mapName.Length == 0)
             return;
-        print("OnPlayerConnected");
-        Race lServerRace = raceSelect;
-        //networkView.RPC( "LoadMyLevel", RPCMode.AllBuffered, "", 0);
-
-        int lIntRace = (int)Race.ePismire;
-        //让联接的客户端选择相反的种族
-        if (lServerRace == Race.ePismire)
-        {
-            lIntRace = (int)Race.eBee;
-        }
-        else
-        {
-            lIntRace = (int)Race.ePismire;
-        }
         Network.RemoveRPCsInGroup(0);
-        networkView.RPC("LoadMyLevel", RPCMode.Others, lIntRace);
-        LoadMyLevel((int)lServerRace);
+        networkView.RPC("LoadMyLevel", RPCMode.Others, mapName);
+        LoadMyLevel(mapName);
 
         networkHost.UnregisterHost();
+    }
+
+    void OnPlayerConnected(NetworkPlayer player)
+    {
+        print("OnPlayerConnected");
+        if (useNetworkRoom)
+            return;
+        //Race lServerRace = raceSelect;
+        //networkView.RPC( "LoadMyLevel", RPCMode.AllBuffered, "", 0);
+
+        //int lIntRace = (int)Race.ePismire;
+        ////让联接的客户端选择相反的种族
+        //if (lServerRace == Race.ePismire)
+        //{
+        //    lIntRace = (int)Race.eBee;
+        //}
+        //else
+        //{
+        //    lIntRace = (int)Race.ePismire;
+        //}
+        loadGame();
     }
 
     //@RPC
     //function setRace
     public int levelPrefix = 1;
     [RPC]
-    void LoadMyLevel(int race)
+    void LoadMyLevel(string pMapName)
     {
         //print("LoadMyLevel");
         print("Network.isServer:" + Network.isServer);
@@ -205,8 +224,8 @@ public class NetworkMenu : MonoBehaviour
         //PlayerInfo playerInfo = GameObject.Find(savedDataName).GetComponentInChildren<PlayerInfo>();
         //playerInfo.setRace((Race)race);
         //playerInfo.setPlayerName(playerName);
-        selectRaceEvent((Race)race);
-        selectMapEvent(hostMap);
+        //selectRaceEvent((Race)race);
+        selectMapEvent(pMapName);
 
         //Application.LoadLevel("testScene");
         //Application.LoadLevel("netSewer2");
@@ -219,11 +238,16 @@ public class NetworkMenu : MonoBehaviour
 
     }
 
+    //void updateHostInfo()
+    //{
+    //    hostInfo = createHostInfo();
+    //}
+
     public bool startHost()
     {
         if (mapName.Length>0&&checkMapAvailableEvent(mapName))
         {
-            hostInfo = initHost(_playerName, raceSelect, mapName);
+            hostInfo = createHostInfo();
             return true;
         }
         return false;
@@ -240,7 +264,7 @@ public class NetworkMenu : MonoBehaviour
                 if(value)
                 {
                     if (startHost())
-                        serverEvent("玩家:" + _playerName + " " + "地图:" + mapName);
+                        serverEvent("玩家:" + playerName + " " + "地图:" + mapName);
                 }
                 else
                 {
@@ -262,7 +286,7 @@ public class NetworkMenu : MonoBehaviour
             () => Network.InitializeServer(32, _remotePort, useNat));
 
         networkHost.addRegisterFailReceiver(() => serverEvent("失败"));
-
+        print(Network.peerType);
         if(!Network.isClient)
             isServer = _server;
     }
@@ -270,30 +294,32 @@ public class NetworkMenu : MonoBehaviour
     [SerializeField]
     zzHostInfo hostInfo;
 
-    zzHostInfo initHost(string playName, Race pRace, string pMapName)
+    zzHostInfo createHostInfo()
     {
-        hostMap = pMapName;
         var lHostInfo = new zzHostInfo();
+        updateHostInfo(lHostInfo);
+        networkHost.RegisterHost(lHostInfo);
+        return lHostInfo;
+    }
+
+    void updateHostInfo(zzHostInfo lHostInfo)
+    {
         lHostInfo.gameType = gameTypeName;
         lHostInfo.gameName = gameName;
 
         Hashtable lTableData = new Hashtable();
-        lTableData["playerName"] = playName;
-        lTableData["race"] = (int)pRace;
-        lTableData["map"] = pMapName;
+        lTableData["playerName"] = playerName;
+        lTableData["map"] = mapName;
         string lStringData = zzSerializeString.Singleton.pack(lTableData);
         lHostInfo.comment = lStringData;
         lHostInfo.port = _remotePort;
-
-        networkHost.RegisterHost(lHostInfo);
-        return lHostInfo;
     }
 
     [SerializeField]
     string _mapName;
 
-    [SerializeField]
-    string hostMap;
+    //[SerializeField]
+    //string hostMap;
 
     public string mapName
     {
@@ -304,7 +330,12 @@ public class NetworkMenu : MonoBehaviour
 
         set
         {
-            _mapName = value;
+            if(_mapName!=value)
+            {
+                _mapName = value;
+                if(Network.isServer)
+                    updateHostInfo(hostInfo);
+            }
         }
     }
 
@@ -321,9 +352,9 @@ public class NetworkMenu : MonoBehaviour
         if(serverList.serverList.ContainsKey(hostGUID))
         {
             var lHostInfo = serverList.serverList[hostGUID];
-            Hashtable lTableData = (Hashtable)zzSerializeString.Singleton
-                .unpackToData(lHostInfo.comment);
-            hostMap = (string)lTableData["map"];
+            //Hashtable lTableData = (Hashtable)zzSerializeString.Singleton
+            //    .unpackToData(lHostInfo.comment);
+            //hostMap = (string)lTableData["map"];
             networkConnectionError = Network.Connect(lHostInfo.IP, lHostInfo.port);
         }
     }
@@ -367,11 +398,9 @@ public class NetworkMenu : MonoBehaviour
             }
             //string lHostPlayName = (string)lTableData["playerName"];
             //string lHostMap = (string)lTableData["map"];
-            Race lHostRace = (Race)lTableData["race"];
             var lStringInfo =new Dictionary<string, string>();
             lStringInfo["mapName"] = (string)lTableData["map"];
             lStringInfo["playerName"] = (string)lTableData["playerName"];
-            lStringInfo["raceName"] = getRaceName(lHostRace);
             lStringInfo["IP"] = lServer.IP;
             lElement.stringInfo = lStringInfo;
             lElements[i] = lElement;

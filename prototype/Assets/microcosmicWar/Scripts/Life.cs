@@ -89,7 +89,7 @@ public class Life : MonoBehaviour
                 bloodValue = 0;
                 //zzCreatorUtility.sendMessage(gameObject, "Life_die");
                 dieCallbackList(this);
-                if (Network.isServer)
+                if (Network.isServer && networkView)
                 {
                     if (netSendPositionWhenDie)
                         networkView.RPC("RPCMakeDeadPos", RPCMode.Others, transform.position);

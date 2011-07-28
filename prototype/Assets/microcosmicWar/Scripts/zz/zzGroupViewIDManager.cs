@@ -72,6 +72,7 @@ public class zzGroupViewIDManager:MonoBehaviour
         networkView.RPC("RPCSetObjectCount", RPCMode.OthersBuffered, objectCount);
     }
 
+    //client
     [RPC]
     void RPCSetObjectCount(int pCount)
     {
@@ -87,14 +88,13 @@ public class zzGroupViewIDManager:MonoBehaviour
         {
             //print("finishedCheck#############RPCGroupFinish");
             networkView.RPC("RPCGroupFinish", RPCMode.Server);
-            RPCGroupFinish();
+            groupFinish();
         }
     }
 
-    [RPC]
-    void RPCGroupFinish()
+    void groupFinish()
     {
-        string lInfo = "RPCGroupFinish:\n";
+        string lInfo = "groupFinish:\n";
         foreach (var lNetworkView in networkViewList)
         {
             lNetworkView.enabled = true;
@@ -102,6 +102,33 @@ public class zzGroupViewIDManager:MonoBehaviour
         }
         print(lInfo);
         networkViewList.Clear();
+        playerList.Clear();
         groupFinishEvent();
+    }
+
+    void playersFinishCheck()
+    {
+        print("playersFinishCheck: playerList.Count:" + playerList.Count
+            + " connections.Length:" + Network.connections.Length);
+        if (playerList.Count == Network.connections.Length)
+            groupFinish();
+    }
+
+    HashSet<NetworkPlayer> playerList = new HashSet<NetworkPlayer>();
+
+    void OnPlayerDisconnected(NetworkPlayer pPlayer)
+    {
+        playerList.Remove(pPlayer);
+        playersFinishCheck();
+    }
+
+    //server
+    [RPC]
+    void RPCGroupFinish(NetworkMessageInfo pInfo)
+    {
+        var lPlayer = pInfo.sender;
+        print(lPlayer + " RPCGroupFinish");
+        playerList.Add(lPlayer);
+        playersFinishCheck();
     }
 }
