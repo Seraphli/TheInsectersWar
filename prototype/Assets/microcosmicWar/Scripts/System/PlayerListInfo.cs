@@ -7,6 +7,7 @@ public class PlayerElement
     public string playerName;
     public int spawnIndex = -1;
     public NetworkPlayer networkPlayer;
+    public bool ready = false;
 
     public bool isNull
     {

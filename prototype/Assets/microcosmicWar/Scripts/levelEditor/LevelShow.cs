@@ -4,7 +4,10 @@ using System.IO;
 
 public class LevelShow:MonoBehaviour
 {
-    public string levelRootFolder;
+    public string levelRootFolder
+    {
+        get { return WMGameConfig.mapFolderName; }
+    }
     public string mainFileName = "main.zzScene";
     public Texture2D defaultLevelImage;
     public zzGUILibTreeInfo treeUIInfo;

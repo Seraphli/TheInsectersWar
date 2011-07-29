@@ -3,6 +3,58 @@ using System.Collections;
 
 public class zzUtilities
 {
+    public static string FormatString(string format, object arg0)
+    {
+        try
+        {
+            return string.Format(format, arg0);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
+            return "error string format";
+        }
+    }
+
+    public static string FormatString(string format,params object[] args)
+    {
+        try
+        {
+            return string.Format(format, args);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
+            return "error string format";
+        }
+    }
+
+    public static string FormatString(string format, object arg0, object arg1)
+    {
+        try
+        {
+            return string.Format(format, arg0, arg1);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
+            return "error string format";
+        }
+    }
+
+    public static string FormatString(string format, object arg0, object arg1, object arg2)
+    {
+        try
+        {
+            return string.Format(format, arg0, arg1, arg2);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
+            return "error string format";
+        }
+    }
+
     public delegate void voidFunction();
 
     static public void nullFunction()

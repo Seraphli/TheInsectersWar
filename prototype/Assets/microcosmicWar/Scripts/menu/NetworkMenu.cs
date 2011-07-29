@@ -114,7 +114,7 @@ public class NetworkMenu : MonoBehaviour
 
     public System.Action loadGameSceneEvent;
 
-    public System.Func<string, bool> checkMapAvailableEvent;
+    //public System.Func<string, bool> checkMapAvailableEvent;
 
     public System.Action<string> serverEvent;
 
@@ -171,7 +171,7 @@ public class NetworkMenu : MonoBehaviour
 
     public void loadGame()
     {
-        if (mapName.Length == 0)
+        if (!Network.isServer || mapName.Length == 0)
             return;
         Network.RemoveRPCsInGroup(0);
         networkView.RPC("LoadMyLevel", RPCMode.Others, mapName);
@@ -245,7 +245,7 @@ public class NetworkMenu : MonoBehaviour
 
     public bool startHost()
     {
-        if (mapName.Length>0&&checkMapAvailableEvent(mapName))
+        if (mapName.Length > 0 && WMGameConfig.checkMapAvailable(mapName))
         {
             hostInfo = createHostInfo();
             return true;
