@@ -54,7 +54,7 @@ public class NetworkRoomGUI : MonoBehaviour
         for (int i = 0; i < networkRoom.playersInfo.Length;++i )
         {
             var lPlayerInfo = networkRoom.playersInfo[i];
-            if (lPlayerInfo == null)
+            if (!lPlayerInfo)
                 continue;
             string lShowName = (i + 1) + "." + lPlayerInfo.playerName;
             playerListLabel[i].setText(lShowName);

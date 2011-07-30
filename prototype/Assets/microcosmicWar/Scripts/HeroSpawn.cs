@@ -131,7 +131,7 @@ public class HeroSpawn : MonoBehaviour
 
 
     //创建只能在服务器端调用
-    void _rebirthHero()
+    void _rebirthHero(Life p)
     {
         if (!haveFirstCreate)
             Debug.LogError("haveFirstCreate == false");
@@ -256,11 +256,20 @@ public class HeroSpawn : MonoBehaviour
             }
         }
 
-        IobjectListener lRemoveCall = (IobjectListener)lHeroObject.GetComponent<IobjectListener>();
-
-        lRemoveCall.setRemovedCallFunc(_rebirthHero);
+        lHeroObject.GetComponent<Life>().addDieCallback(_rebirthHero);
 
         return lHeroObject;
+    }
+
+    public void destroyTheSpawn()
+    {
+        if(hero)
+        {
+            var lLife = hero.GetComponent<Life>();
+            lLife.removeDieCallback(_rebirthHero);
+            lLife.makeDead();
+        }
+        Destroy(gameObject);
     }
 
     //client

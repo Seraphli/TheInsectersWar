@@ -2,6 +2,21 @@
 
 public class zzGUILayoutConsole : zzInterfaceGUI
 {
+    System.Action messagesDataAddedEvent;
+
+    public void addDataAddedEventReceiver(System.Action pReceiver)
+    {
+        messagesDataAddedEvent += pReceiver;
+    }
+
+    static void nullEventReceiver(){}
+
+    void Start()
+    {
+        if (messagesDataAddedEvent == null)
+            messagesDataAddedEvent = nullEventReceiver;
+    }
+
     public GUIStyle textStyle;
 
     [System.Serializable]
@@ -48,6 +63,7 @@ public class zzGUILayoutConsole : zzInterfaceGUI
         {
             lWriteIndex = beginIndex + messageCount;
             ++messageCount;
+            messagesDataAddedEvent();
         }
         messagesData[lWriteIndex].text = pText;
         messagesData[lWriteIndex].color = pColor;

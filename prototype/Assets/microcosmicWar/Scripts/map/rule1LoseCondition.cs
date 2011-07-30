@@ -16,7 +16,7 @@ class rule1LoseCondition : IobjectListener
 
     void Start()
     {
-        print(gameObject.name + " " + teamName);
+        //print(gameObject.name + " " + teamName);
         initedCall();
     }
 

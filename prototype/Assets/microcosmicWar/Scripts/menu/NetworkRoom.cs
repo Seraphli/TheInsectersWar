@@ -14,9 +14,11 @@ public class NetworkRoom : MonoBehaviour
         = new Dictionary<NetworkPlayer, int>();
     System.Action<string> messageSender;
     System.Action<string> errorMessageSender;
+    System.Action<string> playerMessageSender;
 
     static void nullEventReceiver(){}
 
+    //todo 用属性重写;分清接收和发送
     //in client
     System.Action playerReadyEvent;
     System.Action playerReadyInterruptedEvent;
@@ -82,7 +84,10 @@ public class NetworkRoom : MonoBehaviour
     {
         messageSender("地图:" + pMap);
         if (!WMGameConfig.checkMapAvailable(pMap))
+        {
             errorMessageSender("你无此对战地图,可通过其他工具向房主索取");
+            makeUnready();
+        }
         _mapName = pMap;
     }
 
@@ -94,6 +99,11 @@ public class NetworkRoom : MonoBehaviour
     public void addErrorMessageReceiver(System.Action<string> pReceiver)
     {
         errorMessageSender += pReceiver;
+    }
+
+    public void addPlayerMessageReceiver(System.Action<string> pReceiver)
+    {
+        playerMessageSender += pReceiver;
     }
 
     static void nullMessageReceiver(string p){}
@@ -154,6 +164,8 @@ public class NetworkRoom : MonoBehaviour
             messageSender = nullMessageReceiver;
         if (errorMessageSender == null)
             errorMessageSender = nullMessageReceiver;
+        if (playerMessageSender == null)
+            playerMessageSender = nullMessageReceiver;
         initEvent();
         while (Network.peerType == NetworkPeerType.Disconnected)
         {
@@ -180,12 +192,12 @@ public class NetworkRoom : MonoBehaviour
         playerToID.Remove(pPlayer);
         _playersInfo[lPlayerIdIndex] = null;
         sendData();
+        netGameInterruptedEvent();
     }
 
-
-    void clearIntArray(int[] pArray)
+    void OnDisconnectedFromServer(NetworkDisconnection info)
     {
-        System.Array.Clear(pArray, 0, pArray.Length);
+        errorMessageSender("连接中断,按返回按钮退出房间");
     }
 
     /// <summary>
@@ -197,8 +209,10 @@ public class NetworkRoom : MonoBehaviour
     int registerPlayer(string pPlayerName, NetworkPlayer pPlayer)
     {
         int i = 0;
-        while (_playersInfo[i] != null)
+        while (_playersInfo[i] && i < _playersInfo.Length)
             ++i;
+        if (i == _playersInfo.Length)
+            return -1;
         int lPlayerID = indexToPlayerId(i);
         playerToID[pPlayer] = lPlayerID;
         //guidToPlayer[pGUID] = pPlayer;
@@ -210,7 +224,7 @@ public class NetworkRoom : MonoBehaviour
             spawnIndex = 0,
         };
         _playersInfo[i] = lPlayersInfo;
-        playerEnterMessage(lPlayerID, lPlayersInfo);
+        //playerEnterMessage(lPlayerID, lPlayersInfo);
         return lPlayerID;
     }
 
@@ -386,8 +400,8 @@ public class NetworkRoom : MonoBehaviour
     public void makeUnready()
     {
         var lPlayerInfo = _playersInfo[playerIdToIndex(playerID)];
-        if (!lPlayerInfo.ready)
-            Debug.LogError("makeUnready: !lPlayerInfo.ready");
+        if (Network.isClient && !lPlayerInfo.ready)
+            return;
         else if (Network.isServer)
         {
             netGameInterruptedEvent();
@@ -409,11 +423,48 @@ public class NetworkRoom : MonoBehaviour
             lPlayerInfo.ready = false;
             sendData();
             playerUnreadyMessage(pPlayerID, lPlayerInfo);
+            netGameInterruptedEvent();
         }
+    }
+
+    public void sendPlayerMessage(string pMessage)
+    {
+        if (pMessage.Length == 0)
+            return;
+        NetworkSendPlayerMessage(playerID, pMessage);
+        networkView.RPC("NetworkSendPlayerMessage", RPCMode.Others, playerID, pMessage);
+    }
+
+    [RPC]
+    void NetworkSendPlayerMessage(int pPlayerID, string pMessage)
+    {
+        var lPlayer = _playersInfo[playerIdToIndex(pPlayerID)];
+        playerMessageSender(pPlayerID + "." + lPlayer.playerName
+        + " 说:" + pMessage);
     }
 
     [SerializeField]
     bool haveReceiverRoomData = false;
+
+    void playerChanged(int lPlayerID, PlayerElement pLastInfo, PlayerElement pNewInfo)
+    {
+        if (!pLastInfo && pNewInfo)
+            playerEnterMessage(lPlayerID, pNewInfo);
+        else if (pLastInfo && !pNewInfo)
+            playerLeaveMessage(lPlayerID, pNewInfo);
+        else
+        {
+            if (pLastInfo.race != pNewInfo.race
+                || pLastInfo.spawnIndex != pNewInfo.spawnIndex)
+                selectChangedMessage(lPlayerID, pNewInfo);
+            else if (pLastInfo.playerName != pNewInfo.playerName)
+                renamePlayerMessage(lPlayerID, pLastInfo.playerName, pNewInfo.playerName);
+            if (!pLastInfo.ready && pNewInfo.ready)
+                playerReadyMessage(lPlayerID, pNewInfo);
+            else if (pLastInfo.ready && !pNewInfo.ready)
+                playerUnreadyMessage(lPlayerID, pNewInfo);
+        } 
+    }
 
     //in client
     [RPC]
@@ -434,7 +485,6 @@ public class NetworkRoom : MonoBehaviour
                 }
                 continue;
             }
-
             var lPlayerInfo = new PlayerElement
             {
                 playerName = (string)lPlayerData["n"],
@@ -446,22 +496,14 @@ public class NetworkRoom : MonoBehaviour
                 lPlayerInfo.spawnIndex = (int)lPlayerData["si"];
                 lPlayerInfo.ready = (bool)lPlayerData["rd"];
             }
-            if (!haveReceiverRoomData)
-                haveReceiverRoomData = true;
-            else if (!lLastInfo && lPlayerInfo)
-                playerEnterMessage(lPlayerID, lPlayerInfo);
-            else if (lLastInfo.race != lPlayerInfo.race
-                || lLastInfo.spawnIndex != lPlayerInfo.spawnIndex)
-                selectChangedMessage(lPlayerID, lPlayerInfo);
-            else if (lLastInfo.playerName != lPlayerInfo.playerName)
-                renamePlayerMessage(lPlayerID, lLastInfo.playerName, lPlayerInfo.playerName);
-            else if (!lLastInfo.ready && lLastInfo.ready)
-                playerReadyMessage(lPlayerID, lPlayerInfo);
-            else if (lLastInfo.ready && !lLastInfo.ready)
-                playerUnreadyMessage(lPlayerID, lPlayerInfo);
+            if (haveReceiverRoomData)
+                playerChanged(lPlayerID, lLastInfo, lPlayerInfo);
             _playersInfo[i] = lPlayerInfo;
         }
+        haveReceiverRoomData = true;
         var lPlayersInfo =_playersInfo[playerIdToIndex(playerID)];
+        if (!lPlayersInfo)
+            return;
         player.race = lPlayersInfo.race;
         player.playerName = lPlayersInfo.playerName;
         if (lPlayersInfo.ready)

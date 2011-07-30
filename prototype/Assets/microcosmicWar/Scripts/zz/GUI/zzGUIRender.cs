@@ -6,6 +6,12 @@ using System.Collections;
 public class zzGUI
 {
     static zzInterfaceGUI _root;
+    static zzWindow _focusedWindow;
+
+    public static void _setFocusedWindow(zzWindow pWindow)
+    {
+        _focusedWindow = pWindow;
+    }
 
     public static void _setRoot(zzInterfaceGUI pRoot)
     {
@@ -17,6 +23,11 @@ public class zzGUI
     public static zzInterfaceGUI root
     {
         get { return _root; }
+    }
+
+    public static zzWindow focusedWindow
+    {
+        get { return _focusedWindow; }
     }
 
     public static Vector2 originOfCoordinates;

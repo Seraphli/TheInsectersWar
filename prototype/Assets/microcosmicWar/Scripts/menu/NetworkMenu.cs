@@ -147,9 +147,16 @@ public class NetworkMenu : MonoBehaviour
     public bool useNetworkRoom = true;
     public string networkRoomName;
 
-    void OnPlayerDisconnected()
+    void OnPlayerDisconnected(NetworkPlayer pPlayer)
     {
-        print("OnPlayerDisconnected");
+        print("OnPlayerDisconnected:" + pPlayer);
+    }
+
+    System.Action loadNetworkRoomEvent;
+
+    public void addLoadNetworkRoomReceiver(System.Action pReceiver)
+    {
+        loadNetworkRoomEvent += pReceiver;
     }
 
     void OnConnectedToServer()
@@ -157,15 +164,16 @@ public class NetworkMenu : MonoBehaviour
         print("OnConnectedToServer");
         if (useNetworkRoom)
         {
-            Network.SetSendingEnabled(0, false);
+            loadNetworkRoomEvent();
+            //Network.SetSendingEnabled(0, false);
 
-            Network.isMessageQueueRunning = false;
+            //Network.isMessageQueueRunning = false;
 
-            //Network.SetLevelPrefix(levelPrefix);
-            Application.LoadLevel(networkRoomName);
+            ////Network.SetLevelPrefix(levelPrefix);
+            //Application.LoadLevel(networkRoomName);
 
-            Network.isMessageQueueRunning = true;
-            Network.SetSendingEnabled(0, true);
+            //Network.isMessageQueueRunning = true;
+            //Network.SetSendingEnabled(0, true);
         }
     }
 

@@ -17,8 +17,8 @@ public class GameScene : MonoBehaviour
 
     public GameObject sceneData;
 
-    List<KeyValuePair<NetworkPlayer, HeroSpawn>> playerSpawnList
-        = new List<KeyValuePair<NetworkPlayer,HeroSpawn>>();
+    Dictionary<NetworkPlayer, HeroSpawn> playerSpawnList
+        = new Dictionary<NetworkPlayer, HeroSpawn>();
     public PlayerSpawn[] pismirePlayerSpawns;
     public PlayerSpawn[] beePlayerSpawns;
 
@@ -145,8 +145,7 @@ public class GameScene : MonoBehaviour
 
     void addPlayerSpawn(NetworkPlayer pPlayer,HeroSpawn pHeroSpawn)
     {
-        playerSpawnList.Add(new KeyValuePair<NetworkPlayer, HeroSpawn>(
-            pPlayer, pHeroSpawn));
+        playerSpawnList[pPlayer] = pHeroSpawn;
     }
 
     void Start()
@@ -156,28 +155,12 @@ public class GameScene : MonoBehaviour
         pismirePlayerSpawns = getSortedSpawns(Race.ePismire);
         beePlayerSpawns = getSortedSpawns(Race.eBee);
         PlayerInfo lPlayerInfo = playerInfo;
-        //print(playerInfo.getRace());
-        //Race race=playerInfo.getRace();
-
-        //if (lPlayerInfo.getRace() == Race.ePismire)
-        //{
-        //    playerSpawn = pismirePlayerSpawn;
-        //    adversaryPlayerSpawn = beePlayerSpawn;
-        //}
-        //else
-        //{
-        //    playerSpawn = beePlayerSpawn;
-        //    adversaryPlayerSpawn = pismirePlayerSpawn;
-        //}
-
-        //adversaryLayerValue= 1<<LayerMask.NameToLayer(adversaryName);
         if(Network.isServer)
         {
             var lPlayers = lPlayerInfo.GetComponent<PlayerListInfo>().players;
             foreach (var lPlayElement in lPlayers)
             {
-                if (lPlayElement == null
-                    || lPlayElement.isNull)
+                if (!lPlayElement)
                     continue;
                 var lNetworkPlayer = lPlayElement.networkPlayer;
                 var lSpawn = getSpawn(lPlayElement).addPlayer(lNetworkPlayer);
@@ -198,6 +181,7 @@ public class GameScene : MonoBehaviour
         {
             var lSpawn = getSpawn(getSpawns(lPlayerInfo.race), 0).addPlayer(Network.player);
             addPlayerSpawn(Network.player, lSpawn);
+            playerSpawn = lSpawn;
 
         }
         CreatePlayer();
@@ -279,8 +263,17 @@ public class GameScene : MonoBehaviour
 
     void OnPlayerDisconnected(NetworkPlayer player)
     {
-        if(Network.connections.Length==0)
-            interruptGame("All Network Player Disconnection");
+        HeroSpawn lSpawn;
+        playerSpawnList.TryGetValue(player, out lSpawn);
+        if (lSpawn)
+        {
+            lSpawn.destroyTheSpawn();
+            playerSpawnList.Remove(player);
+            if (playerSpawnList.Count==1)
+            {
+                interruptGame("All Network Player Disconnection");
+            }
+        }
     }
 
     public void gameResult(string pRaceName,bool pIsWiner)

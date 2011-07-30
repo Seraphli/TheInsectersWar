@@ -54,11 +54,6 @@ public class zzGUIRelativeUsedInfo
 
 public abstract class zzInterfaceGUI : MonoBehaviour
 {
-    static int sID = 0;
-    protected   int newID()
-    {
-        return ++sID;
-    }
 
     public static bool canChangeLayout
     {

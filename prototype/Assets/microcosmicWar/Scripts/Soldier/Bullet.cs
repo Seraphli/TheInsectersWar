@@ -188,7 +188,7 @@ public class Bullet : MonoBehaviour
 
     void setBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation,bool pRPCCall)
     {
-        if (pRPCCall&&Network.peerType== NetworkPeerType.Server)
+        if (pRPCCall && Network.peerType == NetworkPeerType.Server && networkView)
         {
             networkView.RPC("RPCSetBulletForwardVelocity", RPCMode.Others, pVelocity, pRotation);
         }

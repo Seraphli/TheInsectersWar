@@ -36,6 +36,7 @@ public class MachineGunAttachmentNetwork:MonoBehaviour
                     lParentNetview.enabled = false;
                 }
             }
+            networkView.enabled = true;
 
         }
     }

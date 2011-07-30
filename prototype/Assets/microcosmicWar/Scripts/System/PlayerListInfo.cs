@@ -3,9 +3,17 @@
 [System.Serializable]
 public class PlayerElement
 {
-    public Race race;
+    public Race race = Race.eNone;
     public string playerName;
-    public int spawnIndex = -1;
+    [SerializeField]
+    int _spawnIndex = -1;
+
+    //为了防止Unity的UI更改值,所以用这种形式
+    public int spawnIndex
+    {
+        set { _spawnIndex = value;}
+        get { return _spawnIndex; }
+    }
     public NetworkPlayer networkPlayer;
     public bool ready = false;
 

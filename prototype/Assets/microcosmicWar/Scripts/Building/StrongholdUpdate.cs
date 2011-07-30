@@ -43,23 +43,24 @@ public class StrongholdUpdate:MonoBehaviour
             attachUpdate(((GameObject)Instantiate(attachmentPrefab)).transform);
         else
         {
-            var lAttachmentParent = (GameObject)Network.Instantiate(attachmentPrefab,
-                attachmentParent.position, attachmentParent.rotation,0);
-            attachUpdate(lAttachmentParent.transform);
-            networkView.RPC("RPCAttachUpdate", RPCMode.Others,
-                lAttachmentParent.networkView.viewID);
+            var lViewID = Network.AllocateViewID();
+            StrongholdUpdateAttach(lViewID);
+            networkView.RPC("StrongholdUpdateAttach", RPCMode.Others, lViewID);
         }
     }
 
     [RPC]
-    void RPCAttachUpdate(NetworkViewID pViewID)
+    void StrongholdUpdateAttach(NetworkViewID pViewID)
     {
-        attachUpdate(NetworkView.Find(pViewID).transform);
+        var lAttachmentParent = (GameObject)Instantiate(attachmentPrefab);
+        lAttachmentParent.networkView.viewID = pViewID;
+        attachUpdate(lAttachmentParent.transform);
     }
 
     void attachUpdate(Transform pAttachment)
     {
         strongholdAnimation.Play(updateAnimation);
+        pAttachment.networkView.enabled = false;
         pAttachment.parent = attachmentParent;
         pAttachment.localPosition = Vector3.zero;
         pAttachment.localRotation = Quaternion.identity;

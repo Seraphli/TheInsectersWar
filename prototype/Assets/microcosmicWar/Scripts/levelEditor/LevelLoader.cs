@@ -38,12 +38,22 @@ public class LevelLoader:MonoBehaviour
 
     public SceneLoader sceneLoader;
 
+    System.Action loadMethod;
+
+    public void addLoadMethod(System.Action pMethod)
+    {
+        loadMethod += pMethod;
+    }
+
     public void tryLoad(string pUnitySceneName)
     {
         if(System.IO.Directory.Exists(_levelName))
         {
             DontDestroyOnLoad(gameObject);
-            Application.LoadLevel(pUnitySceneName);
+            if (loadMethod != null)
+                loadMethod();
+            else
+                Application.LoadLevel(pUnitySceneName);
         }
     }
 

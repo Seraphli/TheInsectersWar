@@ -15,6 +15,26 @@ public class zzGUILayoutScrollView: zzGUIContainer
     public GUIStyle background;
     public Vector2 viewScroll;
 
+    public void toTop()
+    {
+        viewScroll.y = 0f;
+    }
+
+    public void toBottom()
+    {
+        viewScroll.y = float.MaxValue;
+    }
+
+    public void toLeft()
+    {
+        viewScroll.x = 0;
+    }
+
+    public void toRight()
+    {
+        viewScroll.x = float.MaxValue;
+    }
+
     public override void impGUI(Rect rect)
     {
         if (allUseDefault)

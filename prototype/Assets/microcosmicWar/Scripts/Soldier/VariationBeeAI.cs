@@ -43,7 +43,14 @@ public class VariationBeeAI : SoldierAI
         {
             int lFireTaget = needFire();
             actionCommand.clear();
-            if (lFireTaget != 0)
+            if (swoopCheck())
+            {
+                if (Random.value < overaweRate)
+                    actionCommand.Action2 = true;
+                else
+                    actionCommand.Action1 = true;
+            }
+            else if (lFireTaget != 0)
             {
                 if (Random.value < overaweRate)
                     actionCommand.Action2 = true;
@@ -52,13 +59,6 @@ public class VariationBeeAI : SoldierAI
                     actionCommand.Fire = true;
                     setFaceCommand(actionCommand, lFireTaget);
                 }
-            }
-            else if (swoopCheck())
-            {
-                if (Random.value < overaweRate)
-                    actionCommand.Action2 = true;
-                else
-                    actionCommand.Action1 = true;
             }
             else
                 actionCommand = moveToAim(aimPosition, lAim);

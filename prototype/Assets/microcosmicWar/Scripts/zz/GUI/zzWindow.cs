@@ -12,6 +12,11 @@ public class zzWindow : zzGUIContainer
 
     public bool alwayFront = false;
 
+    public bool isFocused
+    {
+        get { return zzGUI.focusedWindow == this; }
+    }
+
     /// <summary>
     /// 父UI有Group 时,将返回错误的信息
     /// </summary>
@@ -59,6 +64,11 @@ public class zzWindow : zzGUIContainer
     
     public virtual void impWindow(int windowID)
     {
+        if (Event.current.type == EventType.MouseDown)
+        {
+            zzGUI._setFocusedWindow(this);
+        }
+
         impSubs();
     }
 

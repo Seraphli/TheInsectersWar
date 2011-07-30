@@ -30,7 +30,7 @@ public class zzAimTranformList
         public Transform aimTransform = null;
     }
 
-    const float checkPointRadius = 2f;
+    const float checkPointRadius = 3f;
     const float sqrCheckPointRadius = checkPointRadius * checkPointRadius;
 
     //目标列表

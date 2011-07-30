@@ -42,11 +42,34 @@ public class LevelShow:MonoBehaviour
         return lLevelElement.ToArray();
     }
 
-    void Start()
+    public void updateShow()
+    {
+        var lLevelRootFolder = new DirectoryInfo(levelRootFolder);
+        if(lLevelRootFolder.Exists)
+        {
+            if(levelFolderLastWriteTime!=lLevelRootFolder.LastWriteTime)
+                _updateShow();
+        }
+        else
+            treeUIInfo.treeInfo.setData(new zzGUILibTreeNode());
+    }
+
+    System.DateTime levelFolderLastWriteTime;
+
+    void _updateShow()
     {
         zzGUILibTreeNode lTreeNode = new zzGUILibTreeNode();
-        if (Directory.Exists(levelRootFolder))
+        var lLevelRootFolder = new DirectoryInfo(levelRootFolder);
+        if (lLevelRootFolder.Exists)
+        {
             lTreeNode.elements = getLevelInFolder(levelRootFolder);
+            levelFolderLastWriteTime = lLevelRootFolder.LastWriteTime;
+        }
         treeUIInfo.treeInfo.setData(lTreeNode);
+    }
+
+    void Start()
+    {
+        _updateShow();
     }
 }
