@@ -177,7 +177,13 @@ public class NetworkRoom : MonoBehaviour
             sendData();
         }
         else
-            networkView.RPC("NetworkRoomRegister", RPCMode.Server, player.playerName);
+        {
+            while(playerID==0)
+            {
+                networkView.RPC("NetworkRoomRegister", RPCMode.Server, player.playerName);
+                yield return new WaitForSeconds(2f);
+            }
+        }
     }
 
     void OnPlayerDisconnected(NetworkPlayer pPlayer)

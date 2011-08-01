@@ -215,7 +215,7 @@ public class SoldierFactoryState : MonoBehaviour
         if (zzCreatorUtility.isHost())
             _tryCreateFactory(race, index, owner);
         else
-            networkView.RPC("_RPCTryCreateFactory", RPCMode.Others,
+            networkView.RPC("_RPCTryCreateFactory", RPCMode.Server,
                 (int)race,index,owner.networkView.viewID);
     }
 

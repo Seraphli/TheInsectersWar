@@ -13,15 +13,18 @@ public class VariationBeeAI : SoldierAI
 
     bool swoopCheck()
     {
-        if (character.isGrounded
-            ||swoopAbleDetector.detect(1, layers.standPlaceValue).Length > 0)
+        if (!character.isGrounded
+            || swoopAbleDetector.detect(1, layers.standPlaceValue).Length > 0)
+        {
             return false;
+        }
         var lSwoopPoint = swoopPoint.position;
         foreach (var lSwoopDetector in swoopDetectors)
         {
             var lColliders = lSwoopDetector.detect(1, adversaryLayerMask);
             if (lColliders.Length > 0)
             {
+                //print(lColliders[0].name);
                 var lSwoopPointToTarget = lColliders[0].transform.position - lSwoopPoint;
 
                 //检测之间是否有障碍

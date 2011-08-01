@@ -216,7 +216,7 @@ public class zzMasterServerGameHost : zzNetworkHost
 
     IEnumerator updateSelfHost()
     {
-        var url = masterServerURL + "updatehost";
+        url = masterServerURL + "updatehost";
         url += "?GUID=" + hostData.guid;
 
         url += "&gameType=" + WWW.EscapeURL(hostData.gameType);

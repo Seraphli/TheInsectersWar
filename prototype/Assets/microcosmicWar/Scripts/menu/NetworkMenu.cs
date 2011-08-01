@@ -100,8 +100,6 @@ public class NetworkMenu : MonoBehaviour
     //public GameObject broadcastSentObject;
     public zzNetworkHost networkHost;
 
-    public GameObject broadcastRecieverObject;
-
     public float autoSentInterval = 0.43f;
 
     public bool useNat = false;
@@ -190,7 +188,7 @@ public class NetworkMenu : MonoBehaviour
 
     void OnPlayerConnected(NetworkPlayer player)
     {
-        print("OnPlayerConnected");
+        print("OnPlayerConnected:" + player);
         if (useNetworkRoom)
             return;
         //Race lServerRace = raceSelect;

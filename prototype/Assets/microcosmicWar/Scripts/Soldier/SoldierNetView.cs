@@ -205,10 +205,19 @@ public class SoldierNetView : MonoBehaviour
             transform.position = lPostion;
             var lDeltaTime = (float)(Network.time - lTimestamp);
             var lCommand = actionCommandControl.getCommand();
-            if(lCommand.Action1)
+
+            if (lCommand.Fire)
+            {
+                soldier.nowAction = soldier.fireAction;
+            }
+            else if (lCommand.Action1)
+            {
                 soldier.nowAction = soldier.action1;
-            else if(lCommand.Action2)
+            }
+            else if (lCommand.Action2)
+            {
                 soldier.nowAction = soldier.action2;
+            }
             else
                 soldier.nowAction = null;
             //if (lDeltaTime > 0.02f)

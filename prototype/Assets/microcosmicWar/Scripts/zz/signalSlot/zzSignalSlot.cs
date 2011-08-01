@@ -55,7 +55,7 @@ public class zzSignalSlot : MonoBehaviour
                 ||lSlotMethod.ReturnType.IsSubclassOf(ReturnType))
             )
         {
-            Debug.LogError("Slot Method isn't fit Signal,or it is not public");
+            Debug.LogError(gameObject.name + ":Slot Method isn't fit Signal,or it is not public");
             return;
         } 
         Delegate lSlotDelegate;

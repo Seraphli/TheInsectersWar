@@ -26,3 +26,5 @@
 5game over 按钮的响应
 6资源管理器中启用压缩图片
 7将CreateWhenPlay中Clone的勾去掉
+
+联机场景,从局域网改为广域网,除了复制Net物体外,还要在useNat处打钩,注意_server值菜单和房间的不同
