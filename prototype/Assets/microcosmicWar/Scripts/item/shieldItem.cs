@@ -19,29 +19,42 @@ class shieldItem : IitemObject
         return true;
     }
 
-    public override void use()
+    [RPC]
+    void ShieldRPCUse(NetworkViewID pViewID,NetworkMessageInfo pInfo)
     {
-        //Life lLife = useObject.GetComponent<Life>();
-        //Shield lShield = useObject.AddComponent<Shield>();
+        ShieldItemUse(NetworkView.Find(pViewID).gameObject,
+            (float)(Network.time - pInfo.timestamp));
+    }
+
+    void ShieldItemUse(GameObject pOwner,float pDuration)
+    {
         GameObject lShieldObject 
-            = (GameObject)zzCreatorUtility.Instantiate(shieldObject,Vector3.zero,Quaternion.identity,0);
-        var lAdversaryWeaponLayer = PlayerInfo.getAdversaryRaceBulletLayer(useObject.layer);
+            = (GameObject)Instantiate(shieldObject);
+        var lAdversaryWeaponLayer = PlayerInfo.getAdversaryRaceBulletLayer(pOwner.layer);
         Shield lShield = lShieldObject.GetComponent<Shield>();
         lShield.adversaryWeaponLayer = lAdversaryWeaponLayer;
 
-        lShield.setOwner(useObject);
+        lShield.setOwner(pOwner);
 
         lShieldObject.GetComponent<EffectOfShield>().filterLayer = lAdversaryWeaponLayer;
         //在一段时间后删除
         zzCoroutineTimer lTimer = lShieldObject.AddComponent<zzCoroutineTimer>();
-        lTimer.setInterval(duration);
+        lTimer.setInterval(pDuration);
         lTimer.setImpFunction(
             delegate()
             {
                 Object.Destroy(lTimer);
-                zzCreatorUtility.Destroy(lShieldObject);
+                Destroy(lShieldObject);
             }
         );
+
+    }
+
+    public override void use()
+    {
+        ShieldItemUse(useObject, duration);
+        if (Network.isServer)
+            networkView.RPC("ShieldRPCUse", RPCMode.Others, useObject.networkView.viewID);
         //lLifeRecover.setLife(lLife);
     }
 };

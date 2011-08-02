@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Emitter : MonoBehaviour
 {
-
+    public Transform emitterTransform;
 
     public GameObject bulletPrefab;
     public float bulletSpeed = 20.0f;
@@ -25,21 +25,27 @@ public class Emitter : MonoBehaviour
         set 
         {
             //_bulletAliveTime = value;
-            zzCreatorUtility.sendMessage(gameObject, "_SetBulletAliveTime", value);
+            //zzCreatorUtility.sendMessage(gameObject, "_SetBulletAliveTime", value);
+            _bulletAliveTime = value;
         }
     }
 
-    [RPC]
-    void _SetBulletAliveTime(float pBulletAliveTime)
-    {
-        _bulletAliveTime = pBulletAliveTime;
-    }
+    //[RPC]
+    //void _SetBulletAliveTime(float pBulletAliveTime)
+    //{
+    //    _bulletAliveTime = pBulletAliveTime;
+    //}
 
     protected float _bulletAliveTime;
 
     public virtual void setInjureInfo(Hashtable pInjureInfo)
     {
         injureInfo = pInjureInfo;
+    }
+
+    public void Reset()
+    {
+        emitterTransform = transform;
     }
 
     void Start()
@@ -50,27 +56,71 @@ public class Emitter : MonoBehaviour
     //void Update()
     //{
     //}
+    GameObject createBullet(Vector3 pPos, Vector3 ForwardVelocity)
+    {
+        var lBullet = (GameObject)Instantiate(bulletPrefab);
+        setBullet(lBullet.GetComponent<Bullet>(), pPos, ForwardVelocity);
+        return lBullet;
+    }
+
+    [RPC]
+    GameObject EmitterSetBullet(NetworkViewID pViewID, Vector3 pPos, Vector3 ForwardVelocity)
+    {
+        var lBullet = (GameObject)Instantiate(bulletPrefab);
+        lBullet.networkView.viewID = pViewID;
+        setBullet(lBullet.GetComponent<Bullet>(), pPos, ForwardVelocity);
+        return lBullet;
+    }
+
+    void setBullet(Bullet pBullet,Vector3 pPos, Vector3 ForwardVelocity)
+    {
+        pPos.z = 0;
+        pBullet.transform.position = pPos;
+        pBullet.setLayer(bulletLayer);
+        pBullet.setAliveTime(_bulletAliveTime);
+        pBullet.setForwardVelocity(ForwardVelocity);
+        if (injureInfo != null)
+        {
+            pBullet.setInjureInfo(injureInfo);
+        }
+    }
+
+    public virtual void getBulletInfo(out Vector3 lPosition,out Vector3 pForwardVelocity)
+    {
+        lPosition = emitterTransform.position;
+        pForwardVelocity = getForward() * bulletSpeed;
+    }
 
     public virtual GameObject[] EmitBullet()
     {
         GameObject lOut = null;
-        if (zzCreatorUtility.isHost())
+        Vector3 lPos;
+        Vector3 lForwardVelocity;
+        getBulletInfo(out lPos, out lForwardVelocity);
+        if (!bulletPrefab.networkView
+            || Network.peerType == NetworkPeerType.Disconnected)
         {
-            var lPosition = transform.position;
-            lPosition.z=0f;
-            lOut = zzCreatorUtility.Instantiate(bulletPrefab, lPosition, Quaternion.identity, 0);
-
-            Bullet pBullet = lOut.GetComponentInChildren<Bullet>();
-            pBullet.setLayer(bulletLayer);
-            pBullet.setAliveTime(_bulletAliveTime);
-
-            pBullet.setForwardVelocity(getForward() * bulletSpeed);
-            if (injureInfo!=null)
-            {
-                pBullet.setInjureInfo(injureInfo);
-            }
-
+            lOut = createBullet(lPos, lForwardVelocity);
         }
+        else if (Network.isServer)
+        {
+            var lID = Network.AllocateViewID();
+            lOut = EmitterSetBullet(lID, lPos, lForwardVelocity);
+            networkView.RPC("EmitterSetBullet", RPCMode.Others, lID, lPos, lForwardVelocity);
+        }
+        //if (zzCreatorUtility.isHost())
+        //{
+        //    var lPosition = emitterTransform.position;
+        //    lPosition.z = 0f;
+        //    lOut = zzCreatorUtility.Instantiate(bulletPrefab, lPosition, Quaternion.identity, 0);
+
+        //    Bullet pBullet = lOut.GetComponentInChildren<Bullet>();
+        //    pBullet.setLayer(bulletLayer);
+        //    pBullet.setAliveTime(_bulletAliveTime);
+
+        //    pBullet.setForwardVelocity(getForward() * bulletSpeed);
+
+        //}
         if (fireSound)
         {
             fireSound.Play();
@@ -85,7 +135,7 @@ public class Emitter : MonoBehaviour
         if (fireSpark)
         {
             GameObject clone;
-            clone = (GameObject)Instantiate(fireSpark, transform.position, transform.rotation);
+            clone = (GameObject)Instantiate(fireSpark, emitterTransform.position, emitterTransform.rotation);
             FireSpark lFireSpark = clone.GetComponent<FireSpark>();
             lFireSpark.setForward(getForward());
         }
@@ -97,27 +147,28 @@ public class Emitter : MonoBehaviour
         bulletLayer = pBulletLayer;
     }
 
-    public virtual Vector3 getForward()
+    public Vector3 getForward()
     {
-        //return transform.right;
-        return transform.localToWorldMatrix.MultiplyVector(Vector3.right);
+        //return emitterTransform.right;
+        return emitterTransform.localToWorldMatrix.MultiplyVector(Vector3.right);
     }
 
-    public virtual Ray getFireRay()
+    public Ray getFireRay()
     {
-        return new Ray(transform.position, getForward());
+        return new Ray(emitterTransform.position, getForward());
     }
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.DrawLine(transform.position, transform.position + getForward() * shootRange);
+        if (emitterTransform)
+            Gizmos.DrawLine(emitterTransform.position, emitterTransform.position + getForward() * shootRange);
     }
 
     public bool showGizmo = false;
 
     void OnDrawGizmos()
     {
-        if (showGizmo)
-            Gizmos.DrawLine(transform.position, transform.position + getForward() * shootRange);
+        if (showGizmo && emitterTransform)
+            Gizmos.DrawLine(emitterTransform.position, emitterTransform.position + getForward() * shootRange);
     }
 }

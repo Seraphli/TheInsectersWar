@@ -20,7 +20,7 @@ ModelImporter:
     bakeAnimations: 0
     animationCompression: 1
     animationWrapMode: 0
-    splitAnimations: 1
+    splitAnimations: 0
   nodeInfo:
     //RootNode:
     - 100000

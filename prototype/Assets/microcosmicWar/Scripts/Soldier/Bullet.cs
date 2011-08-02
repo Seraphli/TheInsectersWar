@@ -38,13 +38,13 @@ public class Bullet : MonoBehaviour
     public void setLayer(int pLayer)
     {
         _setLayer(pLayer);
-        if (Network.isServer && networkView)
-        {
-            networkView.RPC("_setLayer", RPCMode.Others, pLayer);
-        }
+        //if (Network.isServer && networkView)
+        //{
+        //    networkView.RPC("_setLayer", RPCMode.Others, pLayer);
+        //}
     }
 
-    [RPC]
+    //[RPC]
     void _setLayer(int pLayer)
     {
         gameObject.layer = pLayer;
@@ -118,9 +118,15 @@ public class Bullet : MonoBehaviour
 
     protected virtual void _touch(Transform pOther)
     {
+        if(Network.isClient)
+        {
+            if(!networkView)
+                lifeEnd();
+            return;
+        }
 
         //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
-        if (bulletLife.getBloodValue() <= 0 || Network.isClient)
+        if (bulletLife.getBloodValue() <= 0)
             return;
 
         Life lLife = Life.getLifeFromTransform(pOther);
@@ -135,7 +141,7 @@ public class Bullet : MonoBehaviour
     protected void lifeEnd()
     {
         //	zzCreatorUtility.sendMessage(gameObject,"lifeEndImp");
-        bulletLife.setBloodValue(0);
+        bulletLife.makeDead();
     }
 
     //[RPC]
@@ -183,23 +189,23 @@ public class Bullet : MonoBehaviour
         float lSpeed = bulletRigidbody.velocity.magnitude;
         Vector3 lVelocity = pForward.normalized * lSpeed;
         bulletRigidbody.velocity = lVelocity;
-        setBulletForwardVelocity(lVelocity, lRotation, pRPCCall);
+        //setBulletForwardVelocity(lVelocity, lRotation, pRPCCall);
     }
 
-    void setBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation,bool pRPCCall)
-    {
-        if (pRPCCall && Network.peerType == NetworkPeerType.Server && networkView)
-        {
-            networkView.RPC("RPCSetBulletForwardVelocity", RPCMode.Others, pVelocity, pRotation);
-        }
-    }
+    //void setBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation,bool pRPCCall)
+    //{
+    //    if (pRPCCall && Network.peerType == NetworkPeerType.Server && networkView)
+    //    {
+    //        networkView.RPC("RPCSetBulletForwardVelocity", RPCMode.Others, pVelocity, pRotation);
+    //    }
+    //}
 
-    [RPC]
-    void RPCSetBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation)
-    {
-        transform.rotation = pRotation;
-        bulletRigidbody.velocity = pVelocity;
-    }
+    //[RPC]
+    //void RPCSetBulletForwardVelocity(Vector3 pVelocity,Quaternion pRotation)
+    //{
+    //    transform.rotation = pRotation;
+    //    bulletRigidbody.velocity = pVelocity;
+    //}
 
     //设置子弹飞的方向和速度
     public void setForwardVelocity(Vector3 pVelocity)
@@ -216,7 +222,7 @@ public class Bullet : MonoBehaviour
         var lRotation = Quaternion.Euler(0f, 0f, lSign*Vector3.Angle(Vector3.right, pVelocity));
         transform.rotation = lRotation;
         bulletRigidbody.velocity = pVelocity;
-        setBulletForwardVelocity(pVelocity, lRotation, pRPCCall);
+        //setBulletForwardVelocity(pVelocity, lRotation, pRPCCall);
     }
 
     //public void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)

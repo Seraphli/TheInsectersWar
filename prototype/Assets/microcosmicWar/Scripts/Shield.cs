@@ -7,15 +7,16 @@ public class Shield : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!zzCreatorUtility.isHost())
-            return;
+        //if (!zzCreatorUtility.isHost())
+        //    return;
 
         if (other.gameObject.layer == adversaryWeaponLayer)
         {
             //使用将生命值设为0的方式,消除子弹
             Life lLife = Life.getLifeFromTransform(other.transform);
-
-            lLife.setBloodValue(0); 
+            if (lLife.networkView && Network.isClient)
+                return;
+            lLife.makeDead(); 
         }
     }
 
@@ -23,8 +24,8 @@ public class Shield : MonoBehaviour
     public void setOwner(GameObject pOwner)
     {
         _setOwner(pOwner);
-        if (Network.peerType != NetworkPeerType.Disconnected)
-            gameObject.networkView.RPC("RPCSetOwner", RPCMode.Others, pOwner.networkView.viewID);
+        //if (Network.peerType != NetworkPeerType.Disconnected)
+        //    gameObject.networkView.RPC("RPCSetOwner", RPCMode.Others, pOwner.networkView.viewID);
     }
 
     void _setOwner(GameObject pOwner)
@@ -33,10 +34,10 @@ public class Shield : MonoBehaviour
         transform.localPosition = Vector3.zero;
     }
 
-    [RPC]
-    void RPCSetOwner(NetworkViewID pOwner)
-    {
-        _setOwner(NetworkView.Find(pOwner).gameObject);
-    }
+    //[RPC]
+    //void RPCSetOwner(NetworkViewID pOwner)
+    //{
+    //    _setOwner(NetworkView.Find(pOwner).gameObject);
+    //}
 
 }
