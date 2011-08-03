@@ -163,7 +163,7 @@ public class zz2DRigidbodyObject : zzEditableObject
         get { return rigidbody.mass; }
         set
         {
-            rigidbody.mass = value;
+            rigidbody.mass = Mathf.Max(0.5f,value);
         }
     }
 

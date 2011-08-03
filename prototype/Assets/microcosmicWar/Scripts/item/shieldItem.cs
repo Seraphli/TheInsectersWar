@@ -23,7 +23,7 @@ class shieldItem : IitemObject
     void ShieldRPCUse(NetworkViewID pViewID,NetworkMessageInfo pInfo)
     {
         ShieldItemUse(NetworkView.Find(pViewID).gameObject,
-            (float)(Network.time - pInfo.timestamp));
+            duration - (float)(Network.time - pInfo.timestamp));
     }
 
     void ShieldItemUse(GameObject pOwner,float pDuration)

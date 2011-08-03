@@ -96,7 +96,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        if (zzCreatorUtility.isHost())
+        if (!(Network.isClient&&networkView))
         {
             aliveTime -= Time.deltaTime;
             if (aliveTime < 0)

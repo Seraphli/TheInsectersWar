@@ -6,9 +6,7 @@ public class MachineGunAttachmentNetwork:MonoBehaviour
 {
     public DefenseTower defenseTower;
     public Life life;
-    //public NetworkStateSynchronization preSysnState;
-    //public HashSet<NetworkPlayer> insidePlayerScope;
-    //public NetworkView attachmentNetView;
+    public NetworkDisappear networkDisappear;
 
     IEnumerator Start()
     {
@@ -49,22 +47,6 @@ public class MachineGunAttachmentNetwork:MonoBehaviour
         int lDate = 0;
         if(stream.isWriting)
         {
-            //if (defenseTower.fire)
-            //    lDate |= 1;
-            ////lDate <<= 1;
-            //var lLifeRateValue = (ushort)(life.rate * lifeRateMaxValue);
-            //lDate <<= 8;
-            //lDate |= (lLifeRateValue & 0xff);
-            //lDate <<= 1;
-            //if (lLifeRateValue > byte.MaxValue)
-            //    lDate |= 1 << 9;
-
-            //lDate <<= 22;
-            //var lAimAngleRate = (defenseTower.aimAngle - defenseTower.maxDownAngle)
-            //    / (defenseTower.maxUpAngle - defenseTower.maxDownAngle);
-            //var lAngleRateValue = (int)(lAimAngleRate * aimAngleRateMaxValue);
-            //lDate |= (lAngleRateValue & 0x3fffff);
-
             bitIO.date = 0;
             if (defenseTower.fire)
                 bitIO.write(1, 1);
@@ -80,24 +62,12 @@ public class MachineGunAttachmentNetwork:MonoBehaviour
             bitIO.write(lAngleRateValue, 22);
 
             lDate = bitIO.date;
-            //print("fire:" + defenseTower.fire
-            //    + " life.rate:" + life.rate
-            //    + " aimAngle:" + defenseTower.aimAngle);
+
         }
         stream.Serialize(ref lDate);
         if(stream.isReading)
         {
-            //defenseTower.fire = (lDate & 0x1) != 0;
-            //lDate >>= 1;
-            //int lLifeRateValue = lDate & 0xff;
-            //lDate >>= 8;
-            //if ((lDate & 1) != 0)
-            //    lLifeRateValue += byte.MaxValue + 1;
-            //lDate >>= 1;
-            //var lAngleRateValue = lDate;
-            //defenseTower.aimAngle = (lAngleRateValue / aimAngleRateMaxValue)
-            //    * (defenseTower.maxUpAngle - defenseTower.maxDownAngle)
-            //    + defenseTower.maxDownAngle;
+            networkDisappear.appear();
             bitIO.date = lDate;
             var lNewAngleRateValue = bitIO.readToInt(22);
             var lNewLifeRateValue = bitIO.readToInt(9);
@@ -108,9 +78,7 @@ public class MachineGunAttachmentNetwork:MonoBehaviour
                 + defenseTower.maxDownAngle;
 
             life.rate = (float)lNewLifeRateValue / (float)lifeRateMaxValue;
-            //print("fire:" + defenseTower.fire
-            //    + " life.rate:" + life.rate
-            //    + " aimAngle:" + defenseTower.aimAngle);
+
         }
     }
 }

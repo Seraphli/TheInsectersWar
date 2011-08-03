@@ -12,9 +12,10 @@ public class SoldierNetView : MonoBehaviour
     public Character2D character;
     public ActionCommandControl actionCommandControl;
     //FIXME_VAR_TYPE transform;
-    public float disappearTime = 3f;
-    public zzTimer disappearTimer;
-    public MonoBehaviour[] disenableWhenDisappear;
+    //public float disappearTime = 3f;
+    //public zzTimer disappearTimer;
+    //public MonoBehaviour[] disenableWhenDisappear;
+    public NetworkDisappear networkDisappear;
 
     //class NetData
     //{
@@ -48,15 +49,21 @@ public class SoldierNetView : MonoBehaviour
         if (Network.isClient)
         {
             Destroy(soldier.GetComponentInChildren<SoldierAI>());
-            disappearTimer = gameObject.AddComponent<zzTimer>();
-            disappearTimer.setInterval(disappearTime);
-            disappearTimer.addImpFunction(disappear);
-            life.addDieCallback((x) => disappearTimer.enabled = false);
+            //disappearTimer = gameObject.AddComponent<zzTimer>();
+            //disappearTimer.setInterval(disappearTime);
+            //disappearTimer.addImpFunction(disappear);
+            //life.addDieCallback((x) => disappearTimer.enabled = false);
+            if (!networkDisappear)
+            {
+                networkDisappear = gameObject.AddComponent<NetworkDisappear>();
+                networkDisappear.life = life;
+                networkDisappear.disenableWhenDisappear = new MonoBehaviour[] { soldier };
+            }
         }
-        if(disenableWhenDisappear ==null||disenableWhenDisappear.Length==0)
-        {
-            disenableWhenDisappear = new MonoBehaviour[] { soldier };
-        }
+        //if(disenableWhenDisappear ==null||disenableWhenDisappear.Length==0)
+        //{
+        //    disenableWhenDisappear
+        //}
         //if( !zzCreatorUtility.isMine(gameObject.networkView ) )
         //{
         //	Destroy(soldier.GetComponentInChildren<SoldierAI>());
@@ -70,24 +77,26 @@ public class SoldierNetView : MonoBehaviour
     void disappear()
     {
         gameObject.transform.position = disappearPostion;
-        disappearTimer.enabled = false;
-        foreach (var lScript in disenableWhenDisappear)
-        {
-            lScript.enabled = false;
-        }
+        //disappearTimer.enabled = false;
+        //foreach (var lScript in disenableWhenDisappear)
+        //{
+        //    lScript.enabled = false;
+        //}
+        networkDisappear.disappear();
     }
 
     void appear()
     {
-        disappearTimer.timePos = 0f;
-        if (!disappearTimer.enabled)
-        {
-            disappearTimer.enabled = true;
-            foreach (var lScript in disenableWhenDisappear)
-            {
-                lScript.enabled = true;
-            }
-        }
+        //disappearTimer.timePos = 0f;
+        //if (!disappearTimer.enabled)
+        //{
+        //    disappearTimer.enabled = true;
+        //    foreach (var lScript in disenableWhenDisappear)
+        //    {
+        //        lScript.enabled = true;
+        //    }
+        //}
+        networkDisappear.appear();
     }
 
     const int soldierLifeRateMaxValue = (byte.MaxValue + 1) / 2 - 1;

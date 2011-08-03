@@ -11,6 +11,24 @@ public class BoundNetworkScope : MonoBehaviour
 
     public LinkedList<NetworkView> networkViewList = new LinkedList<NetworkView>();
 
+    public void addScopeNetView(NetworkView[] pNetworkViews)
+    {
+        foreach (var lNetworkView in pNetworkViews)
+        {
+            addScopeNetView(lNetworkView);
+        }
+    }
+
+    //public void addAndSetScopeNetView(Vector3 pPosition,NetworkView[] pNetworkViews)
+    //{
+    //    bool lContain = getBoundsFunc().Contains(pPosition);
+    //    foreach (var lNetworkView in pNetworkViews)
+    //    {
+    //        addScopeNetView(lNetworkView);
+    //        lNetworkView.SetScope(networkPlayer, lContain);
+    //    }
+    //}
+
     public void addScopeNetView(NetworkView pNetworkView)
     {
         networkViewList.AddLast(pNetworkView);
@@ -28,10 +46,12 @@ public class BoundNetworkScope : MonoBehaviour
 
     public void updateScope(Bounds pBounds)
     {
+        //Scope Transform中的子物体
         foreach (Transform lNetworkPlayerRoot in networkPlayerRoots)
         {
             setScope(pBounds, lNetworkPlayerRoot, networkPlayer);
         }
+        //Scope 自定义物体
         var lNetworkViewNode = networkViewList.First;
         while (lNetworkViewNode != null)
         {

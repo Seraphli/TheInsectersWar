@@ -225,8 +225,8 @@ public class Stronghold:MonoBehaviour
         //    &&beeList.Count==0
         //    &&pismireList.Count==0)
         //    return;
-        if (occupied)
-            return;
+        //if (occupied)
+        //    return;
 
         if (occupantZone!=null)
             refreshTriggerInfo();
@@ -283,39 +283,74 @@ public class Stronghold:MonoBehaviour
         get { return strongholdBuilding; }
     }
 
+    void setBuilding(GameObject pBuildingObject, Race pRace)
+    {
+        if (occupied)
+        {
+            Debug.LogError("buildRace occupied");
+            return;
+        }
+        strongholdBuilding = pBuildingObject;
+        sendMessageWhenDie lSendMessageWhenDie
+            = strongholdBuilding.GetComponent<sendMessageWhenDie>();
+        lSendMessageWhenDie.messageReceiver = gameObject;
+        owner = pRace;
+        occupiedEvent();
+        raceChangedEvent(pRace);
+    }
+
+    [RPC]
+    void StrongholdSetBuilding(NetworkViewID pViewID, int pRace)
+    {
+        var lRace = (Race)pRace;
+        var lBuilding = (GameObject)Instantiate(getBuilding(lRace));
+        lBuilding.networkView.viewID = pViewID;
+        setBuilding(lBuilding, lRace);
+    }
+
     public void buildRace(Race pRace)
     {
-        if (zzCreatorUtility.isHost())
+        if (Network.isServer)
         {
-            if (occupied)
-            {
-                Debug.LogError("buildRace occupied");
-                return;
-            }
-            strongholdBuilding = zzCreatorUtility
-                .Instantiate(getBuilding(pRace), transform.position, transform.rotation, 0);
-            sendMessageWhenDie lSendMessageWhenDie
-                = strongholdBuilding.GetComponent<sendMessageWhenDie>();
-            lSendMessageWhenDie.messageReceiver = gameObject;
-            owner = pRace;
+            var lViewID = Network.AllocateViewID();
+            var lIntRace = (int)pRace;
+            StrongholdSetBuilding(lViewID, lIntRace);
+            networkView.RPC("StrongholdSetBuilding", RPCMode.Others, lViewID, lIntRace);
+            networkView.enabled = false;
+            //if (occupied)
+            //{
+            //    Debug.LogError("buildRace occupied");
+            //    return;
+            //}
+            //strongholdBuilding = zzCreatorUtility
+            //    .Instantiate(getBuilding(pRace), transform.position, transform.rotation, 0);
+            //sendMessageWhenDie lSendMessageWhenDie
+            //    = strongholdBuilding.GetComponent<sendMessageWhenDie>();
+            //lSendMessageWhenDie.messageReceiver = gameObject;
+            //owner = pRace;
 
-            if (Network.peerType != NetworkPeerType.Disconnected)
-                networkView.RPC("RPCBuildRace", RPCMode.Others,
-                    strongholdBuilding.networkView.viewID,(int)owner);
-            occupiedEvent();
-            raceChangedEvent(pRace);
+            //if (Network.peerType != NetworkPeerType.Disconnected)
+            //    networkView.RPC("RPCBuildRace", RPCMode.Others,
+            //        strongholdBuilding.networkView.viewID, (int)owner);
+            //networkView.enabled = false;
+            //occupiedEvent();
+            //raceChangedEvent(pRace);
+        }
+        else if (Network.peerType== NetworkPeerType.Disconnected)
+        {
+            setBuilding((GameObject)Instantiate(getBuilding(pRace)), pRace);
         }
 
     }
 
-    [RPC]
-    public void RPCBuildRace(NetworkViewID pID,int pOwner)
-    {
-        owner = (Race)pOwner;
-        strongholdBuilding = NetworkView.Find(pID).gameObject;
-        occupiedEvent();
+    //[RPC]
+    //public void RPCBuildRace(NetworkViewID pID,int pOwner)
+    //{
+    //    owner = (Race)pOwner;
+    //    strongholdBuilding = NetworkView.Find(pID).gameObject;
+    //    occupiedEvent();
 
-    }
+    //}
 
     public void playOccupiedAimation()
     {
@@ -346,6 +381,8 @@ public class Stronghold:MonoBehaviour
         var lStrongholdUpdate = strongholdBuilding.GetComponent<StrongholdUpdate>();
         lStrongholdUpdate.attachmentPrefab = attachmentPrefab;
         lStrongholdUpdate.strongholdAnimation = strongholdAnimation;
+
+        enabled = false;
     }
 
     public void playLostAnimation()
@@ -363,13 +400,14 @@ public class Stronghold:MonoBehaviour
         updateRaceShow();
         GameSceneManager.Singleton
             .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
+        enabled = true;
     }
 
-    [RPC]
-    public void RPCBuildingDestroied()
-    {
-        lostEvent();
-    }
+    //[RPC]
+    //public void RPCBuildingDestroied()
+    //{
+    //    lostEvent();
+    //}
 
     void buildingDestroied()
     {
@@ -378,9 +416,10 @@ public class Stronghold:MonoBehaviour
         if (soldierFactory)
             soldierFactory.GetComponent<Life>().makeDead();
 
-        if (Network.peerType != NetworkPeerType.Disconnected)
-            networkView.RPC("RPCBuildingDestroied", RPCMode.Others);
-
+        //if (Network.peerType != NetworkPeerType.Disconnected)
+        //    networkView.RPC("RPCBuildingDestroied", RPCMode.Others);
+        if(Network.isServer)
+            networkView.enabled = true;
         lostEvent();
     }
 

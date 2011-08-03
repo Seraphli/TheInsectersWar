@@ -253,6 +253,7 @@ public class GameScene : MonoBehaviour
     void interruptGame(string pInfo)
     {
         endGameScene();
+        gameEndEvent();
         gameInterruptedEvent(pInfo);
     }
 
