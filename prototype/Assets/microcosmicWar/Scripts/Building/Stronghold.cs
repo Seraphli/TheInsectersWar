@@ -218,15 +218,18 @@ public class Stronghold:MonoBehaviour
         return 0;
     }
 
-    void Update()
+    void LateUpdate()
     {
         //if(
         //    owner==Race.eNone
         //    &&beeList.Count==0
         //    &&pismireList.Count==0)
         //    return;
-        //if (occupied)
-        //    return;
+        if (occupied)
+        {
+            Debug.LogError("Update When Occupied");
+            return;
+        }
 
         if (occupantZone!=null)
             refreshTriggerInfo();
@@ -381,7 +384,6 @@ public class Stronghold:MonoBehaviour
         var lStrongholdUpdate = strongholdBuilding.GetComponent<StrongholdUpdate>();
         lStrongholdUpdate.attachmentPrefab = attachmentPrefab;
         lStrongholdUpdate.strongholdAnimation = strongholdAnimation;
-
         enabled = false;
     }
 

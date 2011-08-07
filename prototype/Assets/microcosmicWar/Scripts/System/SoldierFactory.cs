@@ -43,6 +43,11 @@ public class SoldierFactory : MonoBehaviour
             get;
         }
 
+        Transform home
+        {
+            get;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -193,7 +198,7 @@ public class SoldierFactory : MonoBehaviour
 
             //foreach (CheckPointPath lCheckPointPath in checkPointPaths)
             //{
-            soldierAI.setHome(transform);
+            soldierAI.setHome(listener.home);
             soldierAI.AddPresetAim(listener.finalAims, zzAimTranformList.AimType.aliveAim);
             if (aiAimList)
                 aiAimList.addAim(soldierAI);

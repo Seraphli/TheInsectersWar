@@ -262,12 +262,12 @@ public class SoldierFactoryState : MonoBehaviour
             lStronghold);
     }
 
-    public SoldierFactorySystem.SoldierInfo getSoldierInfo(Race pRace, string pSoldierName)
-    {
-        var lStateIndex = soldierNameToStateIndex[pSoldierName];
-        State lState = RaceFactoryState[pRace][lStateIndex];
-        return lState.info;
-    }
+    //public SoldierFactorySystem.SoldierInfo getSoldierInfo(Race pRace, string pSoldierName)
+    //{
+    //    var lStateIndex = soldierNameToStateIndex[pSoldierName];
+    //    State lState = RaceFactoryState[pRace][lStateIndex];
+    //    return lState.info;
+    //}
 
 
     public void createFactory(Race race, Vector3 lPosition, int lStateIndex, Stronghold lStronghold)

@@ -384,6 +384,16 @@ public class zzFlatMeshUtility
         }
     }
 
+    public static Vector3[] getSingleFaceNormals(int pVerticesLength)
+    {
+        Vector3[] lNormals = new Vector3[pVerticesLength];
+        for (int i = 0; i < pVerticesLength; ++i)
+        {
+            lNormals[i] = new Vector3(0, 0, -1);
+        }
+        return lNormals;
+    }
+
     public static Vector3[] getNormals(int pVerticesLength)
     {
         Vector3[] lNormals = new Vector3[pVerticesLength];

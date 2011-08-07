@@ -118,7 +118,7 @@ public class SingleSoldierFactoryObject : zzEditableObject
 
         public SoldierFactory addFactory(GameObject pObject)
         {
-            var lDefaultInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, soldierName);
+            var lDefaultInfo = SoldierFactorySystem.Singleton.getSoldierInfo(race, soldierName);
             float lFirstTimeOffset;
             float lProduceInterval;
             if (useDefaultProduceSetting)
@@ -223,7 +223,7 @@ public class SingleSoldierFactoryObject : zzEditableObject
             soldierFactorySetting.soldierName = value;
             Destroy(signObject);
             var lTransform = transform;
-            var lSoldierInfo = SoldierFactoryState.Singleton.getSoldierInfo(race, soldierName);
+            var lSoldierInfo = SoldierFactorySystem.Singleton.getSoldierInfo(race, soldierName);
             signObject = (GameObject)Instantiate(lSoldierInfo.signPrefab,
                 lTransform.position, lTransform.rotation);
             signObject.transform.parent = lTransform;
@@ -276,6 +276,17 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
             lFactoryObject.soldierName = lNewSelected;
     }
 
+    public static float drawFloatField(float pValue)
+    {
+        var lNewTest = GUILayout.TextField(pValue.ToString("f1"),
+            GUILayout.Width(40f));
+        float lNewValue;
+        if (zzGUIUtilities.stringToFloat(lNewTest, out lNewValue)
+            && lNewValue != pValue)
+            return lNewValue;
+        return pValue;
+    }
+
     public static void drawProduceSetting(
         SingleSoldierFactoryObject.SoldierFactorySetting pSoldierFactorySetting)
     {
@@ -286,7 +297,7 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
         bool lUseDefault = pSoldierFactorySetting.useDefaultProduceSetting;
         if (lUseDefault)
         {
-            var lDefaultInfo = SoldierFactoryState.Singleton
+            var lDefaultInfo = SoldierFactorySystem.Singleton
                 .getSoldierInfo(race, lSelectedSoldier);
             lProduceInterval = lDefaultInfo.produceInterval;
             lFirstTimeOffset = lDefaultInfo.firstTimeOffset;
@@ -298,14 +309,16 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("生产间隔时间", GUILayout.ExpandWidth(false));
-            GUILayout.Label(lProduceInterval.ToString("f1"), GUILayout.Width(40f));
+            //GUILayout.Label(lProduceInterval.ToString("f1"), GUILayout.Width(40f));
+            lProduceInterval = drawFloatField(lProduceInterval);
             GUILayout.EndHorizontal();
             lProduceInterval
                 = GUILayout.HorizontalSlider(lProduceInterval, 0f, 200f);
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("首次时间偏移", GUILayout.ExpandWidth(false));
-            GUILayout.Label(lFirstTimeOffset.ToString("f1"), GUILayout.Width(40f));
+            //GUILayout.Label(lFirstTimeOffset.ToString("f1"), GUILayout.Width(40f));
+            lFirstTimeOffset = drawFloatField(lFirstTimeOffset);
             GUILayout.EndHorizontal();
             lFirstTimeOffset
                 = GUILayout.HorizontalSlider(lFirstTimeOffset, 0f, 200f);

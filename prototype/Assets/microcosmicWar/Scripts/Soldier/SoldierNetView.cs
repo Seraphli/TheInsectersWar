@@ -58,6 +58,7 @@ public class SoldierNetView : MonoBehaviour
                 networkDisappear = gameObject.AddComponent<NetworkDisappear>();
                 networkDisappear.life = life;
                 networkDisappear.disenableWhenDisappear = new MonoBehaviour[] { soldier };
+                networkDisappear.addDisappearEventReceiver(showDisappear);
             }
         }
         //if(disenableWhenDisappear ==null||disenableWhenDisappear.Length==0)
@@ -74,28 +75,18 @@ public class SoldierNetView : MonoBehaviour
 
     readonly Vector3 disappearPostion = new Vector3(-100f, -100f, 0f);
 
-    void disappear()
+    void showDisappear()
     {
         gameObject.transform.position = disappearPostion;
-        //disappearTimer.enabled = false;
-        //foreach (var lScript in disenableWhenDisappear)
-        //{
-        //    lScript.enabled = false;
-        //}
+    }
+
+    void disappear()
+    {
         networkDisappear.disappear();
     }
 
     void appear()
     {
-        //disappearTimer.timePos = 0f;
-        //if (!disappearTimer.enabled)
-        //{
-        //    disappearTimer.enabled = true;
-        //    foreach (var lScript in disenableWhenDisappear)
-        //    {
-        //        lScript.enabled = true;
-        //    }
-        //}
         networkDisappear.appear();
     }
 

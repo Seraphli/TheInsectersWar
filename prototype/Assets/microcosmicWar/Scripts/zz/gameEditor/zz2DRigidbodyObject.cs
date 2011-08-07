@@ -38,8 +38,9 @@ public class zz2DRigidbodyObject : zzEditableObject
         set
         {
             var lLocalRotation = new Quaternion();
-            lLocalRotation.eulerAngles = new Vector3(0f,0f,value);
-            transform.localRotation = lLocalRotation; 
+            lLocalRotation.eulerAngles
+                = new Vector3(0f, 0f, Mathf.Clamp(value, 0f, 359.99f));
+            transform.localRotation = lLocalRotation;
         }
     }
 

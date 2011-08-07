@@ -92,6 +92,11 @@ public class SoldierFactorySystem:MonoBehaviour
         createData();
     }
 
+    public SoldierFactorySystem.SoldierInfo getSoldierInfo(Race pRace, string pSoldierName)
+    {
+        return raceToSoldierInfos[pRace].getDataByKey(pSoldierName);
+    }
+
     void createData()
     {
         factoryPrefabs = new Dictionary<Race, GameObject>();

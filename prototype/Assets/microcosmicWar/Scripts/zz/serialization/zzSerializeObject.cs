@@ -166,32 +166,49 @@ public class zzSerializeObject
         return lOut;
     }
 
+    public void propertyFromTable(object pObject, PropertyInfo lPropertyInfo, Hashtable pTable)
+    {
+        if (pTable.Contains(lPropertyInfo.Name))
+        {
+            var lPropertyType = lPropertyInfo.PropertyType;
+            var lSerializeString = zzSerializeString.Singleton;
+            object lTableValue = pTable[lPropertyInfo.Name];
+            object lValue = null;
+            if (lSerializeString.isSupportedType(lPropertyType))
+                lValue = lTableValue;
+            else
+            {
+                lValue = getMethod(lPropertyType).deserialize(lPropertyType, lTableValue);
+            }
+            if (lValue == null)
+                Debug.LogError("error in " + pObject.GetType().ToString() + "." + lPropertyInfo.Name);
+            else
+            {
+                //Debug.Log(lPropertyInfo.Name + " " + lValue + ":" + lPropertyInfo.PropertyType);
+                lPropertyInfo.SetValue(pObject, lValue, null);
+            }
+        }
+
+    }
+
     public void serializeFromTable(object pObject, Hashtable pTable)
     {
         var lList = getSerializeInMethod(pObject.GetType());
-        var lSerializeString = zzSerializeString.Singleton;
         foreach (var lPropertyInfo in lList)
         {
-            var lPropertyType = lPropertyInfo.PropertyType;
-
-            if (pTable.Contains(lPropertyInfo.Name))
-            {
-                object lTableValue = pTable[lPropertyInfo.Name];
-                object lValue=null;
-                if(lSerializeString.isSupportedType(lPropertyType))
-                    lValue = lTableValue;
-                else
-                {
-                    lValue = getMethod(lPropertyType).deserialize(lPropertyType, lTableValue);
-                }
-                if (lValue == null)
-                    Debug.LogError("error in " + pObject.GetType().ToString() + "." + lPropertyInfo.Name);
-                else
-                {
-                    //Debug.Log(lPropertyInfo.Name + " " + lValue + ":" + lPropertyInfo.PropertyType);
-                    lPropertyInfo.SetValue(pObject, lValue, null);
-                }
-            }
+            //try
+            //{
+                propertyFromTable(pObject, lPropertyInfo, pTable);
+            //}
+            //catch (System.Exception e)
+            //{
+            //    Debug.LogError(
+            //        "Exception Message:" + e.Message + '\n'
+            //        + "Source:" + e.Source + '\n'
+            //        + "HelpLink:" + e.HelpLink + '\n'
+            //        + "StackTrace:" + e.StackTrace + '\n'
+            //    );
+            //}
         }
 
     }

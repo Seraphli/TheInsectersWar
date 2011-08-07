@@ -32,6 +32,14 @@ public class NetworkDisappear:MonoBehaviour
         }
     }
 
+    System.Action disappearEvent;
+
+    public void addDisappearEventReceiver(System.Action pReceiver)
+    {
+        disappearEvent -= zzUtilities.nullFunction;
+        disappearEvent += pReceiver;
+    }
+
     void Awake()
     {
         if (Network.isClient)
@@ -40,6 +48,7 @@ public class NetworkDisappear:MonoBehaviour
             disappearTimer.setInterval(disappearTime);
             disappearTimer.addImpFunction(disappear);
             setLifeEndEvent();
+            disappearEvent = zzUtilities.nullFunction;
         }
         else
             Destroy(this);
@@ -65,6 +74,7 @@ public class NetworkDisappear:MonoBehaviour
     public void disappear()
     {
         disappearTimer.enabled = false;
+        disappearEvent();
         foreach (var lScript in disenableWhenDisappear)
         {
             lScript.enabled = false;

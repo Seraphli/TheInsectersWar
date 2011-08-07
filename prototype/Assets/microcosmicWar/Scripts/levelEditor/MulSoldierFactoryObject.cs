@@ -141,7 +141,7 @@ public class MulSoldierFactoryObjectGUI : IPropertyGUI
             var lSoldierName = lSettingInfo.soldierName;
             bool lSelected = lSettingInfo.selected;
             var lNewSelected = drawSoldier(
-                SoldierFactoryState.Singleton.getSoldierInfo(race,lSoldierName ),
+                SoldierFactorySystem.Singleton.getSoldierInfo(race, lSoldierName),
                 lSelected);
             if (lSelected)
                 SingleSoldierFactoryObjectGUI.drawProduceSetting(lSettingInfo);

@@ -103,7 +103,7 @@ class defenseTowerItem : IitemObject
         Hashtable lInfo = new Hashtable();
         lInfo["creatorName"] = defenseTowerTypeName;
         lInfo["position"] = towerPosition;
-        lInfo["rotation"] = new Quaternion();
+        //lInfo["rotation"] = new Quaternion();
         lInfo["face"] = towerFace;
         lInfo["layer"] = useObject.layer;
         lInfo["race"] = (int)PlayerInfo.getRace(useObject.layer);

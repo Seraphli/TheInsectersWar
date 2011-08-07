@@ -104,4 +104,14 @@ public class StrongholdFactory : MonoBehaviour, SoldierFactory.Listener
         _finalAims = ArmyBase.getArmyBase(lAdversaryRace);
     }
 
+    //[SerializeField]
+    //Transform _home;
+
+    public Transform home
+    {
+        //get { return _home; }
+        //set { _home = value; }
+        get { return transform; }
+    }
+
 }
