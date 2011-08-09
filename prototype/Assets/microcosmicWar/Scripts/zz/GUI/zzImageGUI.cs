@@ -20,7 +20,7 @@ public class zzImageGUI : zzInterfaceGUI
             if (changeColor)
             {
                 Color lPreColor = GUI.color;
-                GUI.color = imageColor;
+                GUI.color = imageColor * lPreColor;
                 GUI.DrawTexture(rect, image, scaleMode, alphaBlend, imageAspect);
                 GUI.color = lPreColor;
             }

@@ -229,6 +229,11 @@ public abstract class zzInterfaceGUI : MonoBehaviour
         return skin;
     }
 
+    public void switchVisible()
+    {
+        setVisible(!visible);
+    }
+
     public virtual void setVisible(bool pVisible)
     {
         visible = pVisible;

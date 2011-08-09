@@ -22,9 +22,9 @@ public class zzEditableObject : MonoBehaviour
     {
     }
 
-    //public virtual void OnDragOff()
-    //{
-    //}
+    public virtual void OnDragOff()
+    {
+    }
 
     //public string objectTypeName;
 

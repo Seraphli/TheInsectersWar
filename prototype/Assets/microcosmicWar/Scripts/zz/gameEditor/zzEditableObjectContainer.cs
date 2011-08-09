@@ -45,6 +45,9 @@ public class zzEditableObjectContainer:MonoBehaviour
         }
     }
 
+    [SerializeField]
+    bool _draged = false;
+
     public bool draged
     {
         set
@@ -56,10 +59,20 @@ public class zzEditableObjectContainer:MonoBehaviour
                 {
                     lObject.OnDragOn();
                 }
+                _draged = true;
             }
             else
+            {
+                foreach (var lObject in editableObjectList)
+                {
+                    lObject.OnDragOff();
+                }
                 applyState();
+                _draged = false;
+            }
         }
+
+        get { return _draged; }
     }
 
     void Awake()

@@ -4,6 +4,7 @@ public class zz2DRigidbodyDragMove:MonoBehaviour
 {
     public Joint jointDrag;
     public bool detectCollisions = true;
+    public bool freezeDragedRotation = false;
 
     Vector3 getXYWantPos()
     {
@@ -16,8 +17,11 @@ public class zz2DRigidbodyDragMove:MonoBehaviour
     {
         if (enabled)
         {
-            jointDrag.connectedBody.detectCollisions = true;
-            jointDrag.connectedBody = null;
+            if (jointDrag.connectedBody)
+            {
+                jointDrag.connectedBody.detectCollisions = true;
+                jointDrag.connectedBody = null;
+            }
             editableObject.draged = false;
             editableObject = null;
             enabled = false;
@@ -36,6 +40,8 @@ public class zz2DRigidbodyDragMove:MonoBehaviour
 
         editableObject = lEditableObject;
         lEditableObject.draged = true;
+        if (freezeDragedRotation)
+            lEditableObject.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
         jointDrag.transform.position = getXYWantPos();
         jointDrag.connectedBody = lEditableObject.rigidbody;

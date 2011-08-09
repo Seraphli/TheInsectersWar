@@ -33,6 +33,12 @@ public class zzGUILayoutConsole : zzInterfaceGUI
 
     public int messageCount = 0;
 
+    public void clear()
+    {
+        beginIndex = 0;
+        messageCount = 0;
+    }
+
     public override void impGUI(Rect rect)
     {
         var lPreColor = GUI.color;

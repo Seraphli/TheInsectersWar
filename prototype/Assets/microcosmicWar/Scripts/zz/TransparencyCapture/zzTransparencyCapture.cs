@@ -10,7 +10,7 @@ public class zzTransparencyCapture:MonoBehaviour
     {
         if (captureFolder.Length>0 && !Directory.Exists(captureFolder))
             Directory.CreateDirectory(captureFolder);
-        var lImageFileName = captureFolder+Path.DirectorySeparatorChar+System.DateTime.Now.ToString("yyyyMMddhhmmss") + ".png";
+        var lImageFileName = captureFolder + Path.DirectorySeparatorChar + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
         var lScreenshot = captureScreenshot();
         using (var lFile = new FileStream(lImageFileName, FileMode.Create))
         {

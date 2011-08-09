@@ -9,7 +9,7 @@ public class zzGUIModifierColor : zzGUIModifierBase
     public override void modifierBegin()
     {
         preColor = GUI.color;
-        GUI.color = color;
+        GUI.color = color * preColor;
     }
 
     public override void modifierEnd()

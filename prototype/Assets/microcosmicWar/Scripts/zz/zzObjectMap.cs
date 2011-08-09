@@ -1,12 +1,14 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class zzObjectMap : MonoBehaviour
 {
     public string objectName;
-    static Hashtable mObjectMap = new Hashtable();
+    static Dictionary<string, GameObject> mObjectMap
+        = new Dictionary<string, GameObject>();
 
     void Awake()
     {
@@ -15,18 +17,24 @@ public class zzObjectMap : MonoBehaviour
 
     public static void setObject(string pObjectName,GameObject pObject)
     {
-        if ( mObjectMap.Contains(pObjectName) )
+        if ( mObjectMap.ContainsKey(pObjectName) )
             Debug.LogError("same name:" + pObjectName);
 
         mObjectMap[pObjectName] = pObject;
 
     }
 
+    void OnDestroy()
+    {
+        mObjectMap.Remove(objectName);
+    }
+
     public static GameObject getObject(string pName)
     {
-        if (mObjectMap.Contains(pName))
+        GameObject lOut;
+        if (mObjectMap.TryGetValue(pName, out lOut))
         {
-            return mObjectMap[pName] as GameObject;
+            return lOut;
         }
         return GameObject.FindWithTag(pName);
 

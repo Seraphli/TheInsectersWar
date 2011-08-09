@@ -64,6 +64,24 @@ public class zzObjectPicker:MonoBehaviour
         buttonDownEvent += toObjectCall(pPickEvent);
     }
 
+    //是否为透明区域
+    bool isClearSpace(Material pMaterial, Vector2 pUV)
+    {
+        var lTexture = pMaterial.mainTexture as Texture2D;
+        if (!lTexture)
+        {
+            return false;
+        }
+        var lTextureOffset = pMaterial.mainTextureOffset;
+        var lTextureScale = pMaterial.mainTextureScale;
+        var lU = pUV.x * lTextureScale.x + lTextureOffset.x;
+        var lV = pUV.y * lTextureScale.y + lTextureOffset.y;
+        if (lTexture.GetPixelBilinear(lU, lV).a == 0f)
+            return true;
+        return false;
+
+    }
+
     GameObject check()
     {
         RaycastHit lRaycastHit;
@@ -74,8 +92,22 @@ public class zzObjectPicker:MonoBehaviour
         {
             var lRay = lInfo.camera.ScreenPointToRay(
                 new Vector3(lMousePos.x, lMousePos.y, lInfo.camera.nearClipPlane));
-            if (Physics.Raycast(lRay, out lRaycastHit, pickDistance, lInfo.pickLayerMask))
-                return lRaycastHit.collider.gameObject;
+            var lRaycastHits = Physics.RaycastAll(lRay, pickDistance, lInfo.pickLayerMask);
+            System.Array.Sort(lRaycastHits, (a, b) => a.distance.CompareTo(b.distance));
+            foreach (var lHit in lRaycastHits)
+            {
+                var lTransform = lHit.transform;
+                var lMeshRenderer = lTransform.GetComponent<MeshRenderer>();
+                var lMeshCollider = lTransform.GetComponent<MeshCollider>();
+                if (lMeshCollider
+                    && lMeshRenderer)
+                {
+                    var lMaterial = lMeshRenderer.material;
+                    if (lMaterial && isClearSpace(lMaterial, lHit.textureCoord))
+                        continue;
+                }
+                return lHit.transform.gameObject;
+            }
         }
 
         return null;
