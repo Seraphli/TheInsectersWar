@@ -5,11 +5,12 @@ using System.Collections;
 public class HeroNetView : MonoBehaviour
 {
 
-    public zzCharacter character;
+    public Character2D character;
     public ActionCommandControl actionCommandControl;
     public GameObject owner;
     public Life life;
     public SoldierModelSmoothMove soldierModelSmoothMove;
+    public Hero hero;
     //FIXME_VAR_TYPE transform;
 
     //void Start()
@@ -32,8 +33,8 @@ public class HeroNetView : MonoBehaviour
         transform.parent = pOwner.transform;
         transform.localPosition = Vector3.zero;
         owner = pOwner;
-        Hero lHero = owner.GetComponentInChildren<Hero>();
-        character = lHero.getCharacter();
+        hero = owner.GetComponentInChildren<Hero>();
+        character = hero.getCharacter();
         actionCommandControl = owner.GetComponentInChildren<ActionCommandControl>();
         life = owner.GetComponent<Life>();
         soldierModelSmoothMove = owner.GetComponent<SoldierModelSmoothMove>();
@@ -87,8 +88,6 @@ public class HeroNetView : MonoBehaviour
         char lCommand = (char)System.Convert.ToByte(actionCommandControl.commandValue & 0xff);
 
         //---------------------------------------------------
-        stream.Serialize(ref lCommand);
-        //---------------------------------------------------
         if (stream.isWriting)
         {
             lVectorData = lTransform.position;
@@ -123,15 +122,30 @@ public class HeroNetView : MonoBehaviour
             //}
             soldierModelSmoothMove.beginMove();
             actionCommandControl.commandValue = ((byte)lCommand) & 0xff;
-            var pUnitActionCommand = actionCommandControl.getCommand();
             character.yVelocity = lVectorData.z;
             lVectorData.z = 0f;
             lTransform.position = lVectorData;
 
+            var pUnitActionCommand = actionCommandControl.getCommand();
             var lDeltaTime = (float)(Network.time - lTimestamp);
+
+            if (pUnitActionCommand.Fire)
+            {
+                hero.nowAction = hero.fireAction;
+            }
+            else if (pUnitActionCommand.Action1)
+            {
+                hero.nowAction = hero.action1;
+            }
+            else if (pUnitActionCommand.Action2)
+            {
+                hero.nowAction = hero.action2;
+            }
+            else
+                hero.nowAction = null;
             character.update2D(pUnitActionCommand, UnitFace.getValue(pUnitActionCommand.face),
                 life.isAlive(), lDeltaTime * Time.timeScale);
-            //lastUpdateTime = Time.time;
+
             character.lastUpdateTime = Time.time;
             soldierModelSmoothMove.endMove();
 

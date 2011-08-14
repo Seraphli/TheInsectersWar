@@ -156,6 +156,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\CreateObjectWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\DeadZone.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\playSoundWhenTouch.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeIntervalChange.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeIntervalRecoverByDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeRateRangeEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeRecoverConstValue.cs" />
@@ -167,6 +168,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\undo\ParentUndoMementoFactory.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSelfWhenDestroy.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CloneSubObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\ColliderPickSwitcher.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CombineImagePlane.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateAndDestroyObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\levelEditor\CreateByPrefab.cs" />
@@ -190,16 +192,24 @@
      <Compile Include="Assets\microcosmicWar\Scripts\map\rule1LoseCondition.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ChooseRaceMenu.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\MainMenu.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\NetCountDownCounter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkMenu.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkRoom.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\menu\NetworkRoomGUI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\menu\ServerList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\recycle\FadeShield.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\SoldierAction.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\SoldierActionEvent.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\SoldierBodyAction.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\VariationBeeAction.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ActionCoolTime.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ActionEnergyValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ArmouredPismire.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Bullet.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFaceVelocity.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFollowAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Character2D.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\FlameWave.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Hero.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\HeroNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ISoldierAI.cs" />
@@ -221,8 +231,10 @@
      <Compile Include="Assets\microcosmicWar\Scripts\System\collisionLayer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameScene.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\GameSceneManager.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\NetworkDisappear.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\NetworkScopeObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\PlayerInfo.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\PlayerListInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\PlayerScope.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\RaceObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactory.cs" />
@@ -231,6 +243,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\System\SoldierFactorySystem.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\StrongholdOffLineSetting.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\UnitFaceDirectionObject.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\System\WMGameConfig.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\WMGameObjectType.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\WMPlayStateManager.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\System\zzItemBagControl.cs" />
@@ -289,9 +302,12 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointAutoLineShow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointConnecter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\gameEditor\zzWayPointLine.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetColor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Animation\zzGUIAniToTargetScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Editor\zzGUICreatorWindow.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Editor\zzGUIEditorWindow.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Helper\zzGUIConsoleSender.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Helper\zzGUIConsoleSenderTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUIEditorHelper.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUIFunction.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibDrawLine.cs" />
@@ -299,6 +315,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeFolderDraw.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUILibTreeInfo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUIRenderDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Lib\zzGUIUtilities.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierColor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierExecutor.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\Modifier\zzGUIModifierGenericProperty.cs" />
@@ -316,12 +333,15 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIContainer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIGroup.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUILayoutArea.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUILayoutConsole.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUILayoutScrollView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUILink.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIListViewArea.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIProgressBarShelter.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIRender.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIScaleToFit.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUIStyle.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUISwitchButton.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\GUI\zzGUITextField.cs" />
@@ -375,6 +395,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzPolygon.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzSimplyPolygon.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\modelPainter\zzSimplyPolygonDebuger.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\network\zz2DTransformNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\network\zzNetworkHost.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzAutoDetect.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
@@ -402,6 +423,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameObjectValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzGameValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetBoolValue.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetColorValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetFloatValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetIntValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\setValue\zzSetObjectMap.cs" />
@@ -425,6 +447,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\undo\zzUndo.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzApplication.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzDontDestroyOnLoad.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\Unity\zzLogCallback.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\IitemObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zz2DCameraDrag.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzAllocateViewID.cs" />
@@ -446,6 +469,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLayerMaskSwitch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzLogFile.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzMasterServer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\zzNetworkHelper.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectMap.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzObjectPicker.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzPlaneMesh.cs" />
@@ -468,7 +492,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Board.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BoardDetector.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\BodyActionClass.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\BodyAction.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BomberAI.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\doByRace.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\EffectOfShield.cs" />
@@ -483,6 +507,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\NetworkHelpObject.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\ObjectProperty.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\PlatformerPushBodies.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\PlayerSpawn.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\RandomScale.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\RigidbodyNetView.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Shield.cs" />

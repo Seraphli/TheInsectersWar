@@ -58,25 +58,21 @@ public class AnimationSettingData
     public int animationIndex;
 }
 
-//class BodyActionData
-//{
-//}
-//class AnimationActionData
-//{
-//}
+
 [System.Serializable]
-public class BodyAction
+public class BodyAction:MonoBehaviour
 {
+    public BodyActionInfo actionInfo;
 
     public int nowActionIndex = 0;
     public string nowActionType = "";
 
-    //[string]=int
-    public Hashtable actionNameToAniSetting = new Hashtable();
-    //FIXME_VAR_TYPE actionTypeNameToIndex=Hashtable();
-    //[string]=string[]
-    public Hashtable nameToActionType = new Hashtable();
-    //FIXME_VAR_TYPE nameToActionListMap=Hashtable();
+    public Dictionary<string, AnimationSettingData> actionNameToAniSetting =
+        new Dictionary<string, AnimationSettingData>();
+
+    public Dictionary<string, string[]> nameToActionType
+        = new Dictionary<string, string[]>();
+
     public Animation myAnimation;
 
     /// <summary>
@@ -84,9 +80,13 @@ public class BodyAction
     /// </summary>
     static Dictionary<AnimationClip, bool> haveAddedEvent = new Dictionary<AnimationClip, bool>();
 
-    public void init(BodyActionInfo cInfo, Animation pAnimation)
+    void Start()
     {
-        myAnimation = pAnimation;
+        init(actionInfo);
+    }
+
+    public void init(BodyActionInfo cInfo)
+    {
         ActionTypeInfo[] actionTypeList = cInfo.actionTypeList;
 
         //存储动作名对应的索引
@@ -108,7 +108,7 @@ public class BodyAction
             //actionNameToAniSetting[actionTypeInfo.actionTypeName]=i;
 
             //遍历一个动作类型中的动作/动画
-            ArrayList animationNameList = new ArrayList();
+            List<string> animationNameList = new List<string>(actionTypeInfo.animationActionList.Length);
             foreach (UnityAnimationInfo animationInfo in actionTypeInfo.animationActionList)
             {
                 animationNameList.Add(animationInfo.animationName);
@@ -117,44 +117,31 @@ public class BodyAction
                     myAnimation[animationInfo.animationName].AddMixingTransform(cInfo.mixingTransform);
                     myAnimation[animationInfo.animationName].layer = cInfo.layer;
                 }
-                //if(cInfo.mixingTransform2)
+   
+                //AnimationClip   lAnimationClip = myAnimation[animationInfo.animationName].clip;
+                //if (!haveAddedEvent.ContainsKey(lAnimationClip))
                 //{
-                //	myAnimation[animationInfo.animationName].AddMixingTransform(cInfo.mixingTransform2);
-                //	myAnimation[animationInfo.animationName].layer = cInfo.layer;
+                //    //设置动画事件
+                //    if (animationInfo.functionName.Length != 0)
+                //    {
+                //        AnimationEvent lAnimationEvent = new AnimationEvent();
+                //        lAnimationEvent.functionName = "messageRedirectReceiver";
+                //        lAnimationEvent.stringParameter = animationInfo.functionName;
+                //        lAnimationEvent.time = animationInfo.functionImpTime;
+                //        lAnimationClip.AddEvent(lAnimationEvent);
+                //        //Debug.Log(animationInfo.animationName+"  "+animationInfo.functionName);
+                //    }
+                //    haveAddedEvent[lAnimationClip] = true;
                 //}
-
-                
-                AnimationClip   lAnimationClip = myAnimation[animationInfo.animationName].clip;
-                if (!haveAddedEvent.ContainsKey(lAnimationClip))
-                {
-                    //设置动画事件
-                    if (animationInfo.functionName.Length != 0)
-                    {
-                        AnimationEvent lAnimationEvent = new AnimationEvent();
-                        lAnimationEvent.functionName = "messageRedirectReceiver";
-                        lAnimationEvent.stringParameter = animationInfo.functionName;
-                        lAnimationEvent.time = animationInfo.functionImpTime;
-                        lAnimationClip.AddEvent(lAnimationEvent);
-                        //Debug.Log(animationInfo.animationName+"  "+animationInfo.functionName);
-                    }
-                    haveAddedEvent[lAnimationClip] = true;
-                }
             }
             //将动作/动画表存储在 对应类型名称下
             //nameToActionType[actionTypeInfo.actionTypeName]=animationNameList.ToBuiltin(string);
-            nameToActionType[actionTypeInfo.actionTypeName] = animationNameList.ToArray(typeof(string));
+            nameToActionType[actionTypeInfo.actionTypeName] = animationNameList.ToArray();
         }
         nowActionType = actionTypeList[0].actionTypeName;
+        animationState = myAnimation[myAnimation.clip.name];
     }
-    /*
-    void  playAction ( int pActionIndex  ){
-        if(pActionIndex!=nowActionIndex)
-        {
-            nowActionIndex=pActionIndex;
-            updateAnimation();
-        }
-    }
-    */
+
     public void playAction(string pActionName)
     {
         //Debug.Log(pActionName);
@@ -167,7 +154,7 @@ public class BodyAction
         }
             */
         //Debug.Log(pActionName);
-        AnimationSettingData lAnimationSettingData = (AnimationSettingData)actionNameToAniSetting[pActionName];
+        AnimationSettingData lAnimationSettingData = actionNameToAniSetting[pActionName];
         //Debug.Log(lAnimationSettingData);
         //playAction(lAnimationSettingData.animationIndex);
         if (lAnimationSettingData.animationIndex != nowActionIndex)
@@ -182,18 +169,24 @@ public class BodyAction
         //Debug.Log(pName);
         if (pName != nowActionType)
         {
+            var lastAniState = animationState;
             nowActionType = pName;
             updateAnimation(true);
+            animationState.time = lastAniState.time;
         }
     }
+
+    public AnimationState animationState;
 
     public void updateAnimation(bool pCrossFade)
     {
         //Debug.Log(nameToActionType[nowActionType][nowActionIndex]);
         string[] lnowActionTypeMap = (string[])nameToActionType[nowActionType];
+        var lNowAniName = lnowActionTypeMap[nowActionIndex];
+        animationState = myAnimation[lNowAniName];
         if (pCrossFade)
         {
-            myAnimation.CrossFade(lnowActionTypeMap[nowActionIndex], 0.1f);
+            myAnimation.CrossFade(lNowAniName, 0.1f);
         }
         else
             myAnimation.Play(lnowActionTypeMap[nowActionIndex]);

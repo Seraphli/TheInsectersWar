@@ -227,7 +227,7 @@ public class Stronghold:MonoBehaviour
         //    return;
         if (occupied)
         {
-            Debug.LogError("Update When Occupied");
+            //Debug.LogError("Update When Occupied");
             return;
         }
 

@@ -1,21 +1,17 @@
 ﻿
 using UnityEngine;
 using System.Collections;
-[RequireComponent(typeof(destroyWhenDie))]
+
 public class Hero : MonoBehaviour
 {
 
-    public float runSpeed = 2.0f;
-    //FIXME_VAR_TYPE userControl=false;
-    //FIXME_VAR_TYPE controlByOther=false;
-    public float gravity = 10.0f;
-    public float jumpSpeed = 8.0f;
-    public zzCharacter character = new zzCharacter();
+    //public zzCharacter character = new zzCharacter();
+    public Character2D character2D;
 
     public Emitter emitter;
 
     //被打死后小时的时间
-    public float deadDisappearTimePos = 4.0f;
+    //public float deadDisappearTimePos = 4.0f;
 
     //AudioSource fireSound;
 
@@ -26,11 +22,7 @@ public class Hero : MonoBehaviour
     public Transform reverseObjectTransform;
 
     protected float Xscale;
-    //protected ZZSprite mZZSprite;
-    //protected CharacterController characterController;
 
-    //private FIXME_VAR_TYPE moveV= Vector3.zero;
-    //private bool grounded = false;
 
     private Life life;
 
@@ -40,14 +32,14 @@ public class Hero : MonoBehaviour
 
     public zzAutoDetect standDetector;
 
-    public bool inFiring;
+    //public bool inFiring;
 
     public BodyActionInfo upBodyActionInfo = new BodyActionInfo();
     public BodyActionInfo downBodyActionInfo = new BodyActionInfo();
 
 
-    public BodyAction upBodyAction = new BodyAction();
-    public BodyAction downBodyAction = new BodyAction();
+    public BodyAction upBodyAction;
+    public BodyAction downBodyAction;
 
     public IobjectListener objectListener;
 
@@ -55,27 +47,11 @@ public class Hero : MonoBehaviour
     //原始的朝向
     public UnitFaceDirection originalFace = UnitFaceDirection.left;
 
-    //Component.SendMessage ("dieCallFunction")
-    //Component dieCallFunction;
-
-    //var upBodyAction
-
-    //角色的朝向
-    //protected FIXME_VAR_TYPE face= -1;
     public ActionCommandControl actionCommandControl;
-    /*
-    void  getVelocity (){
-        return moveV;
-    }
 
-    void  setVelocity ( Vector3 pVelocity  ){
-        moveV=pVelocity;
-    }
-    */
-
-    public zzCharacter getCharacter()
+    public Character2D getCharacter()
     {
-        return character;
+        return character2D;
     }
 
     public int getFaceDirection()
@@ -88,11 +64,6 @@ public class Hero : MonoBehaviour
         return actionCommandControl.face;
     }
 
-    void Awake()
-    {
-        character.lastUpdateTime = Time.time;
-    }
-
     //Transform upBody;
 
     void Start()
@@ -100,20 +71,7 @@ public class Hero : MonoBehaviour
 
         if (!myAnimation)
             myAnimation = GetComponentInChildren<Animation>();
-        if (!actionCommandControl)
-            actionCommandControl = GetComponent<ActionCommandControl>();
 
-        upBodyAction.init(upBodyActionInfo, myAnimation);
-        downBodyAction.init(downBodyActionInfo, myAnimation);
-
-        //characterController = GetComponentInChildren<CharacterController>();
-        character.characterController = GetComponentInChildren<CharacterController>();
-        /*
-        character.runSpeed=runSpeed;
-        character.gravity = gravity;
-        character.jumpSpeed = jumpSpeed;
-        */
-        //characterController.Move(Vector3(0,0,0));
         emitter = GetComponentInChildren<Emitter>();
 
 
@@ -121,25 +79,13 @@ public class Hero : MonoBehaviour
         //life.setDieCallback(deadAction);
         life.addDieCallback(deadAction);
 
-        //?
-        //characterController .detectCollisions=false;
-
-        //collisionLayer.addCollider(gameObject);
 
         if (!reverseObjectTransform)
             reverseObjectTransform = transform;
 
-        //Xscale=transform.localScale.x;
 
         Xscale = Mathf.Abs(reverseObjectTransform.localScale.x);
 
-        //}
-        //死亡的后的动作
-        //actionImpDuringDeadAnimation.setImpInfoList(
-        //[AnimationImpTimeListInfo(deadDisappearTimePos,disappear)]
-        //);
-        //mZZSprite.setListener("dead",actionImpDuringDeadAnimation);
-        //}
 
         emitter.setBulletLayer(getBulletLayer());
         UpdateFaceShow();
@@ -217,15 +163,16 @@ public class Hero : MonoBehaviour
 
             lActionCommand = actionCommandControl.getCommand();
             //设置动画 动作
-            if (lActionCommand.Fire)
-            {
-                upBodyAction.playAction("fire");
-            }
-            else
-                upBodyAction.playAction("standby");
+            //if (lActionCommand.Fire)
+            //{
+            //    upBodyAction.playAction("fire");
+            //}
+            //else
+            //    upBodyAction.playAction("standby");
+            processAction(lActionCommand);
 
             //if (character.isGrounded())
-            if (character.isGrounded() || standDetector.result.Length!=0)
+            if (character2D.isGrounded() || standDetector.result.Length != 0)
                 if (lActionCommand.GoForward)
                 {
                     downBodyAction.playAction("run");
@@ -248,7 +195,7 @@ public class Hero : MonoBehaviour
             updatePosture(lActionCommand.FaceUp, lActionCommand.FaceDown, lActionCommand.GoForward);
             //print(""+actionCommand.FaceUp+actionCommand.FaceDown+actionCommand.GoForward);
         }
-        character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
+        character2D.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
     }
 
     public void updatePosture(bool pUp, bool pDwon, bool pForward)
@@ -275,11 +222,70 @@ public class Hero : MonoBehaviour
         }
     }
 
-    //更新characterController
-    //public void FixedUpdate()
-    //{
-    //    character.update2D(actionCommandControl.getCommand(), actionCommandControl.getFaceValue(), life.isAlive());
+    SoldierAction _nowAction;
 
-    //}
+    public SoldierAction nowAction
+    {
+        get { return _nowAction; }
+        set
+        {
+            //print("_nowAction:" + (_nowAction == null) + " value:" + (value == null));
+            if (_nowAction && _nowAction != value)
+            {
+                _nowAction.inActing = false;
+            }
+            _nowAction = value;
+            if (_nowAction)
+                _nowAction.inActing = true;
+        }
+    }
+
+    void OnCommand(UnitActionCommand pCommand)
+    {
+        if (nowAction)
+        {
+            pCommand.Action1 = action1.inActing;
+            pCommand.Action2 = action2.inActing;
+            pCommand.Fire = fireAction.inActing;
+        }
+    }
+
+    void Awake()
+    {
+        fireAction.commandValue = UnitActionCommand.fireCommand;
+        action1.commandValue = UnitActionCommand.action1Command;
+        action2.commandValue = UnitActionCommand.action2Command;
+        actionCommandControl.addCommandChangedReciver(OnCommand);
+    }
+
+    public SoldierAction fireAction;
+
+    public SoldierAction action1;
+
+    public SoldierAction action2;
+
+    void processAction(UnitActionCommand lActionCommand)
+    {
+        if (nowAction && !nowAction.inActing)
+        {
+            nowAction = null;
+        }
+        if (nowAction)
+        {
+            nowAction.processCommand(lActionCommand);
+        }
+        else if (lActionCommand.Fire)
+        {
+            nowAction = fireAction;
+        }
+        else if (lActionCommand.Action1)
+        {
+            nowAction = action1;
+        }
+        else if (lActionCommand.Action2)
+        {
+            nowAction = action2;
+        }
+    }
 
 }

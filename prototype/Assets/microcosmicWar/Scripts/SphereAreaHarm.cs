@@ -11,6 +11,8 @@ public class SphereAreaHarm : MonoBehaviour
     public float harmRadius = 5.0f;
     public float harmValueInCentre = 10.0f;
 
+    public float minHarmRate = 0f;
+
     // 符合 此 mask 的物体,执行伤害
     public LayerMask harmLayerMask = -1;
 
@@ -38,7 +40,7 @@ public class SphereAreaHarm : MonoBehaviour
         {
             injureInfo[Life.harmTypeName] = Life.harmType.explode;
         }
-        impSphereAreaHarm(transform.position, harmRadius, harmValueInCentre,
+        impSphereAreaHarm(transform.position, harmRadius,minHarmRate, harmValueInCentre,
             harmLayerMask, injureInfo);
         //if (onlyOnce)
         //{
@@ -58,19 +60,19 @@ public class SphereAreaHarm : MonoBehaviour
     public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,
         float pHarmValueInCentre, int pHarmLayerMask)
     {
-        impSphereAreaHarm(pCenterPos, pHarmRadius, pHarmValueInCentre,
+        impSphereAreaHarm(pCenterPos, pHarmRadius,0f, pHarmValueInCentre,
             pHarmLayerMask, canHarmAll, null);
     }
 
-    public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,
+    public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,float pMinRate,
         float pHarmValueInCentre, int pHarmLayerMask,Hashtable pInjureInfo)
     {
-        impSphereAreaHarm(pCenterPos, pHarmRadius, pHarmValueInCentre,
+        impSphereAreaHarm(pCenterPos, pHarmRadius,pMinRate, pHarmValueInCentre,
             pHarmLayerMask, canHarmAll,pInjureInfo);
     }
 
     //执行圆球范围的伤害,伤害随离中心距离增加而递减
-    public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,
+    public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,float pMinRate,
         float pHarmValueInCentre, int pHarmLayerMask, canHarmFunc pCanHarmFunc,
         Hashtable pInjureInfo)
     {
@@ -119,7 +121,7 @@ public class SphereAreaHarm : MonoBehaviour
             if(pCanHarmFunc(lLifeImp))
             {
                 float lDistanceImp = (float)lifeToDistance.Value;
-                float lHarmRange = 1.0f - Mathf.Clamp01(lDistanceImp / pHarmRadius);
+                float lHarmRange = Mathf.Lerp(pMinRate, 1f, 1.0f - Mathf.Clamp01(lDistanceImp / pHarmRadius));
                 //print(lDistanceImp);
                 //print(lHarmRange);
                 //print(lHarmRange *harmValueInCentre );
