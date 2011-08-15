@@ -91,6 +91,11 @@ public class Emitter : MonoBehaviour
         pForwardVelocity = getForward() * bulletSpeed;
     }
 
+    public void emitVoidReturn()
+    {
+        EmitBullet();
+    }
+
     public virtual GameObject[] EmitBullet()
     {
         GameObject lOut = null;

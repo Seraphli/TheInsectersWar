@@ -72,9 +72,6 @@ public class Hero : MonoBehaviour
         if (!myAnimation)
             myAnimation = GetComponentInChildren<Animation>();
 
-        emitter = GetComponentInChildren<Emitter>();
-
-
         life = GetComponentInChildren<Life>();
         //life.setDieCallback(deadAction);
         life.addDieCallback(deadAction);
