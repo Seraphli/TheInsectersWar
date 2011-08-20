@@ -535,7 +535,8 @@ public class NetworkRoom : MonoBehaviour
         {
             if (Network.isServer)
             {
-                NetworkRoomSelectPismire(playerID, pPos);
+                if (NetworkRoomSelectPismire(playerID, pPos))
+                    player.race = Race.ePismire;
             }
             else
                 networkView.RPC("NetworkRoomSelectPismire", RPCMode.Server, playerID, pPos);
@@ -544,7 +545,7 @@ public class NetworkRoom : MonoBehaviour
 
     //in server
     [RPC]
-    void NetworkRoomSelectPismire(int pPlayerID, int pPos)
+    bool NetworkRoomSelectPismire(int pPlayerID, int pPos)
     {
         if (!isExit(Race.ePismire, pPos))
         {
@@ -552,14 +553,16 @@ public class NetworkRoom : MonoBehaviour
             //和原先的一样
             if (lPlayerInfo.race == Race.ePismire
                 && lPlayerInfo.spawnIndex == pPos)
-                return;
+                return false;
             lPlayerInfo.race = Race.ePismire;
             lPlayerInfo.spawnIndex = pPos;
             lPlayerInfo.ready = false;
             selectChangedMessage(pPlayerID, lPlayerInfo);
             sendData();
             netGameInterruptedEvent();
+            return true;
         }
+        return false;
     }
 
     public void selectBee(int pPos)
@@ -568,7 +571,8 @@ public class NetworkRoom : MonoBehaviour
         {
             if (Network.isServer)
             {
-                NetworkRoomSelectBee(playerID, pPos);
+                if (NetworkRoomSelectBee(playerID, pPos))
+                    player.race = Race.eBee;
             }
             else
                 networkView.RPC("NetworkRoomSelectBee", RPCMode.Server, playerID, pPos);
@@ -577,22 +581,25 @@ public class NetworkRoom : MonoBehaviour
 
     //in server
     [RPC]
-    void NetworkRoomSelectBee(int pPlayerID, int pPos)
+    bool NetworkRoomSelectBee(int pPlayerID, int pPos)
     {
+        //如果此位未被选中
         if (!isExit(Race.eBee, pPos))
         {
             var lPlayerInfo = _playersInfo[playerIdToIndex(pPlayerID)];
             //和原先的一样
             if (lPlayerInfo.race == Race.eBee
                 && lPlayerInfo.spawnIndex == pPos)
-                return;
+                return false;
             lPlayerInfo.race = Race.eBee;
             lPlayerInfo.spawnIndex = pPos;
             lPlayerInfo.ready = false;
             selectChangedMessage(pPlayerID, lPlayerInfo);
             sendData();
             netGameInterruptedEvent();
+            return true;
         }
+        return false;
     }
 
     //public void clearSelection()

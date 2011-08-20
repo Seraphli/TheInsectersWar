@@ -202,7 +202,6 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\SoldierActionEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\SoldierBodyAction.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\action\VariationBeeAction.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ActionCoolTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ActionEnergyValue.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\ArmouredPismire.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Bullet.cs" />
@@ -400,13 +399,14 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzAutoDetect.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzDetectorContainer.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzOverlapSphereDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayDetectorBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayOneBlockDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRayRandomLengthOneBlockDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzRigidbodySweepDetector.cs" />
-     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereDetector.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzSphereCastDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzTriggerDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\objectSearcher\zzTriggerDetectorEvent.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\remote\zzSetRemoteAttach.cs" />
@@ -435,6 +435,9 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\example\zzSignalSlotExample.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlot.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlotList.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\Editor\zzSpriteAssetEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\zzSpriteAsset.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\zzSpriteBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzDestroySelfInTime.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzScaleInTime.cs" />
@@ -489,6 +492,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\zzWayPointGizmos.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Airplane.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\AnimationListeners.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\AttackByDetector.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BloodBar.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Board.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\BoardDetector.cs" />

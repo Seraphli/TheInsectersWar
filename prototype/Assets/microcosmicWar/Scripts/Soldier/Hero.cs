@@ -64,13 +64,19 @@ public class Hero : MonoBehaviour
         return actionCommandControl.face;
     }
 
-    //Transform upBody;
+    static void nullValueChangedReceiver(float p) { }
 
     void Start()
     {
 
         if (!myAnimation)
             myAnimation = GetComponentInChildren<Animation>();
+        if (!_actionEnergyValue)
+        {
+            var lActionEnergyValue = gameObject.AddComponent<ActionEnergyValue>();
+            lActionEnergyValue.addValueChangedReceiver(nullValueChangedReceiver);
+            actionEnergyValue = lActionEnergyValue;
+        }
 
         life = GetComponentInChildren<Life>();
         //life.setDieCallback(deadAction);
@@ -166,7 +172,14 @@ public class Hero : MonoBehaviour
             //}
             //else
             //    upBodyAction.playAction("standby");
-            processAction(lActionCommand);
+            if (nowAction && !nowAction.inActing)
+            {
+                nowAction = null;
+            }
+            if (nowAction)
+            {
+                nowAction.processCommand(lActionCommand);
+            }
 
             //if (character.isGrounded())
             if (character2D.isGrounded() || standDetector.result.Length != 0)
@@ -239,12 +252,14 @@ public class Hero : MonoBehaviour
 
     void OnCommand(UnitActionCommand pCommand)
     {
-        if (nowAction)
+        if (character2D.characterController.isGrounded
+            && pCommand.Jump
+            && !pCommand.FaceDown
+            && !_actionEnergyValue.tryUse(jumpCost))
         {
-            pCommand.Action1 = action1.inActing;
-            pCommand.Action2 = action2.inActing;
-            pCommand.Fire = fireAction.inActing;
+            pCommand.Jump = false;
         }
+        processAction(pCommand);
     }
 
     void Awake()
@@ -260,29 +275,57 @@ public class Hero : MonoBehaviour
     public SoldierAction action1;
 
     public SoldierAction action2;
+    
+    [SerializeField]
+    ActionEnergyValue _actionEnergyValue;
+
+    public ActionEnergyValue actionEnergyValue
+    {
+        set
+        {
+            _actionEnergyValue = value;
+            _actionEnergyValue.fullValue = 1f;
+            _actionEnergyValue.nowValue = 1f;
+            _actionEnergyValue.recoverSpeed = recoverSpeed;
+        }
+    }
+
+    public float fireCost;
+    public float action1Cost;
+    public float action2Cost;
+    public float jumpCost;
+    public float recoverSpeed;
 
     void processAction(UnitActionCommand lActionCommand)
     {
-        if (nowAction && !nowAction.inActing)
+
+        //if (nowAction && !nowAction.inActing)
+        //{
+        //    nowAction = null;
+        //}
+        //if (nowAction)
+        //{
+        //    nowAction.processCommand(lActionCommand);
+        //}
+        //else 
+        if (!nowAction)
         {
-            nowAction = null;
+            if (lActionCommand.Fire && _actionEnergyValue.tryUse(fireCost))
+            {
+                nowAction = fireAction;
+            }
+            else if (lActionCommand.Action1 && _actionEnergyValue.tryUse(action1Cost))
+            {
+                nowAction = action1;
+            }
+            else if (lActionCommand.Action2 && _actionEnergyValue.tryUse(action2Cost))
+            {
+                nowAction = action2;
+            }
         }
-        if (nowAction)
-        {
-            nowAction.processCommand(lActionCommand);
-        }
-        else if (lActionCommand.Fire)
-        {
-            nowAction = fireAction;
-        }
-        else if (lActionCommand.Action1)
-        {
-            nowAction = action1;
-        }
-        else if (lActionCommand.Action2)
-        {
-            nowAction = action2;
-        }
+        lActionCommand.Action1 = action1.inActing;
+        lActionCommand.Action2 = action2.inActing;
+        lActionCommand.Fire = fireAction.inActing;
     }
 
 }

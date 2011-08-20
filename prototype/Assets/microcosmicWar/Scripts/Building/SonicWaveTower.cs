@@ -40,6 +40,7 @@ public class SonicWaveTower : MonoBehaviour
     void fireOn(float pTimeOffset)
     {
         waveTimer.enabled = true;
+        attackTimer.enabled = true;
         fireTimer.timePos = pTimeOffset;
         fireTimer.setInterval(fireTimeLong);
         fireTimer.setImpFunction((zzUtilities.voidFunction)fireOff);
@@ -55,6 +56,7 @@ public class SonicWaveTower : MonoBehaviour
     void fireOff(float pTimeOffset)
     {
         waveTimer.enabled = false;
+        attackTimer.enabled = false;
         fireTimer.timePos = pTimeOffset;
         fireTimer.setInterval(restTimeLong);
         fireTimer.setImpFunction((zzUtilities.voidFunction)fireOn);
@@ -88,19 +90,22 @@ public class SonicWaveTower : MonoBehaviour
     zzTimer waveTimer;
 
     zzTimer fireTimer;
+    zzTimer attackTimer;
     void Start()
     {
-        if (zzCreatorUtility.isHost())
-        {
-            zzTimer lAttackTimer = gameObject.AddComponent<zzTimer>();
-            lAttackTimer.setInterval(attackInterval);
-            //zTimer.setImpFunction(My);
-            lAttackTimer.addImpFunction(Attack);
-        }
-
         waveTimer = gameObject.AddComponent<zzTimer>();
         waveTimer.setInterval(waveCreatedInterval);
         waveTimer.addImpFunction(createWave);
+        if (zzCreatorUtility.isHost())
+        {
+            attackTimer = gameObject.AddComponent<zzTimer>();
+            attackTimer.setInterval(attackInterval);
+            //zTimer.setImpFunction(My);
+            attackTimer.addImpFunction(Attack);
+        }
+        else
+            attackTimer = waveTimer;
+
         fireTimer = gameObject.AddComponent<zzTimer>();
         fireOff(timeOffset);
     }

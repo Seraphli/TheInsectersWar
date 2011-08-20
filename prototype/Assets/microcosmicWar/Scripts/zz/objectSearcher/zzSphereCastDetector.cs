@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-class zzSphereDetector : zzDetectorBase
+public class zzSphereCastDetector : zzDetectorBase
 {
     public float radius;
     public Transform direction;

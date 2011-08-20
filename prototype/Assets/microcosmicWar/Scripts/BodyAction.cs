@@ -80,7 +80,7 @@ public class BodyAction:MonoBehaviour
     /// </summary>
     static Dictionary<AnimationClip, bool> haveAddedEvent = new Dictionary<AnimationClip, bool>();
 
-    void Start()
+    void Awake()
     {
         init(actionInfo);
     }
@@ -138,8 +138,11 @@ public class BodyAction:MonoBehaviour
             //nameToActionType[actionTypeInfo.actionTypeName]=animationNameList.ToBuiltin(string);
             nameToActionType[actionTypeInfo.actionTypeName] = animationNameList.ToArray();
         }
-        nowActionType = actionTypeList[0].actionTypeName;
-        animationState = myAnimation[myAnimation.clip.name];
+        //nowActionType = actionTypeList[0].actionTypeName;
+        var lNowAniamtion = nameToActionType[nowActionType][nowActionIndex];
+        myAnimation.Play(lNowAniamtion);
+
+        animationState = myAnimation[lNowAniamtion];
     }
 
     public void playAction(string pActionName)
@@ -181,7 +184,7 @@ public class BodyAction:MonoBehaviour
     public void updateAnimation(bool pCrossFade)
     {
         //Debug.Log(nameToActionType[nowActionType][nowActionIndex]);
-        string[] lnowActionTypeMap = (string[])nameToActionType[nowActionType];
+        string[] lnowActionTypeMap = nameToActionType[nowActionType];
         var lNowAniName = lnowActionTypeMap[nowActionIndex];
         animationState = myAnimation[lNowAniName];
         if (pCrossFade)

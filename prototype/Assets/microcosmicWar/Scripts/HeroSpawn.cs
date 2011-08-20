@@ -43,6 +43,8 @@ public class HeroSpawn : MonoBehaviour
         bloodBar.rate = life.rate;
     }
 
+    zzGUIProgressBarBase skillBar;
+
     void getUI()
     {
         var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
@@ -52,6 +54,8 @@ public class HeroSpawn : MonoBehaviour
         mUIObjectMap = lUiRoot.GetComponent<zzSceneObjectMap>();
 
         bloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBarBase>();
+
+        skillBar = mUIObjectMap.getObject("skillValue").GetComponent<zzGUIProgressBarBase>();
 
         if (!rebirthClockUI)
             rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
@@ -321,6 +325,9 @@ public class HeroSpawn : MonoBehaviour
         pHeroObject.AddComponent<BagItemUI>().showSelected = false;
         pHeroObject.AddComponent<MoneyUI>();
         pHeroObject.AddComponent<bagItemUIInput>();
+        var lActionEnergyValue = pHeroObject.AddComponent<ActionEnergyValue>();
+        lActionEnergyValue.addValueChangedReceiver(skillBar.setRate);
+        pHeroObject.GetComponent<Hero>().actionEnergyValue = lActionEnergyValue;
         var lSoldierFactoryStateUI = pHeroObject.AddComponent<SoldierFactoryStateUI>();
         lSoldierFactoryStateUI.race = PlayerInfo.getRace(pHeroObject.layer);
         lSoldierFactoryStateUI.owner = pHeroObject;

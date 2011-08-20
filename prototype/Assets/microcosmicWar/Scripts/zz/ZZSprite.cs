@@ -78,7 +78,7 @@ public class AnimationListener
     }
 }
 
-public class ZZSprite : MonoBehaviour
+public class zzSprite : MonoBehaviour
 {
 
     public string defaultAnimation = "";

@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-[CustomEditor(typeof(ZZSprite))]
-public class ZZSpriteEditor : Editor
+[CustomEditor(typeof(zzSprite))]
+public class zzSpriteEditor : Editor
 {
 
     public override void OnInspectorGUI()
@@ -17,7 +17,7 @@ public class ZZSpriteEditor : Editor
         //GUI.EndGroup();
         if(Application.isPlaying )
         {
-            ZZSprite lSprite = (ZZSprite)target;
+            zzSprite lSprite = (zzSprite)target;
             string[] ldisplayedOptions = new string[lSprite.getAnimationNum()];
             lSprite.getAnimNameList().CopyTo(ldisplayedOptions, 0);
 

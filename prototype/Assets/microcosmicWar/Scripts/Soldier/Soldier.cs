@@ -160,6 +160,7 @@ public class Soldier : MonoBehaviour
         //pCommand.Fire = fireAction.inActing;
         if (nowAction)
         {
+            //若在无 if (nowAction)下执行,会关闭动作命令
             pCommand.Action1 = action1.inActing;
             pCommand.Action2 = action2.inActing;
             pCommand.Fire = fireAction.inActing;
