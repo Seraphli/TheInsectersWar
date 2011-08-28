@@ -5,7 +5,7 @@ namespace zz
 {
     namespace Net
     {
-        public class Updater
+        public class UpdateDownloader
         {
             public string tempDir;
             public string fileName;
@@ -36,7 +36,7 @@ namespace zz
                 Console.ReadLine();
             }
 
-            public void download()
+            public bool download()
             {
                 if (downloadUriList == null || downloadUriList.Length < 0)
                     outError("更新失败:没有可用的更新地址");
@@ -50,7 +50,7 @@ namespace zz
                         {
                             Console.WriteLine(downloadUriList[i]);
                             if (download(downloadUriList[i]))
-                                return;
+                                return true;
                         }
                         catch (IOException e)
                         {
@@ -65,7 +65,15 @@ namespace zz
                         }
                     }
                 }
-                outError("更新失败");
+                return false;
+            }
+
+            public string filePath
+            {
+                get 
+                { 
+                    return Path.Combine(tempDir,fileName);
+                }
             }
 
             public bool download(System.Uri lUri)
@@ -78,7 +86,7 @@ namespace zz
                     Directory.CreateDirectory(tempDir);
                 }
 
-                using (var lFile = new FileStream(tempDir + Path.DirectorySeparatorChar + fileName,
+                using (var lFile = new FileStream(filePath,
                     FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite,bufferSize))
                 {
                     if (lFile.Length != lDownloadInfo.ContentLength)
@@ -103,6 +111,15 @@ namespace zz
                     var lCursorTop = Console.CursorTop;
                     Console.SetCursorPosition(0, Console.WindowHeight - 1);
                     Console.Write("{0} {1:f2}m({2:f1}%) {3:f1}k/s          ",info, size, rate * 100f, speed);
+                    Console.CursorLeft = lCursorLeft;
+                    Console.CursorTop = lCursorTop;
+                }
+                public void clear()
+                {
+                    var lCursorLeft = Console.CursorLeft;
+                    var lCursorTop = Console.CursorTop;
+                    Console.SetCursorPosition(0, Console.WindowHeight - 1);
+                    Console.Write("                                                   ");
                     Console.CursorLeft = lCursorLeft;
                     Console.CursorTop = lCursorTop;
                 }
@@ -166,11 +183,9 @@ namespace zz
                     infoPrinter.refresh();
                 }
 
-                public void refreshShow()
+                public void clearShow()
                 {
-                    infoPrinter.rate = (float)Length / (float)_fileLength;
-                    infoPrinter.speed = 0f;
-                    infoPrinter.refresh();
+                    infoPrinter.clear();
                 }
 
                 public override void Write(byte[] buffer, int offset, int count)
@@ -199,7 +214,7 @@ namespace zz
                 })
                 {
                     BreakpointDownload.download(pUri, (int)pFileStream.Length, lOutDownloadInfo);
-                    lOutDownloadInfo.refreshShow();
+                    lOutDownloadInfo.clearShow();
                 }
 
             }
