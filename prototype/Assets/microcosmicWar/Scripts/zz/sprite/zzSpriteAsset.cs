@@ -38,6 +38,14 @@ public class zzSpriteAsset:ScriptableObject
         get { return (rightBottom.y - leftTop.y) / yCount; }
     }
 
+    public float moveTime(float pLastTime,float pDeltaTime)
+    {
+        if (loop)
+            return Mathf.Repeat(pLastTime + pDeltaTime, length);
+        else
+            return Mathf.Clamp(pLastTime + pDeltaTime, 0f, length);
+    }
+
     public int getFrameIndex(float pTime)
     {
         int lFrameIndex = Mathf.FloorToInt(pTime / frameLength);

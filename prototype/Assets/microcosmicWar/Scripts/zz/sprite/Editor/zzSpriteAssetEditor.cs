@@ -10,11 +10,8 @@ public class zzSpriteAssetEditor:Editor
     public bool play = false;
     public float lastUpdateTime;
 
-    static zzSpriteAssetEditor spriteAssetEditor;
-
     void OnEnable()
     {
-        spriteAssetEditor = this;
         EditorApplication.update += UpdateSprite;
         lastUpdateTime = Time.realtimeSinceStartup;
     }
@@ -28,15 +25,12 @@ public class zzSpriteAssetEditor:Editor
     {
         if(play)
         {
-            spriteAssetEditor.timePos
-                += Time.realtimeSinceStartup - spriteAssetEditor.lastUpdateTime;
             zzSpriteAsset lSpriteAsset = (zzSpriteAsset)target;
-            if (lSpriteAsset.loop)
-                spriteAssetEditor.timePos = Mathf.Repeat(spriteAssetEditor.timePos, lSpriteAsset.length);
-            if (lSpriteAsset.getFrameIndex(spriteAssetEditor.timePos) != framePos)
-                spriteAssetEditor.Repaint();
+            timePos = lSpriteAsset.moveTime(timePos, Time.realtimeSinceStartup - lastUpdateTime);
+            if (lSpriteAsset.getFrameIndex(timePos) != framePos)
+                Repaint();
         }
-        spriteAssetEditor.lastUpdateTime = Time.realtimeSinceStartup;
+        lastUpdateTime = Time.realtimeSinceStartup;
     }
 
     public static Vector2 getFitSize(float pMaxWidth, float pMaxHeigth,
@@ -90,8 +84,8 @@ public class zzSpriteAssetEditor:Editor
 
             var lSourceImageSize = getFitSize((float)lImageWidth,
                     (float)imageMaxHeight,
-                    lSpriteAsset.spriteWidth,
-                    lSpriteAsset.spriteHeigth);
+                    lImage.width*lSpriteAsset.spriteWidth,
+                    lImage.height*lSpriteAsset.spriteHeigth);
 
             var lSpriteScreenPos = new Rect(((float)Screen.width - lSourceImageSize.x) / 2f,
                     lSpace, lSourceImageSize.x, lSourceImageSize.y);

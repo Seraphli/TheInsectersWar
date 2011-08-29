@@ -21,6 +21,7 @@ public class Bullet : MonoBehaviour
     public Rigidbody bulletRigidbody;
 
     public Transform particleEmitter;
+    public bool hitObject = false;
 
     void Awake()
     {
@@ -72,13 +73,27 @@ public class Bullet : MonoBehaviour
         Destroy(showRenderObjectTimer);
     }
 
+    //防止其在Start前执行
+    System.Action hitObjectEvent = nullEventReceiver;
+    public void addHitObjectReceiver(System.Action pReceiver)
+    {
+        hitObjectEvent = pReceiver;
+    }
+
+    System.Action notHitObjectEvent = nullEventReceiver;
+    public void addNotHitObjectReceiver(System.Action pReceiver)
+    {
+        notHitObjectEvent = pReceiver;
+    }
+
+    static void nullEventReceiver(){}
+
     void Start()
     {
         //if (renderObject && zzCreatorUtility.isHost())
         //{
         //    hideObject();
         //}
-
         if (shape)
         {
             shape.layer = gameObject.layer;
@@ -105,12 +120,15 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
-        _touch(collision.transform);
+        foreach (var lContacts in collision.contacts)
+        {
+            _touch(lContacts.otherCollider.transform);
+        }
     }
 
-    void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider collider)
     {
         if (!collider.isTrigger)
             _touch(collider.transform);
@@ -118,9 +136,11 @@ public class Bullet : MonoBehaviour
 
     protected virtual void _touch(Transform pOther)
     {
+        hitObject = true;
         if(Network.isClient)
         {
-            if(!networkView)
+            if(!networkView
+                || networkView.viewID == NetworkViewID.unassigned)
                 lifeEnd();
             return;
         }
@@ -128,9 +148,7 @@ public class Bullet : MonoBehaviour
         //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
         if (bulletLife.getBloodValue() <= 0)
             return;
-
         Life lLife = Life.getLifeFromTransform(pOther);
-
         if (lLife && harmVale!=0)
             lLife.injure(harmVale, injureInfo);
         //print(networkView.viewID);
@@ -144,9 +162,28 @@ public class Bullet : MonoBehaviour
         bulletLife.makeDead();
     }
 
+    public bool changeColliderWhenEnd = false;
+
     //[RPC]
     void lifeEndImp(Life p)
     {
+        if (changeColliderWhenEnd)
+        {
+            foreach (var lCollider in GetComponentsInChildren<Collider>())
+            {
+                lCollider.gameObject.layer = layers.deadObject;
+            }
+            if (hitObject)
+            {
+                rigidbody.isKinematic = true;
+                hitObjectEvent();
+            }
+            else
+            {
+                notHitObjectEvent();
+            }
+        }
+
         particleEmitterDetach();
         //zzCreatorUtility.sendMessage(gameObject,"particleEmitterDetach");
         //Destroy(gameObject);

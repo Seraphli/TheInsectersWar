@@ -63,14 +63,25 @@ public class WMGameConfig:MonoBehaviour
             + "Map Folder Name:" + _data.mapFolderName);
     }
 
+    WMGameConfigData getDate()
+    {
+        if (_data == null)
+        {
+            _data = new WMGameConfigData(data);
+        }
+        return _data;
+    }
+
+    public void addVersionReceiver(System.Action<int> pReceiver)
+    {
+        pReceiver(getDate().version);
+    }
+
     void Awake()
     {
         if (singletonInstance)
             Debug.LogError("have singletonInstance");
         singletonInstance = this;
-        if (_data == null)
-        {
-            _data = new WMGameConfigData(data);
-        }
+        getDate();
     }
 }

@@ -15,9 +15,10 @@ public class zzGroupViewIDManager:MonoBehaviour
 
     List<NetworkView> networkViewList = new List<NetworkView>();
 
-    //server
+
     public void setGroupBegin(System.Action groupFinishEventReceiver)
     {
+        print("setGroupBegin:" + Network.peerType);
         groupFinishEvent += groupFinishEventReceiver;
     }
 
@@ -68,7 +69,7 @@ public class zzGroupViewIDManager:MonoBehaviour
     //server
     public void setGroupEnd()
     {
-        //print("&&&&&&setGroupEnd()&&&&&&&");
+        print("server.&&&&&&setGroupEnd()&&&&&&&");
         networkView.RPC("RPCSetObjectCount", RPCMode.OthersBuffered, objectCount);
     }
 
@@ -76,8 +77,7 @@ public class zzGroupViewIDManager:MonoBehaviour
     [RPC]
     void RPCSetObjectCount(int pCount)
     {
-        print("&&&&&&RPCSetObjectCount&&&&&&&:" + pCount);
-        print(haveSetCount);
+        print("RPCSetObjectCount:" + pCount + " haveSetCount:" + haveSetCount);
         objectCount = pCount;
         finishedCheck();
     }
@@ -86,7 +86,7 @@ public class zzGroupViewIDManager:MonoBehaviour
     {
         if (objectCount == haveSetCount)
         {
-            //print("finishedCheck#############RPCGroupFinish");
+            print("objectCount == haveSetCount,finished");
             networkView.RPC("RPCGroupFinish", RPCMode.Server);
             groupFinish();
         }

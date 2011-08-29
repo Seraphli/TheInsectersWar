@@ -7,7 +7,7 @@ namespace zz
     {
         public class UpdateDownloader
         {
-            public string tempDir;
+            public string tempDir = "";
             public string fileName;
             public int bufferSize = 1000000;
             public string[] downloadList
@@ -81,7 +81,7 @@ namespace zz
                 var lDownloadInfo = BreakpointDownload.getDownloadInfo(lUri);
                 lDownloadInfo.Close();
 
-                if ( string.IsNullOrEmpty(tempDir) && !Directory.Exists(tempDir))
+                if (!Directory.Exists(tempDir))
                 {
                     Directory.CreateDirectory(tempDir);
                 }

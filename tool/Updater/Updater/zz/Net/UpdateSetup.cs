@@ -16,10 +16,15 @@ namespace zz
             public string updatePath;
             public string srcPathInArchive;
 
-            public void setup()
+            public string extractFolderPath
             {
+                get{return Path.Combine(tempPath, extractFolderName);}
+            }
+
+            public void extract()
+            { 
                 //创建解压用的临时文件夹
-                var lExtractFolderDir = Path.Combine(tempPath, extractFolderName);
+                var lExtractFolderDir = extractFolderPath;
                 if (Directory.Exists(lExtractFolderDir))
                 {
                     Directory.Delete(lExtractFolderDir, true);
@@ -41,11 +46,21 @@ namespace zz
                 };
                 lExtractorProcess.Start();
                 lExtractorProcess.WaitForExit();
-                //File.Move()
+
+            }
+
+            public void moveFile()
+            {
+                var lExtractFolderDir = extractFolderPath;
                 MoveCover(Path.Combine(lExtractFolderDir, srcPathInArchive), updatePath);
-                Console.WriteLine("更新完毕");
                 if (Directory.Exists(lExtractFolderDir))
                     Directory.Delete(lExtractFolderDir, true);
+            }
+
+            public void setup()
+            {
+                extract();
+                moveFile();
             }
 
             static void MoveCover(DirectoryInfo pSrcDirInfo, string pDestDirName)
@@ -60,6 +75,7 @@ namespace zz
                 {
                     var lDestFilePath = Path.Combine(pDestDirName, lFiles.Name);
                     File.Delete(lDestFilePath);
+                    Console.WriteLine("移动:" + lFiles.FullName);
                     lFiles.MoveTo(lDestFilePath);
                 }
                 foreach (var lDirectories in pSrcDirInfo.GetDirectories())

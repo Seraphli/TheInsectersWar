@@ -152,6 +152,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\playAnimationWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\playSoundWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\sendMessageWhenDie.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Event\LifeEnd\SetEnabledWhenDie.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\AwardItemWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\CreateObjectWhenTouch.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Event\Touch\DeadZone.cs" />
@@ -207,6 +208,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Bullet.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFaceVelocity.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletFollowAI.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\Soldier\BulletShape.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Character2D.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\FlameWave.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\Soldier\Hero.cs" />
@@ -436,6 +438,7 @@
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlot.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\signalSlot\zzSignalSlotList.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\Editor\zzSpriteAssetEditor.cs" />
+     <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\zzMaterialSpritePlayer.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\zzSpriteAsset.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\sprite\zzSpriteBase.cs" />
      <Compile Include="Assets\microcosmicWar\Scripts\zz\timer\zzCreateObjectInTime.cs" />

@@ -10,7 +10,7 @@ namespace Updater
 {
     class Program
     {
-        static void Main(string[] args)
+        static void TestMain(string[] args)
         {
             var lProgram = new Program();
             lProgram.DoMain(new string[]{
@@ -20,7 +20,14 @@ namespace Updater
                 @"7zPath=E:\Program Files\7-Zip\7z.exe",
                 @"UpdatePath=E:\develop\team\microcosmic_war\tool\Updater\Updater\bin\Debug\game",
                 "SrcPathInArchive=",
+                "RunPathAfterSetup=",
             });
+        }
+
+        static void Main(string[] args)
+        {
+            var lProgram = new Program();
+            lProgram.DoMain(args);
         }
 
         void parse(string pKey,string pValue)
@@ -45,6 +52,9 @@ namespace Updater
                 case "SrcPathInArchive":
                     srcPathInArchive = pValue;
                     break;
+                case "RunPathAfterSetup":
+                    runPathAfterSetup = pValue;
+                    break;
                 default:
                     Console.WriteLine("no the command: key {0},value {1}",
                         pKey, pValue);
@@ -55,6 +65,7 @@ namespace Updater
         string fileName;
         string tempPath;
         string _7zPath;
+        string runPathAfterSetup;
 
         //将压缩包中lArchivePath路径下的东西,覆盖到lUpdateDir下
         string updatePath;
@@ -141,7 +152,28 @@ namespace Updater
                 updatePath = updatePath,
                 srcPathInArchive = srcPathInArchive,
             };
-            lUpdateSetup.setup();
+            //lUpdateSetup.setup();
+            Console.WriteLine("解压...");
+            lUpdateSetup.extract();
+            Console.WriteLine("移动文件...");
+            lUpdateSetup.moveFile();
+            Console.WriteLine("更新完毕");
+            if (runPathAfterSetup != null)//RunAfterSetup
+            {
+                var lRunAfterSetupProcess = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo()
+                    {
+                        FileName = runPathAfterSetup,
+                        CreateNoWindow = false,
+                    },
+                };
+                lRunAfterSetupProcess.Start();
+            }
+            else
+            {
+                Console.ReadLine();
+            }
             ////string lExtractorName = "7z.exe";
             ////byte[] lExtractorData = Updater.Properties.Resources._7z;
             ////using(var lExtractor = new FileStream(lExtractorName,FileMode.OpenOrCreate, FileAccess.ReadWrite))
@@ -175,7 +207,6 @@ namespace Updater
             //MoveCover(lExtractFolderDir + Path.DirectorySeparatorChar + lSrcPathInArchive, lUpdateDir);
             //Console.WriteLine("更新完毕");
             //Directory.Delete(lExtractFolderDir,true);
-            Console.ReadLine();
         }
     }
 

@@ -223,14 +223,14 @@ public class Life : MonoBehaviour
 
     public static Life getLifeFromTransform(Transform pOwn)
     {
-        Life lLife = pOwn.gameObject.GetComponent<Life>();
+        Life lLife = pOwn.GetComponent<Life>();
 
         if (!lLife)
         {
             while (pOwn.parent)
             {
                 pOwn = pOwn.parent;
-                lLife = pOwn.gameObject.GetComponent<Life>();
+                lLife = pOwn.GetComponent<Life>();
                 if (lLife)
                     break;
             }
