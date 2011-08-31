@@ -167,6 +167,9 @@ public class zzUpdater:MonoBehaviour
         lSucceed |= lUpdateInfo.TryGetValue("NewVersionName", out _newVersonName);
         lSucceed |= lUpdateInfo.TryGetValue("DownloadList", out downloadList);
         lSucceed |= lUpdateInfo.TryGetValue("FileName", out downloadFileName);
+
+        //安装后运行的程序,没有则用默认 
+        lUpdateInfo.TryGetValue("Run", out runPathAfterSetup);
         if (!lSucceed)
         {
             Debug.LogError("parseUpdateInfo fail");
