@@ -55,5 +55,5 @@ public class PlayerListInfo:MonoBehaviour
 {
     //public PlayerElement[] pismirePlayers;
     //public PlayerElement[] beePlayers;
-    public PlayerElement[] players;
+    public PlayerElement[] players = new PlayerElement[0]{};
 }

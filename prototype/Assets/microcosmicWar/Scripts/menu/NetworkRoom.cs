@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 public class NetworkRoom : MonoBehaviour
 {
-    public int playerID;
-    public string guid;
+    public int playerID
+    {
+        set { gamePlayers.selfID = value; }
+        get { return gamePlayers.selfID; }
+    }
+    public GamePlayers gamePlayers;
     public PlayerInfo player;
     public PlayerListInfo playerListInfo;
     public int maxMemberCountEachRace = 4;
@@ -108,32 +112,32 @@ public class NetworkRoom : MonoBehaviour
 
     static void nullMessageReceiver(string p){}
 
-    [SerializeField]
-    PlayerElement[] _playersInfo
-    {
-        get
-        {
-            return playerListInfo.players;
-        }
-        set
-        {
-            playerListInfo.players = value;
-        }
-    }
+    //[SerializeField]
+    //PlayerElement[] _playersInfo
+    //{
+    //    get
+    //    {
+    //        return playerListInfo.players;
+    //    }
+    //    set
+    //    {
+    //        playerListInfo.players = value;
+    //    }
+    //}
 
     public PlayerElement[]  playersInfo
     {
         get
         {
-            return playerListInfo.players;
+            return gamePlayers.playerListInfo.players;
         }
     }
 
     bool isExit(Race pRace, int pSpawnIndex)
     {
-        foreach (var lPlayerInfo in playersInfo)
+        foreach (var lPlayerInfo in gamePlayers)
         {
-            if (lPlayerInfo != null
+            if (lPlayerInfo
                 && lPlayerInfo.race == pRace
                 && lPlayerInfo.spawnIndex == pSpawnIndex)
                 return true;
@@ -155,7 +159,8 @@ public class NetworkRoom : MonoBehaviour
 
     void Awake()
     {
-        _playersInfo = new PlayerElement[maxPlayerCount];
+        gamePlayers.playerSpaceCount = maxPlayerCount;
+        //_playersInfo = new PlayerElement[maxPlayerCount];
     }
 
     IEnumerator Start()
@@ -173,14 +178,14 @@ public class NetworkRoom : MonoBehaviour
         }
         if (Network.isServer)
         {
-            playerID = registerPlayer(player.playerName, Network.player);
+            playerID = registerPlayer(gamePlayers.selfName, Network.player);
             sendData();
         }
         else
         {
             while(playerID==0)
             {
-                networkView.RPC("NetworkRoomRegister", RPCMode.Server, player.playerName);
+                networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName);
                 yield return new WaitForSeconds(2f);
             }
         }
@@ -191,12 +196,13 @@ public class NetworkRoom : MonoBehaviour
         int lPlayerId;
         if (!playerToID.TryGetValue(pPlayer, out lPlayerId))
             return;
-        int lPlayerIdIndex = playerIdToIndex(lPlayerId);
-        playerLeaveMessage(lPlayerId, playersInfo[lPlayerIdIndex]);
+        //int lPlayerIdIndex = playerIdToIndex(lPlayerId);
+        playerLeaveMessage(lPlayerId, gamePlayers.getPlayerInfo(lPlayerId));
         Network.RemoveRPCs(pPlayer);
         Network.DestroyPlayerObjects(pPlayer);
         playerToID.Remove(pPlayer);
-        _playersInfo[lPlayerIdIndex] = null;
+        gamePlayers.setPlayerInfo(lPlayerId, null);
+        //_playersInfo[lPlayerIdIndex] = null;
         sendData();
         netGameInterruptedEvent();
     }
@@ -214,12 +220,13 @@ public class NetworkRoom : MonoBehaviour
     /// <returns>player ID</returns>
     int registerPlayer(string pPlayerName, NetworkPlayer pPlayer)
     {
-        int i = 0;
-        while (_playersInfo[i] && i < _playersInfo.Length)
-            ++i;
-        if (i == _playersInfo.Length)
+        int lPlayerID = 1;
+        while (gamePlayers.getPlayerInfo(lPlayerID)
+            && lPlayerID <= gamePlayers.playerSpaceCount)
+            ++lPlayerID;
+        if (lPlayerID > gamePlayers.playerSpaceCount)
             return -1;
-        int lPlayerID = indexToPlayerId(i);
+        //int lPlayerID = indexToPlayerId(i);
         playerToID[pPlayer] = lPlayerID;
         //guidToPlayer[pGUID] = pPlayer;
         var lPlayersInfo= new PlayerElement
@@ -229,19 +236,19 @@ public class NetworkRoom : MonoBehaviour
             networkPlayer = pPlayer,
             spawnIndex = 0,
         };
-        _playersInfo[i] = lPlayersInfo;
+        gamePlayers.setPlayerInfo(lPlayerID, lPlayersInfo);
         //playerEnterMessage(lPlayerID, lPlayersInfo);
         return lPlayerID;
     }
 
     public void renamePlayer(string pNewPlayerName)
     {
-        if(player.playerName!=pNewPlayerName)
+        if (gamePlayers.selfName!= pNewPlayerName)
         {
             if (Network.isServer)
             {
                 NetworkRoomRenamePlayer(playerID, pNewPlayerName);
-                player.playerName = pNewPlayerName;
+                gamePlayers.selfName = pNewPlayerName;
             }
             else
                 networkView.RPC("NetworkRoomRenamePlayer", RPCMode.Server, playerID, pNewPlayerName);
@@ -257,7 +264,7 @@ public class NetworkRoom : MonoBehaviour
     [RPC]
     void NetworkRoomRenamePlayer(int pPlayerID,string pPlayerName)
     {
-        var lPlayersInfo = _playersInfo[playerIdToIndex(pPlayerID)];
+        var lPlayersInfo = gamePlayers.getPlayerInfo(pPlayerID);
         renamePlayerMessage(pPlayerID, lPlayersInfo.playerName, pPlayerName);
         lPlayersInfo.playerName = pPlayerName;
         sendData();
@@ -268,7 +275,7 @@ public class NetworkRoom : MonoBehaviour
     void NetworkRoomRegister(string pPlayerName,NetworkMessageInfo pInfo)
     {
         var lNewPlayerID = registerPlayer(pPlayerName, pInfo.sender);
-        playerEnterMessage(lNewPlayerID, _playersInfo[playerIdToIndex(lNewPlayerID)]);
+        playerEnterMessage(lNewPlayerID, gamePlayers.getPlayerInfo(lNewPlayerID));
         networkView.RPC("NetworkRoomSetPlayerID",pInfo.sender,
             lNewPlayerID);
         networkView.RPC("NetworkRoomSetMap", pInfo.sender,
@@ -286,10 +293,11 @@ public class NetworkRoom : MonoBehaviour
     void sendData()
     {
         roomDataChangedReceiver();
-        Hashtable[] lPlayerList = new Hashtable[_playersInfo.Length];
-        for (int i = 0; i < _playersInfo.Length;++i )
+        int lPlayerSpaceCount = gamePlayers.playerSpaceCount;
+        Hashtable[] lPlayerList = new Hashtable[lPlayerSpaceCount];
+        for (int i = 0; i < lPlayerSpaceCount; ++i)
         {
-            var lPlayerInfo = _playersInfo[i];
+            var lPlayerInfo = gamePlayers.getPlayerInfo(i+1);
             Hashtable lPlayerData = new Hashtable();
             if (lPlayerInfo)
             {
@@ -344,7 +352,7 @@ public class NetworkRoom : MonoBehaviour
 
     public void makeReady()
     {
-        var lPlayerInfo = _playersInfo[playerIdToIndex(playerID)];
+        var lPlayerInfo = gamePlayers.selfPlayeInfo;
         if (lPlayerInfo.race == Race.eNone)
             errorMessageSender("请选择种族,否则不能进入准备状态");
         else if (!WMGameConfig.checkMapAvailable(mapName))
@@ -355,24 +363,26 @@ public class NetworkRoom : MonoBehaviour
         else if (Network.isServer)
         {
             int lClientCount = 0;
-            List<int> lUnreadyIndexes = new List<int>();
-            for (int i = 1; i < _playersInfo.Length; ++i)
+            List<int> lUnreadyIDs = new List<int>();
+            for (int lPlayerID = 2;
+                lPlayerID <= gamePlayers.playerSpaceCount;
+                ++lPlayerID)
             {
-                var lClient = _playersInfo[i];
+                var lClient = gamePlayers.getPlayerInfo(lPlayerID);
                 if (lClient)
                 {
                     if (!lClient.ready)
-                        lUnreadyIndexes.Add(i);
+                        lUnreadyIDs.Add(lPlayerID);
                     ++lClientCount;
                 }
             }
-            if (lUnreadyIndexes.Count > 0)
+            if (lUnreadyIDs.Count > 0)
             {
                 errorMessageSender("玩家:");
-                foreach (var lUnreadyIndex in lUnreadyIndexes)
+                foreach (var lUnreadyID in lUnreadyIDs)
                 {
-                    errorMessageSender("   " + indexToPlayerId(lUnreadyIndex)
-                        + "." + _playersInfo[lUnreadyIndex].playerName);
+                    errorMessageSender("   " + lUnreadyID
+                        + "." + gamePlayers.getPlayerInfo(lUnreadyID).playerName);
                 }
                 errorMessageSender("未准备就绪,不能开始游戏.");
             }
@@ -393,7 +403,7 @@ public class NetworkRoom : MonoBehaviour
     [RPC]
     void NetworkMakeReady(int pPlayerID)
     {
-        var lPlayerInfo = _playersInfo[playerIdToIndex(pPlayerID)];
+        var lPlayerInfo = gamePlayers.getPlayerInfo(pPlayerID);
         if(lPlayerInfo.race!= Race.eNone
             &&!lPlayerInfo.ready)
         {
@@ -405,7 +415,7 @@ public class NetworkRoom : MonoBehaviour
 
     public void makeUnready()
     {
-        var lPlayerInfo = _playersInfo[playerIdToIndex(playerID)];
+        var lPlayerInfo = gamePlayers.selfPlayeInfo;
         if (Network.isClient && !lPlayerInfo.ready)
             return;
         else if (Network.isServer)
@@ -423,7 +433,7 @@ public class NetworkRoom : MonoBehaviour
     [RPC]
     void NetworkMakeUnready(int pPlayerID)
     {
-        var lPlayerInfo = _playersInfo[playerIdToIndex(pPlayerID)];
+        var lPlayerInfo = gamePlayers.getPlayerInfo(pPlayerID);
         if (lPlayerInfo.ready)
         {
             lPlayerInfo.ready = false;
@@ -444,7 +454,7 @@ public class NetworkRoom : MonoBehaviour
     [RPC]
     void NetworkSendPlayerMessage(int pPlayerID, string pMessage)
     {
-        var lPlayer = _playersInfo[playerIdToIndex(pPlayerID)];
+        var lPlayer = gamePlayers.getPlayerInfo(pPlayerID);
         playerMessageSender(pPlayerID + "." + lPlayer.playerName
         + " 说:" + pMessage);
     }
@@ -477,17 +487,18 @@ public class NetworkRoom : MonoBehaviour
     void NetworkRoomUpdate(string pData)
     {
         var lPlayerList = (Hashtable[])zzSerializeString.Singleton.unpackToData(pData);
-        for (int i = 0; i < lPlayerList.Length;++i )
+        var lPlayerSpaceCount = gamePlayers.playerSpaceCount;
+        for (int i = 0; i < lPlayerSpaceCount; ++i)
         {
-            var lLastInfo = _playersInfo[i];
+            var lPlayerID = i + 1;
+            var lLastInfo = gamePlayers.getPlayerInfo(lPlayerID);
             var lPlayerData = lPlayerList[i];
-            var lPlayerID = indexToPlayerId(i);
             if (lPlayerData.Count == 0)
             {
                 if (lLastInfo)
                 {
                     playerLeaveMessage(lPlayerID, lLastInfo);
-                    _playersInfo[i] = null;
+                    gamePlayers.setPlayerInfo(lPlayerID, null);
                 }
                 continue;
             }
@@ -504,30 +515,30 @@ public class NetworkRoom : MonoBehaviour
             }
             if (haveReceiverRoomData)
                 playerChanged(lPlayerID, lLastInfo, lPlayerInfo);
-            _playersInfo[i] = lPlayerInfo;
+            gamePlayers.setPlayerInfo(lPlayerID, lPlayerInfo);
         }
         haveReceiverRoomData = true;
-        var lPlayersInfo =_playersInfo[playerIdToIndex(playerID)];
-        if (!lPlayersInfo)
-            return;
-        player.race = lPlayersInfo.race;
-        player.playerName = lPlayersInfo.playerName;
-        if (lPlayersInfo.ready)
+        //var lPlayersInfo =_playersInfo[playerIdToIndex(playerID)];
+        //if (!lPlayersInfo)
+        //    return;
+        //player.race = lPlayersInfo.race;
+        //player.playerName = lPlayersInfo.playerName;
+        if (gamePlayers.selfPlayeInfo.ready)
             playerReadyEvent();
         else
             playerReadyInterruptedEvent();
         roomDataChangedReceiver();
     }
 
-    int playerIdToIndex(int pID)
-    {
-        return pID - 1;
-    }
+    //int playerIdToIndex(int pID)
+    //{
+    //    return pID - 1;
+    //}
 
-    int indexToPlayerId(int pIndex)
-    {
-        return pIndex + 1;
-    }
+    //int indexToPlayerId(int pIndex)
+    //{
+    //    return pIndex + 1;
+    //}
 
     public void selectPismire(int pPos)
     {
@@ -536,7 +547,7 @@ public class NetworkRoom : MonoBehaviour
             if (Network.isServer)
             {
                 if (NetworkRoomSelectPismire(playerID, pPos))
-                    player.race = Race.ePismire;
+                    gamePlayers.selfRace = Race.ePismire;
             }
             else
                 networkView.RPC("NetworkRoomSelectPismire", RPCMode.Server, playerID, pPos);
@@ -549,7 +560,7 @@ public class NetworkRoom : MonoBehaviour
     {
         if (!isExit(Race.ePismire, pPos))
         {
-            var lPlayerInfo = _playersInfo[playerIdToIndex(pPlayerID)];
+            var lPlayerInfo = gamePlayers.getPlayerInfo(pPlayerID);
             //和原先的一样
             if (lPlayerInfo.race == Race.ePismire
                 && lPlayerInfo.spawnIndex == pPos)
@@ -572,7 +583,7 @@ public class NetworkRoom : MonoBehaviour
             if (Network.isServer)
             {
                 if (NetworkRoomSelectBee(playerID, pPos))
-                    player.race = Race.eBee;
+                    gamePlayers.selfRace = Race.eBee;
             }
             else
                 networkView.RPC("NetworkRoomSelectBee", RPCMode.Server, playerID, pPos);
@@ -586,7 +597,7 @@ public class NetworkRoom : MonoBehaviour
         //如果此位未被选中
         if (!isExit(Race.eBee, pPos))
         {
-            var lPlayerInfo = _playersInfo[playerIdToIndex(pPlayerID)];
+            var lPlayerInfo = gamePlayers.getPlayerInfo(pPlayerID);
             //和原先的一样
             if (lPlayerInfo.race == Race.eBee
                 && lPlayerInfo.spawnIndex == pPos)

@@ -2,7 +2,7 @@
 
 public class zzGUIConsoleSenderTime : MonoBehaviour
 {
-    public zzGUILayoutConsole console;
+    public zzGUIConsoleBase console;
     public Color messageColor;
     public string format = "HH:mm ";
 

@@ -224,6 +224,9 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]
     string _playerName = "player";
 
+    [SerializeField]
+    int _PlayerID;
+
     public string playerName
     {
         get { return _playerName; }
@@ -231,6 +234,16 @@ public class PlayerInfo : MonoBehaviour
         {
             _playerName = value;
             sPlayerName = value;
+        }
+    }
+
+    public int playerID
+    {
+        get { return _PlayerID; }
+        set
+        {
+            _PlayerID = value;
+            sPlayerID = value;
         }
     }
 
@@ -248,8 +261,11 @@ public class PlayerInfo : MonoBehaviour
             _playerName = sPlayerName;
         else
             sPlayerName = _playerName;
-        //if(teamName=="")
-        //	teamName=eRaceToString(race);
+
+        //if (sPlayerID > 0)
+        //    _PlayerID = sPlayerID;
+        //else
+        //    sPlayerID = _PlayerID;
     }
 
 
@@ -294,7 +310,7 @@ public class PlayerInfo : MonoBehaviour
 
     public string getPlayerName()
     {
-        return eRaceToString(race);
+        return playerName;
     }
 
     public string getTeamName()
@@ -304,6 +320,7 @@ public class PlayerInfo : MonoBehaviour
     }
 
     static string sPlayerName = string.Empty;
+    static int sPlayerID = 0;
 
     //void  Update (){
     //}
