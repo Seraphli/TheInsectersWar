@@ -2,8 +2,16 @@
 
 public class zzGUILayoutScrollView: zzGUIContainer
 {
-    public bool allUseDefault = true;
-    public bool useDefaultStyle = true;
+    public bool _allUseDefault = true;
+
+    [SerializeField]
+    bool _useDefaultStyle = true;
+
+    public bool useDefaultStyle
+    {
+        get { return _useDefaultStyle; }
+        set { _useDefaultStyle = value; }
+    }
 
     public bool alwaysShowHorizontal;
     public GUIStyle horizontalScrollbarStyle;
@@ -11,7 +19,14 @@ public class zzGUILayoutScrollView: zzGUIContainer
     public bool alwaysShowVertical;
     public GUIStyle verticalScrollbarStyle;
 
-    public bool useDefaultBackgroundStyle = true;
+    public bool _useDefaultBackgroundStyle = true;
+
+    //public bool useDefaultBackgroundStyle
+    //{
+    //    get { return _useDefaultBackgroundStyle; }
+    //    set { _useDefaultBackgroundStyle = value; }
+    //}
+
     public GUIStyle background;
     public Vector2 viewScroll;
 
@@ -37,9 +52,9 @@ public class zzGUILayoutScrollView: zzGUIContainer
 
     public override void impGUI(Rect rect)
     {
-        if (allUseDefault)
+        if (_allUseDefault)
             viewScroll = GUILayout.BeginScrollView(viewScroll);
-        else if (useDefaultStyle)
+        else if (_useDefaultStyle)
         {
             viewScroll = GUILayout.BeginScrollView(
                 viewScroll,
@@ -48,7 +63,7 @@ public class zzGUILayoutScrollView: zzGUIContainer
         }
         else
         {
-            if (useDefaultBackgroundStyle)
+            if (_useDefaultBackgroundStyle)
                 viewScroll = GUILayout.BeginScrollView(
                     viewScroll, 
                     alwaysShowHorizontal,

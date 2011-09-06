@@ -20,6 +20,7 @@
 
 
 编辑器场景转游戏场景:
+0复制游戏场景中的MessageBox 及其UI
 1删除编辑物体 
 2删除切换物体 
 3删除EditorSceneManager与SerializeScene中的信号 

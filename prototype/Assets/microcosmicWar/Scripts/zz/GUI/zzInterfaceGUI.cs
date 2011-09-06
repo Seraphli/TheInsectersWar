@@ -80,7 +80,15 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     //小的,先被渲染,会被深度大的遮住
     public int depth;
-    public GUISkin skin;
+
+    [SerializeField]
+    GUISkin _skin;
+
+    public GUISkin skin
+    {
+        get { return _skin; }
+        set { _skin = value; }
+    }
 
     //位置信息;custom 则使用position的
     public zzGUIDockPos horizontalDockPosition = zzGUIDockPos.custom;
@@ -226,7 +234,7 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     public virtual GUISkin getSkin()
     {
-        return skin;
+        return _skin;
     }
 
     public void switchVisible()
