@@ -36,8 +36,11 @@ public class zzGUI
 [ExecuteInEditMode]
 public class zzGUIRender : zzGUIContainer
 {
+    public int guiRenderDepth = 1;
     public void OnGUI()
     {
+        //因为和GUI中depth的概念相反,所以要负
+        GUI.depth = guiRenderDepth;
         cursorOnControl = null;
         calculateAndSetPosition();
         originOfCoordinates = new Vector2(position.x, position.y);

@@ -2,8 +2,6 @@
 
 public class zzGUILayoutFadeConsole : zzGUILayoutConsoleBase
 {
-    public GUIStyle textStyle;
-
     [System.Serializable]
     public class TextData
     {
@@ -19,7 +17,14 @@ public class zzGUILayoutFadeConsole : zzGUILayoutConsoleBase
         get { return messagesData.Length; }
     }
 
-    public bool useTimeFade = false;
+    [SerializeField]
+    bool _useTimeFade = false;
+
+    public bool useTimeFade
+    {
+        get { return _useTimeFade; }
+        set { _useTimeFade = value; }
+    }
 
     public float fullShowLength = 5f;
     public float fadeOutLength = 2f;
@@ -54,7 +59,7 @@ public class zzGUILayoutFadeConsole : zzGUILayoutConsoleBase
                     lTextData.timestamp+fadeOutEndPos,
                     lTime);
                 GUI.color = lColor;
-                GUILayout.TextArea(lTextData.text, textStyle);
+                GUILayout.Label(lTextData.text, textStyle);
             }
         }
         else
@@ -64,7 +69,7 @@ public class zzGUILayoutFadeConsole : zzGUILayoutConsoleBase
             {
                 var lTextData = messagesData[i];
                 GUI.color = lTextData.color;
-                GUILayout.TextArea(lTextData.text, textStyle);
+                GUILayout.Label(lTextData.text, textStyle);
             }
         }
     }

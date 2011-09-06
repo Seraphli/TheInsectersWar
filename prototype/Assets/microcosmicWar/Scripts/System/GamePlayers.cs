@@ -8,6 +8,28 @@ public class GamePlayers:MonoBehaviour, IEnumerable<PlayerElement>
     PlayerInfo player;
     public PlayerListInfo playerListInfo;
 
+    void Start()
+    {
+        if (
+            playerSpaceCount==0
+            && Network.peerType == NetworkPeerType.Disconnected)
+        {
+            playerListInfo.players = new PlayerElement[]{
+                new PlayerElement(){
+                     playerName = player.playerName,
+                     spawnIndex = 0,
+                      //race = player.race,
+                }
+            };
+            player.playerID = 1;
+        }
+    }
+
+    public bool isEnemy(int pPlayerID)
+    {
+        return pPlayerID != selfID && getPlayerInfo(pPlayerID).race != selfRace;
+    }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         foreach (var lPlayer in playerListInfo.players)

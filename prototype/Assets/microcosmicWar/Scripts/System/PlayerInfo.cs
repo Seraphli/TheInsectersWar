@@ -277,6 +277,7 @@ public class PlayerInfo : MonoBehaviour
     {
         race = pOther.race;
         playerName = pOther.playerName;
+        playerID = pOther.playerID;
         if (pOther.GetComponent<PlayerListInfo>()
             && GetComponent<PlayerListInfo>())
             GetComponent<PlayerListInfo>().players

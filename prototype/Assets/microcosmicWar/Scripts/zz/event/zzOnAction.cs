@@ -1,7 +1,7 @@
 ﻿
 public class zzOnAction:zzOnEventBase
 {
-    public void impAction()
+    public virtual void impAction()
     {
         onEvent();
     }

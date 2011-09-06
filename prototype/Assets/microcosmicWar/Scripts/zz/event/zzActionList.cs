@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public class zzActionList : MonoBehaviour
+public class zzActionList : zzOnAction
 {
     public zzOnAction[] actionList;
 
-    public void impAction()
+    public override void impAction()
     {
         foreach (var lScript in actionList)
         {
