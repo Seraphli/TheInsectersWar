@@ -5,6 +5,7 @@ public class PlayerElement
 {
     public Race race = Race.eNone;
     public string playerName;
+    public HeroSpawn spawn;
     [SerializeField]
     int _spawnIndex = -1;
 

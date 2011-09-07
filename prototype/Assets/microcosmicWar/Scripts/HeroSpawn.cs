@@ -4,6 +4,47 @@ using System.Collections;
 
 public class HeroSpawn : MonoBehaviour
 {
+    [SerializeField]
+    string _playerName;
+
+    [SerializeField]
+    Color _playerNameColor;
+
+    public string nameLabelObjectName = "nameLabel";
+
+    public string playerName
+    {
+        get { return _playerName; }
+        set
+        {
+            _playerName = value;
+            if (hero)
+                setPlayerName(_playerName);
+        }
+    }
+
+    public Color playerNameColor
+    {
+        get { return _playerNameColor; }
+        set
+        {
+            _playerNameColor = value;
+            if (hero)
+                setPlayerNameColor(_playerNameColor);
+        }
+    }
+
+    public void setPlayerName(string pName)
+    {
+        hero.transform.FindChild(nameLabelObjectName)
+            .GetComponent<TextMesh>().text = pName;
+    }
+
+    public void setPlayerNameColor(Color pColor)
+    {
+        hero.transform.FindChild(nameLabelObjectName)
+            .renderer.material.color = pColor;
+    }
 
     public GameObject heroPrefab;
     public GameObject netSysnPrefab;
@@ -119,7 +160,7 @@ public class HeroSpawn : MonoBehaviour
             Debug.LogError("haveFirstCreate == true");
 
 
-        hero = _createHero();
+        _createHero();
         zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
         itemBagControl.addCallAfterStart(_toGetItemBagID);
         haveFirstCreate = true;
@@ -212,7 +253,7 @@ public class HeroSpawn : MonoBehaviour
         rebirthTimer.enabled = false;
         Destroy(rebirthTimer);
 
-        hero = _createHero();
+        _createHero();
 
         zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
         itemBagControl.setUseExistBag(itemBagID);
@@ -232,16 +273,47 @@ public class HeroSpawn : MonoBehaviour
         rebirthClockUI.setText(rebirthTimeLeave.ToString());
     }
 
+    GameObject CreateHeroObject()
+    {
+        GameObject lHeroObject;
+        if (Network.peerType == NetworkPeerType.Disconnected)
+        {
+            lHeroObject = (GameObject)Instantiate(heroPrefab,
+                transform.position, Quaternion.identity);
+            InitHeroObject(lHeroObject);
+        }
+        else
+        {
+            var lViewID = Network.AllocateViewID();
+            lHeroObject = HeroSpawnCreateHeroObject(lViewID);
+            networkView.RPC("HeroSpawnCreateHeroObject", RPCMode.Others, lViewID);
+        }
+        return lHeroObject;
+    }
+
+    [RPC]
+    GameObject HeroSpawnCreateHeroObject(NetworkViewID pViewID)
+    {
+        GameObject lHeroObject = (GameObject)Instantiate(heroPrefab,
+            transform.position, Quaternion.identity);
+        lHeroObject.networkView.viewID = pViewID;
+        InitHeroObject(lHeroObject);
+        return lHeroObject;
+    }
+
+    void InitHeroObject(GameObject pObject)
+    {
+        hero = pObject;
+        setPlayerName(_playerName);
+        setPlayerNameColor(_playerNameColor);
+    }
+
     //创建只能在服务器端调用
     protected GameObject _createHero()
     {
-        GameObject lHeroObject = zzCreatorUtility.Instantiate(heroPrefab, transform.position, new Quaternion(), 0);
+        GameObject lHeroObject = CreateHeroObject();
 
-        //GameSceneManager.Singleton.addHero(lHeroObject);
-        //print(lHeroObject==null);
-        //print(lHeroObject.GetInstanceID());
-        //print(owner);
-        //zzCreatorUtility.sendMessage(gameObject,"createNetControl",lHeroObject.networkView.viewID);
+        //创建控制器
         if (Network.peerType == NetworkPeerType.Disconnected)
             createControl(lHeroObject);
         else

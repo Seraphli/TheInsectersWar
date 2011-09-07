@@ -157,20 +157,36 @@ public class GameScene : MonoBehaviour
         PlayerInfo lPlayerInfo = playerInfo;
         if(Network.isServer)
         {
-            var lPlayers = lPlayerInfo.GetComponent<PlayerListInfo>().players;
-            foreach (var lPlayElement in lPlayers)
+            //var lPlayers = lPlayerInfo.GetComponent<PlayerListInfo>().players;
+            //foreach (var lPlayElement in lPlayers)
+            //{
+            //    if (!lPlayElement)
+            //        continue;
+            //    var lNetworkPlayer = lPlayElement.networkPlayer;
+            //    var lSpawn = getSpawn(lPlayElement).addPlayer(lNetworkPlayer);
+            //    addPlayerSpawn(lPlayElement.networkPlayer, lSpawn);
+            //    if (lNetworkPlayer == Network.player)
+            //        playerSpawn = lSpawn;
+            //    else
+            //        networkView.RPC("GameSceneSetPlayerSpawn",
+            //            lNetworkPlayer,
+            //            lSpawn.networkView.viewID);
+            //}
+            var lGamePlayers = lPlayerInfo.GetComponent<GamePlayers>();
+            for (int i = 1; i <= lGamePlayers.playerSpaceCount;++i )
             {
-                if (!lPlayElement)
-                    continue;
-                var lNetworkPlayer = lPlayElement.networkPlayer;
-                var lSpawn = getSpawn(lPlayElement).addPlayer(lNetworkPlayer);
-                addPlayerSpawn(lPlayElement.networkPlayer, lSpawn);
-                if (lNetworkPlayer == Network.player)
-                    playerSpawn = lSpawn;
-                else
+                var lPlayElement = lGamePlayers.getPlayerInfo(i);
+                if (lPlayElement)
+                {
+                    var lNetworkPlayer = lPlayElement.networkPlayer;
+                    var lSpawn = getSpawn(lPlayElement).addPlayer(lNetworkPlayer);
+                    addPlayerSpawn(lPlayElement.networkPlayer, lSpawn);
+                    setPlayerSpawn(lSpawn, i);
                     networkView.RPC("GameSceneSetPlayerSpawn",
-                        lNetworkPlayer,
-                        lSpawn.networkView.viewID);
+                            RPCMode.Others,
+                            lSpawn.networkView.viewID,i);
+
+                }
             }
         }
         else if (Network.isClient)
@@ -207,9 +223,21 @@ public class GameScene : MonoBehaviour
     }
 
     [RPC]
-    void GameSceneSetPlayerSpawn(NetworkViewID pSpawn)
+    void GameSceneSetPlayerSpawn(NetworkViewID pSpawn,int pPlayerID)
     {
-        playerSpawn = NetworkView.Find(pSpawn).GetComponent<HeroSpawn>();
+        var lSpawn = NetworkView.Find(pSpawn).GetComponent<HeroSpawn>();
+        setPlayerSpawn(lSpawn, pPlayerID);
+    }
+
+    void setPlayerSpawn(HeroSpawn lSpawn, int pPlayerID)
+    {
+        var lGamePlayers = playerInfo.GetComponent<GamePlayers>();
+        var lPlayerInfo = lGamePlayers.getPlayerInfo(pPlayerID);
+        lPlayerInfo.spawn = lSpawn;
+        if (lGamePlayers.selfID == pPlayerID)
+            playerSpawn = lSpawn;
+        else
+            lSpawn.playerName = pPlayerID.ToString()+"."+lPlayerInfo.playerName;
     }
 
     //[RPC]
