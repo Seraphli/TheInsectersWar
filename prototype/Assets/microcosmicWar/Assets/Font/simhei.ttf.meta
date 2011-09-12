@@ -1,0 +1,14 @@
+fileFormatVersion: 1
+guid: b70b7502ca030fc41817e93db425c253
+TrueTypeFontImporter:
+  importerVersion: 1
+  size: 16
+  case: -2
+  antiAlias: 0
+  includeFontData: 0
+  use2xBehaviour: 0
+  style: 0
+  fontNames:
+    name: SimHei
+    name: "\u9ED1\u4F53"
+    name: Arial
