@@ -22,6 +22,8 @@ public class GameScene : MonoBehaviour
     public PlayerSpawn[] pismirePlayerSpawns;
     public PlayerSpawn[] beePlayerSpawns;
 
+    public zzGUIBubbleMessage bubbleMessage;
+
     PlayerSpawn[] getSortedSpawns( Race pRace )
     {
         var lSpawnRoot = GameSceneManager.Singleton
@@ -196,7 +198,11 @@ public class GameScene : MonoBehaviour
         else
         {
             var lSpawn = getSpawn(getSpawns(lPlayerInfo.race), 0).addPlayer(Network.player);
+            var lGamePlayers = lPlayerInfo.GetComponent<GamePlayers>();
+            //初始化玩家列表
+            lGamePlayers.init();
             addPlayerSpawn(Network.player, lSpawn);
+            setPlayerSpawn(lSpawn, 1);
             playerSpawn = lSpawn;
 
         }
@@ -234,6 +240,7 @@ public class GameScene : MonoBehaviour
         var lGamePlayers = playerInfo.GetComponent<GamePlayers>();
         var lPlayerInfo = lGamePlayers.getPlayerInfo(pPlayerID);
         lPlayerInfo.spawn = lSpawn;
+        lSpawn.bubbleMessage = bubbleMessage;
         if (lGamePlayers.selfID == pPlayerID)
             playerSpawn = lSpawn;
         else

@@ -30,3 +30,8 @@
 7将CreateWhenPlay中Clone的勾去掉
 
 联机场景,从局域网改为广域网,除了复制Net物体外,还要在useNat处打钩,注意_server值菜单和房间的不同
+
+发布游戏:
+1修改版本号和其label
+2删除编辑器中的场景物体
+3将Updater ,7z.exe,7z.dll 复制到TheInsectersWar_Data\Managed 中

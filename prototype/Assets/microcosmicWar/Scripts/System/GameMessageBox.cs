@@ -23,15 +23,18 @@ public class GameMessageBox:MonoBehaviour
     void sendPlayerMessage(int pPlayerID, string pMessage)
     {
         var lPlayerInfo = gamePlayers.getPlayerInfo(pPlayerID);
-        playerBoxMessageSender(string.Format("[{0}.{1}]说:{2}",
-            pPlayerID, lPlayerInfo.playerName, pMessage));
+        //只发送己方的信息
+        if (!gamePlayers.isEnemy(pPlayerID))
+        {
+            playerBoxMessageSender(string.Format("[{0}.{1}]说:{2}",
+                pPlayerID, lPlayerInfo.playerName, pMessage));
+        }
+        lPlayerInfo.spawn.writeBubbleMessage(pMessage);
     }
 
     [RPC]
     void NetworkSendPlayerMessage(int pPlayerID, string pMessage)
     {
-        //只发送己方的信息
-        if (!gamePlayers.isEnemy(pPlayerID))
-            sendPlayerMessage(pPlayerID, pMessage);
+        sendPlayerMessage(pPlayerID, pMessage);
     }
 }

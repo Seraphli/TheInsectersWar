@@ -115,9 +115,23 @@ public class zzUpdater:MonoBehaviour
             downloadingUpdateInfo = false;
             yield break;
         }
-        parseUpdateInfo(lRequest.text.Trim());
+        print(lRequest.error);
+        var lUpdateInfo = lRequest.text.Trim();
         lRequest.Dispose();
         downloadingUpdateInfo = false;
+        bool lFailed = false;
+        try
+        {
+            parseUpdateInfo(lUpdateInfo);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
+            Debug.LogError("Parse Update Info Error:" + lUpdateInfo);
+            lFailed = true;
+        }
+        if (lFailed)
+            checkUpdateFailEvent();
 //        string lTemp = @"
 //            {
 //                ""Name""     : ""Thomas More"",
@@ -149,7 +163,8 @@ public class zzUpdater:MonoBehaviour
         addUpdateCommand("7zPath", _7zPath);
         addUpdateCommand("SrcPathInArchive", srcPathInArchive);
         addUpdateCommand("UpdatePath", Application.dataPath + "/../");
-        addUpdateCommand("RunPathAfterSetup", getAbsolutePath(runPathAfterSetup));
+        if (!string.IsNullOrEmpty(runPathAfterSetup))
+            addUpdateCommand("RunPathAfterSetup", getAbsolutePath(runPathAfterSetup));
         foreach (var lDownloadUrl in downloadList)
         {
             addUpdateCommand("DownloadUrl", lDownloadUrl);

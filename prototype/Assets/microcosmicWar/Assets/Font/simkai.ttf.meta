@@ -2,9 +2,13 @@ fileFormatVersion: 1
 guid: 15bf906073347484188d8453fa72a739
 TrueTypeFontImporter:
   importerVersion: 1
-  size: 16
-  case: -1
+  size: 32
+  case: -2
   antiAlias: 0
-  includeFontData: 1
-  use2xBehaviour: 1
+  includeFontData: 0
+  use2xBehaviour: 0
   style: 0
+  fontNames:
+    name: KaiTi
+    name: "\u6977\u4F53"
+    name: Arial

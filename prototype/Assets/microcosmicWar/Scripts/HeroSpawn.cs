@@ -4,6 +4,23 @@ using System.Collections;
 
 public class HeroSpawn : MonoBehaviour
 {
+    public string messageBoxObjectName = "messageBox";
+    public zzGUIBubbleMessage bubbleMessage;
+
+    public Transform messageBoxPostion
+    {
+        get
+        {
+            return hero.GetComponent<zzSceneObjectMap>().getObject(messageBoxObjectName).transform;
+        }
+    }
+
+    public void writeBubbleMessage(string pMessage)
+    {
+        if (hero)
+            bubbleMessage.addMessage(pMessage, messageBoxPostion);
+    }
+
     [SerializeField]
     string _playerName;
 
@@ -36,14 +53,14 @@ public class HeroSpawn : MonoBehaviour
 
     public void setPlayerName(string pName)
     {
-        hero.transform.FindChild(nameLabelObjectName)
+        hero.GetComponent<zzSceneObjectMap>().getObject(nameLabelObjectName)
             .GetComponent<TextMesh>().text = pName;
     }
 
     public void setPlayerNameColor(Color pColor)
     {
-        hero.transform.FindChild(nameLabelObjectName)
-            .renderer.material.color = pColor;
+        hero.GetComponent<zzSceneObjectMap>().getObject(nameLabelObjectName)
+           .renderer.material.color = pColor;
     }
 
     public GameObject heroPrefab;

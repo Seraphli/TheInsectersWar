@@ -8,7 +8,7 @@ public class GamePlayers:MonoBehaviour, IEnumerable<PlayerElement>
     PlayerInfo player;
     public PlayerListInfo playerListInfo;
 
-    void Start()
+    public void init()
     {
         if (
             playerSpaceCount==0
@@ -21,8 +21,13 @@ public class GamePlayers:MonoBehaviour, IEnumerable<PlayerElement>
                       //race = player.race,
                 }
             };
-            player.playerID = 1;
+            //player.playerID = 1;
         }
+    }
+
+    void Start()
+    {
+        init();
     }
 
     public bool isEnemy(int pPlayerID)
