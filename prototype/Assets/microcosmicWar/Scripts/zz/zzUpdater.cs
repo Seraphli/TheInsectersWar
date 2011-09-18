@@ -98,6 +98,12 @@ public class zzUpdater:MonoBehaviour
         checkEndEvent();
     }
 
+    void checkEndAndFail()
+    {
+        checkEnd();
+        checkUpdateFailEvent();
+    }
+
     [SerializeField]
     bool downloadingUpdateInfo = false;
 
@@ -110,15 +116,12 @@ public class zzUpdater:MonoBehaviour
         if (lRequest.error != null)
         {
             Debug.LogError(updateInfoUrl + " downloadUpdateInfo failed:" + lRequest.error);
-            checkUpdateFailEvent();
+            checkEndAndFail();
             lRequest.Dispose();
-            downloadingUpdateInfo = false;
             yield break;
         }
-        print(lRequest.error);
         var lUpdateInfo = lRequest.text.Trim();
         lRequest.Dispose();
-        downloadingUpdateInfo = false;
         bool lFailed = false;
         try
         {
@@ -131,7 +134,7 @@ public class zzUpdater:MonoBehaviour
             lFailed = true;
         }
         if (lFailed)
-            checkUpdateFailEvent();
+            checkEndAndFail();
 //        string lTemp = @"
 //            {
 //                ""Name""     : ""Thomas More"",
@@ -188,7 +191,7 @@ public class zzUpdater:MonoBehaviour
         if (!lSucceed)
         {
             Debug.LogError("parseUpdateInfo fail");
-            checkUpdateFailEvent();
+            checkEndAndFail();
         }
         if (lNewVersion > _nowVersion)
             haveUpdateEvent();

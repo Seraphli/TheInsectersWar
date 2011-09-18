@@ -269,14 +269,19 @@ public class zzMasterServerGameHost : zzNetworkHost
     {
         failedRequest = false;
 
-        var www = new WWW(pUrl);
-        yield return www;
-
-        if (www.error != null || www.text != "succeeded")
+        using(var www = new WWW(pUrl))
         {
-            failedRequest = true;
-            Debug.LogError(www.text);
-            Debug.LogError(pUrl);
+            yield return www;
+
+            if (www.error != null || www.text != "succeeded")
+            {
+                failedRequest = true;
+                Debug.LogError(www.text);
+                Debug.LogError(pUrl);
+
+                registerFailEvent();
+            }
+
         }
 
     }

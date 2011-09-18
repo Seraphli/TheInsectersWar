@@ -104,6 +104,7 @@ public class zzMasterServerRequester : MonoBehaviour
             && retries < maxRetry)
         {
             retries++;
+            www.Dispose();
             www = new WWW(url);
             yield return www;
         }
@@ -119,6 +120,7 @@ public class zzMasterServerRequester : MonoBehaviour
         }
         else
             hostList = lHostList;
+        www.Dispose();
     }
 
     IEnumerator _RequestHostList()

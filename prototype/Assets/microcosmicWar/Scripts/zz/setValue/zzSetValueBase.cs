@@ -35,6 +35,7 @@ public class zzSetValueBase<T> : MonoBehaviour
 
     System.Action<T> setFunc;
 
+    [ContextMenu("Set Value")]
     public void setValue()
     {
         setFunc(valueToSet);

@@ -183,11 +183,11 @@ public class NetworkRoom : MonoBehaviour
         }
         else
         {
-            while(playerID==0)
+            networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName);
+            do
             {
-                networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName);
                 yield return new WaitForSeconds(2f);
-            }
+            } while (playerID == 0);
         }
     }
 
@@ -237,6 +237,8 @@ public class NetworkRoom : MonoBehaviour
             spawnIndex = 0,
         };
         gamePlayers.setPlayerInfo(lPlayerID, lPlayersInfo);
+        //中断事件,比如游戏倒计时
+        netGameInterruptedEvent();
         //playerEnterMessage(lPlayerID, lPlayersInfo);
         return lPlayerID;
     }
@@ -274,13 +276,16 @@ public class NetworkRoom : MonoBehaviour
     [RPC]
     void NetworkRoomRegister(string pPlayerName,NetworkMessageInfo pInfo)
     {
-        var lNewPlayerID = registerPlayer(pPlayerName, pInfo.sender);
-        playerEnterMessage(lNewPlayerID, gamePlayers.getPlayerInfo(lNewPlayerID));
-        networkView.RPC("NetworkRoomSetPlayerID",pInfo.sender,
-            lNewPlayerID);
-        networkView.RPC("NetworkRoomSetMap", pInfo.sender,
-            _mapName);
-        sendData();
+        if(!playerToID.ContainsKey(pInfo.sender))
+        {
+            var lNewPlayerID = registerPlayer(pPlayerName, pInfo.sender);
+            playerEnterMessage(lNewPlayerID, gamePlayers.getPlayerInfo(lNewPlayerID));
+            networkView.RPC("NetworkRoomSetPlayerID", pInfo.sender,
+                lNewPlayerID);
+            networkView.RPC("NetworkRoomSetMap", pInfo.sender,
+                _mapName);
+            sendData();
+        }
     }
 
     //client
