@@ -172,6 +172,7 @@ namespace Updater
             }
             else
             {
+                Console.WriteLine("按回车键关闭此程序");
                 Console.ReadLine();
             }
             ////string lExtractorName = "7z.exe";

@@ -35,3 +35,4 @@
 1修改版本号和其label
 2删除编辑器中的场景物体
 3将Updater ,7z.exe,7z.dll 复制到TheInsectersWar_Data\Managed 中
+4更新UpdateInfo.txt:<1>DownloadList<2>NewVersion<3>NewVersionName<4>FileName

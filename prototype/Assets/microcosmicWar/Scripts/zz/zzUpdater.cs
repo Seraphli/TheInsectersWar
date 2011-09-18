@@ -184,7 +184,7 @@ public class zzUpdater:MonoBehaviour
         lSucceed |= lUpdateInfo.TryGetValue("FileName", out downloadFileName);
 
         //安装后运行的程序,没有则用默认 
-        lUpdateInfo.TryGetValue("Run", out runPathAfterSetup);
+        lUpdateInfo.TryGetValue("RunPathAfterSetup", out runPathAfterSetup);
         if (!lSucceed)
         {
             Debug.LogError("parseUpdateInfo fail");

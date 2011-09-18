@@ -40,3 +40,31 @@ public class zzSetValueBase<T> : MonoBehaviour
         setFunc(valueToSet);
     }
 }
+
+public class zzTransmitValueBase<T> : MonoBehaviour
+{
+    System.Action<T> setFunc;
+    System.Func<T> getFunc;
+
+    public void addReceiver(System.Action<T> pSetFunc)
+    {
+        setFunc += pSetFunc;
+    }
+
+    public void addVoidReceiver(System.Action pSetFunc)
+    {
+        System.Action<T> lSetFunc = (x) => pSetFunc();
+        setFunc += lSetFunc;
+    }
+
+    public void addGetter(System.Func<T> pGetFunc)
+    {
+        getFunc += pGetFunc;
+    }
+
+    public void setValue()
+    {
+        setFunc(getFunc());
+    }
+
+}
