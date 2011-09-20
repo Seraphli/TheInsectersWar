@@ -354,7 +354,7 @@ public class GameScene : MonoBehaviour
     {
         //PlayerInfo playerInfo = sceneData.GetComponent<PlayerInfo>();
 
-        if (pWinerRaceName == playerInfo.getPlayerName())
+        if (pWinerRaceName == playerInfo.getTeamName())
         {
             if (pIsWiner)
                 gameWinEvent();

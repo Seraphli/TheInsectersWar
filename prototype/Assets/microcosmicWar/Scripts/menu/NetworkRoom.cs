@@ -217,7 +217,7 @@ public class NetworkRoom : MonoBehaviour
     /// </summary>
     /// <param name="pPlayerName"></param>
     /// <param name="pPlayer"></param>
-    /// <returns>player ID</returns>
+    /// <returns>player ID,玩家已满时,返回-1</returns>
     int registerPlayer(string pPlayerName, NetworkPlayer pPlayer)
     {
         int lPlayerID = 1;
@@ -279,12 +279,20 @@ public class NetworkRoom : MonoBehaviour
         if(!playerToID.ContainsKey(pInfo.sender))
         {
             var lNewPlayerID = registerPlayer(pPlayerName, pInfo.sender);
-            playerEnterMessage(lNewPlayerID, gamePlayers.getPlayerInfo(lNewPlayerID));
-            networkView.RPC("NetworkRoomSetPlayerID", pInfo.sender,
-                lNewPlayerID);
-            networkView.RPC("NetworkRoomSetMap", pInfo.sender,
-                _mapName);
-            sendData();
+            if (lNewPlayerID == -1)
+            {
+                //房间位已满,断开连接
+                Network.CloseConnection(pInfo.sender, true);
+            }
+            else
+            {
+                playerEnterMessage(lNewPlayerID, gamePlayers.getPlayerInfo(lNewPlayerID));
+                networkView.RPC("NetworkRoomSetPlayerID", pInfo.sender,
+                    lNewPlayerID);
+                networkView.RPC("NetworkRoomSetMap", pInfo.sender,
+                    _mapName);
+                sendData();
+            }
         }
     }
 
