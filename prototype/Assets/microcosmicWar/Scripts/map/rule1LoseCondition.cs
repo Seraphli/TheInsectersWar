@@ -62,11 +62,13 @@ class rule1LoseCondition : IobjectListener
         string teamName = lGameScene.playerInfo.getTeamName();
         if (rule1.Singleton.isWin(teamName))
         {
+            print("rule1.Singleton.isWin(teamName):" + teamName);
             lGameScene.gameResult(teamName,true);
             //GameScene.getSingleton().endGameScene("you win");
         }
         else if (rule1.Singleton.isLose(teamName))
         {
+            print("rule1.Singleton.isLose(teamName):" + teamName);
             lGameScene.gameResult(teamName, false);
             //GameScene.getSingleton().endGameScene("you lose");
         }
