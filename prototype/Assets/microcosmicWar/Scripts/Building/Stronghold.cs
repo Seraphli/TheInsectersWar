@@ -81,6 +81,9 @@ public class Stronghold:MonoBehaviour
 
     public GameObject occupantZone;
 
+    public AudioSource occupiedSound;
+    public AudioSource lostSound;
+
     void toAnimationState(string pAniName)
     {
         var lAniState = strongholdAnimation[pAniName];
@@ -358,6 +361,7 @@ public class Stronghold:MonoBehaviour
     public void playOccupiedAimation()
     {
         strongholdAnimation.CrossFade("occupied");
+        occupiedSound.Play();
     }
 
     void occupiedEvent()
@@ -390,6 +394,7 @@ public class Stronghold:MonoBehaviour
     public void playLostAnimation()
     {
         strongholdAnimation.CrossFade("lost");
+        lostSound.Play();
     }
 
     void lostEvent()

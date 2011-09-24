@@ -150,6 +150,10 @@ public class GameScene : MonoBehaviour
         playerSpawnList[pPlayer] = pHeroSpawn;
     }
 
+    public AudioSource backgroundMusicAudio;
+    public AudioClip pismireBackgroundMusicClip;
+    public AudioClip beeBackgroundMusicClip;
+
     void Start()
     {
         initEvent();
@@ -157,6 +161,14 @@ public class GameScene : MonoBehaviour
         pismirePlayerSpawns = getSortedSpawns(Race.ePismire);
         beePlayerSpawns = getSortedSpawns(Race.eBee);
         PlayerInfo lPlayerInfo = playerInfo;
+        if (backgroundMusicAudio)
+        {
+            if (lPlayerInfo.race == Race.ePismire)
+                backgroundMusicAudio.clip = pismireBackgroundMusicClip;
+            else if (lPlayerInfo.race == Race.eBee)
+                backgroundMusicAudio.clip = beeBackgroundMusicClip;
+            backgroundMusicAudio.Play();
+        }
         if(Network.isServer)
         {
             //var lPlayers = lPlayerInfo.GetComponent<PlayerListInfo>().players;

@@ -184,20 +184,22 @@ public class zzOutlineSweeper
         var lDetectDirection = new DetectDirection();
 		
 		var lNextPoint = lDetectDirection.getOfsetPoint(pPoint);
-        //lDetectDirection.toNextDirection();
-        //var isNextActivePiexl = isActivePiexl(tex.GetPixel(lNextPoint.x, lNextPoint.y));
-        var isNextActivePiexl = tex.isActive(pPoint);
+
+        //下一个像素是否可用
+        var isNextActivePiexl = tex.isInside(lNextPoint) && tex.isActive(lNextPoint);
 		
-		var lNextNextPoint = new zzPoint();// = lDetectDirection.getOfsetPoint(pPoint);
-		bool isNextNextActivePiexl;// = isActivePiexl(tex.GetPixel(lNextNextPoint.x, lNextNextPoint.y));
+		var lNextNextPoint = new zzPoint();
+		bool isNextNextActivePiexl;
 		
         for (int i = 0; i < 8;++i )
         {
             lDetectDirection.toNextDirection();
+            //下下个像素是否可用
 			lNextNextPoint = lDetectDirection.getOfsetPoint(pPoint);
-            //isNextNextActivePiexl = isActivePiexl(tex.GetPixel(lNextNextPoint.x, lNextNextPoint.y));
+
             isNextNextActivePiexl = tex.isInside(lNextNextPoint)&&tex.isActive(lNextNextPoint);
 			
+            //连续两个像素可用,则此像素非孤立
 			if(isNextActivePiexl && isNextNextActivePiexl)
 				return false;
 			isNextActivePiexl = isNextNextActivePiexl;

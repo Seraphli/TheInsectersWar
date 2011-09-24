@@ -162,6 +162,11 @@ public class zzApplication:MonoBehaviour
 
     #endregion//InputLanguage End
 
+    public void OpenURL(string pURL)
+    {
+        Application.OpenURL(pURL);
+    }
+
     public void Quit()
     {
         Application.Quit();
