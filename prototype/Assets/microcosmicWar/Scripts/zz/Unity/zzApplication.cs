@@ -53,6 +53,7 @@ public class zzApplication:MonoBehaviour
 
         Network.isMessageQueueRunning = false;
 
+        Network.SetLevelPrefix(nextLevelPrefix);
         LoadLastLevel();
 
         Network.isMessageQueueRunning = true;
@@ -70,11 +71,14 @@ public class zzApplication:MonoBehaviour
 
         Network.isMessageQueueRunning = false;
 
+        Network.SetLevelPrefix(nextLevelPrefix);
         LoadLevel(pName);
 
         Network.isMessageQueueRunning = true;
         Network.SetSendingEnabled(0, true);
     }
+
+    public int nextLevelPrefix = 0;
 
     IEnumerator delayLoadLevelNet(string pName, float pDelay)
     {
@@ -83,6 +87,7 @@ public class zzApplication:MonoBehaviour
         Network.isMessageQueueRunning = false;
 
         yield return new WaitForSeconds(pDelay);
+        Network.SetLevelPrefix(nextLevelPrefix);
         LoadLevel(pName);
 
         Network.isMessageQueueRunning = true;

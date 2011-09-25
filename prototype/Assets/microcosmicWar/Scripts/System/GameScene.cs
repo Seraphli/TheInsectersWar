@@ -282,6 +282,7 @@ public class GameScene : MonoBehaviour
     //        GUILayout.EndArea();
     //    }
     //}
+    public Transform networkViewRoot;
 
     public void endGameScene()
     {
@@ -289,6 +290,21 @@ public class GameScene : MonoBehaviour
         //Board.clearList();
         Time.timeScale = 0;
         playerSpawn.releaseHeroControl();
+        if (
+            networkViewRoot
+            && Network.peerType != NetworkPeerType.Disconnected)
+            StartCoroutine(stopNetworkView());
+    }
+
+    IEnumerator stopNetworkView()
+    {
+        var lNetworkViews = networkViewRoot.GetComponentsInChildren<NetworkView>();
+        yield return null;
+        foreach (var lView in lNetworkViews)
+        {
+            if (lView)
+                lView.enabled = false;
+        }
     }
 
     void OnDestroy()

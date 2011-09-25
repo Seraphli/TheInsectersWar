@@ -183,10 +183,17 @@ public class NetworkRoom : MonoBehaviour
         }
         else
         {
-            networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName);
+            bool lRegistered = false;
             do
             {
-                yield return new WaitForSeconds(2f);
+                networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName);
+                yield return new WaitForSeconds(5f);
+                if (!lRegistered)
+                {
+                    lRegistered = true;
+                    if (playerID == 0)
+                        messageSender("等待房主响应");
+                }
             } while (playerID == 0);
         }
     }
