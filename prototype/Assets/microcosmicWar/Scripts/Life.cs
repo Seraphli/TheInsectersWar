@@ -152,11 +152,26 @@ public class Life : MonoBehaviour
     public byte rateInByte
     {
         get 
-        { 
-            return (byte)(byte.MaxValue * rate); 
+        {
+            var lRate = rate;
+            float lValue;
+            //if (lRate > 0.5)
+            //    return (byte)(Mathf.FloorToInt((float)byte.MaxValue) * lRate);
+            lValue = (float)Mathf.CeilToInt((float)byte.MaxValue * lRate);
+            //if (lRate<1f)
+            //{
+            //    print(lRate);
+            //    print(lValue);
+            //    print((byte)lValue);
+            //}
+            return (byte)lValue; 
         }
         set
         {
+            //if (value < byte.MaxValue)
+            //{
+            //    print((float)value / (float)byte.MaxValue);
+            //}
             rate = (float)value/(float)byte.MaxValue;
         }
     }
@@ -174,6 +189,8 @@ public class Life : MonoBehaviour
         }
         set
         {
+            //if (value != 1f)
+            //    print((int)(getFullBloodValue() * value));
             setBloodValue((int)(getFullBloodValue()*value));
         }
     }
