@@ -68,9 +68,14 @@ public class HeroSpawn : MonoBehaviour
 
     public NetworkPlayer _owner;
     public bool autoCreatePlayer = false;
-    public int itemBagID;
+    //public int itemBagID;
 
-    public GameObject hero;
+    GameObject _hero;
+    public GameObject hero
+    {
+        get { return _hero; }
+        set { _hero = value; }
+    }
     public zzInterfaceGUI rebirthClockUI;
     [SerializeField]
     GameObject _SystemObject;
@@ -101,7 +106,7 @@ public class HeroSpawn : MonoBehaviour
         bloodBar.rate = life.rate;
     }
 
-    zzGUIProgressBarBase skillBar;
+    public zzGUIProgressBarBase skillBar;
 
     void getUI()
     {
@@ -118,6 +123,7 @@ public class HeroSpawn : MonoBehaviour
         if (!rebirthClockUI)
             rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
 
+        //基地血量UI绑定
         var lManagerTransform = GameSceneManager.Singleton.getManager(GameScene.Singleton.playerInfo.race,
             GameSceneManager.UnitManagerType.raceBase).managerRoot;
         if(lManagerTransform.childCount>0)
@@ -126,6 +132,10 @@ public class HeroSpawn : MonoBehaviour
             lManagerTransform.GetChild(0).GetComponent<Life>().addBloodValueChangeCallback(
                 (x) => lRaceBaseBloodRateUI.rate = x.rate);
         }
+
+        //物品UI绑定
+        itemBagUI = gameObject.AddComponent<WMItemBagUI>();
+        itemBagUI.itemBag = itemBag;
 
     }
 
@@ -153,6 +163,7 @@ public class HeroSpawn : MonoBehaviour
             {
                 GetComponent<BoundNetworkScope>().networkPlayer = value;
             }
+            itemBag.owner = value;
         }
 
         get { return _owner; }
@@ -179,15 +190,15 @@ public class HeroSpawn : MonoBehaviour
 
         _createHero();
         zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
-        itemBagControl.addCallAfterStart(_toGetItemBagID);
+        //itemBagControl.addCallAfterStart(_toGetItemBagID);
         haveFirstCreate = true;
     }
 
-    void _toGetItemBagID()
-    {
-        zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
-        itemBagID = itemBagControl.getBagID();
-    }
+    //void _toGetItemBagID()
+    //{
+    //    zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
+    //    itemBagID = itemBagControl.getBagID();
+    //}
 
     //function _theHeroDead()
 
@@ -272,8 +283,8 @@ public class HeroSpawn : MonoBehaviour
 
         _createHero();
 
-        zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
-        itemBagControl.setUseExistBag(itemBagID);
+        //zzItemBagControl itemBagControl = hero.GetComponent<zzItemBagControl>();
+        //itemBagControl.setUseExistBag(itemBagID);
     }
 
     //被rebirthClockTimer调用
@@ -396,6 +407,9 @@ public class HeroSpawn : MonoBehaviour
             createControl(pHeroObject);
     }
 
+    public WMItemBag itemBag;
+    public WMItemBagUI itemBagUI;
+
     protected void createControl(GameObject pHeroObject)
     {
         //for debug
@@ -411,9 +425,11 @@ public class HeroSpawn : MonoBehaviour
         //print(pHeroObject.GetInstanceID());
 
         //绑定UI
-        pHeroObject.AddComponent<BagItemUI>().showSelected = false;
-        pHeroObject.AddComponent<MoneyUI>();
-        pHeroObject.AddComponent<bagItemUIInput>();
+        //pHeroObject.AddComponent<BagItemUI>().showSelected = false;
+        //pHeroObject.AddComponent<MoneyUI>();
+        var lBagItemUIInput = pHeroObject.AddComponent<bagItemUIInput>();
+        lBagItemUIInput.itemBag = itemBag;
+        //lBagItemUIInput.heroSpawn = this;
         var lActionEnergyValue = pHeroObject.AddComponent<ActionEnergyValue>();
         lActionEnergyValue.addValueChangedReceiver(skillBar.setRate);
         pHeroObject.GetComponent<Hero>().actionEnergyValue = lActionEnergyValue;
