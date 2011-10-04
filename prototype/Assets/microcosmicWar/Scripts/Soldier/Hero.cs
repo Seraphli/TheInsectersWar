@@ -49,6 +49,10 @@ public class Hero : MonoBehaviour
 
     public ActionCommandControl actionCommandControl;
 
+    public WMPurse purse;
+    public WMPriceList priceList;
+    public WMItemBag itemBag;
+
     public Character2D getCharacter()
     {
         return character2D;

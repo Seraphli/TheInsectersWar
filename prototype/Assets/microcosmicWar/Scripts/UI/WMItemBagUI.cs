@@ -110,9 +110,9 @@ public class WMItemBagUI : MonoBehaviour
         }
         else
         {
-            print(lItem.itemId);
-            print(lUI.item.name);
-            print(WMItemSystem.Singleton.getItem(lItem.itemId).name);
+            //print(lItem.itemId);
+            //print(lUI.item.name);
+            //print(WMItemSystem.Singleton.getItem(lItem.itemId).name);
             lUI.icon.setImage(WMItemSystem.Singleton.getItem(lItem.itemId).image);
             lUI.countLabel.setText(lItem.count.ToString());
         }

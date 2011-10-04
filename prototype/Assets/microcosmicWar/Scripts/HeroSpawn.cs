@@ -329,11 +329,20 @@ public class HeroSpawn : MonoBehaviour
         return lHeroObject;
     }
 
+    public WMPurse purse;
+    public WMPriceList priceList;
+    public WMItemBag itemBag;
+    public WMItemBagUI itemBagUI;
+
     void InitHeroObject(GameObject pObject)
     {
         hero = pObject;
         setPlayerName(_playerName);
         setPlayerNameColor(_playerNameColor);
+        var lHero = pObject.GetComponent<Hero>();
+        lHero.purse = purse;
+        lHero.priceList = priceList;
+        lHero.itemBag = itemBag;
     }
 
     //创建只能在服务器端调用
@@ -406,9 +415,6 @@ public class HeroSpawn : MonoBehaviour
         if(_owner==Network.player)
             createControl(pHeroObject);
     }
-
-    public WMItemBag itemBag;
-    public WMItemBagUI itemBagUI;
 
     protected void createControl(GameObject pHeroObject)
     {

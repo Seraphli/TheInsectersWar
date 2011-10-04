@@ -5,7 +5,7 @@ using System.Collections;
 public class ActionCommandInput : MonoBehaviour
 {
 
-    public ActionCommandControl actionCommandControl;
+    public CommandControlBase actionCommandControl;
 
     public KeyCode up;
     public KeyCode down;
@@ -17,7 +17,7 @@ public class ActionCommandInput : MonoBehaviour
     public KeyCode action1;
     public KeyCode action2;
 
-    public void setToControl(ActionCommandControl pActionCommandControl)
+    public void setToControl(CommandControlBase pActionCommandControl)
     {
         actionCommandControl = pActionCommandControl;
     }

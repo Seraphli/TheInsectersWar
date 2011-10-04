@@ -418,7 +418,13 @@ public class UnitActionCommand
             + " FaceDown:" + FaceDown + " GoForward:" + GoForward + " Fire:" + Fire + " Jump:" + Jump;
     }
 }
-public class ActionCommandControl : MonoBehaviour
+
+public abstract class CommandControlBase: MonoBehaviour
+{
+    public abstract void setCommand(UnitActionCommand pUnitActionCommand);
+}
+
+public class ActionCommandControl : CommandControlBase
 {
     System.Action<UnitActionCommand> commandChangedReceiver;
 
@@ -462,7 +468,7 @@ public class ActionCommandControl : MonoBehaviour
 
     public UnitActionCommand unitActionCommand = new UnitActionCommand();
 
-    public void setCommand(UnitActionCommand pUnitActionCommand)
+    public override void setCommand(UnitActionCommand pUnitActionCommand)
     {
         /*
             if(gameObject.name!="pismireHero1(Clone)")

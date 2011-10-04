@@ -20,13 +20,13 @@ public class awakeShooterWhenDie : MonoBehaviour
     //在死亡的回调中使用
     void deadAction(Life p)
     {
-        Hashtable lInjureInfo = life.getInjureInfo();
-        //得到 保存 在子弹中的 发射者的 背包信息,以加钱
-        if (lInjureInfo!=null && lInjureInfo.ContainsKey("bagControl"))
-        {
-            zzItemBagControl lBagControl = (zzItemBagControl)lInjureInfo["bagControl"];
-            lBagControl.addMoney(shootAward);
-        }
+        //Hashtable lInjureInfo = life.getInjureInfo();
+        ////得到 保存 在子弹中的 发射者的 背包信息,以加钱
+        //if (lInjureInfo!=null && lInjureInfo.ContainsKey("bagControl"))
+        //{
+        //    zzItemBagControl lBagControl = (zzItemBagControl)lInjureInfo["bagControl"];
+        //    lBagControl.addMoney(shootAward);
+        //}
     }
 
 }

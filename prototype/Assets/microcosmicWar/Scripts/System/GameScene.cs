@@ -154,6 +154,9 @@ public class GameScene : MonoBehaviour
     public AudioClip pismireBackgroundMusicClip;
     public AudioClip beeBackgroundMusicClip;
 
+    public Color teammateColor = Color.blue;
+    public Color enemyTeamColor = Color.red;
+
     void Start()
     {
         initEvent();
@@ -256,7 +259,13 @@ public class GameScene : MonoBehaviour
         if (lGamePlayers.selfID == pPlayerID)
             playerSpawn = lSpawn;
         else
-            lSpawn.playerName = pPlayerID.ToString()+"."+lPlayerInfo.playerName;
+        {
+            lSpawn.playerName = pPlayerID.ToString() + "." + lPlayerInfo.playerName;
+            if (lPlayerInfo.race == lGamePlayers.selfRace)
+                lSpawn.playerNameColor = teammateColor;
+            else
+                lSpawn.playerNameColor = enemyTeamColor;
+        }
     }
 
     //[RPC]

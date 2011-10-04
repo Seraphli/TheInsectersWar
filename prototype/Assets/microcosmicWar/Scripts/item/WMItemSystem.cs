@@ -61,12 +61,16 @@ public class WMItemSystem:MonoBehaviour
         //oneMode 下maxCount无用
         public bool oneMode = false;
 
+        public int buyingPrice = 10;
+        public int sellingPrice = 8;
+
         public WMBagCellCreator bagCellCreator;
     }
 
     [System.Serializable]
     public class InfoNode
     {
+        //名字不能重复
         public string name;
         public string showName;
         public Texture2D image;
@@ -77,8 +81,17 @@ public class WMItemSystem:MonoBehaviour
 
     public List<InfoElement> items = new List<InfoElement>();
     public Dictionary<string, InfoElement> nameToItem = new Dictionary<string, InfoElement>();
+    public Dictionary<string, InfoNode> typeToNode = new Dictionary<string, InfoNode>();
     //public WMItemInfo[] items = new WMItemInfo[]{};
     public InfoNode itemTree;
+
+    public InfoNode getTypeTree(string pTypeName)
+    {
+        InfoNode lOut;
+        if (typeToNode.TryGetValue(pTypeName, out lOut))
+            return lOut;
+        return null;
+    }
 
     public InfoElement getItem(string pName)
     {
@@ -120,6 +133,7 @@ public class WMItemSystem:MonoBehaviour
         }
         foreach (var lNode in pNode.nodes)
         {
+            typeToNode[lNode.name] = lNode;
             addItemElements(lNode);
         }
     }
