@@ -149,6 +149,7 @@ public class zzGUIEditorWindow: EditorWindow
         //if (_GUIEditorHelper && _GUIEditorHelper.selection)
         if(root)
         {
+            zzGUI.offset = new Vector2(lShowRect.x, lShowRect.y);
             var lGUIEditorHelper = GUIEditorHelper;
             scrollPosition = GUI.BeginScrollView(lShowRect, scrollPosition, lGUIRect);
 

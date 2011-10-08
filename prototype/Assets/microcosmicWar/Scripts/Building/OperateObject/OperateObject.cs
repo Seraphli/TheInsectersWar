@@ -7,10 +7,11 @@ public class OperateObject:MonoBehaviour
 
     public virtual bool operateThis(ObjectOperatives pUser)
     {
-        if (commandControl)
+        if (objectControl)
             pUser.commandControl = objectControl;
         if (objectGui)
             pUser.gui = objectGui;
+        return true;
     }
 
     public void endOperate(ObjectOperatives pUser)

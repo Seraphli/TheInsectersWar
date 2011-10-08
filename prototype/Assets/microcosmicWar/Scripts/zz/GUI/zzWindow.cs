@@ -24,9 +24,10 @@ public class zzWindow : zzGUIContainer
     {
         get 
         {
-            var lMousePosition = Input.mousePosition;
-            lMousePosition.y = Screen.height - lMousePosition.y;
-            return position.Contains(lMousePosition); 
+            //var lMousePosition = Input.mousePosition;
+            //lMousePosition.y = Screen.height - lMousePosition.y;
+            //return position.Contains(lMousePosition);
+            return position.Contains(Event.current.mousePosition); 
         }
     }
 

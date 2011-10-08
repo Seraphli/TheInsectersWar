@@ -56,6 +56,8 @@ public class WMItemBag:MonoBehaviour
     {
         public const int noneId = 0;
         public int itemId;
+        //在包里的位置
+        public int bagItemIndex;
         public bool canSale = true;
         public bool unlimited = false;
         WM.IBagCell _cell;
@@ -142,6 +144,11 @@ public class WMItemBag:MonoBehaviour
 
     public BagSpace[] items = new BagSpace[] { };
 
+    public BagSpace getByItemID(int pItemID)
+    {
+        return System.Array.Find(items, (x) => x.itemId == pItemID);
+    }
+
     [System.Serializable]
     public class BagCellInfo
     {
@@ -189,6 +196,7 @@ public class WMItemBag:MonoBehaviour
         for (int i = 0; i < itemsInfo.Length; ++i)
         {
             var lBagSpace = items[i];
+            lBagSpace.bagItemIndex = i;
             BagCellInfo lInfo;
             if (i < itemsInfo.Length)
             {

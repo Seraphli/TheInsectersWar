@@ -8,6 +8,8 @@ public class zzGUI
     static zzInterfaceGUI _root;
     static zzWindow _focusedWindow;
 
+    public static Vector2 offset;
+
     public static void _setFocusedWindow(zzWindow pWindow)
     {
         _focusedWindow = pWindow;
@@ -47,6 +49,7 @@ public class zzGUIRender : zzGUIContainer
         zzGUI._setRoot(this);
         _renderGUI(position);
         _useCustomPosition = false;
+        zzGUI.offset = Vector2.zero;
     }
 
     bool _useCustomPosition = false;

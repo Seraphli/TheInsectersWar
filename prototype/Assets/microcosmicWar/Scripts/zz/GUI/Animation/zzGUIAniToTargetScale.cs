@@ -8,6 +8,7 @@ public class zzGUIAniToTargetScale:MonoBehaviour
     public float targetScale;
     public float speed;
 
+    //包含方向
     float mNowSpeed;
     float mTargetScale;
 

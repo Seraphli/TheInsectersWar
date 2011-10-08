@@ -22,7 +22,8 @@ public class zzGUITransform : zzGUIContainer
         if (angle != 0f)
         {
             var lPreMatrix = GUI.matrix;
-            GUIUtility.RotateAroundPivot(angle,new Vector2(screenPosition.x, screenPosition.y));
+            var lNewPos = lPreMatrix.MultiplyVector(new Vector3(position.x, position.y));
+            GUIUtility.RotateAroundPivot(angle, new Vector2(lNewPos.x, lNewPos.y));
             drawScaledSub();
             GUI.matrix = lPreMatrix;
         }

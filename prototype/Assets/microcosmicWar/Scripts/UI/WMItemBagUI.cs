@@ -3,6 +3,7 @@ using System.Collections;
 
 public class WMItemBagUI : MonoBehaviour
 {
+    [System.Serializable]
     public class ItemUIControl
     {
         public ItemUIControl(){}

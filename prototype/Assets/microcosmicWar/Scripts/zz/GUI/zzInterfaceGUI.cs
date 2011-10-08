@@ -176,6 +176,7 @@ public abstract class zzInterfaceGUI : MonoBehaviour
 
     //public zzInterfaceGUI root;
 
+    //todo:delete it
     /// <summary>
     /// only can be call by sub widget
     /// </summary>

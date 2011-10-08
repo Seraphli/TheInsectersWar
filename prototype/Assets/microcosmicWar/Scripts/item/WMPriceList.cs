@@ -53,8 +53,8 @@ public class WMPriceList:MonoBehaviour
         foreach (var lElement in pNode.elements)
         {
             addItemElement(lElement.id,
-                lElement.buyingPrice * pDiscount,
-                lElement.sellingPrice * pDiscount);
+                (int)(lElement.buyingPrice * pDiscount),
+                (int)(lElement.sellingPrice * pDiscount));
         }
 
         foreach (var lNode in pNode.nodes)
