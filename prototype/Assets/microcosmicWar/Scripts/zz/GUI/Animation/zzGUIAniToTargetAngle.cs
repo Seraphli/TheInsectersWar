@@ -18,7 +18,7 @@ public class zzGUIAniToTargetAngle:MonoBehaviour
 
     public void rotateToTarget(float pTargetAngle)
     {
-        targetAngle = pTargetAngle;
+        targetAngle = angle + Mathf.DeltaAngle(angle, pTargetAngle);
         enabled = true;
     }
 
