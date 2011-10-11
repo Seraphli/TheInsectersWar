@@ -49,7 +49,25 @@ public class Hero : MonoBehaviour
 
     public ActionCommandControl actionCommandControl;
 
-    public WMPurse purse;
+    WMPurse _purse;
+    public WMPurse purse
+    {
+        get { return _purse; }
+        set
+        {
+            _purse = value;
+            emitter.attackerPurse = value;
+            if (setPurseEvent != null)
+                setPurseEvent(value);
+        }
+    }
+    System.Action<WMPurse> setPurseEvent;
+
+    public void addSetPurseEventReceiver(System.Action<WMPurse> pReceiver)
+    {
+        setPurseEvent += pReceiver;
+    }
+
     public WMPriceList priceList;
     public WMItemBag itemBag;
 

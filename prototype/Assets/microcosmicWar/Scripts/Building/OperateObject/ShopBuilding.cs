@@ -24,7 +24,22 @@ public class ShopBuilding : OperateObject
         errorEvent += pReceiver;
     }
 
+    System.Action onOperateEvent;
+
+    public void addOnOperateReceiver(System.Action pReceiver)
+    {
+        onOperateEvent += pReceiver;
+    }
+
+    System.Action offOperateEvent;
+
+    public void addOffOperateReceiver(System.Action pReceiver)
+    {
+        offOperateEvent += pReceiver;
+    }
+
     static void nullErrorReceiver(string p){}
+    static void nullReceiver(){}
 
     void Start()
     {
@@ -32,6 +47,10 @@ public class ShopBuilding : OperateObject
         //    errorEvent = nullErrorReceiver;
         if (errorEvent == null)
             errorEvent = (x) => Debug.Log(x);
+        if (onOperateEvent == null)
+            onOperateEvent = nullReceiver;
+        if (offOperateEvent == null)
+            offOperateEvent = nullReceiver;
         shopUI = GameObject.FindWithTag("ShopUI").GetComponent<ShopUI>();
 
         //创建商品列表
@@ -67,17 +86,27 @@ public class ShopBuilding : OperateObject
         originalMoney = purse.number;
         priceList = lHero.priceList;
         itemBag = lHero.itemBag;
+        cost = 0;
         initGUI();
+        onOperateEvent();
+        shopUI.GetComponent<zzInterfaceGUI>().visible = true;
 
     }
 
-    public override bool operateThis(ObjectOperatives pUser)
+    public override void operateThis(ObjectOperatives pUser)
     {
+        base.operateThis(pUser);
         var lHero = pUser.GetComponent<Hero>();
         if (!lHero)
-            return false;
+            return;
         operateThis(lHero);
-        return true;
+    }
+
+    public override void endOperate(ObjectOperatives pUser)
+    {
+        base.endOperate(pUser);
+        balance();
+        shopUI.GetComponent<zzInterfaceGUI>().visible = false;
     }
 
     public HashSet<string> typeIncluded;
@@ -115,6 +144,16 @@ public class ShopBuilding : OperateObject
         public void clear()
         {
             id = 0;
+        }
+
+        public static bool operator==(BagItemInfo a,BagItemInfo b)
+        {
+            return (a.id == 0 && b.id==0) || (a.id == b.id && a.count == b.id);
+        }
+
+        public static bool operator !=(BagItemInfo a, BagItemInfo b)
+        {
+            return !(a == b);
         }
     }
 
@@ -199,21 +238,6 @@ public class ShopBuilding : OperateObject
         return -1;
     }
 
-
-    //int isMaxCount(int pGoodsIndex)
-    //{
-    //    var lGoodsID = goodsId[pIndex];
-    //    var lInfo = WMItemSystem.Singleton.getItem(lGoodsID);
-    //    if(goodsListToBagItem[pGoodsIndex]!=-1)
-    //    {
-    //        if (newBagItemInfo[goodsListToBagItem[pGoodsIndex]].count >= lInfo.maxCount)
-    //        {
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
-
     void swap<T>(T[] pArray, int pIndex1, int pIndex2)
     {
         //print("pArray.Length:" + pArray.Length + " pIndex1:" + pIndex1);
@@ -222,16 +246,6 @@ public class ShopBuilding : OperateObject
         pArray[pIndex2] = lTemp;
     }
 
-    public void swapBagItem(int pBagIndex1,int pBagIndex2)
-    {
-        //print("pBagIndex1:" + pBagIndex1 + " pBagIndex2:" + pBagIndex2);
-        swap(newBagItemInfo, pBagIndex1, pBagIndex2);
-        //var lGoodsIndex1 = bagItemToGoodsList[pBagIndex1];
-        //var lGoodsIndex2 = bagItemToGoodsList[pBagIndex2];
-        //print(goodsListToBagItem.Length);
-        //swap(goodsListToBagItem, lGoodsIndex1, lGoodsIndex2);
-        //swap(bagItemToGoodsList, pBagIndex1, pBagIndex2);
-    }
 
     [ContextMenu("buySeleted")]
     public void buySeleted()
@@ -264,9 +278,12 @@ public class ShopBuilding : OperateObject
         lBagItem.count -= 1;
         if(lBagItem.count==0)
         {
+            var lGoodsIndex = System.Array.FindIndex(goodsListToBagItem, (x) => x == pBagItemIndex);
+            if(lGoodsIndex>=0)
+                goodsListToBagItem[lGoodsIndex] = -1;
             lBagItem.clear();
-            goodsListToBagItem[bagItemToGoodsList[pBagItemIndex]] = -1;
-            bagItemToGoodsList[pBagItemIndex] = -1;
+            //goodsListToBagItem[bagItemToGoodsList[pBagItemIndex]] = -1;
+            //bagItemToGoodsList[pBagItemIndex] = -1;
         }
         cost = calculateCost(originalBagItemInfo, newBagItemInfo);
         updateGUI();
@@ -297,13 +314,23 @@ public class ShopBuilding : OperateObject
         {
             //包中无此物品
             var lOriPos = System.Array.FindIndex(originalBagItemInfo, (x) => x.id == lGoodsID);
-            if(lOriPos<0)
+            if(lOriPos<0 || newBagItemInfo[lOriPos].isEmpty)
             {
-                //在原来的包中也没有此物体
-                lBagItemIndex = lEmptyPlace;
+                //lBagItemIndex = lEmptyPlace;
+                if (newBagItemInfo[lOriPos].isEmpty)
+                {
+                    goodsListToBagItem[pGoodsIndex] = lOriPos;
+                    lBagItemIndex = lOriPos;
+                }
+                else
+                {
+                    goodsListToBagItem[pGoodsIndex] = lEmptyPlace;
+                    lBagItemIndex = lEmptyPlace;
+                }
             }
             else
             {
+                //移动新包中的物体
                 //在原来的包中,有此物体
                 var lNewBagItemInfo = copy(newBagItemInfo);
                 swap(lNewBagItemInfo, lOriPos, lEmptyPlace);
@@ -320,12 +347,15 @@ public class ShopBuilding : OperateObject
                     errorEvent("钱不够");
                     return;
                 }
-                swapBagItem(lOriPos, lEmptyPlace);
+                //goodsListToBagItem[lEmptyPlace] = lBagItemIndex;
+                //swapBagItem(lOriPos, lEmptyPlace);
+                //goodsListToBagItem[pGoodsIndex] = lBagItemIndex;
+                newBagItemInfo = lNewBagItemInfo;
+                createGoodsListToBagItem();
 
             }
-            bagItemToGoodsList[lBagItemIndex] = pGoodsIndex;
-            goodsListToBagItem[pGoodsIndex] = lBagItemIndex;
             newBagItemInfo[lBagItemIndex].id = lInfo.id;
+            //bagItemToGoodsList[lBagItemIndex] = pGoodsIndex;
         }
         else
         {
@@ -366,6 +396,11 @@ public class ShopBuilding : OperateObject
 
     int calculateCost(BagItemInfo[] pOldInfo,BagItemInfo[] pNewInfo)
     {
+        return calculateCost(pOldInfo, pNewInfo, priceList);
+    }
+
+    static int calculateCost(BagItemInfo[] pOldInfo, BagItemInfo[] pNewInfo, WMPriceList pPriceList)
+    {
         var lItemSystem =WMItemSystem.Singleton;
         int lCost = 0;
         for (int i = 0; i < pOldInfo.Length;++i )
@@ -373,8 +408,8 @@ public class ShopBuilding : OperateObject
             var lOldInfo = pOldInfo[i];
             var lNewInfo = pNewInfo[i];
             //var lOldItemInfo = lItemSystem.getItem(lOldInfo.id);
-            var lOldInfoPrice = priceList.getPriceInfo(lOldInfo.id);
-            var lNewInfoPrice = priceList.getPriceInfo(lNewInfo.id);
+            var lOldInfoPrice = pPriceList.getPriceInfo(lOldInfo.id);
+            var lNewInfoPrice = pPriceList.getPriceInfo(lNewInfo.id);
             if (lOldInfo.id == lNewInfo.id && !lOldInfo.isEmpty)
             {
                 var lChanged = lNewInfo.count - lOldInfo.count;
@@ -482,6 +517,23 @@ public class ShopBuilding : OperateObject
         }
     }
 
+    void createGoodsListToBagItem()
+    {
+        for (int i = 0; i < goodsId.Length; ++i)
+        {
+            var lItemID = goodsId[i];
+            var lBagIndex = System.Array.FindIndex(newBagItemInfo, (x) => x.id == lItemID);
+            if (lBagIndex<0)
+            {
+                goodsListToBagItem[i] = -1;
+            }
+            else
+            {
+                goodsListToBagItem[i] = lBagIndex;
+            }
+        }
+    }
+
     void initGUI()
     {
         var lItemSystem = WMItemSystem.Singleton;
@@ -517,5 +569,36 @@ public class ShopBuilding : OperateObject
         //    goodsListToOldBagItem, goodsListToBagItem.Length);
         initBagItem();
         selected = goodsCount / 2;
+    }
+
+    [ContextMenu("balance")]
+    public void balance()
+    {
+        balance(purse, priceList, itemBag, originalBagItemInfo, newBagItemInfo);
+    }
+
+    static void balance(WMPurse pPurse,WMPriceList pPriceList,
+        WMItemBag pItemBag, BagItemInfo[] pOldBagItemInfo, BagItemInfo[] pNewBagItemInfo)
+    {
+        var lBagItems = pItemBag.items;
+        var lItemSystem = WMItemSystem.Singleton;
+        var lCost = calculateCost(pOldBagItemInfo, pNewBagItemInfo, pPriceList);
+        pPurse.cost(lCost);
+        List<WMItemBag.ItemChangeInfo> lBagChanged = new List<WMItemBag.ItemChangeInfo>();
+        for (int i = 0; i < pNewBagItemInfo.Length;++i )
+        {
+            var lNewInfo = pNewBagItemInfo[i];
+            if (lNewInfo != pOldBagItemInfo[i])
+                lBagChanged.Add(new WMItemBag.ItemChangeInfo()
+                {
+                    index = i,
+                    itemId = lNewInfo.id,
+                    count = lNewInfo.count
+                });
+        }
+        if (lBagChanged.Count == 0)
+            return;
+        pItemBag.ItemBagChange(lBagChanged.ToArray());
+
     }
 }

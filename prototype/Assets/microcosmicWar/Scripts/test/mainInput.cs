@@ -5,12 +5,13 @@ using System.Collections;
 public class mainInput : MonoBehaviour
 {
 
-    public ActionCommandControl actionCommandControl;
+    public CommandControlBase[] actionCommandControl;
+    public ObjectOperatives objectOperatives;
 
-    public void setToControl(ActionCommandControl pActionCommandControl)
-    {
-        actionCommandControl = pActionCommandControl;
-    }
+    //public void setToControl(CommandControlBase pActionCommandControl)
+    //{
+    //    actionCommandControl = pActionCommandControl;
+    //}
 
     public UnitActionCommand GetActionCommandFromInput()
     {
@@ -41,7 +42,18 @@ public class mainInput : MonoBehaviour
     void Update()
     {
         //if( zzCreatorUtility.isHost())
-        if (actionCommandControl)
-            actionCommandControl.setCommand(GetActionCommandFromInput());
+        //if (actionCommandControl)
+        //    actionCommandControl.setCommand(GetActionCommandFromInput());
+        if (actionCommandControl.Length > 0)
+        {
+            var lCommand = GetActionCommandFromInput();
+            foreach (var lControl in actionCommandControl)
+            {
+                lControl.setCommand(lCommand);
+            }
+        }
+
+        if (objectOperatives && Input.GetButtonDown("function"))
+            objectOperatives.doOperate();
     }
 }

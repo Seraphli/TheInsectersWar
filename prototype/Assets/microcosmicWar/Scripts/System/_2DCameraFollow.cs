@@ -4,8 +4,13 @@ using System.Collections;
 /// <summary>
 /// 摄像机平滑跟随目标
 /// </summary>
-public class _2DCameraFollow : MonoBehaviour
+public class _2DCameraFollow : CommandControlBase
 {
+    public override void setCommand(UnitActionCommand pUnitActionCommand)
+    {
+        command = pUnitActionCommand;
+    }
+
     // The target we are following
     public Transform target;
 
@@ -15,10 +20,7 @@ public class _2DCameraFollow : MonoBehaviour
     // 位移量;一帧内的逻辑, 可以看成要花positionDamping的时间,到达目标
     public float positionDamping = 0.74f;
 
-    //void Start()
-    //{
-
-    //}
+    public UnitActionCommand command = new UnitActionCommand();
 
     /// <summary>
     /// 设置跟踪目标
@@ -83,14 +85,14 @@ public class _2DCameraFollow : MonoBehaviour
                 float translationx;
                 float translationy;
 
-                if (Input.GetButton("left"))
+                if (command.FaceLeft)
                 {
                     translationx = tranFX(-10.0f);
                     if (Input.GetButton("up"))
                     {
                         translationy = tranFY(4.0f);
                     }
-                    else if (Input.GetButton("down"))
+                    else if (command.FaceDown)
                     {
                         translationy = tranFY(-4.0f);
                     }
@@ -99,14 +101,14 @@ public class _2DCameraFollow : MonoBehaviour
                     if (TarTranNotEqual())
                         transform.Translate(translationx, translationy, 0);
                 }
-                else if (Input.GetButton("right"))
+                else if (command.FaceRight)
                 {
                     translationx = tranFX(10.0f);
                     if (Input.GetButton("up"))
                     {
                         translationy = tranFY(4.0f);
                     }
-                    else if (Input.GetButton("down"))
+                    else if (command.FaceDown)
                     {
                         translationy = tranFY(-4.0f);
                     }
@@ -115,14 +117,14 @@ public class _2DCameraFollow : MonoBehaviour
                     if (TarTranNotEqual())
                         transform.Translate(translationx, translationy, 0);
                 }
-                else if (Input.GetButton("up"))
+                else if (command.FaceUp)
                 {
                     translationx = tranFX(0.0f);
                     translationy = tranFY(4.0f);
                     if (TarTranNotEqual())
                         transform.Translate(translationx, translationy, 0);
                 }
-                else if (Input.GetButton("down"))
+                else if (command.FaceDown)
                 {
                     translationx = tranFX(0.0f);
                     translationy = tranFY(-4.0f);

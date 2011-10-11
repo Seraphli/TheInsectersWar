@@ -13,6 +13,8 @@ public class awakeShooterWhenDie : MonoBehaviour
 
     void Start()
     {
+        if (Network.isClient)
+            return;
         life = gameObject.GetComponentInChildren<Life>();
         life.addDieCallback(deadAction);
     }
@@ -27,6 +29,8 @@ public class awakeShooterWhenDie : MonoBehaviour
         //    zzItemBagControl lBagControl = (zzItemBagControl)lInjureInfo["bagControl"];
         //    lBagControl.addMoney(shootAward);
         //}
+        if (life.attackerPurse)
+            life.attackerPurse.add(shootAward);
     }
 
 }

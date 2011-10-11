@@ -123,6 +123,11 @@ public class WMItemBag:MonoBehaviour
             changedEvent += pReceiver;
         }
 
+        public void changed()
+        {
+            changedEvent();
+        }
+
         //public bool haveThing
         //{
         //    get { return cell != noneId; }
@@ -267,5 +272,126 @@ public class WMItemBag:MonoBehaviour
     void ItemBagUse(int pIndex)
     {
         items[pIndex].use(getOwnerFunc());
+    }
+
+    //      数量          物品ID    包位置索引
+    //|<-----14----->|<-----14----->|<---4--->|
+    //only in server
+    [RPC]
+    void ItemBagChange(int pData)
+    {
+        var lBitData = new zz.IntBitIO(pData);
+        ItemBagChange(lBitData.readToInt(4), lBitData.readToInt(14), lBitData.readToInt(14));
+    }
+
+    [RPC]
+    void ItemBagChange2(int pData1,int pData2)
+    {
+        ItemBagChange(pData1);
+        ItemBagChange(pData2);
+    }
+
+    [RPC]
+    void ItemBagChange3(int pData1, int pData2, int pData3)
+    {
+        ItemBagChange(pData1);
+        ItemBagChange(pData2);
+        ItemBagChange(pData3);
+    }
+
+    [RPC]
+    void ItemBagChange4(int pData1, int pData2, int pData3, int pData4)
+    {
+        ItemBagChange(pData1);
+        ItemBagChange(pData2);
+        ItemBagChange(pData3);
+        ItemBagChange(pData4);
+    }
+
+    [RPC]
+    void ItemBagChange5(int pData1, int pData2, int pData3, int pData4, int pData5)
+    {
+        ItemBagChange(pData1);
+        ItemBagChange(pData2);
+        ItemBagChange(pData3);
+        ItemBagChange(pData4);
+        ItemBagChange(pData5);
+    }
+
+    int toInt(ItemChangeInfo pItemChangeInfo)
+    {
+        var lBitData = new zz.IntBitIO();
+        lBitData.write(pItemChangeInfo.count, 14);
+        lBitData.write(pItemChangeInfo.itemId, 14);
+        lBitData.write(pItemChangeInfo.index, 4);
+        return lBitData.date;
+    }
+
+    public class ItemChangeInfo
+    {
+        public int index;
+        public int itemId;
+        public int count;
+    }
+
+    public void ItemBagChange(ItemChangeInfo[] pItemChangeInfo)
+    {
+        if (Network.isClient)
+        {
+            switch (pItemChangeInfo.Length)
+            {
+                case 1: networkView.RPC("ItemBagChange", RPCMode.Server,
+                    toInt(pItemChangeInfo[0]));
+                    break;
+                case 2: networkView.RPC("ItemBagChange2", RPCMode.Server,
+                    toInt(pItemChangeInfo[0]),
+                    toInt(pItemChangeInfo[1]));
+                    break;
+                case 3: networkView.RPC("ItemBagChange3", RPCMode.Server,
+                    toInt(pItemChangeInfo[0]),
+                    toInt(pItemChangeInfo[1]),
+                    toInt(pItemChangeInfo[2]));
+                    break;
+                case 4: networkView.RPC("ItemBagChange4", RPCMode.Server,
+                    toInt(pItemChangeInfo[0]),
+                    toInt(pItemChangeInfo[1]),
+                    toInt(pItemChangeInfo[2]),
+                    toInt(pItemChangeInfo[3]));
+                    break;
+                case 5: networkView.RPC("ItemBagChange5", RPCMode.Server,
+                    toInt(pItemChangeInfo[0]),
+                    toInt(pItemChangeInfo[1]),
+                    toInt(pItemChangeInfo[2]),
+                    toInt(pItemChangeInfo[3]),
+                    toInt(pItemChangeInfo[4]));
+                    break;
+                default:
+                    Debug.LogError("error pItemChangeInfo.Length:" + pItemChangeInfo.Length);
+                    break;
+            }
+        }
+        else
+        {
+            foreach (var lInfo in pItemChangeInfo)
+            {
+                ItemBagChange(lInfo.index, lInfo.itemId, lInfo.count);
+            }
+        }
+    }
+
+    public void ItemBagChange(int pIndex, int pItemId, int pCount)
+    {
+        var lBagSpace = items[pIndex];
+        if (pItemId==0)
+        {
+            lBagSpace.clear();
+        }
+        else
+        {
+            if (lBagSpace.itemId != pItemId)
+                changeCell(lBagSpace, pItemId);
+            lBagSpace.count = pCount;
+        }
+        lBagSpace.changed();
     }
 }

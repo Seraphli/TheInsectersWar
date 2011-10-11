@@ -9,6 +9,15 @@ public class AttackByDetector:MonoBehaviour
 
     HashSet<Life> lifeList = new HashSet<Life>();
 
+    [SerializeField]
+    WMPurse _purse;
+
+    public WMPurse purse
+    {
+        get { return _purse; }
+        set { _purse = value; }
+    }
+
     public void doAttack()
     {
         if (Network.isClient)
@@ -22,7 +31,7 @@ public class AttackByDetector:MonoBehaviour
         }
         foreach (var lLife in lifeList)
         {
-            lLife.injure(attack);
+            lLife.injure(attack, _purse);
         }
     }
 }

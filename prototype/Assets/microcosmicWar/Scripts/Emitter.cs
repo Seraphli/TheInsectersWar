@@ -38,6 +38,8 @@ public class Emitter : MonoBehaviour
 
     protected float _bulletAliveTime;
 
+    public WMPurse attackerPurse;
+
     public virtual void setInjureInfo(Hashtable pInjureInfo)
     {
         injureInfo = pInjureInfo;
@@ -79,6 +81,7 @@ public class Emitter : MonoBehaviour
         pBullet.setLayer(bulletLayer);
         pBullet.setAliveTime(_bulletAliveTime);
         pBullet.setForwardVelocity(ForwardVelocity);
+        pBullet.attackerPurse = attackerPurse;
         if (injureInfo != null)
         {
             pBullet.setInjureInfo(injureInfo);

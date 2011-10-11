@@ -108,6 +108,8 @@ public class HeroSpawn : MonoBehaviour
 
     public zzGUIProgressBarBase skillBar;
 
+    public zzInterfaceGUI moneyLabel;
+
     void getUI()
     {
         var lUiRoot = GameScene.Singleton.playerInfo.UiRoot;
@@ -119,6 +121,8 @@ public class HeroSpawn : MonoBehaviour
         bloodBar = mUIObjectMap.getObject("bloodBar").GetComponent<zzGUIProgressBarBase>();
 
         skillBar = mUIObjectMap.getObject("skillValue").GetComponent<zzGUIProgressBarBase>();
+
+        moneyLabel = mUIObjectMap.getObject("moneyLabel").GetComponent<zzInterfaceGUI>();
 
         if (!rebirthClockUI)
             rebirthClockUI = mUIObjectMap.getObject("rebirthClock").GetComponent<zzInterfaceGUI>();
@@ -423,19 +427,50 @@ public class HeroSpawn : MonoBehaviour
         lPlayerScope.actionCommandControl = pHeroObject.GetComponent<ActionCommandControl>();
         lPlayerScope.playerTransform = pHeroObject.transform;
 
+        //绑定摄像机
+        _2DCameraFollow lCameraFollow = zzObjectMap.getObject("GameCamera").GetComponent<_2DCameraFollow>();
+        lCameraFollow.setTaget(pHeroObject.transform);
+
         //绑定输入
+        var lBagItemUIInput = pHeroObject.AddComponent<bagItemUIInput>();
+        lBagItemUIInput.itemBag = itemBag;
         //GameObject lSystem = GameObject.Find("System");
         mainInput lMainInput = SystemObject.GetComponent<mainInput>();
-        lMainInput.setToControl(pHeroObject.GetComponent<ActionCommandControl>());
+        lMainInput.actionCommandControl =
+            new CommandControlBase[]{
+                pHeroObject.GetComponent<ActionCommandControl>(),
+                lCameraFollow,
+            };
+        var lObjectOperatives = pHeroObject.GetComponent<ObjectOperatives>();
+        lMainInput.objectOperatives = lObjectOperatives;
+        {
+            var lControls = lMainInput.actionCommandControl;
+            lObjectOperatives.addOnOperateReceiver(
+                delegate()
+                {
+                    lMainInput.actionCommandControl = new CommandControlBase[] { };
+                    //mUIObjectMap.getObject("OnOperate").GetComponent<zzOnAction>().impAction();
+                    lBagItemUIInput.enabled = false;
+                }
+            );
+            lObjectOperatives.addOffOperateReceiver(
+                delegate()
+                {
+                    lMainInput.actionCommandControl = lControls;
+                    lBagItemUIInput.enabled = true;
+                    //mUIObjectMap.getObject("OffOperate").GetComponent<zzOnAction>().impAction();
+                }
+            );
+        }
         //print(pHeroObject.name);
         //print(pHeroObject.GetInstanceID());
 
         //绑定UI
         //pHeroObject.AddComponent<BagItemUI>().showSelected = false;
         //pHeroObject.AddComponent<MoneyUI>();
-        var lBagItemUIInput = pHeroObject.AddComponent<bagItemUIInput>();
-        lBagItemUIInput.itemBag = itemBag;
         //lBagItemUIInput.heroSpawn = this;
+        purse.addChangedReceiver(() => moneyLabel.setText(purse.number.ToString("D7")));
+        moneyLabel.setText(purse.number.ToString("D7"));
         var lActionEnergyValue = pHeroObject.AddComponent<ActionEnergyValue>();
         lActionEnergyValue.addValueChangedReceiver(skillBar.setRate);
         pHeroObject.GetComponent<Hero>().actionEnergyValue = lActionEnergyValue;
@@ -452,17 +487,15 @@ public class HeroSpawn : MonoBehaviour
         if (bloodBar)
             updateBloodBar(lLife);
         lLife.addBloodValueChangeCallback(updateBloodBar);
-
-        //绑定摄像机
-        _2DCameraFollow lCameraFollow = zzObjectMap.getObject("GameCamera").GetComponent<_2DCameraFollow>();
-        lCameraFollow.setTaget(pHeroObject.transform);
+        lLife.addDieCallback((x) => lObjectOperatives.releaseOperate() );
 
     }
 
     protected void _releaseControl(GameObject pHeroObject)
     {
         mainInput lMainInput = SystemObject.GetComponent<mainInput>();
-        lMainInput.setToControl(null);
+        lMainInput.actionCommandControl = new CommandControlBase[] { };
+        lMainInput.objectOperatives = null;
         if(pHeroObject)
         {
             Destroy(pHeroObject.GetComponent<bagItemUIInput>());

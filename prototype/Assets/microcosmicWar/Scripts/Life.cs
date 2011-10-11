@@ -49,21 +49,37 @@ public class Life : MonoBehaviour
         bloodValueChangeCallback += call;
     }
 
+    public WMPurse attackerPurse;
+
+    public void injure(int value, WMPurse pAttackerPurse)
+    {
+        attackerPurse = pAttackerPurse;
+        injure(value);
+        attackerPurse = null;
+    }
+
+    public void injure(int value, Hashtable pInjureInfo, WMPurse pAttackerPurse)
+    {
+        attackerPurse = pAttackerPurse;
+        injure(value, pInjureInfo);
+        attackerPurse = null;
+    }
+
     public void injure(int value, Hashtable pInjureInfo)
     {
-        if (Network.isClient)
-            Debug.LogError("do injure in client");
         injureInfo = pInjureInfo;
-        if (bloodValue > 0)
-        {
-            setBloodValue(bloodValue - value);
-        }
+        injure(value);
         injureInfo = null;
     }
 
     public void injure(int value)
     {
-        injure(value, null);
+        if (Network.isClient)
+            Debug.LogError("do injure in client");
+        if (bloodValue > 0)
+        {
+            setBloodValue(bloodValue - value);
+        }
     }
 
     //在回调中调用

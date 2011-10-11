@@ -23,6 +23,8 @@ public class Bullet : MonoBehaviour
     public Transform particleEmitter;
     public bool hitObject = false;
 
+    public WMPurse attackerPurse;
+
     void Awake()
     {
         bulletRigidbody = gameObject.GetComponent<Rigidbody>();
@@ -150,7 +152,7 @@ public class Bullet : MonoBehaviour
             return;
         Life lLife = Life.getLifeFromTransform(pOther);
         if (lLife && harmVale!=0)
-            lLife.injure(harmVale, injureInfo);
+            lLife.injure(harmVale, injureInfo,attackerPurse);
         //print(networkView.viewID);
         //if(zzCreatorUtility.isHost())
         lifeEnd();
