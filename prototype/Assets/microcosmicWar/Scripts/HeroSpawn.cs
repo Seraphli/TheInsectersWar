@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HeroSpawn : MonoBehaviour
 {
@@ -213,11 +214,11 @@ public class HeroSpawn : MonoBehaviour
         if (!haveFirstCreate)
             Debug.LogError("haveFirstCreate == false");
 
-        if (HeroBelongToThePlayer())
-        {
-            //释放之前的输入
-            _releaseControl(hero);
-        }
+        //if (HeroBelongToThePlayer())
+        //{
+        //    //释放之前的输入
+        //    _releaseControl(hero);
+        //}
 
         _createHeroRebirthClock();
 
@@ -422,6 +423,7 @@ public class HeroSpawn : MonoBehaviour
 
     protected void createControl(GameObject pHeroObject)
     {
+        Life lLife = pHeroObject.GetComponent<Life>();
         //for debug
         var lPlayerScope = GetComponent<PlayerScope>();
         lPlayerScope.actionCommandControl = pHeroObject.GetComponent<ActionCommandControl>();
@@ -448,7 +450,7 @@ public class HeroSpawn : MonoBehaviour
             lObjectOperatives.addOnOperateReceiver(
                 delegate()
                 {
-                    lMainInput.actionCommandControl = new CommandControlBase[] { };
+                    lControls = lMainInput.clearCommand();
                     //mUIObjectMap.getObject("OnOperate").GetComponent<zzOnAction>().impAction();
                     lBagItemUIInput.enabled = false;
                 }
@@ -456,6 +458,7 @@ public class HeroSpawn : MonoBehaviour
             lObjectOperatives.addOffOperateReceiver(
                 delegate()
                 {
+                    //if (lLife.isAlive())
                     lMainInput.actionCommandControl = lControls;
                     lBagItemUIInput.enabled = true;
                     //mUIObjectMap.getObject("OffOperate").GetComponent<zzOnAction>().impAction();
@@ -483,18 +486,23 @@ public class HeroSpawn : MonoBehaviour
         //GameObject.Destroy( pHeroObject.transform.FindChild("bloodBar").gameObject );
         //防止血值改变时,回调bloodBar导致错误
         pHeroObject.transform.FindChild("bloodBar").renderer.enabled = false;
-        Life lLife = pHeroObject.GetComponent<Life>();
         if (bloodBar)
             updateBloodBar(lLife);
         lLife.addBloodValueChangeCallback(updateBloodBar);
-        lLife.addDieCallback((x) => lObjectOperatives.releaseOperate() );
+        lLife.addDieCallback(
+            delegate(Life p)
+            {
+                lObjectOperatives.releaseOperate();
+                _releaseControl(pHeroObject);
+            }
+        );
 
     }
 
     protected void _releaseControl(GameObject pHeroObject)
     {
         mainInput lMainInput = SystemObject.GetComponent<mainInput>();
-        lMainInput.actionCommandControl = new CommandControlBase[] { };
+        lMainInput.clearCommand();
         lMainInput.objectOperatives = null;
         if(pHeroObject)
         {

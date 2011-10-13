@@ -49,6 +49,7 @@ public class Hero : MonoBehaviour
 
     public ActionCommandControl actionCommandControl;
 
+    [SerializeField]
     WMPurse _purse;
     public WMPurse purse
     {

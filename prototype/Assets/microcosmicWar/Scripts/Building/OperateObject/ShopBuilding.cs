@@ -107,6 +107,7 @@ public class ShopBuilding : OperateObject
         base.endOperate(pUser);
         balance();
         shopUI.GetComponent<zzInterfaceGUI>().visible = false;
+        offOperateEvent();
     }
 
     public HashSet<string> typeIncluded;
@@ -148,7 +149,7 @@ public class ShopBuilding : OperateObject
 
         public static bool operator==(BagItemInfo a,BagItemInfo b)
         {
-            return (a.id == 0 && b.id==0) || (a.id == b.id && a.count == b.id);
+            return (a.id == 0 && b.id==0) || (a.id == b.id && a.count == b.count);
         }
 
         public static bool operator !=(BagItemInfo a, BagItemInfo b)
@@ -220,7 +221,18 @@ public class ShopBuilding : OperateObject
     }
 
     public int originalMoney = 0;
-    public int cost = 0;
+    [SerializeField]
+    int _cost = 0;
+
+    public int cost
+    {
+        get { return _cost; }
+        set
+        {
+            _cost = value;
+            shopUI.cost = value;
+        }
+    }
 
     public int money
     {
@@ -314,19 +326,15 @@ public class ShopBuilding : OperateObject
         {
             //包中无此物品
             var lOriPos = System.Array.FindIndex(originalBagItemInfo, (x) => x.id == lGoodsID);
-            if(lOriPos<0 || newBagItemInfo[lOriPos].isEmpty)
+            if(lOriPos<0)
             {
-                //lBagItemIndex = lEmptyPlace;
-                if (newBagItemInfo[lOriPos].isEmpty)
-                {
-                    goodsListToBagItem[pGoodsIndex] = lOriPos;
-                    lBagItemIndex = lOriPos;
-                }
-                else
-                {
-                    goodsListToBagItem[pGoodsIndex] = lEmptyPlace;
-                    lBagItemIndex = lEmptyPlace;
-                }
+                goodsListToBagItem[pGoodsIndex] = lEmptyPlace;
+                lBagItemIndex = lEmptyPlace;
+            }
+            else if (newBagItemInfo[lOriPos].isEmpty)
+            {
+                goodsListToBagItem[pGoodsIndex] = lOriPos;
+                lBagItemIndex = lOriPos;
             }
             else
             {
@@ -421,9 +429,9 @@ public class ShopBuilding : OperateObject
             else
             {
                 if (!lOldInfo.isEmpty)
-                    lCost -= lOldInfoPrice.sellingPrice;
+                    lCost -= lOldInfoPrice.sellingPrice * lOldInfo.count;
                 if (!lNewInfo.isEmpty)
-                    lCost += lNewInfoPrice.buyingPrice;
+                    lCost += lNewInfoPrice.buyingPrice * lNewInfo.count;
             }
         }
         return lCost;
@@ -583,7 +591,6 @@ public class ShopBuilding : OperateObject
         var lBagItems = pItemBag.items;
         var lItemSystem = WMItemSystem.Singleton;
         var lCost = calculateCost(pOldBagItemInfo, pNewBagItemInfo, pPriceList);
-        pPurse.cost(lCost);
         List<WMItemBag.ItemChangeInfo> lBagChanged = new List<WMItemBag.ItemChangeInfo>();
         for (int i = 0; i < pNewBagItemInfo.Length;++i )
         {
@@ -598,6 +605,7 @@ public class ShopBuilding : OperateObject
         }
         if (lBagChanged.Count == 0)
             return;
+        pPurse.cost(lCost);
         pItemBag.ItemBagChange(lBagChanged.ToArray());
 
     }

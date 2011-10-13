@@ -4,14 +4,36 @@ using System.Collections;
 
 public class mainInput : MonoBehaviour
 {
-
-    public CommandControlBase[] actionCommandControl;
+    [SerializeField]
+    CommandControlBase[] _actionCommandControl;
+    public CommandControlBase[] actionCommandControl
+    {
+        get
+        {
+            return _actionCommandControl;
+        }
+        set
+        {
+            _actionCommandControl = value;
+        }
+    }
     public ObjectOperatives objectOperatives;
 
     //public void setToControl(CommandControlBase pActionCommandControl)
     //{
-    //    actionCommandControl = pActionCommandControl;
+    //    _actionCommandControl = pActionCommandControl;
     //}
+    readonly CommandControlBase[] nullActionCommandControl = new CommandControlBase[] { };
+    public CommandControlBase[] clearCommand()
+    {
+        foreach (var lControl in _actionCommandControl)
+        {
+            lControl.setCommand(new UnitActionCommand());
+        }
+        var lOut = _actionCommandControl;
+        _actionCommandControl = nullActionCommandControl;
+        return lOut;
+    }
 
     public UnitActionCommand GetActionCommandFromInput()
     {
@@ -42,12 +64,12 @@ public class mainInput : MonoBehaviour
     void Update()
     {
         //if( zzCreatorUtility.isHost())
-        //if (actionCommandControl)
-        //    actionCommandControl.setCommand(GetActionCommandFromInput());
-        if (actionCommandControl.Length > 0)
+        //if (_actionCommandControl)
+        //    _actionCommandControl.setCommand(GetActionCommandFromInput());
+        if (_actionCommandControl.Length > 0)
         {
             var lCommand = GetActionCommandFromInput();
-            foreach (var lControl in actionCommandControl)
+            foreach (var lControl in _actionCommandControl)
             {
                 lControl.setCommand(lCommand);
             }
