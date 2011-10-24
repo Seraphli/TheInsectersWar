@@ -90,7 +90,6 @@ public class zzWayPointConnecter : ObjectPickBase
     {
         if (beginPoint)
         {
-            print("if (beginPoint)");
             var lWayPoint = getWayPoint(pObject);
             if (lWayPoint && lWayPoint != beginPoint)
             {

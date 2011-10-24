@@ -1,4 +1,4 @@
-﻿
+﻿// 已被WMItemDefenseTower.cs替代,可以删掉了
 using UnityEngine;
 using System.Collections;
 

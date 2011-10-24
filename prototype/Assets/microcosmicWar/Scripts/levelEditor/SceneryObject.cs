@@ -7,6 +7,7 @@ public class SceneryObject:MonoBehaviour
 
     public int orthographicLayer;
     public int perspectiveLayer;
+    public int perspectiveForegroundLayer;
 
     public float minBackgroundDepth = 1f;
     public float maxBackgroundDepth = 2f;
@@ -19,12 +20,28 @@ public class SceneryObject:MonoBehaviour
         updateSceneryTransform();
     }
 
-    void updateRenderLayer()
+    static void setRenderLayer(GameObject pObject, int pLayer)
+    {
+        pObject.layer = pLayer;
+        foreach (Transform lSub in pObject.transform)
+        {
+            setRenderLayer(lSub.gameObject, pLayer);
+        }
+    }
+
+    public void updateRenderLayer()
     {
         if (isPerspective)
-            renderObject.layer = perspectiveLayer;
+        {
+            if (_sceneryPosition == SceneryPosition.foreground)
+                setRenderLayer(renderObject, perspectiveForegroundLayer);
+            else
+                setRenderLayer(renderObject, perspectiveLayer);
+        }
         else
-            renderObject.layer = orthographicLayer;
+        {
+            setRenderLayer(renderObject, orthographicLayer);
+        }
     }
 
     void updateSceneryTransform()
@@ -97,6 +114,7 @@ public class SceneryObject:MonoBehaviour
             {
                 _sceneryPosition = value;
                 updateSceneryTransform();
+                updateRenderLayer();
             }
         }
     }

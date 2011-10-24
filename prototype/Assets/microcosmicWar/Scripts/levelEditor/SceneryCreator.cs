@@ -14,10 +14,19 @@ public class SceneryCreator:MonoBehaviour
         sizeChangedEvent += pReceiver;
     }
 
+    System.Action readImageEvent;
+    static void nullReadImageReceiver() { }
+    public void addReadImageEventReceiver(System.Action pReceiver)
+    {
+        readImageEvent += pReceiver;
+    }
+
     void Start()
     {
         if (sizeChangedEvent == null)
             sizeChangedEvent = nullImageSizeChangedReceiver;
+        if (readImageEvent == null)
+            readImageEvent = nullReadImageReceiver;
     }
 
     static void fillPowerOfTwo(Texture2D pImage)
@@ -255,6 +264,7 @@ public class SceneryCreator:MonoBehaviour
         previewTransform.localScale = new Vector3(lSize.x, lSize.y, 1f);
         sizeChangedEvent(nowOutData.width, nowOutData.height);
         //image = nowOutData.resource.resource;
+        readImageEvent();
     }
 
     

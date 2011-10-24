@@ -67,22 +67,19 @@ class WMItemDefenseTower : WMBagCellCreator
     }
 
     //附加检测是否在自己领地内
-    public static Stronghold canBuildCheckManor(GameObject pGameObject, out Vector3 position)
+    public static Manor canBuildCheckManor(GameObject pGameObject, out Vector3 position)
     {
         if (canBuild(pGameObject, out position))
         {
-
-            Stronghold lStronghold = null;
+            var lSelfRace = PlayerInfo.getRace(pGameObject.layer);
             Collider[] lIsInSelfZone = Physics.OverlapSphere(position, 0.1f, layers.manorValue);
-            if (lIsInSelfZone.Length != 0)
+            print(lIsInSelfZone.Length);
+            foreach (var lZone in lIsInSelfZone)
             {
-                lStronghold = lIsInSelfZone[0].transform.parent.GetComponent<Stronghold>();
+                var lManor = lZone.transform.parent.GetComponent<Manor>();
+                if (lManor.owner == lSelfRace)
+                    return lManor;
             }
-
-            if (lStronghold
-                && lStronghold.occupied == true
-                && lStronghold.owner == PlayerInfo.getRace(pGameObject.layer))
-                return lStronghold;
         }
         return null;
     }
@@ -92,11 +89,10 @@ class WMItemDefenseTower : WMBagCellCreator
         Hero hero = pGameObject.GetComponentInChildren<Hero>();
         int face = (int)hero.getFace();
 
-        var lStronghold = canBuildCheckManor(pGameObject, out towerPosition);
-        if (lStronghold)
+        var lManor = canBuildCheckManor(pGameObject, out towerPosition);
+        if (lManor)
         {
-            var lEnergyValue = lStronghold.GetComponent<zzSceneObjectMap>()
-                    .getObject("energyValue").GetComponent<RestorableValue>();
+            var lEnergyValue = lManor.energyValue;
             if (lEnergyValue.nowValue >= needEnergy)
             {
                 lEnergyValue.reduce(needEnergy);

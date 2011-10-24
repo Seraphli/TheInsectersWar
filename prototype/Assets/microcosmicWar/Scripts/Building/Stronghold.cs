@@ -38,6 +38,8 @@ public class Stronghold:MonoBehaviour
 
     public StrongholdValueShow strongholdValueShow;
 
+    public Manor manor;
+
     [SerializeField]
     GameObject _soldierFactory;
 
@@ -388,6 +390,7 @@ public class Stronghold:MonoBehaviour
         var lStrongholdUpdate = strongholdBuilding.GetComponent<StrongholdUpdate>();
         lStrongholdUpdate.attachmentPrefab = attachmentPrefab;
         lStrongholdUpdate.strongholdAnimation = strongholdAnimation;
+        manor.owner = owner;
         enabled = false;
     }
 
@@ -407,6 +410,7 @@ public class Stronghold:MonoBehaviour
         updateRaceShow();
         GameSceneManager.Singleton
             .addObject(GameSceneManager.MapManagerType.stronghold, gameObject);
+        manor.owner = Race.eNone;
         enabled = true;
     }
 

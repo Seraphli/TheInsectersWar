@@ -5,7 +5,10 @@ public class StrongholdObject : zzEditableObject
     [SerializeField]
     Race _race;
 
+    //使用Stronghold或Manor进行所属族的设置
     public Stronghold stronghold;
+
+    public Manor manor;
 
     public RestorableValue energyValue;
 
@@ -44,6 +47,8 @@ public class StrongholdObject : zzEditableObject
         }
     }
 
+    public bool canBeNone = true;
+
     [LabelUI( horizontalDepth=0)]
     public const string chooseLabel = "所属种族:";
 
@@ -58,19 +63,26 @@ public class StrongholdObject : zzEditableObject
 
         set 
         {
-            if (_race == value)
+            if (_race == value 
+                ||(!canBeNone && value== Race.eNone))
                 return;
 
-            stronghold.owner = value;
-            if (value == Race.eNone)
+            if (manor)
+                manor.race = value;
+            if (stronghold)
             {
-                stronghold.playLostAnimation();
+                stronghold.owner = value;
+                if (value == Race.eNone)
+                {
+                    stronghold.playLostAnimation();
+                }
+                else if (_race == Race.eNone)
+                {
+                    stronghold.playOccupiedAimation();
+                }
+                stronghold.updateRaceShow();
+
             }
-            else if ( _race == Race.eNone)
-            {
-                stronghold.playOccupiedAimation();
-            }
-            stronghold.updateRaceShow();
             _race = value;
         }
     }
@@ -88,6 +100,7 @@ public class StrongholdObject : zzEditableObject
         }
     }
 
+    [SerializeField]
     bool _defaultBuildingZone = true;
 
     [zzSerialize]
@@ -102,10 +115,11 @@ public class StrongholdObject : zzEditableObject
         }
     }
 
+    [SerializeField]
     float _buildingZoneSize = 20f;
 
     [zzSerialize]
-    [FieldUI("据点范围", verticalDepth = 3)]
+    [FieldUI("领地范围", verticalDepth = 3)]
     public float buildingZoneSize
     {
         get 
@@ -141,7 +155,10 @@ public class StrongholdObject : zzEditableObject
 
     void Awake()
     {
-        stronghold.owner = _race;
+        if (stronghold)
+            stronghold.owner = _race;
+        if (manor)
+            manor.race = _race;
         energy = _energy;
     }
 
