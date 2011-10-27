@@ -338,6 +338,7 @@ public class HeroSpawn : MonoBehaviour
     public WMPriceList priceList;
     public WMItemBag itemBag;
     public WMItemBagUI itemBagUI;
+    public PlayerSoldierFactoryState playerSoldierFactoryState;
 
     void InitHeroObject(GameObject pObject)
     {
@@ -480,6 +481,7 @@ public class HeroSpawn : MonoBehaviour
         var lSoldierFactoryStateUI = pHeroObject.AddComponent<SoldierFactoryStateUI>();
         lSoldierFactoryStateUI.race = PlayerInfo.getRace(pHeroObject.layer);
         lSoldierFactoryStateUI.owner = pHeroObject;
+        lSoldierFactoryStateUI.playerSoldierFactoryState = playerSoldierFactoryState;
         pHeroObject.AddComponent<SoldierFactoryStateUIInput>();
 
         //使用血条UI

@@ -18,6 +18,7 @@ public class zzOnFrameList:MonoBehaviour
 
     void checkAction()
     {
+        //确保每帧只执行一次
         if(updated&&fixedUpdated)
         {
             updated = false;

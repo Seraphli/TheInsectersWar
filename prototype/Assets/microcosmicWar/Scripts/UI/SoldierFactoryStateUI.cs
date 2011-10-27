@@ -14,18 +14,52 @@ public class SoldierFactoryStateUI:MonoBehaviour
     public zzInterfaceGUI[] selectedListUI;
     public zzGUIAniToTargetScale[] animationList;
 
+    [System.Serializable]
+    public class SoldierFactoryUIControl
+    {
+        public float maxUiSize;
+        public float minUiSize;
+        public zzInterfaceGUI item;
+        public zzInterfaceGUI soldierIcon;
+        public zzInterfaceGUI unlockCostLabel;
+        public zzInterfaceGUI costRoot;
+        public zzGUIAniToTargetScale scaleAnimation;
+        public zzInterfaceGUI selectedUI;
+        public bool selected
+        {
+            set
+            {
+                if(value)
+                {
+                    selectedUI.visible = true;
+                    scaleAnimation.scaleToTarget(maxUiSize);
+
+                }
+                else
+                {
+                    selectedUI.visible = false;
+                    scaleAnimation.scaleToTarget(minUiSize);
+                }
+            }
+        }
+    }
+
+    public SoldierFactoryUIControl[] soldierFactoryUI = new SoldierFactoryUIControl[] { };
+
     float minIconSize;
     float maxIconSize;
 
     public Race race;
     public GameObject owner;
 
-    SoldierFactoryState soldierFactoryState;
+    //SoldierFactoryState soldierFactoryState;
+
+    public PlayerSoldierFactoryState playerSoldierFactoryState;
 
     void Start()
     {
-        soldierFactoryState = SoldierFactoryState.getSingleton();
-        soldierFactoryState.setChangedCall(refreshItemShow);
+        //soldierFactoryState = SoldierFactoryState.getSingleton();
+        //soldierFactoryState.setChangedCall(refreshItemShow);
 
         zzSceneObjectMap lSceneObjectMap = GameScene.Singleton.playerInfo
             .UiRoot.GetComponent<zzSceneObjectMap>();
@@ -43,20 +77,33 @@ public class SoldierFactoryStateUI:MonoBehaviour
         imgListUI = new zzInterfaceGUI[numOfShowItem];
         selectedListUI = new zzInterfaceGUI[numOfShowItem];
         animationList = new zzGUIAniToTargetScale[numOfShowItem];
-
-        zzInterfaceGUI itemList = UIroot.getSubElement("itemList");
-        zzInterfaceGUI selectedList = UIroot.getSubElement("selectedList");
+        soldierFactoryUI = new SoldierFactoryUIControl[numOfShowItem];
+        zzInterfaceGUI lItemList = UIroot.getSubElement("itemList");
+        zzInterfaceGUI lSelectedList = UIroot.getSubElement("selectedList");
 
         for (int i = 1; i <= numOfShowItem; ++i)
         {
-            zzGUITransform lGUITransform = (zzGUITransform)itemList.getSubElement(i.ToString());
-            itemListUI[i - 1] = lGUITransform;
-            imgListUI[i - 1] = itemListUI[i - 1].getSubElement("pic");
-            selectedListUI[i - 1] = selectedList.getSubElement(i.ToString());
-            zzGUIAniToTargetScale lGUIAniToTargetScale = lGUITransform.GetComponent<zzGUIAniToTargetScale>();
-            animationList[i - 1] = lGUIAniToTargetScale;
+            zzGUITransform lGUITransform = (zzGUITransform)lItemList.getSubElement(i.ToString());
+            //itemListUI[i - 1] = lGUITransform;
+            //imgListUI[i - 1] = itemListUI[i - 1].getSubElement("pic");
+            //selectedListUI[i - 1] = lSelectedList.getSubElement(i.ToString());
+            //animationList[i - 1] = lGUIAniToTargetScale;
+            //初始中 先全部隐藏
+            lGUITransform.visible = false;
+            var lGUIAniToTargetScale = lGUITransform.GetComponent<zzGUIAniToTargetScale>();
             lGUIAniToTargetScale.enabled = false;
             lGUIAniToTargetScale.speed = lIconScaleSpeed;
+
+            var lUIControl = new SoldierFactoryUIControl();
+            soldierFactoryUI[i - 1] = lUIControl;
+            lUIControl.item = lGUITransform;
+            lUIControl.soldierIcon = lGUITransform.getSubElement("pic");
+            lUIControl.scaleAnimation = lGUIAniToTargetScale;
+            lUIControl.costRoot = lGUITransform.getSubElement("cost");
+            lUIControl.unlockCostLabel = lUIControl.costRoot.getSubElement("costLabel");
+            lUIControl.selectedUI = lSelectedList.getSubElement(i.ToString());
+            lUIControl.maxUiSize = maxIconSize;
+            lUIControl.minUiSize = minIconSize;
         }
         showImage();
         refreshItemShow();
@@ -65,18 +112,37 @@ public class SoldierFactoryStateUI:MonoBehaviour
 
     public void showImage()
     {
-        foreach (var lImgUI in imgListUI)
-        {
-            lImgUI.setImage(null);
-        }
+        //foreach (var lImgUI in imgListUI)
+        //{
+        //    lImgUI.setImage(null);
+        //}
 
+        //int i = 0;
+        //foreach (var lStateInfo in soldierFactoryState.getFactoryStates(race))
+        //{
+        //    imgListUI[i].setImage(lStateInfo.info.activeImage);
+        //    ++i;
+        //}
+
+        var lSoldierFactorySystem = SoldierFactorySystem.Singleton;
+        var lRace = playerSoldierFactoryState.race;
         int i = 0;
-        foreach (var lStateInfo in soldierFactoryState.getFactoryStates(race))
+        foreach (var lSoldierFactory in playerSoldierFactoryState.soldierFactory)
         {
-            //if (lStateInfo.canBuild())
-                imgListUI[i].setImage(lStateInfo.info.activeImage);
-            //else
-            //    imgListUI[i].setImage(lStateInfo.info.inactivityImage);
+            var lSoldierInfo = lSoldierFactorySystem.getSoldierInfo(lRace, lSoldierFactory.name);
+            var lUIControl = soldierFactoryUI[i];
+            lUIControl.item.visible = true;
+            if(lSoldierFactory.locked)
+            {
+                lUIControl.costRoot.visible = true;
+                lUIControl.unlockCostLabel.setText(lSoldierFactory.unlockCost.ToString());
+                lUIControl.soldierIcon.setImage(lSoldierInfo.inactivityImage);
+            }
+            else
+            {
+                lUIControl.costRoot.visible = false;
+                lUIControl.soldierIcon.setImage(lSoldierInfo.activeImage);
+            }
             ++i;
         }
 
@@ -92,42 +158,49 @@ public class SoldierFactoryStateUI:MonoBehaviour
     public void setSelected(int pIndex)
     {
         int i = 0;
-        foreach (zzInterfaceGUI lSelectedUI in selectedListUI)
+        //foreach (zzInterfaceGUI lSelectedUI in selectedListUI)
+        //{
+        //    lSelectedUI.setVisible(false);
+        //    animationList[i].scaleToTarget(minIconSize);
+        //    ++i;
+        //}
+        //if (pIndex > 0)
+        //{
+        //    selectedListUI[pIndex - 1].setVisible(true);
+        //    animationList[pIndex - 1].scaleToTarget(maxIconSize);
+        //}
+
+        foreach (var lUIControl in soldierFactoryUI)
         {
-            lSelectedUI.setVisible(false);
-            animationList[i].scaleToTarget(minIconSize);
-            ++i;
+            lUIControl.selected = false;
         }
         if (pIndex > 0)
-        {
-            selectedListUI[pIndex - 1].setVisible(true);
-            animationList[pIndex - 1].scaleToTarget(maxIconSize);
-        }
-
+            soldierFactoryUI[pIndex - 1].selected = true;
         selectedIndex = pIndex;
     }
+
     public int itemNum
     {
         get
         {
-            return itemShowNum;
+            return playerSoldierFactoryState.soldierFactory.Length;
         }
     }
 
-    public int itemShowNum
-    {
-        get
-        {
-            return soldierFactoryState.getFactoryStates(race).Count;
-            //int lOut = 0;
-            //foreach (var lStateInfo in soldierFactoryState.getFactoryStates(race))
-            //{
-            //    if (lStateInfo.canBuild())
-            //        ++lOut;
-            //}
-            //return lOut;
-        }
-    }
+    //public int itemShowNum
+    //{
+    //    get
+    //    {
+    //        return soldierFactoryState.getFactoryStates(race).Count;
+    //        //int lOut = 0;
+    //        //foreach (var lStateInfo in soldierFactoryState.getFactoryStates(race))
+    //        //{
+    //        //    if (lStateInfo.canBuild())
+    //        //        ++lOut;
+    //        //}
+    //        //return lOut;
+    //    }
+    //}
 
 
     //左移
@@ -184,8 +257,22 @@ public class SoldierFactoryStateUI:MonoBehaviour
     {
         if (selectedIndex > 0)
         {
+            //int lIndex = selectedIndex - 1;
+            //soldierFactoryState.tryCreateFactory(race, lIndex, owner);
             int lIndex = selectedIndex - 1;
-            soldierFactoryState.tryCreateFactory(race, lIndex, owner);
+            var lSoldierFactory = playerSoldierFactoryState.soldierFactory[lIndex];
+            if(lSoldierFactory.locked)
+            {
+                if (playerSoldierFactoryState.tryUnlockSoldier(lIndex))
+                {
+                    var lSoldierInfo = SoldierFactorySystem.Singleton.getSoldierInfo(race, lSoldierFactory.name);
+                    soldierFactoryUI[lIndex].soldierIcon.setImage(lSoldierInfo.activeImage);
+                    soldierFactoryUI[lIndex].costRoot.visible = false;
+                }
+                else
+                    return;
+            }
+            SoldierFactoryState.Singleton.tryCreateFactory(race, lSoldierFactory.name, owner);
         }
     }
 }

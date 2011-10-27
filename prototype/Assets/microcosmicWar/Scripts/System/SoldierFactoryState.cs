@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+//创建兵工厂用
 public class SoldierFactoryState : MonoBehaviour
 {
     SoldierFactorySystem soldierFactorySystem;
@@ -209,6 +210,11 @@ public class SoldierFactoryState : MonoBehaviour
     }
 
     public int createFactoryNeedEnergy = 5;
+
+    public void tryCreateFactory(Race race,string lSoldierName,GameObject owner)
+    {
+        tryCreateFactory(race, soldierNameToStateIndex[lSoldierName], owner);
+    }
 
     public void tryCreateFactory(Race race,int index,GameObject owner)
     {

@@ -230,7 +230,7 @@ public class ShopBuilding : OperateObject
         set
         {
             _cost = value;
-            shopUI.cost = value;
+            shopUI.resultPurse = originalMoney - value;
         }
     }
 
@@ -579,9 +579,12 @@ public class ShopBuilding : OperateObject
         selected = goodsCount / 2;
     }
 
+    public AudioClip cashSound;
+
     [ContextMenu("balance")]
     public void balance()
     {
+        zzBackgroudAudioPlayer.Singleton.play(cashSound);
         balance(purse, priceList, itemBag, originalBagItemInfo, newBagItemInfo);
     }
 

@@ -82,16 +82,17 @@ public class ShopUI:MonoBehaviour
 
     public zzInterfaceGUI costLabel;
 
-    public int cost
+    public int resultPurse
     {
         set
         {
-            if (value > 0)
-                costLabel.setText("-$" + value);
-            else if (value < 0)
-                costLabel.setText("+$" + (-value));
-            else
-                costLabel.setText("$0");
+            //if (value > 0)
+            //    costLabel.setText("-$" + value);
+            //else if (value < 0)
+            //    costLabel.setText("+$" + (-value));
+            //else
+            //    costLabel.setText("$0");
+            costLabel.setText("$" + value);
         }
     }
 
