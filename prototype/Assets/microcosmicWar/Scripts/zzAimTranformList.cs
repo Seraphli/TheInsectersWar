@@ -141,6 +141,22 @@ public class zzAimTranformList
         nowAim = popAim();
     }
 
+    //未测试
+    public void removeAim(Transform pAim)
+    {
+        if (nowAim.aimTransform == pAim)
+            removeNowAim();
+        else if (mAimList.Count > 0)
+        {
+            var lAimIndex = mAimList.FindIndex((x) => x.aimTransform == pAim);
+            if (lAimIndex>0)
+            {
+                mAimList.RemoveAt(lAimIndex);
+                refreshAimDebugInfo();
+            }
+        }
+    }
+
     /// <summary>
     /// 得到目标的位移
     /// </summary>

@@ -10,6 +10,11 @@ public abstract class ISoldierAI:MonoBehaviour
         presetAim.checkAndAddAim(new zzAimTranformList.AimInfo(pFinalAim, pAimType));
     }
 
+    public void removePresetAim(Transform pFinalAim)
+    {
+        presetAim.removeAim(pFinalAim);
+    }
+
     public void AddPresetAim(Transform[] pFinalAims, zzAimTranformList.AimType pAimType)
     {
         foreach (var lAim in pFinalAims)
@@ -42,25 +47,6 @@ public abstract class ISoldierAI:MonoBehaviour
         lCharacterBound.Encapsulate(lMirrorGunPosition);
 
         return lCharacterBound.Contains(pAim.transform.position);
-        //if (lCharacterBound.Contains(pAim.transform.position))
-        //{
-        //    var lAimBound = pAim.bounds;
-        //    var lAimBoundCenter = lAimBound.center;
-        //    //var lMirrorAimBoundCenter
-        //    //    = new Vector3(2 * lPosition.x - lAimBoundCenter.x,
-        //    //        lAimBoundCenter.y, lAimBoundCenter.z);
-
-        //    //var lMirrorAimBound = new Bounds(lMirrorAimBoundCenter, lAimBound.size);
-        //    if (!lAimBound.Contains(lGunPosition)
-        //        && !lAimBound.Contains(lMirrorGunPosition))
-        //    {
-        //        print("lAimBound:" + lAimBound);
-        //        print("OverGun");
-        //        return true;
-        //    }
-        //}
-
-        //return false;
     }
 
 
@@ -79,21 +65,6 @@ public abstract class ISoldierAI:MonoBehaviour
     protected UnitActionCommand actionCommand = new UnitActionCommand();
 
     public LayerMask adversaryLayerMask = -1;
-
-
-
-    ////射击的检测距离将在介于与以下值
-    ////protected
-    //public float fireDistanceMin;
-    ////protected
-    //public float fireDistanceMax;
-
-    ////为了使每个兵的行为不同,射击的范围也取随机值
-    //public float fireDistanceMinRandMin = 4.0f;
-    //public float fireDistanceMinRandMax = 8.0f;
-
-    //public float fireDistanceMaxRandMin = 8.0f;
-    //public float fireDistanceMaxRandMax = 12.0f;
 
     [SerializeField]
     protected Transform home;
@@ -117,8 +88,12 @@ public abstract class ISoldierAI:MonoBehaviour
         return false;
     }
 
+    public Transform followTranform;
+
     public virtual Transform getNowAimTransform()
     {
+        if (followTranform)
+            return followTranform;
         Transform lOut = runtimeAim.getAim(transform);
         pathTimer.setInterval(pathSearchInterval);
 
@@ -171,11 +146,6 @@ public abstract class ISoldierAI:MonoBehaviour
         lFollowDetectorTimer.setInterval(followDetectIterval);
         lFollowDetectorTimer.setImpFunction(this.detectFollowed);
 
-        //障碍探测
-        //barrierDetectTimer = gameObject.AddComponent<zzCoroutineTimer>();
-        //barrierDetectTimer.setInterval(barrierDetectInterval);
-        //barrierDetectTimer.setImpFunction(detectBarrier);
-
         if (!actionCommandControl)
             actionCommandControl = gameObject.GetComponentInChildren<ActionCommandControl>();
 
@@ -188,8 +158,6 @@ public abstract class ISoldierAI:MonoBehaviour
             actionCommandUpdate();
         }
 
-        //fireDistanceMin = UnityEngine.Random.Range(fireDistanceMinRandMin, fireDistanceMinRandMax);
-        //fireDistanceMax = UnityEngine.Random.Range(fireDistanceMaxRandMin, fireDistanceMaxRandMax);
     }
 
     protected virtual void AIStart()
@@ -237,10 +205,6 @@ public abstract class ISoldierAI:MonoBehaviour
         }
     }
 
-    //探测前方是否有障碍物
-    public zzDetectorBase barrierDetector;
-    zzCoroutineTimer barrierDetectTimer;
-
     [SerializeField]
     bool _haveBarrier = false;
     protected bool haveBarrier
@@ -251,19 +215,6 @@ public abstract class ISoldierAI:MonoBehaviour
             return _haveBarrier;
         }
     }
-    //protected void detectBarrier()
-    //{
-    //    if (barrierDetector.detect(1, layers.moveableObjectValue).Length > 0)
-    //    {
-    //        haveBarrier = true;
-    //        barrierDetectTimer.setInterval(actionCommandUpdateInterval);
-    //    }
-    //    else
-    //    {
-    //        haveBarrier = false;
-    //        barrierDetectTimer.setInterval(barrierDetectInterval);
-    //    }
-    //}
 
     /// <summary>
     /// 
