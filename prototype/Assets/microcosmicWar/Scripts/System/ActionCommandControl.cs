@@ -419,6 +419,7 @@ public class UnitActionCommand
     }
 }
 
+//AI与玩家的统一命令接口,控制角色行为
 public abstract class CommandControlBase: MonoBehaviour
 {
     public abstract void setCommand(UnitActionCommand pUnitActionCommand);

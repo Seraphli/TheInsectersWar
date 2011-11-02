@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//用于管理场景物体,把一类物体,添加到一个同一个父物体下
+//要获取此类物体时,就比较方便了
 public class zzSceneManager:MonoBehaviour , IEnumerable
 {
     public Transform managerRoot;

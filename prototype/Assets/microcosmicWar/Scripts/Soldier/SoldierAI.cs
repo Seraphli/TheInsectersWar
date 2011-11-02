@@ -7,24 +7,24 @@ public class SoldierAI : ISoldierAI
 {
  
     //射击的检测距离将在介于与以下值
-    //protected
-    public float fireDistanceMin;
-    //protected
-    public float fireDistanceMax;
+    ////protected
+    //public float fireDistanceMin;
+    ////protected
+    //public float fireDistanceMax;
 
     //为了使每个兵的行为不同,射击的范围也取随机值
-    public float fireDistanceMinRandMin = 4.0f;
-    public float fireDistanceMinRandMax = 8.0f;
+    //public float fireDistanceMinRandMin = 4.0f;
+    //public float fireDistanceMinRandMax = 8.0f;
 
-    public float fireDistanceMaxRandMin = 8.0f;
-    public float fireDistanceMaxRandMax = 12.0f;
+    //public float fireDistanceMaxRandMin = 8.0f;
+    //public float fireDistanceMaxRandMax = 12.0f;
 
 
-    protected override void AIStart()
-    {
-        fireDistanceMin = UnityEngine.Random.Range(fireDistanceMinRandMin, fireDistanceMinRandMax);
-        fireDistanceMax = UnityEngine.Random.Range(fireDistanceMaxRandMin, fireDistanceMaxRandMax);
-    }
+    //protected override void AIStart()
+    //{
+    //    fireDistanceMin = UnityEngine.Random.Range(fireDistanceMinRandMin, fireDistanceMinRandMax);
+    //    fireDistanceMax = UnityEngine.Random.Range(fireDistanceMaxRandMin, fireDistanceMaxRandMax);
+    //}
 
     //void detectEnemy()
     //{
