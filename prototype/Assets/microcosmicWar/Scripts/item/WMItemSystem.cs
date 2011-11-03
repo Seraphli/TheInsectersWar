@@ -23,8 +23,16 @@ public class WMGenericBagCell:WM.IBagCell
         set { _count = value; }
     }
 
-    public System.Func<GameObject,bool> useFunc;
+    static void nullDoEffectFunc(GameObject p){}
+
+    public System.Func<GameObject, bool> useFunc;
+    public System.Action<GameObject> doEffectFunc = nullDoEffectFunc;
     System.Action changedReceiver;
+
+    public void doEffect(GameObject pHero)
+    {
+        doEffectFunc(pHero);
+    }
 
     public bool use(GameObject pHero)
     {

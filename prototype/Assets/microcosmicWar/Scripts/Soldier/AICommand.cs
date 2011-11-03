@@ -13,6 +13,20 @@ public class AICommand:MonoBehaviour
 
     public ISoldierAI ai;
 
+    public Transform guardPos;
+
+    void Awake()
+    {
+        guardPos = new GameObject("guardPos").transform;
+        releaseAI();
+    }
+
+    void OnDestroy()
+    {
+        if (guardPos)
+            Destroy(guardPos.gameObject);
+    }
+
     public void follow(Transform pAim)
     {
         releaseAI();
@@ -23,12 +37,16 @@ public class AICommand:MonoBehaviour
     public void releaseAI()
     {
         state = AIState.free;
+        guardPos.parent = transform;
+        guardPos.localPosition = Vector3.zero;
+        ai.followTranform = null;
     }
 
     public void guard()
     {
         releaseAI();
         state = AIState.guard;
-        ai.followTranform = transform;
+        guardPos.parent = null;
+        ai.followTranform = guardPos;
     }
 }

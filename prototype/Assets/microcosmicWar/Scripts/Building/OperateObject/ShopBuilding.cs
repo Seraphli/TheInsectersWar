@@ -314,17 +314,17 @@ public class ShopBuilding : OperateObject
             return;
         }
         int lEmptyPlace = haveEmpty();
-        //检查空位
-        if (lEmptyPlace==-1)
-        {
-            errorEvent("物品包已满,请先卖出物品后再购买");
-            return;
-        }
 
         var lBagItemIndex = goodsListToBagItem[pGoodsIndex];
         if(lBagItemIndex==-1)
         {
             //包中无此物品
+            //检查空位
+            if (lEmptyPlace==-1)
+            {
+                errorEvent("物品包已满,请先卖出物品后再购买");
+                return;
+            }
             var lOriPos = System.Array.FindIndex(originalBagItemInfo, (x) => x.id == lGoodsID);
             if(lOriPos<0)
             {
@@ -367,6 +367,7 @@ public class ShopBuilding : OperateObject
         }
         else
         {
+            //包中有此物品
             var lNewBagItemInfo = copy(newBagItemInfo);
             lNewBagItemInfo[lBagItemIndex].count += 1;
             var lNewCost = calculateCost(originalBagItemInfo, lNewBagItemInfo);

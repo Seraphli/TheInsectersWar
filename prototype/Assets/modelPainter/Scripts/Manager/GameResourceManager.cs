@@ -590,11 +590,14 @@ public class GameResourceManager:MonoBehaviour
     [ContextMenu("load")]
     public void load()
     {
+        //获取地图文件夹的路径
         if (File.Exists(fullPath))
             fullPath = (new FileInfo(fullPath)).DirectoryName;
 
+        //开启读取场景
         sceneModelReader.beginReadScene(fullPath);
         sceneImageReader.beginReadScene(fullPath);
+        //获取地图数据
         string lSceneSave;
         using (var lSceneFile = new FileStream(fullPath + "/" + sceneFileName,
             FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -604,7 +607,9 @@ public class GameResourceManager:MonoBehaviour
                 lSceneSave = lStreamReader.ReadToEnd();
             }
         }
+        //反序列化,创建场景物体
         serializeScene.serializeFrom(zzSerializeString.Singleton.unpackToData(lSceneSave));
+        //结束读取场景
         sceneModelReader.endReadScene();
         sceneImageReader.endReadScene();
     }

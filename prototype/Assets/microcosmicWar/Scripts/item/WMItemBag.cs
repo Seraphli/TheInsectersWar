@@ -12,6 +12,9 @@ namespace WM
     {
         BagCellState state{ get; set; }
         bool use(GameObject pHero);
+
+        //使用时的效果
+        void doEffect(GameObject pHero);
         void addChangedReceiver(System.Action Receiver);
         void release();
 
@@ -87,7 +90,11 @@ public class WMItemBag:MonoBehaviour
 
         public int count
         {
-            set { cell.count = value; }
+            set
+            {
+                if (cell != null)
+                    cell.count = value;
+            }
             get 
             {
                 if (cell!=null)
@@ -107,6 +114,11 @@ public class WMItemBag:MonoBehaviour
         public void use(GameObject pObject)
         {
             cell.use(pObject);
+        }
+
+        public void doEffect(GameObject pObject)
+        {
+            cell.doEffect(pObject);
         }
 
         public System.Action useAction;
@@ -184,7 +196,7 @@ public class WMItemBag:MonoBehaviour
             && Network.isServer
             && owner != Network.player)
         {
-            for (int a = 0; a < itemsInfo.Length;++a )
+            for (int a = 0; a < items.Length;++a )
             {
                 int i = a;
                 var lBagSpace = items[i];
@@ -198,7 +210,7 @@ public class WMItemBag:MonoBehaviour
     void Start()
     {
         var lItemSystem = WMItemSystem.Singleton;
-        for (int i = 0; i < itemsInfo.Length; ++i)
+        for (int i = 0; i < items.Length; ++i)
         {
             var lBagSpace = items[i];
             lBagSpace.bagItemIndex = i;
@@ -264,14 +276,19 @@ public class WMItemBag:MonoBehaviour
         if (!Network.isClient)
             ItemBagUse(pIndex);
         else
+        {
+            items[pIndex].doEffect(getOwnerFunc());
             networkView.RPC("ItemBagUse", RPCMode.Server, pIndex);
+        }
     }
 
     //only in server
     [RPC]
     void ItemBagUse(int pIndex)
     {
-        items[pIndex].use(getOwnerFunc());
+        var lOwner = getOwnerFunc();
+        items[pIndex].doEffect(lOwner);
+        items[pIndex].use(lOwner);
     }
 
     //      数量          物品ID    包位置索引
