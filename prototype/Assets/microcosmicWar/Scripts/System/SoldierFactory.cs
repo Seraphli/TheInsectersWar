@@ -233,7 +233,7 @@ public class SoldierFactory : MonoBehaviour
             else
                 Debug.LogError("OnFactoryDead:var lSoldier in soldierList");
         }
-        
-        listener.soldierCreatedList = soldierList;
+        if (listener!=null)
+            listener.soldierCreatedList = soldierList;
     }
 }

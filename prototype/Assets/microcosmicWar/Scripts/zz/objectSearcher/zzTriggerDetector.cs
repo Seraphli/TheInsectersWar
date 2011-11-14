@@ -5,8 +5,26 @@ public class zzTriggerDetector : zzDetectorBase
 {
     HashSet<Collider> detectedList = new HashSet<Collider>();
 
-    [SerializeField]
-    LayerMask detectLayerMask;
+    public override LayerMask layerMask
+    {
+        set
+        {
+            _layerMask = value;
+
+            List<Collider> lRemoved = new List<Collider>();
+            foreach (var lCollider in detectedList)
+            {
+                if (!lCollider
+                    || ((1 << lCollider.gameObject.layer) & _layerMask.value) == 0
+                    )
+                    lRemoved.Add(lCollider);
+            }
+            foreach (var lCollider in lRemoved)
+            {
+                removeDetectedObject(lCollider);
+            }
+        }
+    }
 
     static Collider[] nullReturn = new Collider[0]{};
 
@@ -20,7 +38,7 @@ public class zzTriggerDetector : zzDetectorBase
         foreach (var lCollider in detectedList)
         {
             if (lCollider 
-                && ((1 << lCollider.gameObject.layer) & detectLayerMask.value)!=0 
+                && ((1 << lCollider.gameObject.layer) & _layerMask.value)!=0 
                 )
                 lOut.Add(lCollider);
             else
@@ -36,7 +54,7 @@ public class zzTriggerDetector : zzDetectorBase
 
     void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & detectLayerMask.value) != 0)
+        if (((1 << other.gameObject.layer) & _layerMask.value) != 0)
         {
             addDetectedObject(other);
         }

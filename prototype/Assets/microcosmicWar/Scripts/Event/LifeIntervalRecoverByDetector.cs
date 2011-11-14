@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 按设定的间隔补血
 /// </summary>
-class LifeIntervalRecoverByDetector : MonoBehaviour
+public class LifeIntervalRecoverByDetector : MonoBehaviour
 {
     public float recoverInterval = 0.2f;
 
@@ -24,6 +24,11 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
 
     void Awake()
     {
+        if(Network.isClient)
+        {
+            Destroy(this);
+            return;
+        }
         if (!recoverTimer)
         {
             recoverTimer = gameObject.AddComponent<zzTimer>();
@@ -37,12 +42,11 @@ class LifeIntervalRecoverByDetector : MonoBehaviour
         var lDetected = detector.detect(maxRecoverObjectNum, recoverLayerMask);
         if (lDetected.Length>0)
         {
-            if(zzCreatorUtility.isHost())
-                foreach (var lCollider in lDetected)
-                {
-                    var lLife = Life.getLifeFromTransform(lCollider.transform);
-                    lLife.injure(-recoverValueEveryTime);
-                }
+            foreach (var lCollider in lDetected)
+            {
+                var lLife = Life.getLifeFromTransform(lCollider.transform);
+                lLife.injure(-recoverValueEveryTime);
+            }
             //onRecoverStayEvent();
         }
         //else

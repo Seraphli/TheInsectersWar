@@ -54,7 +54,8 @@ public class zzWayPointLine : P2PLine
 
     void Update()
     {
-        if( !begin | !end)
+        if ((!begin | !begin.active)
+            | (!end|!end.active) )
         {
             Destroy(gameObject);
             return;

@@ -99,15 +99,12 @@ public class PlayerInfo : MonoBehaviour
 
     public static int getAdversaryRaceLayer(int raceLayer)
     {
-        //switch (raceLayer)
-        //{
-            //case layers.pismire: return layers.bee;
-            //case layers.bee: return layers.pismire;
-            //case Race.ePismire: return "pismire";
-        //}
-        if (raceLayer == layers.pismire)
+        //因为不是const值,所以不能用switch
+        if (raceLayer == layers.pismire
+            || raceLayer == layers.pismireBuilding)
             return layers.bee;
-        else if (raceLayer == layers.bee)
+        else if (raceLayer == layers.bee
+            || raceLayer == layers.beeBuilding)
             return layers.pismire;
 
         Debug.LogError(raceLayer);

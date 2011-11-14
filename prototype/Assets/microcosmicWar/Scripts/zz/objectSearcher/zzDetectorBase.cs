@@ -16,11 +16,32 @@ public abstract class zzDetectorBase : MonoBehaviour
     //越高的优先级 越被先处理
     public int priority = 0;
     public int maxRequired;
-    public LayerMask layerMask;
+
+    [SerializeField]
+    protected LayerMask _layerMask;
+
+    public virtual LayerMask layerMask
+    {
+        get { return _layerMask; }
+        set { _layerMask = value; }
+    }
+
+    public void setLayerMaskRecursively(LayerMask pLayerMask)
+    {
+        layerMask = pLayerMask;
+        foreach (Transform lTransform in transform)
+        {
+            zzDetectorBase lDetector = lTransform.GetComponent<zzDetectorBase>();
+            if (lDetector)
+            {
+                lDetector.setLayerMaskRecursively(pLayerMask);
+            }
+        }
+    }
     
     public Collider[] detect()
     {
-        return detect(maxRequired, layerMask, null);
+        return detect(maxRequired, _layerMask, null);
     }
 
     public Collider[] detect(int pMaxRequired, LayerMask pLayerMask)
@@ -40,7 +61,7 @@ public abstract class zzDetectorBase : MonoBehaviour
 
     public RaycastHit[] _impDetect()
     {
-        return _impDetect(layerMask);
+        return _impDetect(_layerMask);
     }
 
     public virtual Collider[] detect(int pMaxRequired, LayerMask pLayerMask, detectorFilterFunc pNeedDetectedFunc)
