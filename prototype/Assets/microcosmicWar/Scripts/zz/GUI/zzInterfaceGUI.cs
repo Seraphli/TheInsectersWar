@@ -52,6 +52,15 @@ public class zzGUIRelativeUsedInfo
     public bool height = false;
 }
 
+public abstract class zzGUILayoutBase : zzInterfaceGUI
+{
+    public override void impGUI(Rect p)
+    {
+        impGUI();
+    }
+    public abstract void impGUI();
+}
+
 public abstract class zzInterfaceGUI : MonoBehaviour
 {
 

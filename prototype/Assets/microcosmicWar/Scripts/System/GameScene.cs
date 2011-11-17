@@ -361,6 +361,12 @@ public class GameScene : MonoBehaviour
     }
 
     PlayerInfo _playerInfo;
+    GamePlayers _gamePlayers;
+
+    public GamePlayers gamePlayers 
+    {
+        get { return _gamePlayers; }
+    }
 
     public PlayerInfo playerInfo
     {
@@ -380,6 +386,7 @@ public class GameScene : MonoBehaviour
                 _playerInfo.UiRoot = _playerInfo.topUi
                     .GetComponent<zzSceneObjectMap>()
                     .getObject(PlayerInfo.eRaceToString(_playerInfo.race));
+                _gamePlayers = _playerInfo.GetComponent<GamePlayers>();
             }
             return _playerInfo;
         }

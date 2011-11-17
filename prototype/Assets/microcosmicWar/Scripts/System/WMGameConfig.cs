@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.IO;
+using System.Security.Cryptography;
 
 public class WMGameConfig:MonoBehaviour
 {
@@ -24,6 +26,23 @@ public class WMGameConfig:MonoBehaviour
     public static string mapFolderName
     {
         get { return _data.mapFolderName; }
+    }
+
+    public static byte[] getMapFileHash(string pFolder,string pMapFileName)
+    {
+        string lPath = _data.mapFolderName +System.IO.Path.DirectorySeparatorChar
+             + pFolder + System.IO.Path.DirectorySeparatorChar + pMapFileName;
+        if (System.IO.File.Exists(lPath))
+        {
+            var lMD5Hasher = new MD5CryptoServiceProvider();
+            using (var lSceneFile = new FileStream(lPath,
+                FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                return lMD5Hasher.ComputeHash(lSceneFile);
+            }
+        }
+        return null;
+
     }
 
     public static bool checkMapAvailable(string pMap)

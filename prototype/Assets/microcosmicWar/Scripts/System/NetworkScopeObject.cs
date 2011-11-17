@@ -4,17 +4,37 @@ public class NetworkScopeObject:MonoBehaviour
 {
     //public bool setScopeWhenStart = false;
 
-    void Start()
-    {
-        if (!Network.isServer)
-            return;
-        var lSceneManager = GameSceneManager.Singleton;
+    public GameObject owner;
+    public Race race;
 
-        //将自己增加到英雄的BoundNetworkScope中
-        addTo(lSceneManager.getManager(Race.ePismire,
-            GameSceneManager.UnitManagerType.heroSpawn).managerRoot);
-        addTo(lSceneManager.getManager(Race.eBee,
-            GameSceneManager.UnitManagerType.heroSpawn).managerRoot);
+    void LateUpdate()
+    {
+        if (enabled && Network.isServer)
+        {
+            var lSceneManager = GameSceneManager.Singleton;
+
+
+            if (race == Race.eNone && owner)
+                race = PlayerInfo.getRace(owner.layer);
+
+            //有race,则只优化敌队的传输
+            if (race == Race.ePismire)
+                addTo(lSceneManager.getManager(Race.eBee,
+                    GameSceneManager.UnitManagerType.heroSpawn).managerRoot);
+            else if (race == Race.eBee)
+                addTo(lSceneManager.getManager(Race.ePismire,
+                    GameSceneManager.UnitManagerType.heroSpawn).managerRoot);
+            else
+            {
+            //将自己增加到英雄的BoundNetworkScope中
+                addTo(lSceneManager.getManager(Race.ePismire,
+                    GameSceneManager.UnitManagerType.heroSpawn).managerRoot);
+                addTo(lSceneManager.getManager(Race.eBee,
+                    GameSceneManager.UnitManagerType.heroSpawn).managerRoot);
+            }
+
+        }
+        enabled = false;
     }
 
     void addTo(Transform pTransform)

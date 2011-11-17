@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//在一段时间没有接受网络同步(appear)后,执行Disappear
 public class NetworkDisappear:MonoBehaviour
 {
     [SerializeField]

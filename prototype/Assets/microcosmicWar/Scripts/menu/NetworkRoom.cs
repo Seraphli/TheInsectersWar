@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 public class NetworkRoom : MonoBehaviour
 {
@@ -64,35 +65,84 @@ public class NetworkRoom : MonoBehaviour
 
     [SerializeField]
     string _mapName;
+    byte[] selfMapHash;
+    string hostHashValue;
+    //in Server
+    void setMap(string pMapName)
+    {
+        if (Network.isServer)
+        {
+            NetworkRoomSetMap(pMapName, null);
+            networkView.RPC("NetworkRoomSetMap", RPCMode.Others,
+                _mapName, hostHashValue);
+            netGameInterruptedEvent();
+        }
+
+    }
     public string mapName
     {
         set
         {
             if(_mapName!=value)
             {
-                if(Network.isServer)
-                {
-                    NetworkRoomSetMap(value);
-                    networkView.RPC("NetworkRoomSetMap", RPCMode.Others,
-                        _mapName);
-                    netGameInterruptedEvent();
-                }
+                setMap(value);
             }
         }
 
         get { return _mapName; }
     }
 
+
     [RPC]
-    void NetworkRoomSetMap(string pMap)
+    void NetworkRoomSetMap(string pMap,string pHash)
     {
         messageSender("地图:" + pMap);
-        if (!WMGameConfig.checkMapAvailable(pMap))
+        print("地图:" + pMap);
+        if (createMapHash(pMap)==null)
         {
             errorMessageSender("你无此对战地图,可通过其他工具向房主索取");
             makeUnready();
         }
+        else
+        {
+            if (Network.isServer)
+            {
+                hostHashValue = System.Convert.ToBase64String(selfMapHash);
+            }
+            else
+            {
+                hostHashValue = pHash;
+                if(!hashMap())
+                {
+                    errorMessageSender("地图文件与房主不同");
+                    makeUnready();
+                }
+            }
+            print("hostHashValue:"+hostHashValue);
+        }
         _mapName = pMap;
+    }
+
+    bool hashMap()
+    {
+        return System.Convert.ToBase64String(selfMapHash) == hostHashValue;
+    }
+
+    byte[] createMapHash(string pMap)
+    {
+        selfMapHash = WMGameConfig.getMapFileHash(pMap, "main.zzScene");
+        if(selfMapHash!=null)
+        {
+            string lDataText = string.Empty;
+            foreach (var lData in selfMapHash)
+            {
+                lDataText += lData;
+            }
+            print("selfMapHash:"+lDataText);
+        }
+        else
+            print("无此地图");
+        return selfMapHash;
     }
 
     public void addMessageReceiver(System.Action<string> pReceiver)
@@ -179,6 +229,8 @@ public class NetworkRoom : MonoBehaviour
         if (Network.isServer)
         {
             playerID = registerPlayer(gamePlayers.selfName, Network.player);
+            //创建地图数据
+            setMap(_mapName);
             sendData();
         }
         else
@@ -186,7 +238,7 @@ public class NetworkRoom : MonoBehaviour
             bool lRegistered = false;
             do
             {
-                networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName);
+                networkView.RPC("NetworkRoomRegister", RPCMode.Server, gamePlayers.selfName,WMGameConfig.version);
                 yield return new WaitForSeconds(5f);
                 if (!lRegistered)
                 {
@@ -281,7 +333,7 @@ public class NetworkRoom : MonoBehaviour
 
     //server
     [RPC]
-    void NetworkRoomRegister(string pPlayerName,NetworkMessageInfo pInfo)
+    void NetworkRoomRegister(string pPlayerName,int pGameVersion,NetworkMessageInfo pInfo)
     {
         if(!playerToID.ContainsKey(pInfo.sender))
         {
@@ -293,15 +345,26 @@ public class NetworkRoom : MonoBehaviour
             }
             else
             {
+                if (WMGameConfig.version != pGameVersion)
+                {
+                    errorMessageSender("警告:游戏版本不同\n"
+                        + "你的版本为:" + WMGameConfig.version + "\n"
+                        + lNewPlayerID + "." + pPlayerName + " 的版本为:" + pGameVersion);
+                }
                 playerEnterMessage(lNewPlayerID, gamePlayers.getPlayerInfo(lNewPlayerID));
                 networkView.RPC("NetworkRoomSetPlayerID", pInfo.sender,
                     lNewPlayerID);
                 networkView.RPC("NetworkRoomSetMap", pInfo.sender,
-                    _mapName);
+                    _mapName, hostHashValue);
                 sendData();
             }
         }
     }
+
+    //void gameVersionCheck(int pHostVersion,int pClientVersion)
+    //{
+    //    if(WMGameConfig.version)
+    //}
 
     //client
     [RPC]
@@ -375,7 +438,7 @@ public class NetworkRoom : MonoBehaviour
         var lPlayerInfo = gamePlayers.selfPlayeInfo;
         if (lPlayerInfo.race == Race.eNone)
             errorMessageSender("请选择种族,否则不能进入准备状态");
-        else if (!WMGameConfig.checkMapAvailable(mapName))
+        else if (createMapHash(mapName)==null)
         {
             errorMessageSender("缺少当前对战地图:" + mapName);
             errorMessageSender("可通过其他工具向房主索取");
@@ -414,8 +477,11 @@ public class NetworkRoom : MonoBehaviour
             }
         }
         else
-        {
-            networkView.RPC("NetworkMakeReady", RPCMode.Server, playerID);
+        {//client
+            if (!hashMap())
+                errorMessageSender("地图文件与房主不同\n可通过其他工具向房主索取");
+            else
+                networkView.RPC("NetworkMakeReady", RPCMode.Server, playerID);
         }
     }
 
@@ -436,7 +502,9 @@ public class NetworkRoom : MonoBehaviour
     public void makeUnready()
     {
         var lPlayerInfo = gamePlayers.selfPlayeInfo;
-        if (Network.isClient && !lPlayerInfo.ready)
+        //考虑到gamePlayers.selfPlayeInfo还未被初始化的情况
+        if (lPlayerInfo==null
+            ||(Network.isClient && !lPlayerInfo.ready))
             return;
         else if (Network.isServer)
         {

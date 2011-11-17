@@ -5,7 +5,7 @@ using System.Collections;
 public class zzTimer : MonoBehaviour
 {
 
-
+    [SerializeField]
     public float interval;
 
     public zzTimerClass timer = new zzTimerClass();

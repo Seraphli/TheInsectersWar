@@ -321,7 +321,7 @@ public class SingleSoldierFactoryObjectGUI:IPropertyGUI
             lFirstTimeOffset = drawFloatField(lFirstTimeOffset);
             GUILayout.EndHorizontal();
             lFirstTimeOffset
-                = GUILayout.HorizontalSlider(lFirstTimeOffset, 0f, 200f);
+                = GUILayout.HorizontalSlider(lFirstTimeOffset, -200f, 200f);
 
         }
         GUILayout.EndVertical();
