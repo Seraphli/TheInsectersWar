@@ -12,9 +12,14 @@ public class zzUseSameMaterial:MonoBehaviour
         renderers = gameObject.GetComponentsInChildren<Renderer>();
     }
 
+    public Material objectMaterial
+    {
+        get { return sourceMaterialRenderer.material; }
+    }
+
     void Awake()
     {
-        var lMaterial = sourceMaterialRenderer.material;
+        var lMaterial = objectMaterial;
         foreach (var lRenderer in renderers)
         {
             lRenderer.material = lMaterial;

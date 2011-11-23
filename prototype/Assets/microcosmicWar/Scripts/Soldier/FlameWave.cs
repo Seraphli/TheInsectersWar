@@ -18,7 +18,7 @@ public class FlameWave:Bullet
         if (lLife)
         {
             if (zzCreatorUtility.isHost())
-                lLife.injure(harmVale, injureInfo);
+                lLife.injure(harmVale);
             onFire(lLife.transform);
         }
     }

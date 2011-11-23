@@ -26,10 +26,7 @@ class ShieldPismireLifeChanged:MonoBehaviour
         lifeValue = pLife.getBloodValue();
         if (lifeValue > lLastLifeValue || lifeValue<=0 )
             return;
-        Hashtable lInjureInfo = life.getInjureInfo();
-        if (lInjureInfo != null
-            && lInjureInfo.ContainsKey(Life.harmTypeName)
-            && (Life.harmType)lInjureInfo[Life.harmTypeName] == Life.harmType.explode)
+        if (life.harmType == Life.HarmType.explode)
         {
             myAnimation.CrossFade("fire2", 0.2f);
             if (Ai)

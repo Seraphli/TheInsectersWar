@@ -11,14 +11,14 @@ public class EmitterContainer : Emitter
 {
     public Emitter[] emitList;
 
-    public override void setInjureInfo(Hashtable pInjureInfo)
-    {
-        base.setInjureInfo(pInjureInfo);
-        foreach (Emitter iEmit in emitList)
-        {
-            iEmit.setInjureInfo(pInjureInfo);
-        }
-    }
+    //public override void setInjureInfo(Hashtable pInjureInfo)
+    //{
+    //    base.setInjureInfo(pInjureInfo);
+    //    foreach (Emitter iEmit in emitList)
+    //    {
+    //        iEmit.setInjureInfo(pInjureInfo);
+    //    }
+    //}
 
     //void  Start (){
     //}

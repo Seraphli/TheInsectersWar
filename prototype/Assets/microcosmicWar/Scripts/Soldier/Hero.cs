@@ -9,6 +9,7 @@ public class Hero : MonoBehaviour
     public Character2D character2D;
 
     public Emitter emitter;
+    public Emitter subEmitter;
 
     //被打死后小时的时间
     //public float deadDisappearTimePos = 4.0f;
@@ -49,18 +50,18 @@ public class Hero : MonoBehaviour
 
     public ActionCommandControl actionCommandControl;
 
-    [SerializeField]
-    WMPurse _purse;
+    //[SerializeField]
+    //WMPurse _purse;
     public WMPurse purse
     {
-        get { return _purse; }
-        set
-        {
-            _purse = value;
-            emitter.attackerPurse = value;
-            if (setPurseEvent != null)
-                setPurseEvent(value);
-        }
+        get { return characterInfoObject.purse; }
+        //set
+        //{
+        //    _purse = value;
+        //    emitter.attackerPurse = value;
+        //    if (setPurseEvent != null)
+        //        setPurseEvent(value);
+        //}
     }
     System.Action<WMPurse> setPurseEvent;
 
@@ -69,8 +70,32 @@ public class Hero : MonoBehaviour
         setPurseEvent += pReceiver;
     }
 
-    public WMPriceList priceList;
-    public WMItemBag itemBag;
+    public WMPriceList priceList
+    {
+        get { return characterInfoObject.priceList; }
+    }
+    public WMItemBag itemBag
+    {
+        get { return characterInfoObject.itemBag; }
+    }
+
+    public CharacterInfoObject characterInfoObject;
+
+    public CharacterInfo characterInfo
+    {
+        set 
+        {
+            characterInfoObject.characterInfo = value;
+            emitter.characterInfo = value;
+            if (subEmitter)
+                subEmitter.characterInfo = value;
+            if (setPurseEvent != null)
+                setPurseEvent(value.purse);
+        }
+        get { return characterInfoObject.characterInfo; }
+    }
+
+    public LifeFlash lifeFlash;
 
     public Character2D getCharacter()
     {

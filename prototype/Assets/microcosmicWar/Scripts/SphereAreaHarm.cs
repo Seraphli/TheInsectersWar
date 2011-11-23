@@ -20,7 +20,7 @@ public class SphereAreaHarm : MonoBehaviour
 
     public bool isExplodeType = false;
 
-    public Hashtable injureInfo = new Hashtable();
+    public Life.HarmType harmType = Life.HarmType.none;
     public void setHarmLayerMask(int pMark)
     {
         harmLayerMask = pMark;
@@ -36,14 +36,16 @@ public class SphereAreaHarm : MonoBehaviour
             print("harmRadius:"+harmRadius);
             print("harmValueInCentre:"+harmValueInCentre);
         */
-        if (isExplodeType && injureInfo.Count==0 )
+        if (isExplodeType)
         {
-            injureInfo[Life.harmTypeName] = Life.harmType.explode;
+            harmType = Life.HarmType.explode;
         }
-        impSphereAreaHarm(transform.position, harmRadius,minHarmRate, harmValueInCentre,
-            harmLayerMask, injureInfo);
+        if (enabled)
+            impSphereAreaHarm(transform.position, harmRadius, minHarmRate, harmValueInCentre,
+                harmLayerMask, harmType);
         //if (onlyOnce)
         //{
+        enabled = false;
         Destroy(gameObject);
         //}
 
@@ -61,20 +63,20 @@ public class SphereAreaHarm : MonoBehaviour
         float pHarmValueInCentre, int pHarmLayerMask)
     {
         impSphereAreaHarm(pCenterPos, pHarmRadius,0f, pHarmValueInCentre,
-            pHarmLayerMask, canHarmAll, null);
+            pHarmLayerMask, canHarmAll, Life.HarmType.none);
     }
 
     public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,float pMinRate,
-        float pHarmValueInCentre, int pHarmLayerMask,Hashtable pInjureInfo)
+        float pHarmValueInCentre, int pHarmLayerMask, Life.HarmType pHarmType)
     {
         impSphereAreaHarm(pCenterPos, pHarmRadius,pMinRate, pHarmValueInCentre,
-            pHarmLayerMask, canHarmAll,pInjureInfo);
+            pHarmLayerMask, canHarmAll, pHarmType);
     }
 
     //执行圆球范围的伤害,伤害随离中心距离增加而递减
     public static void impSphereAreaHarm(Vector3 pCenterPos, float pHarmRadius,float pMinRate,
         float pHarmValueInCentre, int pHarmLayerMask, canHarmFunc pCanHarmFunc,
-        Hashtable pInjureInfo)
+        Life.HarmType pHarmType)
     {
         //现在用于存储有生命的物体,离爆炸点的最近距离
         Hashtable lInjuredLifeMinDistance = new Hashtable();
@@ -125,7 +127,7 @@ public class SphereAreaHarm : MonoBehaviour
                 //print(lDistanceImp);
                 //print(lHarmRange);
                 //print(lHarmRange *harmValueInCentre );
-                lLifeImp.injure((int)(lHarmRange * pHarmValueInCentre), pInjureInfo);
+                lLifeImp.injure((int)(lHarmRange * pHarmValueInCentre), pHarmType);
 
             }
         }

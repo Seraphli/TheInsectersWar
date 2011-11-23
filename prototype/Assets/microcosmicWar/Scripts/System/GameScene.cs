@@ -22,7 +22,8 @@ public class GameScene : MonoBehaviour
     public PlayerSpawn[] pismirePlayerSpawns;
     public PlayerSpawn[] beePlayerSpawns;
 
-    public zzGUIBubbleMessage bubbleMessage;
+    public zzGUIBubbleMessage teammateBubbleMessage;
+    public zzGUIBubbleMessage enemyBubbleMessage;
 
     PlayerSpawn[] getSortedSpawns( Race pRace )
     {
@@ -255,16 +256,25 @@ public class GameScene : MonoBehaviour
         var lGamePlayers = playerInfo.GetComponent<GamePlayers>();
         var lPlayerInfo = lGamePlayers.getPlayerInfo(pPlayerID);
         lPlayerInfo.spawn = lSpawn;
-        lSpawn.bubbleMessage = bubbleMessage;
+
         if (lGamePlayers.selfID == pPlayerID)
+        {
+            lSpawn.bubbleMessage = teammateBubbleMessage;
             playerSpawn = lSpawn;
+        }
         else
         {
             lSpawn.playerName = pPlayerID.ToString() + "." + lPlayerInfo.playerName;
             if (lPlayerInfo.race == lGamePlayers.selfRace)
+            {
+                lSpawn.bubbleMessage = teammateBubbleMessage;
                 lSpawn.playerNameColor = teammateColor;
+            }
             else
+            {
+                lSpawn.bubbleMessage = enemyBubbleMessage;
                 lSpawn.playerNameColor = enemyTeamColor;
+            }
         }
     }
 

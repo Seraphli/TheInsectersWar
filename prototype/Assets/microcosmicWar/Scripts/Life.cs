@@ -6,9 +6,18 @@ using System.Collections;
 public class Life : MonoBehaviour
 {
     public const string harmTypeName = "harmType";
-    public enum harmType
+    public enum HarmType
     {
+        none,
         explode,
+    }
+
+    [SerializeField]
+    HarmType _harmType = HarmType.none;
+
+    public HarmType harmType
+    {
+        get { return _harmType; }
     }
 
     public delegate void lifeCallFunc(Life life);
@@ -20,10 +29,18 @@ public class Life : MonoBehaviour
 
     protected event lifeCallFunc bloodValueChangeCallback = nullLifeCallFunc;
 
+    lifeCallFunc injuredEvent = nullLifeCallFunc;
+
+    public void addInjuredEventReceiver(lifeCallFunc pReceiver)
+    {
+        injuredEvent -= nullLifeCallFunc;
+        injuredEvent += pReceiver;
+    }
+
     public lifeCallFunc dieCallbackList;
 
     //在死亡或者去血的回调中,读取
-    protected Hashtable injureInfo;
+    //protected Hashtable injureInfo;
     //搜索有无bloodBar 以便显示血量
     //void Start()
     //{
@@ -49,44 +66,71 @@ public class Life : MonoBehaviour
         bloodValueChangeCallback += call;
     }
 
-    public WMPurse attackerPurse;
-
-    public void injure(int value, WMPurse pAttackerPurse)
+    CharacterInfo _characterInfo;
+    public CharacterInfo characterInfo
     {
-        attackerPurse = pAttackerPurse;
+        get { return _characterInfo; }
+    }
+
+    public void injure(int value, CharacterInfo pOwner)
+    {
+        _characterInfo = pOwner;
         injure(value);
-        attackerPurse = null;
+        _characterInfo = null;
     }
 
-    public void injure(int value, Hashtable pInjureInfo, WMPurse pAttackerPurse)
+    public void injure(int value, CharacterInfo pOwner, HarmType pHarmType)
     {
-        attackerPurse = pAttackerPurse;
-        injure(value, pInjureInfo);
-        attackerPurse = null;
-    }
-
-    public void injure(int value, Hashtable pInjureInfo)
-    {
-        injureInfo = pInjureInfo;
+        _characterInfo = pOwner;
+        _harmType = pHarmType;
         injure(value);
-        injureInfo = null;
+        _harmType = HarmType.none;
+        _characterInfo = null;
     }
+
+    //public void injure(int value, WMPurse pAttackerPurse)
+    //{
+    //    _attackerPurse = pAttackerPurse;
+    //    injure(value);
+    //    _attackerPurse = null;
+    //}
+
+    //public void injure(int value, Hashtable pInjureInfo, WMPurse pAttackerPurse)
+    //{
+    //    attackerPurse = pAttackerPurse;
+    //    injure(value, pInjureInfo);
+    //    attackerPurse = null;
+    //}
+
+    public void injure(int value, HarmType pHarmType)
+    {
+        _harmType = pHarmType;
+        injure(value);
+        _harmType = HarmType.none;
+    }
+
+    //public void injure(int value, Hashtable pInjureInfo)
+    //{
+    //    injureInfo = pInjureInfo;
+    //    injure(value);
+    //    injureInfo = null;
+    //}
 
     public void injure(int value)
     {
-        if (Network.isClient)
-            Debug.LogError("do injure in client");
-        if (bloodValue > 0)
+        if (value > 0)
+            injuredEvent(this);
+        if (!Network.isClient && bloodValue > 0)
         {
             setBloodValue(bloodValue - value);
         }
     }
 
     //在回调中调用
-    public Hashtable getInjureInfo()
-    {
-        return injureInfo;
-    }
+    //public Hashtable getInjureInfo()
+    //{
+    //    return injureInfo;
+    //}
 
     public bool netSendPositionWhenDie = true;
 

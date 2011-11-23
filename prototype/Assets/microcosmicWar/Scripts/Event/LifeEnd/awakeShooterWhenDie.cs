@@ -29,8 +29,8 @@ public class awakeShooterWhenDie : MonoBehaviour
         //    zzItemBagControl lBagControl = (zzItemBagControl)lInjureInfo["bagControl"];
         //    lBagControl.addMoney(shootAward);
         //}
-        if (life.attackerPurse)
-            life.attackerPurse.add(shootAward);
+        if (life.characterInfo!=null)
+            life.characterInfo.purse.add(shootAward);
     }
 
 }

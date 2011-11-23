@@ -223,15 +223,15 @@ public class zzItemBagControl : MonoBehaviour
 
 
         //和发射器连接 以便得到奖励
-        Emitter lEmitter = owner.GetComponentInChildren<Emitter>();
-        if (lEmitter)
-        {
-            Hashtable lInjureInfo = new Hashtable();
-            lInjureInfo["bagControl"] = this;
+        //Emitter lEmitter = owner.GetComponentInChildren<Emitter>();
+        //if (lEmitter)
+        //{
+        //    Hashtable lInjureInfo = new Hashtable();
+        //    lInjureInfo["bagControl"] = this;
 
-            lEmitter.setInjureInfo(lInjureInfo);
-            //lEmitter.setInjureInfo({"bagControl":this});
-        }
+        //    lEmitter.setInjureInfo(lInjureInfo);
+        //    //lEmitter.setInjureInfo({"bagControl":this});
+        //}
 
         //Debug.Log(getBagData());
 

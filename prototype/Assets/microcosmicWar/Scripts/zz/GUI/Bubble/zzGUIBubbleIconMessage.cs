@@ -34,6 +34,21 @@ public class zzGUIBubbleIconMessage:zzInterfaceGUI
         }
     }
 
+    //之前不存在,则返回真
+    public bool addBubble(Transform pTransform, GameObject pBubblePrefab, out zzGUIBubbleComputeRect lBubble)
+    {
+        lBubble = getBubble(pTransform);
+        if(!lBubble)
+        {
+            var lBubbleObject = (GameObject)Object.Instantiate(pBubblePrefab);
+            lBubbleObject.transform.parent = transform;
+            lBubble = lBubbleObject.GetComponent<zzGUIBubbleComputeRect>();
+            lBubble.bubblePosition = pTransform;
+            return true;
+        }
+        return false;
+    }
+
     public zzGUIBubbleComputeRect addBubble(GameObject pBubblePrefab)
     {
         var lBubbleObject = (GameObject)Object.Instantiate(pBubblePrefab);

@@ -144,6 +144,18 @@ public class HeroSpawn : MonoBehaviour
 
     }
 
+    void Awake()
+    {
+        characterInfo = new CharacterInfo()
+        {
+            itemBag = itemBag,
+            priceList = priceList,
+            purse = purse,
+            race = PlayerInfo.getRace(heroPrefab.layer),
+            belongToThePlayer = false,
+        };
+    }
+
     void Start()
     {
         /*
@@ -184,7 +196,10 @@ public class HeroSpawn : MonoBehaviour
     {
         _owner = pOwner;
         if (HeroBelongToThePlayer())
+        {
+            characterInfo.belongToThePlayer = true;
             getUI();
+        }
     }
 
     public void createHeroFirstTime()
@@ -340,15 +355,18 @@ public class HeroSpawn : MonoBehaviour
     public WMItemBagUI itemBagUI;
     public PlayerSoldierFactoryState playerSoldierFactoryState;
 
+    public CharacterInfo characterInfo;
+
     void InitHeroObject(GameObject pObject)
     {
         hero = pObject;
         setPlayerName(_playerName);
         setPlayerNameColor(_playerNameColor);
         var lHero = pObject.GetComponent<Hero>();
-        lHero.purse = purse;
-        lHero.priceList = priceList;
-        lHero.itemBag = itemBag;
+        //lHero.purse = purse;
+        //lHero.priceList = priceList;
+        //lHero.itemBag = itemBag;
+        lHero.characterInfo = characterInfo;
     }
 
     //创建只能在服务器端调用
@@ -425,10 +443,14 @@ public class HeroSpawn : MonoBehaviour
     protected void createControl(GameObject pHeroObject)
     {
         Life lLife = pHeroObject.GetComponent<Life>();
+        var lHero = pHeroObject.GetComponent<Hero>();
         //for debug
         var lPlayerScope = GetComponent<PlayerScope>();
         lPlayerScope.actionCommandControl = pHeroObject.GetComponent<ActionCommandControl>();
         lPlayerScope.playerTransform = pHeroObject.transform;
+
+        //设置去血的闪光
+        lHero.lifeFlash.isPlayer = true;
 
         //绑定摄像机
         _2DCameraFollow lCameraFollow = zzObjectMap.getObject("GameCamera").GetComponent<_2DCameraFollow>();
@@ -477,7 +499,7 @@ public class HeroSpawn : MonoBehaviour
         moneyLabel.setText(purse.number.ToString("D7"));
         var lActionEnergyValue = pHeroObject.AddComponent<ActionEnergyValue>();
         lActionEnergyValue.addValueChangedReceiver(skillBar.setRate);
-        pHeroObject.GetComponent<Hero>().actionEnergyValue = lActionEnergyValue;
+        lHero.actionEnergyValue = lActionEnergyValue;
         var lSoldierFactoryStateUI = pHeroObject.AddComponent<SoldierFactoryStateUI>();
         lSoldierFactoryStateUI.race = PlayerInfo.getRace(pHeroObject.layer);
         lSoldierFactoryStateUI.owner = pHeroObject;

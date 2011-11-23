@@ -3,7 +3,7 @@
 public class zzGUIBubbleComputeRect:MonoBehaviour
 {
     public Transform bubblePosition;
-    public zzGUIBubbleLayout bubbleLayout;
+    public zzInterfaceGUI bubbleLayout;
     public Rect bubbleRect;
     public Rect bubbleBound;
     public enum Dock

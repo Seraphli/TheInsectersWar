@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
-public class zzGUIBubbleMessageBox:MonoBehaviour
+public class zzGUIBubbleMessageBox : zzInterfaceGUI
 {
     public string text = string.Empty;
-    public Transform boxPosition;
+    //public Transform boxPosition;
+    public zzGUIBubbleComputeRect bubbleCompute;
     public Color color = Color.white;
     public float timestamp;
-    public Rect rect;
+    //public Rect rect;
     public float fadeOutBeginPos = 5f;
     public float fadeOutEndPos = 7f;
     public GUIStyle style = new GUIStyle();
@@ -32,7 +33,7 @@ public class zzGUIBubbleMessageBox:MonoBehaviour
         GUILayout.Label(text, style);
         if (lTime - timestamp > fadeOutEndPos
             && canChangeLayout)
-            boxPosition = null;
+            bubbleCompute.bubblePosition = null;
     }
 
     public void drawLayoutMessage()
@@ -51,19 +52,23 @@ public class zzGUIBubbleMessageBox:MonoBehaviour
         GUILayout.EndVertical();
     }
 
-    public void drawMessage()
+    //public void drawMessage()
+    //{
+    //    if (boxPosition)
+    //    {
+    //        var lRect = rect;
+    //        var lScreenPoint = Camera.main.WorldToScreenPoint(boxPosition.position);
+    //        lRect.x += lScreenPoint.x;
+    //        lRect.y += Screen.height - lScreenPoint.y;
+    //    }
+    //    else
+    //        Destroy(gameObject);
+    //}
+
+    public override void impGUI(Rect pRect)
     {
-        if (boxPosition)
-        {
-            var lRect = rect;
-            var lScreenPoint = Camera.main.WorldToScreenPoint(boxPosition.position);
-            lRect.x += lScreenPoint.x;
-            lRect.y += Screen.height - lScreenPoint.y;
-            GUILayout.BeginArea(lRect);
-            drawLayoutMessage();
-            GUILayout.EndArea();
-        }
-        else
-            Destroy(gameObject);
+        GUILayout.BeginArea(pRect);
+        drawLayoutMessage();
+        GUILayout.EndArea();
     }
 }

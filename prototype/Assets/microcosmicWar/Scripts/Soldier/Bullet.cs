@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
     public Life bulletLife;
     public GameObject shape;
 
-    protected Hashtable injureInfo;
+    //protected Hashtable injureInfo;
 
 
     public Rigidbody bulletRigidbody;
@@ -23,7 +23,29 @@ public class Bullet : MonoBehaviour
     public Transform particleEmitter;
     public bool hitObject = false;
 
-    public WMPurse attackerPurse;
+    CharacterInfo _characterInfo;
+
+    [ContextMenu("SetCharacterInfo")]
+    void setCharacterInfo()
+    {
+        CharacterInfoObject lCharacterInfoObject
+            = gameObject.GetComponent<CharacterInfoObject>();
+        if (!lCharacterInfoObject)
+            lCharacterInfoObject = gameObject.AddComponent<CharacterInfoObject>();
+        characterInfoObject = lCharacterInfoObject;
+    }
+
+    public CharacterInfoObject characterInfoObject;
+    public CharacterInfo characterInfo
+    {
+        set
+        {
+            _characterInfo = value;
+            characterInfoObject.characterInfo = value;
+        }
+
+        get { return _characterInfo; }
+    }
 
     void Awake()
     {
@@ -32,10 +54,10 @@ public class Bullet : MonoBehaviour
         bulletLife.addDieCallback(lifeEndImp);
     }
 
-    public void setInjureInfo(Hashtable pInjureInfo)
-    {
-        injureInfo = pInjureInfo;
-    }
+    //public void setInjureInfo(Hashtable pInjureInfo)
+    //{
+    //    injureInfo = pInjureInfo;
+    //}
 
 
     public void setLayer(int pLayer)
@@ -139,20 +161,21 @@ public class Bullet : MonoBehaviour
     protected virtual void _touch(Transform pOther)
     {
         hitObject = true;
-        if(Network.isClient)
-        {
-            if(!networkView
-                || networkView.viewID == NetworkViewID.unassigned)
-                lifeEnd();
-            return;
-        }
+        //Network.isClient的判断,在Life中进行
+        //if(Network.isClient)
+        //{
+        //    if(!networkView
+        //        || networkView.viewID == NetworkViewID.unassigned)
+        //        lifeEnd();
+        //    return;
+        //}
 
         //有可能在一次运算中 同时碰到多个物体,所以判断之前是否碰撞过;判断子弹的生命值
         if (bulletLife.getBloodValue() <= 0)
             return;
         Life lLife = Life.getLifeFromTransform(pOther);
         if (lLife && harmVale!=0)
-            lLife.injure(harmVale, injureInfo,attackerPurse);
+            lLife.injure(harmVale, characterInfo);
         //print(networkView.viewID);
         //if(zzCreatorUtility.isHost())
         lifeEnd();

@@ -214,8 +214,16 @@ public class PlayerInfo : MonoBehaviour
         }
         set
         {
+            sPlayerRace = value;
             _race = value;
         }
+    }
+
+    static Race sPlayerRace = Race.eNone;
+
+    static public Race playerRace
+    {
+        get { return sPlayerRace; }
     }
 
     [SerializeField]

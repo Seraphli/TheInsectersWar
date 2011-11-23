@@ -17,7 +17,7 @@ public class Emitter : MonoBehaviour
     public AudioSource fireSound;
     public GameObject fireSpark;
 
-    protected Hashtable injureInfo;
+    //protected Hashtable injureInfo;
 
     public float bulletAliveTime
     {
@@ -38,12 +38,18 @@ public class Emitter : MonoBehaviour
 
     protected float _bulletAliveTime;
 
-    public WMPurse attackerPurse;
+    CharacterInfo _characterInfo;
 
-    public virtual void setInjureInfo(Hashtable pInjureInfo)
+    public CharacterInfo characterInfo
     {
-        injureInfo = pInjureInfo;
+        get { return _characterInfo; }
+        set { _characterInfo = value; }
     }
+
+    //public virtual void setInjureInfo(Hashtable pInjureInfo)
+    //{
+    //    injureInfo = pInjureInfo;
+    //}
 
     public void Reset()
     {
@@ -81,11 +87,11 @@ public class Emitter : MonoBehaviour
         pBullet.setLayer(bulletLayer);
         pBullet.setAliveTime(_bulletAliveTime);
         pBullet.setForwardVelocity(ForwardVelocity);
-        pBullet.attackerPurse = attackerPurse;
-        if (injureInfo != null)
-        {
-            pBullet.setInjureInfo(injureInfo);
-        }
+        pBullet.characterInfo = _characterInfo;
+        //if (injureInfo != null)
+        //{
+        //    pBullet.setInjureInfo(injureInfo);
+        //}
     }
 
     public virtual void getBulletInfo(out Vector3 lPosition,out Vector3 pForwardVelocity)

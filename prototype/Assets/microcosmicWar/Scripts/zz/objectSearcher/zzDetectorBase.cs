@@ -38,8 +38,8 @@ public abstract class zzDetectorBase : MonoBehaviour
             }
         }
     }
-    
-    public Collider[] detect()
+
+    public virtual Collider[] detect()
     {
         return detect(maxRequired, _layerMask, null);
     }

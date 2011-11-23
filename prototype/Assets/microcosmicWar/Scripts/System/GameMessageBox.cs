@@ -29,7 +29,8 @@ public class GameMessageBox:MonoBehaviour
             playerBoxMessageSender(string.Format("[{0}.{1}]说:{2}",
                 pPlayerID, lPlayerInfo.playerName, pMessage));
         }
-        lPlayerInfo.spawn.writeBubbleMessage(pMessage);
+        lPlayerInfo.spawn.writeBubbleMessage(string.Format("{0}:{1}",
+                lPlayerInfo.playerName, pMessage));
     }
 
     [RPC]
