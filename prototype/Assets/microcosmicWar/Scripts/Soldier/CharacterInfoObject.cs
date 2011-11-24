@@ -8,6 +8,7 @@ public class CharacterInfo
     public WMItemBag itemBag;
     public bool belongToThePlayer;
     public Race race;
+    public NetworkPlayer player;
 }
 
 public class CharacterInfoObject:MonoBehaviour

@@ -10,6 +10,7 @@ public class awakeShooterWhenDie : MonoBehaviour
     //打死此小兵后奖励的钱数量
     public int shootAward = 1;
     public Life life;
+    public Transform showNumPosition;
 
     void Start()
     {
@@ -22,15 +23,28 @@ public class awakeShooterWhenDie : MonoBehaviour
     //在死亡的回调中使用
     void deadAction(Life p)
     {
-        //Hashtable lInjureInfo = life.getInjureInfo();
-        ////得到 保存 在子弹中的 发射者的 背包信息,以加钱
-        //if (lInjureInfo!=null && lInjureInfo.ContainsKey("bagControl"))
-        //{
-        //    zzItemBagControl lBagControl = (zzItemBagControl)lInjureInfo["bagControl"];
-        //    lBagControl.addMoney(shootAward);
-        //}
-        if (life.characterInfo!=null)
-            life.characterInfo.purse.add(shootAward);
+        var lCharacterInfo = life.characterInfo;
+        if (lCharacterInfo != null)
+        {
+            lCharacterInfo.purse.add(shootAward);
+            var lLifeFlashManager = LifeFlashManager.Singleton;
+            var lPos = (showNumPosition ? showNumPosition : transform).position;
+            if (lCharacterInfo.belongToThePlayer)
+                lLifeFlashManager.showAwardNumLabel(lPos, shootAward);
+            else
+                lLifeFlashManager.showAwardNumLabel(
+                    lPos, shootAward, lCharacterInfo.player);
+        }
     }
+
+    //[RPC]
+    //void AwakeShooterShowNum()
+    //{
+    //    var lShowNumPosition = showNumPosition?showNumPosition:transform;
+    //    var lShowNumObject = (GameObject)Instantiate(LifeFlashManager.Singleton.awakeNumLabelPrafab,
+    //        lShowNumPosition.position,Quaternion.identity);
+    //    var lNumber = lShowNumObject.GetComponent<zzSceneTextureNumber>();
+    //    lNumber.number = shootAward;
+    //}
 
 }

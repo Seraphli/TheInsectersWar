@@ -31,4 +31,25 @@ public class LifeFlashManager : MonoBehaviour
     public Color selfAttackedColor;
     public Color attackedBySelfColor;
     public Color attackedByTeammateColor;
+
+    public GameObject awardNumLabelPrafab;
+
+    public void showAwardNumLabel(Vector3 pPosition, int pNum, NetworkPlayer pPlayer)
+    {
+        networkView.RPC("RPCShowAwardNumLabel", pPlayer, pPosition, pNum);
+    }
+
+    public void showAwardNumLabel(Vector3 pPosition, int pNum)
+    {
+        var lShowNumObject = (GameObject)Instantiate(awardNumLabelPrafab,
+            pPosition, Quaternion.identity);
+        var lNumber = lShowNumObject.GetComponentInChildren<TextMesh>();
+        lNumber.text = pNum.ToString();
+    }
+
+    [RPC]
+    public void RPCShowAwardNumLabel(Vector3 pPosition, int pNum)
+    {
+        showAwardNumLabel( pPosition,  pNum);
+    }
 }

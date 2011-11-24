@@ -12,6 +12,8 @@ public class zzSceneTextureNumber : MonoBehaviour
     [SerializeField]
     int _number = 0;
 
+    public bool left = false;
+
     void Start()
     {
         setNum(_number);
@@ -36,19 +38,48 @@ public class zzSceneTextureNumber : MonoBehaviour
         numberRenderer[pRendererIndex].material.mainTexture = numberTexture[pNum];
     }
 
+    void showNum(int pRendererIndex,bool pShow)
+    {
+        numberRenderer[pRendererIndex].enabled = pShow;
+    }
+
     void setNum(int pNum)
     {
-        int i = 0;
-        while(pNum!=0)
+        if (left)
         {
-            int lNum = pNum % 10;
-            setNum(i, lNum);
-            pNum /= 10;
-            ++i;
+            //int i = numberRenderer.Length - 1;
+            int lLength = (int)Mathf.Log10(pNum) + 1;
+            int lShowIndex = numberRenderer.Length - lLength;
+            while (pNum != 0)
+            {
+                int lNum = pNum % 10;
+                showNum(lShowIndex, true);
+                setNum(lShowIndex, lNum);
+                pNum /= 10;
+                //--i;
+                ++lShowIndex;
+            }
+            int i = numberRenderer.Length - lLength - 1;
+            for (; i >= 0; --i)
+            {
+                showNum(i, false);
+            }
+
         }
-        for (; i < numberRenderer.Length;++i )
+        else
         {
-            setNum(i, 0);
+            int i = 0;
+            while (pNum != 0)
+            {
+                int lNum = pNum % 10;
+                setNum(i, lNum);
+                pNum /= 10;
+                ++i;
+            }
+            for (; i < numberRenderer.Length; ++i)
+            {
+                setNum(i, 0);
+            }
         }
     }
 

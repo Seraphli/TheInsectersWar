@@ -195,6 +195,7 @@ public class HeroSpawn : MonoBehaviour
     public void setOwerImp(NetworkPlayer pOwner)
     {
         _owner = pOwner;
+        characterInfo.player = pOwner;
         if (HeroBelongToThePlayer())
         {
             characterInfo.belongToThePlayer = true;
