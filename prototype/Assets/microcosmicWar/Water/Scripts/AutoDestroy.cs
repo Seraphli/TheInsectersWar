@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+//Test Edit
 public class AutoDestroy : MonoBehaviour
 {
 	public float time;
